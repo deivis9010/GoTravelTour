@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using GoTravelTour.Models;
+using GoTravelTour.Models.Seguridad;
 
 namespace GoTravelTour
 {
@@ -19,9 +19,9 @@ namespace GoTravelTour
             // A PARTIR DE LOS CLAIMS DEL TOKEN JWT
             var _usuarioInfo = new UsuarioInfo()
             {
-                Id = new Guid(_token?.Claims?.
+                Id = _token?.Claims?.
                     SingleOrDefault(x => x.Type == "nameid")?.Value
-                    ?? _token.Id),
+                    ?? _token.Id,
 
                 Nombre = _token?.Claims?.
                     SingleOrDefault(x => x.Type == "nombre")?.Value,

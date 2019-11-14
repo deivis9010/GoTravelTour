@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -23,6 +24,7 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Clientes
         [HttpGet]
+        [Authorize]
         public IEnumerable<Cliente> GetClientes(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
             IEnumerable<Cliente> lista;

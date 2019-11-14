@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using GoTravelTour.Seguridad;
 
 namespace GoTravelTour.Controllers
 {
@@ -113,6 +114,11 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            EncriptarPass encriptador = new EncriptarPass();
+            string passNoEnc = usuario.Password;
+            string passEnc = encriptador.Encripta(passNoEnc);
+            usuario.Password = passEnc;
+
 
             _context.Entry(usuario).State = EntityState.Modified;
 
@@ -148,6 +154,10 @@ namespace GoTravelTour.Controllers
             {
                 return CreatedAtAction("GetUsuario", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
+            EncriptarPass encriptador = new EncriptarPass();
+            string passNoEnc = usuario.Password;
+            string passEnc = encriptador.Encripta(passNoEnc);
+            usuario.Password = passEnc;
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
