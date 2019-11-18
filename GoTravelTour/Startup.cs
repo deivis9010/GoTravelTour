@@ -88,7 +88,7 @@ namespace GoTravelTour
             app.UseAuthentication();
 
             app.UseCors(options =>
-              options.WithOrigins("http://localhost:59649", "http://localhost:4200")
+              options.WithOrigins("http://localhost:4200")
               .AllowAnyMethod()
               .AllowAnyHeader()
               );
