@@ -16,6 +16,8 @@ namespace GoTravelTour.Models
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<PlanesAlimenticios> PlanesAlimenticios { get; set; }
+        public DbSet<AlmacenImagenes> AlmacenImagenes { get; set; }
 
     }
 }

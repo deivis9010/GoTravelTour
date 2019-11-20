@@ -42,7 +42,9 @@ namespace GoTravelTour.Controllers
             var _userInfo = await AutenticarUsuarioAsync(usuarioLogin.Usuario, usuarioLogin.Password);
             if (_userInfo != null)
             {
-                return Ok(new { token = GenerarTokenJWT(_userInfo) });
+                return Ok(new { token = GenerarTokenJWT(_userInfo), email = _userInfo.Email, rol= _userInfo.Rol,
+                nombre = _userInfo.Nombre,   Id= _userInfo.Id, fechaI= _userInfo.ValidoDesde, fechaF= _userInfo.ValidoHasta
+                });
             }
             else
             {
@@ -78,7 +80,7 @@ namespace GoTravelTour.Controllers
                     Email = "email.usuario@dominio.com",
                     Rol = "Administrador"
                 };*/
-                
+
                 return new UsuarioInfo()
                 {
                     // Id del Usuario en el Sistema de Información (BD)
@@ -86,7 +88,10 @@ namespace GoTravelTour.Controllers
                     Nombre = user.Username,
                     //Apellidos = "Apellidos Usuario",
                     Email = user.Correo,
-                    Rol = user.rol.NombreRol
+                    Rol = user.rol.NombreRol,
+                    ValidoDesde = DateTime.Now,
+                    ValidoHasta = DateTime.Now.AddDays(1)
+                    
                 };
             }
             else
