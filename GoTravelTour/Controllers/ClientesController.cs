@@ -30,11 +30,11 @@ namespace GoTravelTour.Controllers
             IEnumerable<Cliente> lista;
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Clientes.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))|| (p.Nombre.ToLower().Contains(filter.ToLower()))||( p.Localizador.ToLower().Contains(filter.ToLower()))).ToList(); ;
+                lista = _context.Clientes.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))|| (p.Nombre.ToLower().Contains(filter.ToLower()))||( p.Localizador.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Clientes;
+                lista = _context.Clientes.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -109,9 +109,17 @@ namespace GoTravelTour.Controllers
                     break;
             }
 
-            return lista.ToPagedList(pageIndex, pageSize);
+            return lista;
             
         }
+        // GET: api/Clientes/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetClientesCount()
+        {
+            return _context.Clientes.Count();
+        }
+
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
 using GoTravelTour.Seguridad;
+using MimeKit;
+using MimeKit.Text;
 
 namespace GoTravelTour.Controllers
 {
@@ -29,11 +31,11 @@ namespace GoTravelTour.Controllers
             IEnumerable<Usuario> lista;
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Usuarios.Where(p => (p.Username.ToLower().Contains(filter.ToLower()))).ToList(); ;
+                lista = _context.Usuarios.Where(p => (p.Username.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Usuarios;
+                lista = _context.Usuarios.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -78,8 +80,15 @@ namespace GoTravelTour.Controllers
                     break;
             }
 
-            return lista.ToPagedList(pageIndex, pageSize);
+            return lista;
            
+        }
+        // GET: api/Usuarios/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetUsuariosCount()
+        {
+            return _context.Usuarios.Count();
         }
 
         // GET: api/Usuarios/5
@@ -188,6 +197,51 @@ namespace GoTravelTour.Controllers
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.UsuarioId == id);
+        }
+
+        public bool EnviarCorreo(Usuario usuario)
+        {
+            try
+            {
+                var message = new MimeMessage();
+
+                message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
+                message.From.Add(new MailboxAddress("zuleidyrg@gmail.com"));
+                message.Subject = "prueba";
+                //We will say we are sending HTML. But there are options for plaintext etc. 
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = "Gracias por registarse con nosotros " + "<br>"
+                 + "Por favor haga click en el " + "<br>"
+                + "siguiente enlace para <a href='http://setvmas.com/emailconfirm'" + usuario.Correo + "> registrarse</a>"
+                };
+
+
+                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    //The last parameter here is to use SSL (Which you should!)
+                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.Auto);
+
+                    //Remove any OAuth functionality as we won't be using it. 
+                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    emailClient.Authenticate("mainaccount@gaybook.us", "gottcuba2019");
+
+                    emailClient.Send(message);
+
+                    emailClient.Disconnect(true);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+
+            }
+
         }
     }
 }

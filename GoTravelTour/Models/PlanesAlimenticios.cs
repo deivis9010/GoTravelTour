@@ -8,8 +8,8 @@ namespace GoTravelTour.Models
     public class PlanesAlimenticios
     {
         public int PlanesAlimenticiosId { get; set; }
-        public int Nombre { get; set; }
-        public int Codigo { get; set; }
+        public string Nombre { get; set; }
+        public string Codigo { get; set; }
 
     }
 }

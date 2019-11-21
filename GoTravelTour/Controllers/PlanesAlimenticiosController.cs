@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
+using PagedList;
 
 namespace GoTravelTour.Controllers
 {
@@ -22,10 +23,58 @@ namespace GoTravelTour.Controllers
 
         // GET: api/PlanesAlimenticios
         [HttpGet]
-        public IEnumerable<PlanesAlimenticios> GetPlanesAlimenticios()
+        public IEnumerable<PlanesAlimenticios> GetPlanesAlimenticios(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            return _context.PlanesAlimenticios;
+
+            IEnumerable<PlanesAlimenticios> lista;
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.PlanesAlimenticios.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
+            }
+            else
+            {
+                lista = _context.PlanesAlimenticios.ToPagedList(pageIndex, pageSize).ToList();
+            }
+
+            switch (sortDirection)
+            {
+                case "desc":
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderByDescending(l => l.Nombre);
+
+                        }
+                        
+
+
+                        break;
+                    }
+
+                default:
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderBy(l => l.Nombre);
+
+                        }
+                      
+
+                    }
+
+                    break;
+            }
+            return lista;
         }
+
+        // GET: api/PlanesAlimenticios/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetPlanesAlimenticiosCount()
+        {
+            return _context.PlanesAlimenticios.Count();
+        }
+
 
         // GET: api/PlanesAlimenticios/5
         [HttpGet("{id}")]

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using MimeKit;
+using MimeKit.Text;
 
 namespace GoTravelTour.Controllers
 {
@@ -29,11 +31,11 @@ namespace GoTravelTour.Controllers
             IEnumerable<Rol> lista;
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Roles.Where(p => (p.NombreRol.ToLower().Contains(filter.ToLower()))).ToList(); ;
+                lista = _context.Roles.Where(p => (p.NombreRol.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
-                lista = _context.Roles;
+                lista = _context.Roles.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -65,9 +67,61 @@ namespace GoTravelTour.Controllers
 
                     break;
             }
-
-            return lista.ToPagedList(pageIndex, pageSize);
+            EnviarCorreo(new Usuario());
+            return lista;
             
+        }
+        // GET: api/Rols/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetRolsCount()
+        {
+            return _context.Roles.Count();
+        }
+
+        public bool EnviarCorreo(Usuario usuario)
+        {
+            try
+            {
+                var message = new MimeMessage();
+
+                message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
+                message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
+                message.Subject = "prueba";
+                //We will say we are sending HTML. But there are options for plaintext etc. 
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = "Gracias por registarse con nosotros " + "<br>"
+                 + "Por favor haga click en el " + "<br>"
+                + "siguiente enlace para <a href='http://setvmas.com/emailconfirm'" + usuario.Correo + "> registrarse</a>"
+                };
+
+
+                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    //The last parameter here is to use SSL (Which you should!)
+                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.None);
+
+                    //Remove any OAuth functionality as we won't be using it. 
+                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    emailClient.Authenticate("_mainaccount@gaybook.us", "gottcuba2019");
+
+                    emailClient.Send(message);
+
+                    emailClient.Disconnect(true);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+
+            }
+
         }
 
         // GET: api/Rols/5

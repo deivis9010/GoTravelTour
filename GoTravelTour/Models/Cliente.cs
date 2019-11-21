@@ -12,10 +12,11 @@ namespace GoTravelTour.Models
         public string Localizador { get; set; } // (id generado por quickbooks)
         public string Telefono { get; set; }
         public string Correo { get; set; }
+        public string Direccion { get; set; }
+        public string Calle { get; set; }
         public string ZipCode { get; set; }
         public string Ciudad { get; set; }
         public string Estado { get; set; }
-        public string Pais { get; set; }
         public string TipoTrasaccion { get; set; }
         public byte[] ImageContent { get; set; } //Para el logo
         public string ImageMimeType { get; set; } //Para el logo
@@ -23,7 +24,8 @@ namespace GoTravelTour.Models
         public double Descuento { get; set; }
         public bool IsActivo { get; set; }
         public bool IsPublic { get; set; }
+        public Pais Pais { get; set; }
 
-        
+
     }
 }
