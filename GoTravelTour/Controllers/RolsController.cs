@@ -102,12 +102,12 @@ namespace GoTravelTour.Controllers
                 {
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("a2plcpnl0550.prod.iad2.secureserver.net",465, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("mainaccount@gaybook.us", "Gaybook2015");
+                    emailClient.Authenticate("elitravel2015@gaybook.us", "Gaybook2015");
 
                     emailClient.Send(message);
 
@@ -185,9 +185,9 @@ namespace GoTravelTour.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-            Rol crol = _context.Roles.Single(c => c.NombreRol == rol.NombreRol);
-            if (crol != null)
+            }            
+            List<Rol> crol = _context.Roles.Where(c => c.NombreRol == rol.NombreRol).ToList();
+            if (crol.Count > 0)               
             {
                 return CreatedAtAction("GetRol", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

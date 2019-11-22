@@ -158,8 +158,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            Usuario usu = _context.Usuarios.Single(c => c.Username == usuario.Username);
-            if (usu != null)
+            List<Usuario> usu = _context.Usuarios.Where(c => c.Username == usuario.Username).ToList();
+            if (usu.Count > 0)              
             {
                 return CreatedAtAction("GetUsuario", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

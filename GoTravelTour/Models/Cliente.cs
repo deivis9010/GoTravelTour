@@ -24,7 +24,7 @@ namespace GoTravelTour.Models
         public double? Descuento { get; set; }
         public bool IsActivo { get; set; }
         public bool IsPublic { get; set; }
-        public Pais Pais { get; set; }
+        public string Pais { get; set; }
 
 
     }

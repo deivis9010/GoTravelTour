@@ -185,8 +185,8 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            Cliente cl = _context.Clientes.Single(c => c.Nombre == cliente.Nombre);
-            if (cl != null)
+            List<Cliente> cl = _context.Clientes.Where(c=>c.Nombre == cliente.Nombre).ToList();
+            if (cl.Count > 0)
             {
                 return CreatedAtAction("GetCliente", new { id = -2, error="Ya existe" }, new { id = -2, error = "Ya existe" });
             }
