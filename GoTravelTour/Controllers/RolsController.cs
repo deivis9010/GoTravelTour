@@ -87,7 +87,7 @@ namespace GoTravelTour.Controllers
 
                 message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
                 message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.Subject = "prueba";
+                message.Subject = "Usuario nuevo en el sistema";
                 //We will say we are sending HTML. But there are options for plaintext etc. 
                 message.Body = new TextPart(TextFormat.Html)
                 {
@@ -102,12 +102,12 @@ namespace GoTravelTour.Controllers
                 {
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.None);
+                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("_mainaccount@gaybook.us", "gottcuba2019");
+                    emailClient.Authenticate("mainaccount@gaybook.us", "Gaybook2015");
 
                     emailClient.Send(message);
 

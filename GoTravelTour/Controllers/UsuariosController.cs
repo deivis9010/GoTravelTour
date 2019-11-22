@@ -206,14 +206,14 @@ namespace GoTravelTour.Controllers
                 var message = new MimeMessage();
 
                 message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.From.Add(new MailboxAddress("zuleidyrg@gmail.com"));
-                message.Subject = "prueba";
+                message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
+                message.Subject = "Usuario nuevo en el sistema";
                 //We will say we are sending HTML. But there are options for plaintext etc. 
                 message.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = "Gracias por registarse con nosotros " + "<br>"
+                    Text = "Se ha registrado un usuario nuevo con tal informacion " + "<br>"
                  + "Por favor haga click en el " + "<br>"
-                + "siguiente enlace para <a href='http://setvmas.com/emailconfirm'" + usuario.Correo + "> registrarse</a>"
+                + "siguiente enlace para activarlo <a href='http://gotravelands.com/activar'" + usuario.Correo + "> Activar</a>"
                 };
 
 
@@ -242,6 +242,41 @@ namespace GoTravelTour.Controllers
 
             }
 
+        }
+
+        // GET: api/Usuarios/Activar
+        [Route("Activar")]
+        [HttpGet]
+        public async Task<IActionResult> GetUsuariosActivar(int id)
+        {
+            
+
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            usuario.IsActivo = true;
+            _context.Entry(usuario).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(usuario);
+            
         }
     }
 }

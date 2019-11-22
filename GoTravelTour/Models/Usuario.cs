@@ -11,6 +11,7 @@ namespace GoTravelTour.Models
         public string Username  { get; set; }
         public string Correo { get; set; }
         public string Password { get; set; }
+        public bool IsActivo { get; set; }
         public Cliente cliente { get; set; }
         public Rol rol { get; set; }
 

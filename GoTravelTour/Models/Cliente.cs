@@ -18,10 +18,10 @@ namespace GoTravelTour.Models
         public string Ciudad { get; set; }
         public string Estado { get; set; }
         public string TipoTrasaccion { get; set; }
-        public byte[] ImageContent { get; set; } //Para el logo
+        public string ImageContent { get; set; } //Para el logo
         public string ImageMimeType { get; set; } //Para el logo
         public string ImageName { get; set; } //Para el logo
-        public double Descuento { get; set; }
+        public double? Descuento { get; set; }
         public bool IsActivo { get; set; }
         public bool IsPublic { get; set; }
         public Pais Pais { get; set; }
