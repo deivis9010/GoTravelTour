@@ -28,6 +28,10 @@ namespace GoTravelTour.Controllers
         public IEnumerable<Cliente> GetClientes(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
             IEnumerable<Cliente> lista;
+            if (col == "-1")
+            {
+                return _context.Clientes.ToList();
+            }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Clientes.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))|| (p.Nombre.ToLower().Contains(filter.ToLower()))||( p.Localizador.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;

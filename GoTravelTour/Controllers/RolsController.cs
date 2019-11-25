@@ -29,6 +29,10 @@ namespace GoTravelTour.Controllers
         {
 
             IEnumerable<Rol> lista;
+            if (col == "-1")
+            {
+                return _context.Roles.ToList();
+            }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Roles.Where(p => (p.NombreRol.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();

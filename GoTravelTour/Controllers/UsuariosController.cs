@@ -29,6 +29,10 @@ namespace GoTravelTour.Controllers
         public IEnumerable<Usuario> GetUsuarios(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
             IEnumerable<Usuario> lista;
+            if (col == "-1")
+            {
+                return _context.Usuarios.ToList();
+            }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Usuarios.Where(p => (p.Username.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;

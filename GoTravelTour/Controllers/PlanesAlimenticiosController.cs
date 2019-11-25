@@ -27,6 +27,10 @@ namespace GoTravelTour.Controllers
         {
 
             IEnumerable<PlanesAlimenticios> lista;
+            if (col == "-1")
+            {
+                return _context.PlanesAlimenticios.ToList();
+            }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.PlanesAlimenticios.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
