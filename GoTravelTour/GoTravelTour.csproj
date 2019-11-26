@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191126025226_rutasregionpuntointeres.cs" />
+    <Compile Remove="Migrations\20191126025226_rutasregionpuntointeres.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

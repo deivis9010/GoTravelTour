@@ -111,7 +111,7 @@ namespace GoTravelTour.Controllers
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("elitravel2015@gaybook.us", "Gaybook2015");
+                    emailClient.Authenticate("elitravel2015", "Gaybook2015");
 
                     emailClient.Send(message);
 
