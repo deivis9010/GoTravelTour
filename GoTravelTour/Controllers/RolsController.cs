@@ -106,7 +106,7 @@ namespace GoTravelTour.Controllers
                 {
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Connect("a2plcpnl0550.prod.iad2.secureserver.net", 465, MailKit.Security.SecureSocketOptions.Auto);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
