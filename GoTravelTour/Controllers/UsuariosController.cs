@@ -35,11 +35,13 @@ namespace GoTravelTour.Controllers
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Usuarios.Where(p => (p.Username.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.Usuarios.Include(c => c.cliente).Include(r => r.rol)
+                    .Where(p => (p.Username.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Usuarios.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Usuarios.Include(c => c.cliente).Include(r => r.rol)
+                    .ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -172,7 +174,16 @@ namespace GoTravelTour.Controllers
             string passEnc = encriptador.Encripta(passNoEnc);
             usuario.Password = passEnc;
             _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            
 
             return CreatedAtAction("GetUsuario", new { id = usuario.UsuarioId }, usuario);
         }

@@ -25,6 +25,7 @@ namespace GoTravelTour.Models
         public bool IsActivo { get; set; }
         public bool IsPublic { get; set; }
         public string Pais { get; set; }
+		public List<Usuario> ListaUsuarios { get; set; }
 
 
     }

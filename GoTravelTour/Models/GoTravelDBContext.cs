@@ -22,7 +22,7 @@ namespace GoTravelTour.Models
         public DbSet<Region> Regiones { get; set; }
         public DbSet<PuntoInteres> PuntosInteres { get; set; }
 
-
+       
 
     }
 }

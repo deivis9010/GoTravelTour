@@ -9,5 +9,6 @@ namespace GoTravelTour.Models
     {
         public int RolId { get; set; }
         public string NombreRol { get; set; }
+		public List<Usuario> ListaUsuarios { get; set; }
     }
 }

@@ -66,7 +66,7 @@ namespace GoTravelTour.Controllers
             // Supondremos que el Usuario existe en la Base de Datos.
             // Retornamos un objeto del tipo UsuarioInfo, con toda
             // la información del usuario necesaria para el Token.
-            Usuario user = _context.Usuarios.Include(uu => uu.rol)
+            Usuario user = _context.Usuarios.Include(uu => uu.rol).Include(cl => cl.cliente)
                 .SingleOrDefault(u => u.Username.Trim().ToLower() == usuario.Trim().ToLower() && u.Password == password)
                 ;
             if (user != null)
