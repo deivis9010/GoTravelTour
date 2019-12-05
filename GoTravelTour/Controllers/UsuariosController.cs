@@ -31,7 +31,7 @@ namespace GoTravelTour.Controllers
             IEnumerable<Usuario> lista;
             if (col == "-1")
             {
-                return _context.Usuarios.ToList();
+                return _context.Usuarios.Include(c => c.cliente).Include(r => r.rol).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -42,7 +42,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Usuarios.Include(c => c.cliente).Include(r => r.rol)
                     .ToPagedList(pageIndex, pageSize).ToList();
-            }
+              }
 
             switch (sortDirection)
             {
