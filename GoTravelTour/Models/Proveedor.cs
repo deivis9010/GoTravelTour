@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoTravelTour.Models
 {
-    public class Proveedor
+    public class Proveedor //Owner
     {
         public int ProveedorId { get; set; }
         public string Nombre { get; set; }

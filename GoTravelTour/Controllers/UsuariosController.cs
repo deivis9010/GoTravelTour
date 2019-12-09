@@ -177,6 +177,7 @@ namespace GoTravelTour.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                EnviarCorreo(usuario);
             }
             catch (Exception ex)
             {
@@ -226,9 +227,9 @@ namespace GoTravelTour.Controllers
                 //We will say we are sending HTML. But there are options for plaintext etc. 
                 message.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = "Se ha registrado un usuario nuevo con tal informacion " + "<br>"
+                    Text = "Gracias por registarse con nosotros " + "<br>"
                  + "Por favor haga click en el " + "<br>"
-                + "siguiente enlace para activarlo <a href='http://gotravelands.com/activar'" + usuario.Correo + "> Activar</a>"
+                + "siguiente enlace para <a href='http://camina.co/mailconfirm'" + usuario.Correo + "> registrarse</a>"
                 };
 
 
@@ -237,12 +238,12 @@ namespace GoTravelTour.Controllers
                 {
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gaybook.us", 587, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Connect("smtp.gmail.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("mainaccount@gaybook.us", "gottcuba2019");
+                    emailClient.Authenticate("zuleidyrg@gmail.com", "M@luma123");
 
                     emailClient.Send(message);
 
@@ -250,7 +251,7 @@ namespace GoTravelTour.Controllers
                 }
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return false;

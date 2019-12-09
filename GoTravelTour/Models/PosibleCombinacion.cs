@@ -11,6 +11,7 @@ namespace GoTravelTour.Models
         public int CantInfantes { get; set; }
         public int CantNino { get; set; }
         public int CantAdult { get; set; }
+        public int TipoHabitacionId { get; set; }
         public TipoHabitacion TipoHabitacion { get; set; }
 
     }

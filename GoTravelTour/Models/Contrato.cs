@@ -16,6 +16,7 @@ namespace GoTravelTour.Models
         public DateTime? FechaFinTravel { get; set; }
         public DateTime? FechaInicioBooking { get; set; }
         public DateTime? FechaFinBooking { get; set; }
+        public int TipoProductoId { get; set; }
         public TipoProducto TipoProducto { get; set; }
         public List<Temporada> Temporadas { get; set; }
                      

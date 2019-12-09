@@ -14,6 +14,7 @@ namespace GoTravelTour.Models
         public string Correo { get; set; }
         [Required]
         public string Password { get; set; }
+        public string Telefono { get; set; }
         public bool IsActivo { get; set; }
         public int ClienteId { get; set; }
         public int RolId { get; set; }

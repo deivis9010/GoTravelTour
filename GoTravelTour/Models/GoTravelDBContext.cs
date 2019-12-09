@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GoTravelTour.Models;
 
 namespace GoTravelTour.Models
 {
@@ -21,8 +22,37 @@ namespace GoTravelTour.Models
         public DbSet<Rutas> Rutas { get; set; }
         public DbSet<Region> Regiones { get; set; }
         public DbSet<PuntoInteres> PuntosInteres { get; set; }
+        public DbSet<TipoProducto> TipoProductos { get; set; }
+        public DbSet<TipoAlojamiento> TipoAlojamientos { get; set; }
+        public DbSet<TipoTransporte> TipoTransportes { get; set; }
+        public DbSet<TipoHabitacion> TipoHabitaciones { get; set; }
+        public DbSet<NombreTemporada> NombreTemporadas { get; set; }
+        public DbSet<Proveedor> Proveedores { get; set; }
+        public DbSet<Comodidades> Comodidades { get; set; }
+        public DbSet<Distribuidor> Distribuidores { get; set; }
+        public DbSet<CombinacionHuespedes> CombinacionHuespedes { get; set; }
+        public DbSet<ComodidadesProductos> ComodidadesProductos { get; set; }
+        public DbSet<Contrato> Contratos { get; set; }
+        public DbSet<Habitacion> Habitaciones { get; set; }
+        public DbSet<Modificador> Modificadores { get; set; }
+        public DbSet<ModificadorProductos> ModificadorProductos { get; set; }
+        public DbSet<PosibleCombinacion> PosibleCombinaciones { get; set; }
+        public DbSet<PrecioActividad> PrecioActividades { get; set; }
+        public DbSet<PrecioAlojamiento> PrecioAlojamiento { get; set; }
+        public DbSet<PrecioPlanesAlimenticios> PrecioPlanesAlimenticios { get; set; }
+        public DbSet<PrecioComodidades> PrecioComodidades { get; set; }
+        public DbSet<PrecioRentaAutos> PrecioRentaAutos { get; set; }
+        public DbSet<Producto> Productos { get; set; }
+        public DbSet<ProductoDistribuidor> ProductoDistribuidores { get; set; }
+        public DbSet<RangoFechas> RangoFechas { get; set; }
+        public DbSet<Reglas> Reglas { get; set; }
+        public DbSet<RestriccionesActividad> RestriccionesActividades { get; set; }
+        public DbSet<RestriccionesRentasAutos> RestriccionesRentasAutos { get; set; }
+        public DbSet<Temporada> Temporadas { get; set; }
 
-       
+
+
+
 
     }
 }

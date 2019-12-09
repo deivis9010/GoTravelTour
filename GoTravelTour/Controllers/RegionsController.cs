@@ -69,7 +69,7 @@ namespace GoTravelTour.Controllers
             }
 
             return lista;
-            return _context.Regiones;
+            
         }
 
         // GET: api/Regions/5

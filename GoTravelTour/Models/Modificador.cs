@@ -16,6 +16,8 @@ namespace GoTravelTour.Models
         public int CantAdult { get; set; }
         public DateTime? FechaI { get; set; }
         public DateTime? FechaF { get; set; }
+        public int ContratoId { get; set; }
+       // public int TipoProductoId { get; set; }
         public TipoProducto TipoProducto { get; set; }
         public Contrato Contrato { get; set; }
 

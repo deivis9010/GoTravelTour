@@ -10,7 +10,8 @@ namespace GoTravelTour.Models
     {
         public int PuntoInteresId { get; set; }
         public string Nombre { get; set; }
+        //public int RegionId { get; set; }
         [JsonIgnore]
-        public Region region { get; set; }
+        public Region Region { get; set; }
     }
 }

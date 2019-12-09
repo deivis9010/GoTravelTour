@@ -8,6 +8,28 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191126025226_rutasregionpuntointeres.cs" />
     <Compile Remove="Migrations\20191126025226_rutasregionpuntointeres.Designer.cs" />
+    <Compile Remove="Migrations\20191207231645_addTablas.cs" />
+    <Compile Remove="Migrations\20191207231645_addTablas.Designer.cs" />
+    <Compile Remove="Migrations\20191207234702_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191207234702_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191207235322_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191207235322_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208000845_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208000845_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208001611_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208001611_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208002224_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208002224_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208002608_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208002608_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208003221_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208003221_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208003335_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208003335_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208003523_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208003523_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191208003840_TablasGenerales.cs" />
+    <Compile Remove="Migrations\20191208003840_TablasGenerales.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

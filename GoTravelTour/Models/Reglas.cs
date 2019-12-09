@@ -13,6 +13,8 @@ namespace GoTravelTour.Models
         public double PrecioFijo { get; set; }
         public double PrecioPorCiento { get; set; }
         public bool IsActivo { get; set; }
+        public int ModificadorId { get; set; }
+        public int TipoHabitacionId { get; set; }
         public TipoHabitacion TipoHabitacion { get; set; }
         public Modificador Modificador { get; set; }
 

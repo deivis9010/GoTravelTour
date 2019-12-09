@@ -71,7 +71,7 @@ namespace GoTravelTour.Controllers
 
                     break;
             }
-            EnviarCorreo(new Usuario());
+         
             return lista;
             
         }
@@ -83,50 +83,7 @@ namespace GoTravelTour.Controllers
             return _context.Roles.Count();
         }
 
-        public bool EnviarCorreo(Usuario usuario)
-        {
-            try
-            {
-                var message = new MimeMessage();
-
-                message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.Subject = "Usuario nuevo en el sistema";
-                //We will say we are sending HTML. But there are options for plaintext etc. 
-                message.Body = new TextPart(TextFormat.Html)
-                {
-                    Text = "Gracias por registarse con nosotros " + "<br>"
-                 + "Por favor haga click en el " + "<br>"
-                + "siguiente enlace para <a href='http://setvmas.com/emailconfirm'" + usuario.Correo + "> registrarse</a>"
-                };
-
-
-                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
-                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
-                {
-                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                    //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("a2plcpnl0550.prod.iad2.secureserver.net", 465, MailKit.Security.SecureSocketOptions.Auto);
-
-                    //Remove any OAuth functionality as we won't be using it. 
-                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
-
-                    emailClient.Authenticate("elitravel2015", "Gaybook2015");
-
-                    emailClient.Send(message);
-
-                    emailClient.Disconnect(true);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                return false;
-
-            }
-
-        }
+       
 
         // GET: api/Rols/5
         [HttpGet("{id}")]
@@ -160,7 +117,11 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            List<Rol> crol = _context.Roles.Where(c => c.NombreRol == rol.NombreRol && c.RolId != id).ToList();
+            if (crol.Count > 0)
+            {
+                return CreatedAtAction("GetRol", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.Entry(rol).State = EntityState.Modified;
 
             try
