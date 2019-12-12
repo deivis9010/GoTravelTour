@@ -9,6 +9,7 @@ using GoTravelTour.Models;
 using PagedList;
 using MimeKit;
 using MimeKit.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -106,6 +107,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Rols/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutRol([FromRoute] int id, [FromBody] Rol rol)
         {
             if (!ModelState.IsValid)
@@ -145,6 +147,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Rols
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostRol([FromBody] Rol rol)
         {
             if (!ModelState.IsValid)
@@ -164,6 +167,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Rols/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteRol([FromRoute] int id)
         {
             if (!ModelState.IsValid)

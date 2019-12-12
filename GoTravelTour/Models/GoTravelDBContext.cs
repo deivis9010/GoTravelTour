@@ -49,6 +49,11 @@ namespace GoTravelTour.Models
         public DbSet<RestriccionesActividad> RestriccionesActividades { get; set; }
         public DbSet<RestriccionesRentasAutos> RestriccionesRentasAutos { get; set; }
         public DbSet<Temporada> Temporadas { get; set; }
+        public DbSet<CategoriaComodidad> CategoriaComodidades { get; set; }
+        public DbSet<Alojamiento> Alojamientos { get; set; }
+        public DbSet<Vehiculo> Vehiculos { get; set; }
+        public DbSet<Actividad> Actividadess { get; set; }
+
 
 
 

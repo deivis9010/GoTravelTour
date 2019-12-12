@@ -10,6 +10,7 @@ using PagedList;
 using GoTravelTour.Seguridad;
 using MimeKit;
 using MimeKit.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -118,6 +119,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Usuarios/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutUsuario([FromRoute] int id, [FromBody] Usuario usuario)
         {
             if (!ModelState.IsValid)
@@ -158,6 +160,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Usuarios
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostUsuario([FromBody] Usuario usuario)
         {
             if (!ModelState.IsValid)
@@ -191,6 +194,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteUsuario([FromRoute] int id)
         {
             if (!ModelState.IsValid)

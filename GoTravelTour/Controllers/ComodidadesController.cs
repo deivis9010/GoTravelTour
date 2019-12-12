@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -79,7 +80,7 @@ namespace GoTravelTour.Controllers
         }
 
         // GET: api/Comodidades/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]        
         public async Task<IActionResult> GetComodidades([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -99,6 +100,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Comodidades/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutComodidades([FromRoute] int id, [FromBody] Comodidades comodidades)
         {
             if (!ModelState.IsValid)
@@ -139,6 +141,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Comodidades
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostComodidades([FromBody] Comodidades comodidades)
         {
             if (!ModelState.IsValid)
@@ -159,6 +162,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Comodidades/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteComodidades([FromRoute] int id)
         {
             if (!ModelState.IsValid)

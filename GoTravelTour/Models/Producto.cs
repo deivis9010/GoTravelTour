@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoTravelTour.Models
 {
-    public class Producto
+    public abstract class Producto
     {
         public int ProductoId { get; set; }
         public string Nombre { get; set; }

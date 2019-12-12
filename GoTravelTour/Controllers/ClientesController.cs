@@ -24,7 +24,7 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Clientes
         [HttpGet]
-        [Authorize]
+        
         public IEnumerable<Cliente> GetClientes(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
             IEnumerable<Cliente> lista;
@@ -146,6 +146,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Clientes/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCliente([FromRoute] int id, [FromBody] Cliente cliente)
         {
 
@@ -182,6 +183,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Clientes
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostCliente([FromBody] Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -203,6 +205,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCliente([FromRoute] int id)
         {
             if (!ModelState.IsValid)

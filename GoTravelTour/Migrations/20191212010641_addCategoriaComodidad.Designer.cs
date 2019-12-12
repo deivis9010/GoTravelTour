@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191212010641_addCategoriaComodidad")]
+    partial class addCategoriaComodidad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +50,7 @@ namespace GoTravelTour.Migrations
 
                     b.HasKey("CategoriaComodidadId");
 
-                    b.ToTable("CategoriaComodidades");
+                    b.ToTable("CategoriaComodidad");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Cliente", b =>
@@ -129,15 +131,11 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActividadProductoId");
-
                     b.Property<int>("CategoriaComodidadId");
 
                     b.Property<string>("Nombre");
 
                     b.HasKey("ComodidadesId");
-
-                    b.HasIndex("ActividadProductoId");
 
                     b.HasIndex("CategoriaComodidadId");
 
@@ -484,9 +482,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("DescripcionCorta");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<bool>("IsActivo");
 
                     b.Property<string>("Latitud");
@@ -526,8 +521,6 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("TipoProductoId");
 
                     b.ToTable("Productos");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Producto");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.ProductoDistribuidor", b =>
@@ -846,63 +839,6 @@ namespace GoTravelTour.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("GoTravelTour.Models.Actividad", b =>
-                {
-                    b.HasBaseType("GoTravelTour.Models.Producto");
-
-                    b.Property<int>("ActividadId");
-
-                    b.Property<int>("CantidadPersonas");
-
-                    b.Property<int>("Duracion");
-
-                    b.Property<bool>("HasTransporte");
-
-                    b.Property<int>("MaxDuracion");
-
-                    b.Property<string>("Modalidad");
-
-                    b.ToTable("Actividad");
-
-                    b.HasDiscriminator().HasValue("Actividad");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.Alojamiento", b =>
-                {
-                    b.HasBaseType("GoTravelTour.Models.Producto");
-
-                    b.Property<int>("AlojamientoId");
-
-                    b.Property<int>("Categoria");
-
-                    b.Property<int>("TipoAlojamientoId");
-
-                    b.HasIndex("TipoAlojamientoId");
-
-                    b.ToTable("Alojamiento");
-
-                    b.HasDiscriminator().HasValue("Alojamiento");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.Vehiculo", b =>
-                {
-                    b.HasBaseType("GoTravelTour.Models.Producto");
-
-                    b.Property<int>("CantidadPlazas");
-
-                    b.Property<string>("Marca");
-
-                    b.Property<string>("Modelo");
-
-                    b.Property<string>("TipoTransmision");
-
-                    b.Property<int>("VehiculoId");
-
-                    b.ToTable("Vehiculo");
-
-                    b.HasDiscriminator().HasValue("Vehiculo");
-                });
-
             modelBuilder.Entity("GoTravelTour.Models.CombinacionHuespedes", b =>
                 {
                     b.HasOne("GoTravelTour.Models.Habitacion", "Habitacion")
@@ -917,10 +853,6 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.Comodidades", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Actividad")
-                        .WithMany("Comodidades")
-                        .HasForeignKey("ActividadProductoId");
-
                     b.HasOne("GoTravelTour.Models.CategoriaComodidad", "CategoriaComodidad")
                         .WithMany()
                         .HasForeignKey("CategoriaComodidadId")
@@ -1210,14 +1142,6 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.Rol", "rol")
                         .WithMany()
                         .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.Alojamiento", b =>
-                {
-                    b.HasOne("GoTravelTour.Models.TipoAlojamiento", "TipoAlojamiento")
-                        .WithMany()
-                        .HasForeignKey("TipoAlojamientoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

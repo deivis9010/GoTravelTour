@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -96,6 +97,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/TipoHabitacions/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutTipoHabitacion([FromRoute] int id, [FromBody] TipoHabitacion tipoHabitacion)
         {
             if (!ModelState.IsValid)
@@ -136,6 +138,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/TipoHabitacions
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostTipoHabitacion([FromBody] TipoHabitacion tipoHabitacion)
         {
             if (!ModelState.IsValid)
@@ -155,6 +158,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/TipoHabitacions/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTipoHabitacion([FromRoute] int id)
         {
             if (!ModelState.IsValid)

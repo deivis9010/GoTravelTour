@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -99,6 +100,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Distribuidors/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutDistribuidor([FromRoute] int id, [FromBody] Distribuidor distribuidor)
         {
             if (!ModelState.IsValid)
@@ -139,6 +141,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Distribuidors
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostDistribuidor([FromBody] Distribuidor distribuidor)
         {
             if (!ModelState.IsValid)
@@ -158,6 +161,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Distribuidors/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteDistribuidor([FromRoute] int id)
         {
             if (!ModelState.IsValid)

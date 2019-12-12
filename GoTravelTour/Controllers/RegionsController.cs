@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -93,6 +94,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Regions/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutRegion([FromRoute] int id, [FromBody] Region region)
         {
             if (!ModelState.IsValid)
@@ -128,6 +130,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Regions
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostRegion([FromBody] Region region)
         {
             if (!ModelState.IsValid)
@@ -143,6 +146,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Regions/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteRegion([FromRoute] int id)
         {
             if (!ModelState.IsValid)
