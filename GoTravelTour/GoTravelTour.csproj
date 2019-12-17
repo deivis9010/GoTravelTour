@@ -30,6 +30,22 @@
     <Compile Remove="Migrations\20191208003523_TablasGenerales.Designer.cs" />
     <Compile Remove="Migrations\20191208003840_TablasGenerales.cs" />
     <Compile Remove="Migrations\20191208003840_TablasGenerales.Designer.cs" />
+    <Compile Remove="Migrations\20191213011048_add_TrasladoPrecios.cs" />
+    <Compile Remove="Migrations\20191213011048_add_TrasladoPrecios.Designer.cs" />
+    <Compile Remove="Migrations\20191216204107_addFkRegion.cs" />
+    <Compile Remove="Migrations\20191216204107_addFkRegion.Designer.cs" />
+    <Compile Remove="Migrations\20191216211316_addFkRegionYModificacionRuta.cs" />
+    <Compile Remove="Migrations\20191216211316_addFkRegionYModificacionRuta.Designer.cs" />
+    <Compile Remove="Migrations\20191217034537_add-llavesrutas.cs" />
+    <Compile Remove="Migrations\20191217034537_add-llavesrutas.Designer.cs" />
+    <Compile Remove="Migrations\20191217034929_add-llavesrutas.cs" />
+    <Compile Remove="Migrations\20191217034929_add-llavesrutas.Designer.cs" />
+    <Compile Remove="Migrations\20191217035417_add-llavesrutas.cs" />
+    <Compile Remove="Migrations\20191217035417_add-llavesrutas.Designer.cs" />
+    <Compile Remove="Migrations\20191217035606_add-llavesrutas.cs" />
+    <Compile Remove="Migrations\20191217035606_add-llavesrutas.Designer.cs" />
+    <Compile Remove="Migrations\20191217035956_add-llavesrutas1.cs" />
+    <Compile Remove="Migrations\20191217035956_add-llavesrutas1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

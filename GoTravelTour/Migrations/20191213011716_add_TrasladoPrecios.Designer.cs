@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191213011716_add_TrasladoPrecios")]
+    partial class add_TrasladoPrecios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -536,9 +538,9 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("ProveedorId");
 
-                    b.Property<int?>("PuntoInteresId");
+                    b.Property<int>("PuntoInteresId");
 
-                    b.Property<int?>("RegionId");
+                    b.Property<int>("RegionId");
 
                     b.Property<string>("SKU");
 
@@ -603,7 +605,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("Nombre");
 
-                    b.Property<int>("RegionId");
+                    b.Property<int?>("RegionId");
 
                     b.HasKey("PuntoInteresId");
 
@@ -758,11 +760,19 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("puntoOrigenPuntoInteresId");
 
+                    b.Property<int?>("regionDestinoRegionId");
+
+                    b.Property<int?>("regionOrigenRegionId");
+
                     b.HasKey("RutasId");
 
                     b.HasIndex("puntoDestinoPuntoInteresId");
 
                     b.HasIndex("puntoOrigenPuntoInteresId");
+
+                    b.HasIndex("regionDestinoRegionId");
+
+                    b.HasIndex("regionOrigenRegionId");
 
                     b.ToTable("Rutas");
                 });
@@ -1143,11 +1153,13 @@ namespace GoTravelTour.Migrations
 
                     b.HasOne("GoTravelTour.Models.PuntoInteres", "PuntoInteres")
                         .WithMany()
-                        .HasForeignKey("PuntoInteresId");
+                        .HasForeignKey("PuntoInteresId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GoTravelTour.Models.Region", "Region")
                         .WithMany()
-                        .HasForeignKey("RegionId");
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GoTravelTour.Models.TipoProducto", "TipoProducto")
                         .WithMany()
@@ -1172,8 +1184,7 @@ namespace GoTravelTour.Migrations
                 {
                     b.HasOne("GoTravelTour.Models.Region", "Region")
                         .WithMany("PuntosDeInteres")
-                        .HasForeignKey("RegionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RegionId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.RangoFechas", b =>
@@ -1238,6 +1249,14 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.PuntoInteres", "puntoOrigen")
                         .WithMany()
                         .HasForeignKey("puntoOrigenPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.Region", "regionDestino")
+                        .WithMany()
+                        .HasForeignKey("regionDestinoRegionId");
+
+                    b.HasOne("GoTravelTour.Models.Region", "regionOrigen")
+                        .WithMany()
+                        .HasForeignKey("regionOrigenRegionId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Temporada", b =>

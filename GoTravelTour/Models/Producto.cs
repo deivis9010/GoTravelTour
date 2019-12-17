@@ -19,8 +19,8 @@ namespace GoTravelTour.Models
         public bool PermiteNino { get; set; }
         public bool PermiteHacerCopia { get; set; }
         public int ProveedorId { get; set; }
-        public int RegionId { get; set; }
-        public int PuntoInteresId { get; set; }
+        //public int RegionId { get; set; }
+        //public int PuntoInteresId { get; set; }
         public int TipoProductoId { get; set; }
         public string Notas { get; set; }        
         public Region Region { get; set; }

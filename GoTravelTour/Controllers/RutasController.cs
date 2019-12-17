@@ -29,19 +29,26 @@ namespace GoTravelTour.Controllers
             IEnumerable<Rutas> lista;
             if (col == "-1")
             {
-                return _context.Rutas.ToList();
+                return _context.Rutas
+                    .Include(a => a.puntoOrigen).ThenInclude(ro => ro.Region)
+                    .Include(aa => aa.puntoDestino).ThenInclude(rd => rd.Region)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Rutas.Include(r=> r.regionOrigen).Include(rr=>rr.regionDestino)
-                    .Include(a=>a.puntoOrigen).Include(aa => aa.puntoOrigen)
-                    .Where(p => (p.regionDestino.Nombre.ToLower().Contains(filter.ToLower())) || (p.regionOrigen.Nombre.ToLower().Contains(filter.ToLower())) 
+                lista = _context.Rutas
+                    .Include(a=>a.puntoOrigen).ThenInclude(ro => ro.Region)
+                    .Include(aa => aa.puntoDestino).ThenInclude(rd => rd.Region)
+                    .Where(p => (p.puntoDestino.Region.Nombre.ToLower().Contains(filter.ToLower())) || (p.puntoOrigen.Region.Nombre.ToLower().Contains(filter.ToLower())) 
                     || (p.puntoDestino.Nombre.ToLower().Contains(filter.ToLower())) || (p.puntoOrigen.Nombre.ToLower().Contains(filter.ToLower())))
                     .ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Rutas.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Rutas
+                    .Include(a => a.puntoOrigen).ThenInclude(ro => ro.Region)
+                    .Include(aa => aa.puntoDestino).ThenInclude(rd => rd.Region)
+                    .ToPagedList(pageIndex, pageSize).ToList();
             }
 
            
