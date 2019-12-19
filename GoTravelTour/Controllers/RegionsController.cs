@@ -29,15 +29,18 @@ namespace GoTravelTour.Controllers
             IEnumerable<Region> lista;
             if (col == "-1")
             {
-                return _context.Regiones.ToList();
+                return _context.Regiones.Include(r => r.PuntosDeInteres).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Regiones.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.Regiones.Include(r=>r.PuntosDeInteres)
+                    .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize)
+                    .ToList(); ;
             }
             else
             {
-                lista = _context.Regiones.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Regiones.Include(r => r.PuntosDeInteres)
+                    .ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)

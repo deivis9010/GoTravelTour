@@ -29,15 +29,17 @@ namespace GoTravelTour.Controllers
             IEnumerable<PuntoInteres> lista;
             if (col == "-1")
             {
-                return _context.PuntosInteres.ToList();
+                return _context.PuntosInteres.Include(r => r.Region).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.PuntosInteres.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.PuntosInteres.Include(r => r.Region)
+                    .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.PuntosInteres.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.PuntosInteres.Include(r => r.Region)
+                    .ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)

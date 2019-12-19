@@ -107,7 +107,7 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario =  _context.Usuarios.Include(c => c.cliente).Include(r => r.rol).First(u => u.UsuarioId == id);
 
             if (usuario == null)
             {
