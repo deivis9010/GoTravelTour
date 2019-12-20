@@ -8,11 +8,11 @@ namespace GoTravelTour.Models
 {
     public class Rutas
     {
-        public int RutasId { get; set; }        
-      
-        public PuntoInteres puntoOrigen { get; set; }
+        public int RutasId { get; set; }       
         
-        public PuntoInteres puntoDestino { get; set; }
+        public PuntoInteres PuntoInteresOrigen { get; set; }         
+        public PuntoInteres PuntoInteresDestino { get; set; }
+        public int Distancia { get; set; }
 
     }
 }

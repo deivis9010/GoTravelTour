@@ -57,8 +57,7 @@ namespace GoTravelTour.Models
         public DbSet<PrecioTraslado> PrecioTraslados { get; set; }
 
 
-
-
+        
 
 
     }

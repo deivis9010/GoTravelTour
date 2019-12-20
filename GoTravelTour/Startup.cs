@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace GoTravelTour
@@ -61,7 +62,10 @@ namespace GoTravelTour
                     {
                         (resolver as DefaultContractResolver).NamingStrategy = null;
                     }
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
+            
+    
             var connection = Configuration.GetConnectionString("GoTravelConnection");
             services.AddDbContext<GoTravelDBContext>(options => options.UseSqlServer(connection));
         }

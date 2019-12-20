@@ -3,6 +3,7 @@ C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\bin\Debug\netcoreapp2.1\G
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\bin\Debug\netcoreapp2.1\GoTravelTour.runtimeconfig.dev.json
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\bin\Debug\netcoreapp2.1\GoTravelTour.dll
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\bin\Debug\netcoreapp2.1\GoTravelTour.pdb
+C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.csprojAssemblyReference.cache
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.csproj.CoreCompileInputs.cache
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.RazorAssemblyInfo.cache
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.RazorAssemblyInfo.cs
@@ -11,4 +12,3 @@ C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\G
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.RazorTargetAssemblyInfo.cache
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.dll
 C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.pdb
-C:\Users\DEIVIS\Source\Repos\GoTravelTour\GoTravelTour\obj\Debug\netcoreapp2.1\GoTravelTour.csprojAssemblyReference.cache

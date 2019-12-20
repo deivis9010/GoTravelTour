@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191220024410_rutas")]
+    partial class rutas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -754,17 +756,11 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Distancia");
+                    b.Property<int>("puntoDestinoId");
 
-                    b.Property<int?>("PuntoInteresDestinoPuntoInteresId");
-
-                    b.Property<int?>("PuntoInteresOrigenPuntoInteresId");
+                    b.Property<int>("puntoOrigenId");
 
                     b.HasKey("RutasId");
-
-                    b.HasIndex("PuntoInteresDestinoPuntoInteresId");
-
-                    b.HasIndex("PuntoInteresOrigenPuntoInteresId");
 
                     b.ToTable("Rutas");
                 });
@@ -1229,17 +1225,6 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.Temporada", "Temporada")
                         .WithMany()
                         .HasForeignKey("TemporadaId");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.Rutas", b =>
-                {
-                    b.HasOne("GoTravelTour.Models.PuntoInteres", "PuntoInteresDestino")
-                        .WithMany()
-                        .HasForeignKey("PuntoInteresDestinoPuntoInteresId");
-
-                    b.HasOne("GoTravelTour.Models.PuntoInteres", "PuntoInteresOrigen")
-                        .WithMany()
-                        .HasForeignKey("PuntoInteresOrigenPuntoInteresId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Temporada", b =>

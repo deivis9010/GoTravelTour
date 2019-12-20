@@ -30,24 +30,24 @@ namespace GoTravelTour.Controllers
             if (col == "-1")
             {
                 return _context.Rutas
-                    .Include(a => a.puntoOrigen).ThenInclude(ro => ro.Region)
-                    .Include(aa => aa.puntoDestino).ThenInclude(rd => rd.Region)
+                    .Include(a => a.PuntoInteresOrigen).ThenInclude(ro => ro.Region)
+                    .Include(aa => aa.PuntoInteresDestino).ThenInclude(rd => rd.Region)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Rutas
-                    .Include(a=>a.puntoOrigen).ThenInclude(ro => ro.Region)
-                    .Include(aa => aa.puntoDestino).ThenInclude(rd => rd.Region)
-                    .Where(p => (p.puntoDestino.Region.Nombre.ToLower().Contains(filter.ToLower())) || (p.puntoOrigen.Region.Nombre.ToLower().Contains(filter.ToLower())) 
-                    || (p.puntoDestino.Nombre.ToLower().Contains(filter.ToLower())) || (p.puntoOrigen.Nombre.ToLower().Contains(filter.ToLower())))
+                    .Include(a=>a.PuntoInteresOrigen).ThenInclude(ro => ro.Region)
+                    .Include(aa => aa.PuntoInteresDestino).ThenInclude(rd => rd.Region)
+                    .Where(p => (p.PuntoInteresOrigen.Region.Nombre.ToLower().Contains(filter.ToLower())) || (p.PuntoInteresOrigen.Region.Nombre.ToLower().Contains(filter.ToLower())) 
+                    || (p.PuntoInteresDestino.Nombre.ToLower().Contains(filter.ToLower())) || (p.PuntoInteresOrigen.Nombre.ToLower().Contains(filter.ToLower())))
                     .ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
                 lista = _context.Rutas
-                    .Include(a => a.puntoOrigen).ThenInclude(ro => ro.Region)
-                    .Include(aa => aa.puntoDestino).ThenInclude(rd => rd.Region)
+                    .Include(a => a.PuntoInteresOrigen).ThenInclude(ro => ro.Region)
+                    .Include(aa => aa.PuntoInteresDestino).ThenInclude(rd => rd.Region)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -121,7 +121,16 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            if (_context.Rutas.Any(a=>(a.PuntoInteresOrigen.PuntoInteresId == rutas.PuntoInteresOrigen.PuntoInteresId &&
+                  a.PuntoInteresDestino.PuntoInteresId == rutas.PuntoInteresDestino.PuntoInteresId) ||
+                 ( a.PuntoInteresDestino.PuntoInteresId == rutas.PuntoInteresOrigen.PuntoInteresId &&
+                  a.PuntoInteresOrigen.PuntoInteresId == rutas.PuntoInteresDestino.PuntoInteresId)))
+            {
+                return CreatedAtAction("GetRutas", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+                
+            }
+            rutas.PuntoInteresOrigen = _context.PuntosInteres.Single(s => s.PuntoInteresId == rutas.PuntoInteresOrigen.PuntoInteresId);
+            rutas.PuntoInteresDestino = _context.PuntosInteres.Single(s => s.PuntoInteresId == rutas.PuntoInteresDestino.PuntoInteresId);
             _context.Rutas.Add(rutas);
             await _context.SaveChangesAsync();
 

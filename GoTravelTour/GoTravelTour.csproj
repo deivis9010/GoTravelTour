@@ -46,6 +46,20 @@
     <Compile Remove="Migrations\20191217035606_add-llavesrutas.Designer.cs" />
     <Compile Remove="Migrations\20191217035956_add-llavesrutas1.cs" />
     <Compile Remove="Migrations\20191217035956_add-llavesrutas1.Designer.cs" />
+    <Compile Remove="Migrations\20191220014406_rutas.cs" />
+    <Compile Remove="Migrations\20191220014406_rutas.Designer.cs" />
+    <Compile Remove="Migrations\20191220014652_rutas.cs" />
+    <Compile Remove="Migrations\20191220014652_rutas.Designer.cs" />
+    <Compile Remove="Migrations\20191220014822_rutas.cs" />
+    <Compile Remove="Migrations\20191220014822_rutas.Designer.cs" />
+    <Compile Remove="Migrations\20191220015322_rutas.cs" />
+    <Compile Remove="Migrations\20191220015322_rutas.Designer.cs" />
+    <Compile Remove="Migrations\20191220015450_rutas.cs" />
+    <Compile Remove="Migrations\20191220015450_rutas.Designer.cs" />
+    <Compile Remove="Migrations\20191220024308_rutas.cs" />
+    <Compile Remove="Migrations\20191220024308_rutas.Designer.cs" />
+    <Compile Remove="Migrations\20191220035547_rutas3.cs" />
+    <Compile Remove="Migrations\20191220035547_rutas3.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
