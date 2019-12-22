@@ -114,7 +114,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            if (_context.PlanesAlimenticios.Any(c => c.Nombre == planesAlimenticios.Nombre && planesAlimenticios.PlanesAlimenticiosId != id))
+            {
+                return CreatedAtAction("GetPlanesAlimenticios", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.Entry(planesAlimenticios).State = EntityState.Modified;
 
             try
@@ -145,7 +148,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            if (_context.PlanesAlimenticios.Any(c => c.Nombre == planesAlimenticios.Nombre))
+            {
+                return CreatedAtAction("GetPlanesAlimenticios", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.PlanesAlimenticios.Add(planesAlimenticios);
             await _context.SaveChangesAsync();
 

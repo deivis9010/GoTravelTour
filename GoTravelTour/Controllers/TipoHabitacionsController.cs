@@ -109,8 +109,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            List<TipoHabitacion> crol = _context.TipoHabitaciones.Where(c => c.Nombre == tipoHabitacion.Nombre && tipoHabitacion.TipoHabitacionId != id).ToList();
-            if (crol.Count > 0)
+           
+            if (_context.TipoHabitaciones.Any(c => c.Nombre == tipoHabitacion.Nombre && tipoHabitacion.TipoHabitacionId != id))
             {
                 return CreatedAtAction("GetTipoHabitacion", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -145,8 +145,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<TipoHabitacion> crol = _context.TipoHabitaciones.Where(c => c.Nombre == tipoHabitacion.Nombre ).ToList();
-            if (crol.Count > 0)
+            
+            if (_context.TipoHabitaciones.Any(c => c.Nombre == tipoHabitacion.Nombre))
             {
                 return CreatedAtAction("GetTipoHabitacion", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

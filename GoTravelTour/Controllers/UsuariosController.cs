@@ -135,7 +135,10 @@ namespace GoTravelTour.Controllers
             string passNoEnc = usuario.Password;
             string passEnc = encriptador.Encripta(passNoEnc);
             usuario.Password = passEnc;
-
+            if (_context.Usuarios.Any(c => c.Username == usuario.Username && c.UsuarioId != id))
+            {
+                return CreatedAtAction("GetUsuario", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
 
             _context.Entry(usuario).State = EntityState.Modified;
 
@@ -167,8 +170,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<Usuario> usu = _context.Usuarios.Where(c => c.Username == usuario.Username).ToList();
-            if (usu.Count > 0)              
+             
+            if (_context.Usuarios.Any(c => c.Username == usuario.Username))              
             {
                 return CreatedAtAction("GetUsuario", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

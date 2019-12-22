@@ -114,8 +114,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            List<Distribuidor> crol = _context.Distribuidores.Where(c => c.Nombre == distribuidor.Nombre && distribuidor.DistribuidorId != id).ToList();
-            if (crol.Count > 0)
+            
+            if (_context.Distribuidores.Any(c => c.Nombre == distribuidor.Nombre && distribuidor.DistribuidorId != id))
             {
                 return CreatedAtAction("GetDistribuidor", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -150,8 +150,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<Distribuidor> crol = _context.Distribuidores.Where(c => c.Nombre == distribuidor.Nombre ).ToList();
-            if (crol.Count > 0)
+            if (_context.Distribuidores.Any(c => c.Nombre == distribuidor.Nombre ))
             {
                 return CreatedAtAction("GetDistribuidor", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

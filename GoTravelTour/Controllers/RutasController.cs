@@ -129,6 +129,11 @@ namespace GoTravelTour.Controllers
                 return CreatedAtAction("GetRutas", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
                 
             }
+            if (rutas.PuntoInteresOrigen.PuntoInteresId == rutas.PuntoInteresDestino.PuntoInteresId)
+            {
+                return CreatedAtAction("GetRutas", new { id = -3, error = "Origen y Destino iguales" }, new { id = -2, error = "Ya existe" });
+
+            }
             rutas.PuntoInteresOrigen = _context.PuntosInteres.Single(s => s.PuntoInteresId == rutas.PuntoInteresOrigen.PuntoInteresId);
             rutas.PuntoInteresDestino = _context.PuntosInteres.Single(s => s.PuntoInteresId == rutas.PuntoInteresDestino.PuntoInteresId);
             _context.Rutas.Add(rutas);

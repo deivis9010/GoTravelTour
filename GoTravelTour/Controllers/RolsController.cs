@@ -119,8 +119,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            List<Rol> crol = _context.Roles.Where(c => c.NombreRol == rol.NombreRol && c.RolId != id).ToList();
-            if (crol.Count > 0)
+            
+            if (_context.Roles.Any(c => c.NombreRol == rol.NombreRol && c.RolId != id))
             {
                 return CreatedAtAction("GetRol", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -154,8 +154,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }            
-            List<Rol> crol = _context.Roles.Where(c => c.NombreRol == rol.NombreRol).ToList();
-            if (crol.Count > 0)               
+            
+            if (_context.Roles.Any(c => c.NombreRol == rol.NombreRol))               
             {
                 return CreatedAtAction("GetRol", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

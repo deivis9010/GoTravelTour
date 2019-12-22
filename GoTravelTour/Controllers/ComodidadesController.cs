@@ -114,8 +114,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            List<Comodidades> crol = _context.Comodidades.Where(c => c.Nombre == comodidades.Nombre && comodidades.ComodidadesId != id).ToList();
-            if (crol.Count > 0)
+                       
+            if (_context.Comodidades.Any(c => c.Nombre == comodidades.Nombre && comodidades.ComodidadesId != id))
             {
                 return CreatedAtAction("GetComodidades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -150,8 +150,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<Comodidades> crol = _context.Comodidades.Where(c => c.Nombre == comodidades.Nombre).ToList();
-            if (crol.Count > 0)
+            if (_context.Comodidades.Any(c => c.Nombre == comodidades.Nombre ))
             {
                 return CreatedAtAction("GetComodidades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

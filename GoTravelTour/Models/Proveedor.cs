@@ -13,9 +13,5 @@ namespace GoTravelTour.Models
         public string Correo { get; set; }
         public List<Producto> Productos { get; set; }
 
-        
-
-
-
     }
 }

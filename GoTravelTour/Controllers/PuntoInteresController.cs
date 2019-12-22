@@ -86,10 +86,12 @@ namespace GoTravelTour.Controllers
 
             var puntoInteres = await _context.PuntosInteres.FindAsync(id);
 
+
             if (puntoInteres == null)
             {
                 return NotFound();
             }
+            puntoInteres.Region = _context.Regiones.Find(puntoInteres.RegionId);
 
             return Ok(puntoInteres);
         }
@@ -108,7 +110,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            if (_context.PuntosInteres.Any(c => c.Nombre == puntoInteres.Nombre && c.RegionId != puntoInteres.RegionId))
+            {
+                return CreatedAtAction("GetPuntosInteres", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.Entry(puntoInteres).State = EntityState.Modified;
 
             try
@@ -139,7 +144,11 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
+            if (_context.PuntosInteres.Any(pi => pi.Nombre == puntoInteres.Nombre))
+            {
+                return CreatedAtAction("GetPuntoInteres", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.PuntosInteres.Add(puntoInteres);
             await _context.SaveChangesAsync();
 

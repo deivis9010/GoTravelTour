@@ -12,60 +12,60 @@ namespace GoTravelTour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductoesController : ControllerBase
+    public class ModeloesController : ControllerBase
     {
         private readonly GoTravelDBContext _context;
 
-        public ProductoesController(GoTravelDBContext context)
+        public ModeloesController(GoTravelDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Productoes
+        // GET: api/Modeloes
         [HttpGet]
-        public IEnumerable<Producto> GetProductos()
+        public IEnumerable<Modelo> GetModelos()
         {
-            return _context.Productos;
+            return _context.Modelos;
         }
 
-        // GET: api/Productoes/5
+        // GET: api/Modeloes/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProducto([FromRoute] int id)
+        public async Task<IActionResult> GetModelo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var producto = await _context.Productos.FindAsync(id);
+            var modelo = await _context.Modelos.FindAsync(id);
 
-            if (producto == null)
+            if (modelo == null)
             {
                 return NotFound();
             }
 
-            return Ok(producto);
+            return Ok(modelo);
         }
 
-        // PUT: api/Productoes/5
+        // PUT: api/Modeloes/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutProducto([FromRoute] int id, [FromBody] Producto producto)
+        public async Task<IActionResult> PutModelo([FromRoute] int id, [FromBody] Modelo modelo)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != producto.ProductoId)
+            if (id != modelo.ModeloId)
             {
                 return BadRequest();
             }
-            if (_context.Productos.Any(c => c.Nombre == producto.Nombre && producto.ProductoId != id))
+            if (_context.Modelos.Any(c => c.Nombre == modelo.Nombre && modelo.ModeloId != id))
             {
-                return CreatedAtAction("GetProductos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+                return CreatedAtAction("GetModeloes", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
-            _context.Entry(producto).State = EntityState.Modified;
+            _context.Entry(modelo).State = EntityState.Modified;
 
             try
             {
@@ -73,7 +73,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductoExists(id))
+                if (!ModeloExists(id))
                 {
                     return NotFound();
                 }
@@ -86,51 +86,50 @@ namespace GoTravelTour.Controllers
             return NoContent();
         }
 
-        // POST: api/Productoes
+        // POST: api/Modeloes
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostProducto([FromBody] Producto producto)
+        public async Task<IActionResult> PostModelo([FromBody] Modelo modelo)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Productos.Any(c => c.Nombre == producto.Nombre ))
+            if (_context.Modelos.Any(c => c.Nombre == modelo.Nombre))
             {
-                return CreatedAtAction("GetProductos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+                return CreatedAtAction("GetModeloes", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
-
-            _context.Productos.Add(producto);
+            _context.Modelos.Add(modelo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProducto", new { id = producto.ProductoId }, producto);
+            return CreatedAtAction("GetModelo", new { id = modelo.ModeloId }, modelo);
         }
 
-        // DELETE: api/Productoes/5
+        // DELETE: api/Modeloes/5
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteProducto([FromRoute] int id)
+        public async Task<IActionResult> DeleteModelo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto == null)
+            var modelo = await _context.Modelos.FindAsync(id);
+            if (modelo == null)
             {
                 return NotFound();
             }
 
-            _context.Productos.Remove(producto);
+            _context.Modelos.Remove(modelo);
             await _context.SaveChangesAsync();
 
-            return Ok(producto);
+            return Ok(modelo);
         }
 
-        private bool ProductoExists(int id)
+        private bool ModeloExists(int id)
         {
-            return _context.Productos.Any(e => e.ProductoId == id);
+            return _context.Modelos.Any(e => e.ModeloId == id);
         }
     }
 }

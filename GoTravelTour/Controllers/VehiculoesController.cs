@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -48,6 +49,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Vehiculoes/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutVehiculo([FromRoute] int id, [FromBody] Vehiculo vehiculo)
         {
             if (!ModelState.IsValid)
@@ -83,6 +85,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Vehiculoes
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostVehiculo([FromBody] Vehiculo vehiculo)
         {
             if (!ModelState.IsValid)
@@ -98,6 +101,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Vehiculoes/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteVehiculo([FromRoute] int id)
         {
             if (!ModelState.IsValid)

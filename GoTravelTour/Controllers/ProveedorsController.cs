@@ -90,11 +90,13 @@ namespace GoTravelTour.Controllers
             }
 
             var proveedor = await _context.Proveedores.FindAsync(id);
+            
 
             if (proveedor == null)
             {
                 return NotFound();
             }
+            proveedor.Productos = _context.Productos.Where(p => p.ProductoId == proveedor.ProveedorId).ToList();
 
             return Ok(proveedor);
         }
@@ -113,8 +115,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            List<Proveedor> crol = _context.Proveedores.Where(c => c.Nombre == proveedor.Nombre && proveedor.ProveedorId != id).ToList();
-            if (crol.Count > 0)
+            
+            if (_context.Proveedores.Any(c => c.Nombre == proveedor.Nombre && proveedor.ProveedorId != id))
             {
                 return CreatedAtAction("GetProveedor", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -148,8 +150,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<Proveedor> crol = _context.Proveedores.Where(c => c.Nombre == proveedor.Nombre).ToList();
-            if (crol.Count > 0)
+            
+            if (_context.Proveedores.Any(c => c.Nombre == proveedor.Nombre))
             {
                 return CreatedAtAction("GetProveedor", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

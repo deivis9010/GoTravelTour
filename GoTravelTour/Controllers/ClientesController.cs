@@ -159,7 +159,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            if (_context.Clientes.Any(c => c.Nombre == cliente.Nombre && cliente.ClienteId != id))
+            {
+                return CreatedAtAction("GetClientes", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.Entry(cliente).State = EntityState.Modified;
 
             try
@@ -191,12 +194,11 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            List<Cliente> cl = _context.Clientes.Where(c=>c.Nombre == cliente.Nombre).ToList();
-            if (cl.Count > 0)
+           
+            if (_context.Clientes.Any(c => c.Nombre == cliente.Nombre ))
             {
-                return CreatedAtAction("GetCliente", new { id = -2, error="Ya existe" }, new { id = -2, error = "Ya existe" });
+                return CreatedAtAction("GetClientes", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
-
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 

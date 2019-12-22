@@ -55,9 +55,12 @@ namespace GoTravelTour.Models
         public DbSet<Actividad> Actividadess { get; set; }
         public DbSet<Traslado> Traslados { get; set; }
         public DbSet<PrecioTraslado> PrecioTraslados { get; set; }
+        public DbSet<Marca> Marcas { get; set; }
+        public DbSet<Modelo> Modelos { get; set; }
+     
 
 
-        
+
 
 
     }

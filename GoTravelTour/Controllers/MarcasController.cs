@@ -13,34 +13,31 @@ namespace GoTravelTour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegionsController : ControllerBase
+    public class MarcasController : ControllerBase
     {
         private readonly GoTravelDBContext _context;
 
-        public RegionsController(GoTravelDBContext context)
+        public MarcasController(GoTravelDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Regions
+        // GET: api/Marcas
         [HttpGet]
-        public IEnumerable<Region> GetRegiones(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<Marca> GetMarcas(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<Region> lista;
+            IEnumerable<Marca> lista;
             if (col == "-1")
             {
-                return _context.Regiones.Include(r => r.PuntosDeInteres).ToList();
+                return _context.Marcas.ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Regiones.Include(r=>r.PuntosDeInteres)
-                    .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize)
-                    .ToList(); ;
+                lista = _context.Marcas.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Regiones.Include(r => r.PuntosDeInteres)
-                    .ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Marcas.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -52,7 +49,6 @@ namespace GoTravelTour.Controllers
                             lista = lista.OrderByDescending(l => l.Nombre);
 
                         }
-
                         break;
                     }
 
@@ -63,58 +59,55 @@ namespace GoTravelTour.Controllers
                             lista = lista.OrderBy(l => l.Nombre);
 
                         }
-
-
-
+                        break;
 
                     }
 
-                    break;
+                   
             }
 
             return lista;
-            
         }
 
-        // GET: api/Regions/5
+        // GET: api/Marcas/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRegion([FromRoute] int id)
+        public async Task<IActionResult> GetMarca([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var region = await _context.Regiones.FindAsync(id);
+            var marca = await _context.Marcas.FindAsync(id);
 
-            if (region == null)
+            if (marca == null)
             {
                 return NotFound();
             }
 
-            return Ok(region);
+            return Ok(marca);
         }
 
-        // PUT: api/Regions/5
+        // PUT: api/Marcas/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutRegion([FromRoute] int id, [FromBody] Region region)
+        public async Task<IActionResult> PutMarca([FromRoute] int id, [FromBody] Marca marca)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != region.RegionId)
+            if (id != marca.MarcaId)
             {
                 return BadRequest();
             }
-            if (_context.Regiones.Any(c => c.Nombre == region.Nombre && c.RegionId != region.RegionId))
+            if (_context.Marcas.Any(c => c.Nombre == marca.Nombre && marca.MarcaId != id))
             {
-                return CreatedAtAction("GetRegions", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+                return CreatedAtAction("GetMarcas", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
 
-            _context.Entry(region).State = EntityState.Modified;
+            _context.Entry(marca).State = EntityState.Modified;
 
             try
             {
@@ -122,7 +115,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RegionExists(id))
+                if (!MarcaExists(id))
                 {
                     return NotFound();
                 }
@@ -135,50 +128,49 @@ namespace GoTravelTour.Controllers
             return NoContent();
         }
 
-        // POST: api/Regions
+        // POST: api/Marcas
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> PostRegion([FromBody] Region region)
+        public async Task<IActionResult> PostMarca([FromBody] Marca marca)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Regiones.Any(c => c.Nombre == region.Nombre ))
+            if (_context.Marcas.Any(c => c.Nombre == marca.Nombre ))
             {
-                return CreatedAtAction("GetRegions", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+                return CreatedAtAction("GetMarcas", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
-            _context.Regiones.Add(region);
+            _context.Marcas.Add(marca);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRegion", new { id = region.RegionId }, region);
+            return CreatedAtAction("GetMarca", new { id = marca.MarcaId }, marca);
         }
 
-        // DELETE: api/Regions/5
+        // DELETE: api/Marcas/5
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteRegion([FromRoute] int id)
+        public async Task<IActionResult> DeleteMarca([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var region = await _context.Regiones.FindAsync(id);
-            if (region == null)
+            var marca = await _context.Marcas.FindAsync(id);
+            if (marca == null)
             {
                 return NotFound();
             }
 
-            _context.Regiones.Remove(region);
+            _context.Marcas.Remove(marca);
             await _context.SaveChangesAsync();
 
-            return Ok(region);
+            return Ok(marca);
         }
 
-        private bool RegionExists(int id)
+        private bool MarcaExists(int id)
         {
-            return _context.Regiones.Any(e => e.RegionId == id);
+            return _context.Marcas.Any(e => e.MarcaId == id);
         }
     }
 }

@@ -112,11 +112,11 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            List<NombreTemporada> crol = _context.NombreTemporadas.Where(c => c.Nombre == nombreTemporada.Nombre && nombreTemporada.NombreTemporadaId != id).ToList();
-            if (crol.Count > 0)
+            if (_context.NombreTemporadas.Any(c => c.Nombre == nombreTemporada.Nombre && nombreTemporada.NombreTemporadaId != id))
             {
                 return CreatedAtAction("GetNombreTemporada", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
+           
             _context.Entry(nombreTemporada).State = EntityState.Modified;
 
             try
@@ -147,8 +147,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<NombreTemporada> crol = _context.NombreTemporadas.Where(c => c.Nombre == nombreTemporada.Nombre).ToList();
-            if (crol.Count > 0)
+            if (_context.NombreTemporadas.Any(c => c.Nombre == nombreTemporada.Nombre))
             {
                 return CreatedAtAction("GetNombreTemporada", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
