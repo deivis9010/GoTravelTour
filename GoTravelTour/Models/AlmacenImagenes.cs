@@ -12,7 +12,8 @@ namespace GoTravelTour.Models
         public string Localizacion { get; set; }       //(Principal Galeria)
         public string ImageContent { get; set; }
         public string TipoImagen { get; set; }
-        // ProductoFK
+        public int ProductoId { get; set; }
+        public Producto Producto { get; set; }
 
 
 

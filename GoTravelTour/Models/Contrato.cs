@@ -19,11 +19,8 @@ namespace GoTravelTour.Models
         public int TipoProductoId { get; set; }
         public TipoProducto TipoProducto { get; set; }
         public List<Temporada> Temporadas { get; set; }
-                     
-        //ListaProductos(los productos que estan en el contrato) Esto Genera una tabla nueva
-
-
-
+        public List<NombreTemporada> NombreTemporadas { get; set; }
+        public List<ContratoProducto> ListaProductosEnContratos { get; set; }
 
 
     }

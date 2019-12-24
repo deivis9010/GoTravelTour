@@ -50,19 +50,25 @@ namespace GoTravelTour.Controllers
         // PUT: api/AlmacenImagenes/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutAlmacenImagenes([FromRoute] int id, [FromBody] AlmacenImagenes almacenImagenes)
+        public async Task<IActionResult> PutAlmacenImagenes([FromRoute] int id, [FromBody] List<AlmacenImagenes> almacenImagenes)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != almacenImagenes.AlmacenImagenesId)
+            /*if (id != almacenImagenes.AlmacenImagenesId)
             {
                 return BadRequest();
+            }*/
+            if(almacenImagenes.Count > 0 )
+            {
+                foreach (var img in almacenImagenes)
+                {
+                    _context.Entry(img).State = EntityState.Modified;
+                }
             }
-
-            _context.Entry(almacenImagenes).State = EntityState.Modified;
+            
 
             try
             {
@@ -86,17 +92,18 @@ namespace GoTravelTour.Controllers
         // POST: api/AlmacenImagenes
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostAlmacenImagenes([FromBody] AlmacenImagenes almacenImagenes)
+        public async Task<IActionResult> PostAlmacenImagenes([FromBody] List<AlmacenImagenes> almacenImagenes)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            _context.AlmacenImagenes.Add(almacenImagenes);
+            _context.AlmacenImagenes.AddRange(almacenImagenes);
+            
+            
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAlmacenImagenes", new { id = almacenImagenes.AlmacenImagenesId }, almacenImagenes);
+            return CreatedAtAction("GetAlmacenImagenes", new { id = 0, msg = "Almacen Creado" }, almacenImagenes);
         }
 
         // DELETE: api/AlmacenImagenes/5

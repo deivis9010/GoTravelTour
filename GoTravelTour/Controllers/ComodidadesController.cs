@@ -63,9 +63,6 @@ namespace GoTravelTour.Controllers
 
                         }
 
-
-
-
                     }
 
                     break;
