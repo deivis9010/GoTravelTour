@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
+using PagedList;
 
 namespace GoTravelTour.Controllers
 {
@@ -22,10 +23,72 @@ namespace GoTravelTour.Controllers
 
         // GET: api/ContratoProductoes
         [HttpGet]
-        public IEnumerable<ContratoProducto> GetContratoProducto()
+        public IEnumerable<ContratoProducto> GetContratoProducto(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            return _context.ContratoProducto;
+
+            IEnumerable<ContratoProducto> lista;
+            if (col == "-1")
+            {
+                return _context.ContratoProducto
+                    .Include(p=>p.Producto)
+                    .Include(c=>c.Contrato)
+                    .ToList();
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.ContratoProducto
+                     .Include(p => p.Producto)
+                     .Include(c => c.Contrato)
+                     .Where(p => (p.Contrato.Nombre.ToLower().Contains(filter.ToLower()))
+                     || (p.Producto.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
+            }
+            else
+            {
+                lista = _context.ContratoProducto
+                     .Include(p => p.Producto)
+                     .Include(c => c.Contrato)
+                    .ToPagedList(pageIndex, pageSize).ToList();
+            }
+
+            switch (sortDirection)
+            {
+                case "desc":
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderByDescending(l => l.Contrato.Nombre);
+
+                        }
+
+
+
+                        break;
+                    }
+
+                default:
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderBy(l => l.Contrato.Nombre);
+
+                        }
+
+
+                    }
+
+                    break;
+            }
+            return lista;
         }
+
+        // GET: api/ContratoProductoes/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetContratoProductoCount()
+        {
+            return _context.ContratoProducto.Count();
+        }
+
 
         // GET: api/ContratoProductoes/5
         [HttpGet("{id}")]

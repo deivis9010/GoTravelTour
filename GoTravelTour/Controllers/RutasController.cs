@@ -57,6 +57,14 @@ namespace GoTravelTour.Controllers
             
         }
 
+        // GET: api/Rutas/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetRutasCount()
+        {
+            return _context.Rutas.Count();
+        }
+
         // GET: api/Rutas/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRutas([FromRoute] int id)

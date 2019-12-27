@@ -75,8 +75,17 @@ namespace GoTravelTour.Controllers
             
         }
 
-        // GET: api/PuntoInteres/5
-        [HttpGet("{id}")]
+        
+        // GET: api/PuntoInteres/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetPuntoInteresCount()
+        {
+            return _context.PuntosInteres.Count();
+        }
+
+// GET: api/PuntoInteres/5
+[HttpGet("{id}")]
         public async Task<IActionResult> GetPuntoInteres([FromRoute] int id)
         {
             if (!ModelState.IsValid)

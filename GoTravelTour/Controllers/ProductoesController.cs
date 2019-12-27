@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using Microsoft.AspNetCore.Authorization;
+using PagedList;
 
 namespace GoTravelTour.Controllers
 {
@@ -23,9 +24,59 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Productoes
         [HttpGet]
-        public IEnumerable<Producto> GetProductos()
+        public IEnumerable<Producto> GetProductos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            return _context.Productos;
+            IEnumerable<Vehiculo> lista;
+            if (col == "-1")
+            {
+                return _context.Vehiculos.ToList();
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.Vehiculos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+            }
+            else
+            {
+                lista = _context.Vehiculos.ToPagedList(pageIndex, pageSize).ToList();
+            }
+
+            switch (sortDirection)
+            {
+                case "desc":
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderByDescending(l => l.Nombre);
+
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderBy(l => l.Nombre);
+
+                        }
+
+
+
+
+                    }
+
+                    break;
+            }
+
+            return lista;
+        }
+        // GET: api/Productoes/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetProductoCount()
+        {
+            return _context.Productos.Count();
         }
 
         // GET: api/Productoes/5

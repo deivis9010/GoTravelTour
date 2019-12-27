@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
+using PagedList;
 
 namespace GoTravelTour.Controllers
 {
@@ -22,9 +23,70 @@ namespace GoTravelTour.Controllers
 
         // GET: api/ProductoDistribuidors
         [HttpGet]
-        public IEnumerable<ProductoDistribuidor> GetProductoDistribuidores()
+        public IEnumerable<ProductoDistribuidor> GetProductoDistribuidores(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            return _context.ProductoDistribuidores;
+            IEnumerable<ProductoDistribuidor> lista;
+            if (col == "-1")
+            {
+                return _context.ProductoDistribuidores
+                    .Include( pd => pd.Distribuidor)
+                    .Include (dp => dp.Producto)
+                    .ToList();
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.ProductoDistribuidores
+                    .Include(pd => pd.Distribuidor)
+                    .Include(dp => dp.Producto)
+                    .Where(p => (p.Distribuidor.Nombre.ToLower().Contains(filter.ToLower())) 
+                    || p.Producto.Nombre.ToLower().Contains(filter.ToLower()))
+                    .ToPagedList(pageIndex, pageSize).ToList(); ;
+            }
+            else
+            {
+                lista = _context.ProductoDistribuidores
+                    .Include(pd => pd.Distribuidor)
+                    .Include(dp => dp.Producto)
+                    .ToPagedList(pageIndex, pageSize).ToList();
+            }
+
+            switch (sortDirection)
+            {
+                case "desc":
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderByDescending(l => l.Producto.Nombre);
+
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderBy(l => l.Producto.Nombre);
+
+                        }
+
+
+
+
+                    }
+
+                    break;
+            }
+
+            return lista;
+        }
+        // GET: api/ProductoDistribuidors/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetProductoDistribuidorsCount()
+        {
+            return _context.ProductoDistribuidores.Count();
         }
 
         // GET: api/ProductoDistribuidors/5

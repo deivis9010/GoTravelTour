@@ -68,6 +68,16 @@ namespace GoTravelTour.Controllers
 
             return lista;
         }
+        
+
+        // GET: api/Marcas/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetMarcasCount()
+        {
+            return _context.PlanesAlimenticios.Count();
+        }
+
 
         // GET: api/Marcas/5
         [HttpGet("{id}")]

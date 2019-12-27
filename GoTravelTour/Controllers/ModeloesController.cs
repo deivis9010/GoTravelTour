@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using Microsoft.AspNetCore.Authorization;
+using PagedList;
 
 namespace GoTravelTour.Controllers
 {
@@ -23,10 +24,62 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Modeloes
         [HttpGet]
-        public IEnumerable<Modelo> GetModelos()
+        public IEnumerable<Modelo> GetModelos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            return _context.Modelos;
+
+            IEnumerable<Modelo> lista;
+            if (col == "-1")
+            {
+                return _context.Modelos.ToList();
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.Modelos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
+            }
+            else
+            {
+                lista = _context.Modelos.ToPagedList(pageIndex, pageSize).ToList();
+            }
+
+            switch (sortDirection)
+            {
+                case "desc":
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderByDescending(l => l.Nombre);
+
+                        }
+
+
+
+                        break;
+                    }
+
+                default:
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderBy(l => l.Nombre);
+
+                        }
+
+
+                    }
+
+                    break;
+            }
+            return lista;
         }
+
+        // GET: api/Modeloes/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetModelosCount()
+        {
+            return _context.Modelos.Count();
+        }
+
 
         // GET: api/Modeloes/5
         [HttpGet("{id}")]

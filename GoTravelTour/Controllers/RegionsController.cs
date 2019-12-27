@@ -76,6 +76,15 @@ namespace GoTravelTour.Controllers
             
         }
 
+        
+        // GET: api/Regions/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetRegionsCount()
+        {
+            return _context.Regiones.Count();
+        }
+
         // GET: api/Regions/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRegion([FromRoute] int id)

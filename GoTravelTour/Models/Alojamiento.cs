@@ -9,6 +9,11 @@ namespace GoTravelTour.Models
     {
         public int AlojamientoId { get; set; }
         public int Categoria { get; set; }
+        public string Latitud { get; set; }
+        public string Longitud { get; set; }
+        public bool PermiteAdult { get; set; }
+        public bool PermiteInfante { get; set; }
+        public bool PermiteNino { get; set; }
         public int TipoAlojamientoId { get; set; }
         public TipoAlojamiento TipoAlojamiento { get; set; }
 
