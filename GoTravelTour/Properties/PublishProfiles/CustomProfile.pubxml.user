@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Este archivo se usa en el proceso de publicación y empaquetado del proyecto web. Para personalizar el comportamiento de este proceso,
+edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 para obtener más información. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAjIgMypiSb0Cdf1izprO6xwAAAAACAAAAAAAQZgAAAAEAACAAAAByCdK/5QoPIG9Z4So1vvF/L0D6DMPcvgd4+KhOX1D+ewAAAAAOgAAAAAIAACAAAABNs5POdQ1ofOhL0ENDjFQAvpY7SSS80wJKG4vNJgH2+zAAAADDQxdTMzvzaCVXpaxrAYQ4vYtoUEtvNeJr5pHJQ7Ucb46OpANhIbS3Y406bnJxlppAAAAA+ktcMuOkNvh2i8Njw5/C8Odyb9ku+C7kpp7D+QqMr9SK5E88MoHBsO4BYLtIAr6HBtZV9b42xPkZ85oz98RxDQ==</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="GoTravelConnection">
+      <Value>Server=sql5041.site4now.net,1433%3b Initial Catalog =  DB_A50D95_GoTravelDB%3b Integrated Security = True%3b User Id =  DB_A50D95_GoTravelDB_admin%3b Password =  Gotravel123</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="GoTravelTour.Models.GoTravelDBContext">
+      <Value>Server=sql5041.site4now.net,1433%3b Initial Catalog =  DB_A50D95_GoTravelDB%3b Integrated Security = True%3b User Id =  DB_A50D95_GoTravelDB_admin%3b Password =  Gotravel123</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

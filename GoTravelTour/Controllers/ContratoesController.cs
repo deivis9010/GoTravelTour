@@ -152,6 +152,15 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if (contrato.NombreTemporadas.Count > 0)
+            {
+                foreach (NombreTemporada nt in contrato.NombreTemporadas)
+                {
+                    Temporada t = new Temporada();
+                    t.Nombre = nt.Nombre;
+                    _context.Temporadas.Add(t);
+                }
+            }
 
             _context.Contratos.Add(contrato);
             await _context.SaveChangesAsync();

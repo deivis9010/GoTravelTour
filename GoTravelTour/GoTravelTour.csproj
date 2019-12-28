@@ -62,6 +62,8 @@
     <Compile Remove="Migrations\20191220035547_rutas3.Designer.cs" />
     <Compile Remove="Migrations\20191224035000_contrato.cs" />
     <Compile Remove="Migrations\20191224035000_contrato.Designer.cs" />
+    <Compile Remove="Migrations\20191227230223_austes.cs" />
+    <Compile Remove="Migrations\20191227230223_austes.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

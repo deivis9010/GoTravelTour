@@ -29,15 +29,30 @@ namespace GoTravelTour.Controllers
             IEnumerable<Vehiculo> lista;
             if (col == "-1")
             {
-                return _context.Vehiculos.ToList();
+                return _context.Vehiculos
+                    .Include(v => v.Marca)
+                    .Include(v => v.Modelo)
+                    .Include(v => v.Proveedor)
+                    .Include(v => v.TipoProducto)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Vehiculos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.Vehiculos
+                    .Include(v => v.Marca)
+                    .Include(v => v.Modelo)
+                    .Include(v => v.Proveedor)
+                    .Include(v => v.TipoProducto)
+                    .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Vehiculos.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Vehiculos
+                    .Include(v => v.Marca)
+                    .Include(v => v.Modelo)
+                    .Include(v => v.Proveedor)
+                    .Include(v => v.TipoProducto)
+                    .ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -79,8 +94,8 @@ namespace GoTravelTour.Controllers
             return _context.Vehiculos.Count();
         }
 
-// GET: api/Vehiculoes/5
-[HttpGet("{id}")]
+        // GET: api/Vehiculoes/5
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetVehiculo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
