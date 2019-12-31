@@ -7,6 +7,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAjIgMypiSb0Cdf1izprO6xwAAAAACAAAAAAAQZgAAAAEAACAAAAByCdK/5QoPIG9Z4So1vvF/L0D6DMPcvgd4+KhOX1D+ewAAAAAOgAAAAAIAACAAAABNs5POdQ1ofOhL0ENDjFQAvpY7SSS80wJKG4vNJgH2+zAAAADDQxdTMzvzaCVXpaxrAYQ4vYtoUEtvNeJr5pHJQ7Ucb46OpANhIbS3Y406bnJxlppAAAAA+ktcMuOkNvh2i8Njw5/C8Odyb9ku+C7kpp7D+QqMr9SK5E88MoHBsO4BYLtIAr6HBtZV9b42xPkZ85oz98RxDQ==</EncryptedPassword>
+    <_PublishTargetUrl>ftp://ftp.site4now.net/frontend</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="GoTravelConnection">
@@ -17,5 +18,118 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
     <EFMigrations Include="GoTravelTour.Models.GoTravelDBContext">
       <Value>Server=sql5041.site4now.net,1433%3b Initial Catalog =  DB_A50D95_GoTravelDB%3b Integrated Security = True%3b User Id =  DB_A50D95_GoTravelDB_admin%3b Password =  Gotravel123</Value>
     </EFMigrations>
+  </ItemGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>08/11/2019 17:59:57</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>11/13/2019 08:09:57</publishTime>
+    </File>
+    <File Include="appsettings.production.json">
+      <publishTime>12/30/2019 14:23:53</publishTime>
+    </File>
+    <File Include="BouncyCastle.Crypto.dll">
+      <publishTime>08/02/2019 01:50:10</publishTime>
+    </File>
+    <File Include="dotnet-aspnet-codegenerator-design.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="GoTravelTour.deps.json">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="GoTravelTour.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="GoTravelTour.pdb">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="GoTravelTour.runtimeconfig.json">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="MailKit.dll">
+      <publishTime>10/11/2019 17:00:52</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.CSharp.Workspaces.dll">
+      <publishTime>10/09/2019 15:06:02</publishTime>
+    </File>
+    <File Include="Microsoft.Owin.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.Owin.Security.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.Owin.Security.OAuth.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Core.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="MimeKit.dll">
+      <publishTime>10/11/2019 16:48:02</publishTime>
+    </File>
+    <File Include="NuGet.Frameworks.dll">
+      <publishTime>10/09/2019 15:04:31</publishTime>
+    </File>
+    <File Include="Owin.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="PagedList.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="PagedList.Mvc.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Composition.AttributedModel.dll">
+      <publishTime>10/09/2019 15:04:50</publishTime>
+    </File>
+    <File Include="System.Composition.Convention.dll">
+      <publishTime>10/09/2019 15:04:50</publishTime>
+    </File>
+    <File Include="System.Composition.Hosting.dll">
+      <publishTime>10/09/2019 15:04:51</publishTime>
+    </File>
+    <File Include="System.Composition.Runtime.dll">
+      <publishTime>10/09/2019 15:04:51</publishTime>
+    </File>
+    <File Include="System.Composition.TypedParts.dll">
+      <publishTime>10/09/2019 15:04:51</publishTime>
+    </File>
+    <File Include="System.Net.Http.Formatting.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Web.Cors.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Web.Http.Cors.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Web.Http.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
   </ItemGroup>
 </Project>

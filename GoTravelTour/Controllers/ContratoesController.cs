@@ -29,7 +29,7 @@ namespace GoTravelTour.Controllers
             if (col == "-1")
             {
                 return _context.Contratos
-                    .Include(a=> a.ListaProductosEnContratos)
+                    .Include(a => a.Distribuidor)
                     .Include(a => a.Temporadas)
                     .Include(a => a.TipoProducto)                    
                     .ToList();
@@ -37,7 +37,7 @@ namespace GoTravelTour.Controllers
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Contratos
-                    .Include(a => a.ListaProductosEnContratos)
+                    .Include(a => a.Distribuidor)
                     .Include(a => a.Temporadas)
                     .Include(a => a.TipoProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
@@ -45,7 +45,7 @@ namespace GoTravelTour.Controllers
             else
             {
                 lista = _context.Contratos
-                    .Include(a => a.ListaProductosEnContratos)
+                    .Include(a => a.Distribuidor)
                     .Include(a => a.Temporadas)
                     .Include(a => a.TipoProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();

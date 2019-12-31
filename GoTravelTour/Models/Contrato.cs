@@ -18,10 +18,12 @@ namespace GoTravelTour.Models
         public DateTime? FechaFinBooking { get; set; }
         public bool PermiteHacerCopia { get; set; }
         public int TipoProductoId { get; set; }
+        public int DistribuidorId { get; set; }
+        public Distribuidor Distribuidor { get; set; }
         public TipoProducto TipoProducto { get; set; }
         public List<Temporada> Temporadas { get; set; }
         public List<NombreTemporada> NombreTemporadas { get; set; }
-        public List<ContratoProducto> ListaProductosEnContratos { get; set; }
+       
 
 
     }
