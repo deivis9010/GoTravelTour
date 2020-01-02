@@ -6,57 +6,39 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
-using Microsoft.AspNetCore.Authorization;
 using PagedList;
 
 namespace GoTravelTour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiculoesController : ControllerBase
+    public class CategoriaHotelesController : ControllerBase
     {
         private readonly GoTravelDBContext _context;
 
-        public VehiculoesController(GoTravelDBContext context)
+        public CategoriaHotelesController(GoTravelDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Vehiculoes
+        // GET: api/CategoriaHoteles
         [HttpGet]
-        public IEnumerable<Vehiculo> GetVehiculos (string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<CategoriaHoteles> GetCategoriaHoteles(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<Vehiculo> lista;
+            IEnumerable<CategoriaHoteles> lista;
             if (col == "-1")
             {
-                return _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
-                    .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
-
+                return _context.CategoriaHoteles                    
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
-                    .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
+                lista = _context.CategoriaHoteles                    
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
-                    .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v=>v.Distribuidor)
-                    //.Include(v => )
+                lista = _context.CategoriaHoteles                    
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -91,49 +73,48 @@ namespace GoTravelTour.Controllers
 
             return lista;
         }
-        // GET: api/Vehiculoes/Count
+        // GET: api/CategoriaHoteles/Count
         [Route("Count")]
         [HttpGet]
-        public int GetVehiculoCount()
+        public int GetCategoriaHotelesCount()
         {
-            return _context.Vehiculos.Count();
+            return _context.CategoriaHoteles.Count();
         }
 
-        // GET: api/Vehiculoes/5
+        // GET: api/CategoriaHoteles/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVehiculo([FromRoute] int id)
+        public async Task<IActionResult> GetCategoriaHoteles([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
+            var categoriaHoteles = await _context.CategoriaHoteles.FindAsync(id);
 
-            if (vehiculo == null)
+            if (categoriaHoteles == null)
             {
                 return NotFound();
             }
 
-            return Ok(vehiculo);
+            return Ok(categoriaHoteles);
         }
 
-        // PUT: api/Vehiculoes/5
+        // PUT: api/CategoriaHoteles/5
         [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> PutVehiculo([FromRoute] int id, [FromBody] Vehiculo vehiculo)
+        public async Task<IActionResult> PutCategoriaHoteles([FromRoute] int id, [FromBody] CategoriaHoteles categoriaHoteles)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != vehiculo.ProductoId)
+            if (id != categoriaHoteles.CategoriaHotelesId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(vehiculo).State = EntityState.Modified;
+            _context.Entry(categoriaHoteles).State = EntityState.Modified;
 
             try
             {
@@ -141,7 +122,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VehiculoExists(id))
+                if (!CategoriaHotelesExists(id))
                 {
                     return NotFound();
                 }
@@ -154,50 +135,45 @@ namespace GoTravelTour.Controllers
             return NoContent();
         }
 
-        // POST: api/Vehiculoes
+        // POST: api/CategoriaHoteles
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> PostVehiculo([FromBody] Vehiculo vehiculo)
+        public async Task<IActionResult> PostCategoriaHoteles([FromBody] CategoriaHoteles categoriaHoteles)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Vehiculos.Add(vehiculo);
-           
-                await _context.SaveChangesAsync();
-            
-            
+            _context.CategoriaHoteles.Add(categoriaHoteles);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetVehiculo", new { id = vehiculo.ProductoId }, vehiculo);
+            return CreatedAtAction("GetCategoriaHoteles", new { id = categoriaHoteles.CategoriaHotelesId }, categoriaHoteles);
         }
 
-        // DELETE: api/Vehiculoes/5
+        // DELETE: api/CategoriaHoteles/5
         [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteVehiculo([FromRoute] int id)
+        public async Task<IActionResult> DeleteCategoriaHoteles([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
-            if (vehiculo == null)
+            var categoriaHoteles = await _context.CategoriaHoteles.FindAsync(id);
+            if (categoriaHoteles == null)
             {
                 return NotFound();
             }
 
-            _context.Vehiculos.Remove(vehiculo);
+            _context.CategoriaHoteles.Remove(categoriaHoteles);
             await _context.SaveChangesAsync();
 
-            return Ok(vehiculo);
+            return Ok(categoriaHoteles);
         }
 
-        private bool VehiculoExists(int id)
+        private bool CategoriaHotelesExists(int id)
         {
-            return _context.Vehiculos.Any(e => e.ProductoId == id);
+            return _context.CategoriaHoteles.Any(e => e.CategoriaHotelesId == id);
         }
     }
 }

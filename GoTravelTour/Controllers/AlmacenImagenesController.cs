@@ -132,5 +132,26 @@ namespace GoTravelTour.Controllers
         {
             return _context.AlmacenImagenes.Any(e => e.AlmacenImagenesId == id);
         }
+
+        // GET: api/AlmacenImagenes/Productos/5
+        [Route ("Productos")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAlmacenImagenesByProducto([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var almacenImagenes =  _context.AlmacenImagenes.Where( a => a.ProductoId == id).ToList();
+
+            if (almacenImagenes == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(almacenImagenes);
+        }
+
     }
 }

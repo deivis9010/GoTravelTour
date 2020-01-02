@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200102154631_refreshh")]
+    partial class refreshh
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,19 +55,6 @@ namespace GoTravelTour.Migrations
                     b.HasKey("CategoriaComodidadId");
 
                     b.ToTable("CategoriaComodidades");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.CategoriaHoteles", b =>
-                {
-                    b.Property<int>("CategoriaHotelesId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nombre");
-
-                    b.HasKey("CategoriaHotelesId");
-
-                    b.ToTable("CategoriaHoteles");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Cliente", b =>
@@ -941,7 +930,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("AlojamientoId");
 
-                    b.Property<string>("Categoria");
+                    b.Property<int>("Categoria");
 
                     b.Property<string>("Latitud");
 
@@ -982,8 +971,6 @@ namespace GoTravelTour.Migrations
                     b.HasBaseType("GoTravelTour.Models.Producto");
 
                     b.Property<int>("CantidadPlazas");
-
-                    b.Property<string>("Clase");
 
                     b.Property<int>("MarcaId");
 
@@ -1146,7 +1133,7 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.PrecioComodidades", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Comodidades", "Comodidad")
+                    b.HasOne("GoTravelTour.Models.Comodidades", "Comodidades")
                         .WithMany()
                         .HasForeignKey("ComodidadesId")
                         .OnDelete(DeleteBehavior.Cascade);

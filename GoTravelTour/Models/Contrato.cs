@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace GoTravelTour.Models
         public Distribuidor Distribuidor { get; set; }
         public TipoProducto TipoProducto { get; set; }
         public List<Temporada> Temporadas { get; set; }
+        [NotMapped]
         public List<NombreTemporada> NombreTemporadas { get; set; }
        
 

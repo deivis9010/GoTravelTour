@@ -6,57 +6,42 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
-using Microsoft.AspNetCore.Authorization;
 using PagedList;
 
 namespace GoTravelTour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiculoesController : ControllerBase
+    public class TemporadasController : ControllerBase
     {
         private readonly GoTravelDBContext _context;
 
-        public VehiculoesController(GoTravelDBContext context)
+        public TemporadasController(GoTravelDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Vehiculoes
+        // GET: api/Temporadas
         [HttpGet]
-        public IEnumerable<Vehiculo> GetVehiculos (string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<Temporada> GetTemporadas(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<Vehiculo> lista;
+            IEnumerable<Temporada> lista;
             if (col == "-1")
             {
-                return _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
-                    .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
-
+                return _context.Temporadas
+                    .Include(a => a.ListaFechasTemporada)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
-                    .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
+                lista = _context.Temporadas
+                    .Include(a => a.ListaFechasTemporada)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
-                    .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v=>v.Distribuidor)
-                    //.Include(v => )
+                lista = _context.Temporadas
+                    .Include(a => a.ListaFechasTemporada)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -91,49 +76,48 @@ namespace GoTravelTour.Controllers
 
             return lista;
         }
-        // GET: api/Vehiculoes/Count
+        // GET: api/Temporadas/Count
         [Route("Count")]
         [HttpGet]
-        public int GetVehiculoCount()
+        public int GetTemporadasCount()
         {
-            return _context.Vehiculos.Count();
+            return _context.Temporadas.Count();
         }
 
-        // GET: api/Vehiculoes/5
+        // GET: api/Temporadas/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVehiculo([FromRoute] int id)
+        public async Task<IActionResult> GetTemporada([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
+            var temporada = await _context.Temporadas.FindAsync(id);
 
-            if (vehiculo == null)
+            if (temporada == null)
             {
                 return NotFound();
             }
 
-            return Ok(vehiculo);
+            return Ok(temporada);
         }
 
-        // PUT: api/Vehiculoes/5
+        // PUT: api/Temporadas/5
         [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> PutVehiculo([FromRoute] int id, [FromBody] Vehiculo vehiculo)
+        public async Task<IActionResult> PutTemporada([FromRoute] int id, [FromBody] Temporada temporada)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != vehiculo.ProductoId)
+            if (id != temporada.TemporadaId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(vehiculo).State = EntityState.Modified;
+            _context.Entry(temporada).State = EntityState.Modified;
 
             try
             {
@@ -141,7 +125,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VehiculoExists(id))
+                if (!TemporadaExists(id))
                 {
                     return NotFound();
                 }
@@ -154,50 +138,45 @@ namespace GoTravelTour.Controllers
             return NoContent();
         }
 
-        // POST: api/Vehiculoes
+        // POST: api/Temporadas
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> PostVehiculo([FromBody] Vehiculo vehiculo)
+        public async Task<IActionResult> PostTemporada([FromBody] Temporada temporada)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Vehiculos.Add(vehiculo);
-           
-                await _context.SaveChangesAsync();
-            
-            
+            _context.Temporadas.Add(temporada);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetVehiculo", new { id = vehiculo.ProductoId }, vehiculo);
+            return CreatedAtAction("GetTemporada", new { id = temporada.TemporadaId }, temporada);
         }
 
-        // DELETE: api/Vehiculoes/5
+        // DELETE: api/Temporadas/5
         [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteVehiculo([FromRoute] int id)
+        public async Task<IActionResult> DeleteTemporada([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
-            if (vehiculo == null)
+            var temporada = await _context.Temporadas.FindAsync(id);
+            if (temporada == null)
             {
                 return NotFound();
             }
 
-            _context.Vehiculos.Remove(vehiculo);
+            _context.Temporadas.Remove(temporada);
             await _context.SaveChangesAsync();
 
-            return Ok(vehiculo);
+            return Ok(temporada);
         }
 
-        private bool VehiculoExists(int id)
+        private bool TemporadaExists(int id)
         {
-            return _context.Vehiculos.Any(e => e.ProductoId == id);
+            return _context.Temporadas.Any(e => e.TemporadaId == id);
         }
     }
 }

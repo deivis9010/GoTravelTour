@@ -12,42 +12,49 @@ namespace GoTravelTour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContratoesController : ControllerBase
+    public class ActividadsController : ControllerBase
     {
         private readonly GoTravelDBContext _context;
 
-        public ContratoesController(GoTravelDBContext context)
+        public ActividadsController(GoTravelDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Contratoes
+        // GET: api/Actividads
         [HttpGet]
-        public IEnumerable<Contrato> GetContratos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<Actividad> GetActividadess(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<Contrato> lista;
+            IEnumerable<Actividad> lista;
             if (col == "-1")
             {
-                return _context.Contratos
-                    .Include(a => a.Distribuidor)
-                    .Include(a => a.Temporadas)
-                    .Include(a => a.TipoProducto)                    
+                return _context.Actividadess
+                    .Include(a => a.ListaComodidades)
+                    .Include(a => a.ListaDistribuidoresProducto)
+                    .Include(a => a.Proveedor)
+                    .Include(a => a.TipoProducto)
+                    .Include(a => a.Comodidades)
+                    
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Contratos
-                    .Include(a => a.Distribuidor)
-                    .Include(a => a.Temporadas)
+                lista = _context.Actividadess
+                    .Include(a => a.ListaComodidades)
+                    .Include(a => a.ListaDistribuidoresProducto)
+                    .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
+                    .Include(a => a.Comodidades)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Contratos
-                    .Include(a => a.Distribuidor)
-                    .Include(a => a.Temporadas)
+                lista = _context.Actividadess
+                    .Include(a => a.ListaComodidades)
+                    .Include(a => a.ListaDistribuidoresProducto)
+                    .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
+                    .Include(a => a.Comodidades)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -71,10 +78,6 @@ namespace GoTravelTour.Controllers
                             lista = lista.OrderBy(l => l.Nombre);
 
                         }
-
-
-
-
                     }
 
                     break;
@@ -82,48 +85,49 @@ namespace GoTravelTour.Controllers
 
             return lista;
         }
-        // GET: api/Contratoes/Count
+        // GET: api/Actividads/Count
         [Route("Count")]
         [HttpGet]
-        public int GetContratoCount()
+        public int GetActividadsCount()
         {
-            return _context.Contratos.Count();
+            return _context.Actividadess.Count();
         }
 
-        // GET: api/Contratoes/5
+
+        // GET: api/Actividads/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetContrato([FromRoute] int id)
+        public async Task<IActionResult> GetActividad([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var contrato = await _context.Contratos.FindAsync(id);
+            var actividad = await _context.Actividadess.FindAsync(id);
 
-            if (contrato == null)
+            if (actividad == null)
             {
                 return NotFound();
             }
 
-            return Ok(contrato);
+            return Ok(actividad);
         }
 
-        // PUT: api/Contratoes/5
+        // PUT: api/Actividads/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContrato([FromRoute] int id, [FromBody] Contrato contrato)
+        public async Task<IActionResult> PutActividad([FromRoute] int id, [FromBody] Actividad actividad)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != contrato.ContratoId)
+            if (id != actividad.ProductoId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(contrato).State = EntityState.Modified;
+            _context.Entry(actividad).State = EntityState.Modified;
 
             try
             {
@@ -131,7 +135,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ContratoExists(id))
+                if (!ActividadExists(id))
                 {
                     return NotFound();
                 }
@@ -144,68 +148,45 @@ namespace GoTravelTour.Controllers
             return NoContent();
         }
 
-        // POST: api/Contratoes
+        // POST: api/Actividads
         [HttpPost]
-        public async Task<IActionResult> PostContrato([FromBody] Contrato contrato)
+        public async Task<IActionResult> PostActividad([FromBody] Actividad actividad)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (contrato.NombreTemporadas.Count > 0)
-            {
-                contrato.Temporadas = new List<Temporada>();
-                foreach (NombreTemporada nt in contrato.NombreTemporadas)
-                {
-                    Temporada t = new Temporada();
-                    t.Nombre = nt.Nombre;
-                    
-                    contrato.Temporadas.Add(t);
-                }
-            }
 
-
-            _context.Contratos.Add(contrato);
+            _context.Actividadess.Add(actividad);
             await _context.SaveChangesAsync();
-           /* if (contrato.NombreTemporadas.Count > 0)
-            {
-                foreach (NombreTemporada nt in contrato.NombreTemporadas)
-                {
-                    Temporada t = new Temporada();
-                    t.Nombre = nt.Nombre;
-                    t.ContratoId = contrato.ContratoId;
-                    _context.Temporadas.Add(t);
-                }
-            }
 
-            await _context.SaveChangesAsync();*/
-            return CreatedAtAction("GetContrato", new { id = contrato.ContratoId }, contrato);
+            return CreatedAtAction("GetActividad", new { id = actividad.ProductoId }, actividad);
         }
 
-        // DELETE: api/Contratoes/5
+        // DELETE: api/Actividads/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContrato([FromRoute] int id)
+        public async Task<IActionResult> DeleteActividad([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var contrato = await _context.Contratos.FindAsync(id);
-            if (contrato == null)
+            var actividad = await _context.Actividadess.FindAsync(id);
+            if (actividad == null)
             {
                 return NotFound();
             }
 
-            _context.Contratos.Remove(contrato);
+            _context.Actividadess.Remove(actividad);
             await _context.SaveChangesAsync();
 
-            return Ok(contrato);
+            return Ok(actividad);
         }
 
-        private bool ContratoExists(int id)
+        private bool ActividadExists(int id)
         {
-            return _context.Contratos.Any(e => e.ContratoId == id);
+            return _context.Actividadess.Any(e => e.ProductoId == id);
         }
     }
 }

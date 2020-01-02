@@ -10,7 +10,7 @@ namespace GoTravelTour.Models
         public int PrecioComodidadesId { get; set; }
         public int ComodidadesId { get; set; }
         public int ProductoId { get; set; }
-        public Comodidades Comodidades { get; set; }
+        public Comodidades Comodidad { get; set; }
         public Producto Producto { get; set; }
     }
 }
