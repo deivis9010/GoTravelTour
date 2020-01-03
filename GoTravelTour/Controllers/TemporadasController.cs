@@ -30,6 +30,8 @@ namespace GoTravelTour.Controllers
             {
                 return _context.Temporadas
                     .Include(a => a.ListaFechasTemporada)
+                    .Include(a => a.Contrato)
+                    .OrderBy(a => a.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
@@ -177,6 +179,103 @@ namespace GoTravelTour.Controllers
         private bool TemporadaExists(int id)
         {
             return _context.Temporadas.Any(e => e.TemporadaId == id);
+        }
+
+
+        // GET: api/Temporadas/Filtros
+        [HttpGet]
+        [Route("Filtros")]
+        public IEnumerable<Temporada> GetTemporadasByFiltros(int idContrato = -1, int idDistribuidor = -1, int idTipoProducto = -1)
+        {
+            IEnumerable<Temporada> lista;
+            
+            if (idContrato == -1 &&  idDistribuidor == -1 && idTipoProducto == -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            } else
+              if (idContrato != -1 && idDistribuidor != -1 && idTipoProducto != -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.ContratoId == idContrato && a.Contrato.TipoProductoId == idTipoProducto && a.Contrato.DistribuidorId == idDistribuidor)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+            else
+              if (idContrato != -1 && idDistribuidor != -1 && idTipoProducto == -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.ContratoId == idContrato && a.Contrato.DistribuidorId == idDistribuidor)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1 && idTipoProducto != -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.ContratoId == idContrato && a.Contrato.TipoProductoId == idTipoProducto)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1 && idTipoProducto != -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.Contrato.DistribuidorId == idDistribuidor && a.Contrato.TipoProductoId == idTipoProducto)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1 && idTipoProducto == -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.ContratoId == idContrato)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1 && idTipoProducto == -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.Contrato.DistribuidorId == idDistribuidor)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+            else
+              if (idContrato == -1 && idDistribuidor == -1 && idTipoProducto != -1)
+            {
+                return _context.Temporadas
+                .Include(a => a.ListaFechasTemporada)
+                .Include(a => a.Contrato)
+                .Where(a => a.Contrato.TipoProductoId == idTipoProducto)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+            }
+
+            return _context.Temporadas
+               .Include(a => a.ListaFechasTemporada)
+               .Include(a => a.Contrato)               
+               .OrderBy(a => a.Nombre)
+               .ToList();
+
+
+
+
         }
     }
 }

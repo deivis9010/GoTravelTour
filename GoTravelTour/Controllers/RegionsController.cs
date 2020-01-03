@@ -29,7 +29,9 @@ namespace GoTravelTour.Controllers
             IEnumerable<Region> lista;
             if (col == "-1")
             {
-                return _context.Regiones.Include(r => r.PuntosDeInteres).ToList();
+                return _context.Regiones.Include(r => r.PuntosDeInteres)
+                    .OrderBy(a=>a.Nombre)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

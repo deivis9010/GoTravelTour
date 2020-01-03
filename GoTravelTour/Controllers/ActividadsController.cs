@@ -34,7 +34,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.Comodidades)
-                    
+                    .OrderBy(a=>a.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
@@ -126,6 +126,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre && actividad.ProductoId != id))
+            {
+                return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
 
             _context.Entry(actividad).State = EntityState.Modified;
 
@@ -156,7 +160,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre))
+            {
+                return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.Actividadess.Add(actividad);
             await _context.SaveChangesAsync();
 

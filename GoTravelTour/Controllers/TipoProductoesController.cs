@@ -29,7 +29,8 @@ namespace GoTravelTour.Controllers
             IEnumerable<TipoProducto> lista;
             if (col == "-1")
             {
-                return _context.TipoProductos.ToList();
+                return _context.TipoProductos
+                    .OrderBy(a => a.Nombre).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

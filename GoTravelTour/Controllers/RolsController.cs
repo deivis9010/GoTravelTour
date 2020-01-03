@@ -32,7 +32,7 @@ namespace GoTravelTour.Controllers
             IEnumerable<Rol> lista;
             if (col == "-1")
             {
-                return _context.Roles.ToList();
+                return _context.Roles.OrderBy(a => a.NombreRol).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

@@ -31,6 +31,7 @@ namespace GoTravelTour.Controllers
                 return _context.ProductoDistribuidores
                     .Include( pd => pd.Distribuidor)
                     .Include (dp => dp.Producto)
+                    .OrderBy(a => a.Producto.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))

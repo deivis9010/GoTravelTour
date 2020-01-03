@@ -32,6 +32,7 @@ namespace GoTravelTour.Controllers
                 return _context.Rutas
                     .Include(a => a.PuntoInteresOrigen).ThenInclude(ro => ro.Region)
                     .Include(aa => aa.PuntoInteresDestino).ThenInclude(rd => rd.Region)
+                    .OrderBy(a=>a.PuntoInteresOrigen.Region.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))

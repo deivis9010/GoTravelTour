@@ -29,7 +29,10 @@ namespace GoTravelTour.Controllers
             IEnumerable<PuntoInteres> lista;
             if (col == "-1")
             {
-                return _context.PuntosInteres.Include(r => r.Region).ToList();
+                return _context.PuntosInteres
+                    .Include(r => r.Region)
+                    .OrderBy(a=>a.Nombre)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -84,8 +87,8 @@ namespace GoTravelTour.Controllers
             return _context.PuntosInteres.Count();
         }
 
-// GET: api/PuntoInteres/5
-[HttpGet("{id}")]
+        // GET: api/PuntoInteres/5
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetPuntoInteres([FromRoute] int id)
         {
             if (!ModelState.IsValid)

@@ -28,7 +28,8 @@ namespace GoTravelTour.Controllers
             IEnumerable<CategoriaHoteles> lista;
             if (col == "-1")
             {
-                return _context.CategoriaHoteles                    
+                return _context.CategoriaHoteles
+                    .OrderBy(a=>a.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
@@ -62,9 +63,6 @@ namespace GoTravelTour.Controllers
                             lista = lista.OrderBy(l => l.Nombre);
 
                         }
-
-
-
 
                     }
 
@@ -113,7 +111,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            if (_context.CategoriaHoteles.Any(c => c.Nombre == categoriaHoteles.Nombre && categoriaHoteles.CategoriaHotelesId != id))
+            {
+                return CreatedAtAction("GetCategoriaHoteles", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.Entry(categoriaHoteles).State = EntityState.Modified;
 
             try
@@ -143,7 +144,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            if (_context.CategoriaHoteles.Any(c => c.Nombre == categoriaHoteles.Nombre ))
+            {
+                return CreatedAtAction("GetCategoriaHoteles", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.CategoriaHoteles.Add(categoriaHoteles);
             await _context.SaveChangesAsync();
 

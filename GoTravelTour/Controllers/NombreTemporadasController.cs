@@ -29,7 +29,7 @@ namespace GoTravelTour.Controllers
             IEnumerable<NombreTemporada> lista;
             if (col == "-1")
             {
-                return _context.NombreTemporadas.ToList();
+                return _context.NombreTemporadas.OrderBy(a=>a.Nombre).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -60,10 +60,7 @@ namespace GoTravelTour.Controllers
                             lista = lista.OrderBy(l => l.Nombre);
 
                         }
-
-
-
-
+                        
                     }
 
                     break;

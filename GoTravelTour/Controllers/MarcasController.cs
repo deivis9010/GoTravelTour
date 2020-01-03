@@ -29,7 +29,7 @@ namespace GoTravelTour.Controllers
             IEnumerable<Marca> lista;
             if (col == "-1")
             {
-                return _context.Marcas.ToList();
+                return _context.Marcas.OrderBy(a=>a.Nombre).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

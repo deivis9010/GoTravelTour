@@ -32,6 +32,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Temporada)
                     .Include(a => a.Contrato)
                     .Include(a => a.Actividad)
+                    .OrderBy(a => a.Actividad.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))

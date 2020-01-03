@@ -28,11 +28,24 @@ namespace GoTravelTour.Controllers
             IEnumerable<Contrato> lista;
             if (col == "-1")
             {
-                return _context.Contratos
+                lista= _context.Contratos
                     .Include(a => a.Distribuidor)
                     .Include(a => a.Temporadas)
                     .Include(a => a.TipoProducto)                    
                     .ToList();
+                if(lista.ToList().Count > 0 )
+                    foreach (var item in lista)
+                    {
+                        List<NombreTemporada> listNtemp = new List<NombreTemporada>();
+                        foreach (var itemT in item.Temporadas)
+                        {
+                            NombreTemporada nt = _context.NombreTemporadas.First(a => a.Nombre == itemT.Nombre);
+                            listNtemp.Add(nt);
+                        }
+                        item.NombreTemporadas = listNtemp;
+                    }
+                
+                return lista.OrderBy(a => a.Nombre);
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -122,6 +135,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            if (_context.Contratos.Any(c => c.Nombre == contrato.Nombre && contrato.ContratoId != id))
+            {
+                return CreatedAtAction("GetContrato", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
 
             _context.Entry(contrato).State = EntityState.Modified;
 
@@ -151,6 +168,10 @@ namespace GoTravelTour.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            if (_context.Contratos.Any(c => c.Nombre == contrato.Nombre))
+            {
+                return CreatedAtAction("GetContratos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
             if (contrato.NombreTemporadas.Count > 0)
             {

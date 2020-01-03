@@ -26,18 +26,18 @@ namespace GoTravelTour.Controllers
         [HttpGet]
         public IEnumerable<Producto> GetProductos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<Vehiculo> lista;
+            IEnumerable<Producto> lista;
             if (col == "-1")
             {
-                return _context.Vehiculos.ToList();
+                return _context.Productos.OrderBy(a=>a.Nombre).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Vehiculos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.Productos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Vehiculos.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Productos.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)

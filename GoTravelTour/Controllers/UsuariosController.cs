@@ -32,7 +32,7 @@ namespace GoTravelTour.Controllers
             IEnumerable<Usuario> lista;
             if (col == "-1")
             {
-                return _context.Usuarios.Include(c => c.cliente).Include(r => r.rol).ToList();
+                return _context.Usuarios.Include(c => c.cliente).Include(r => r.rol).OrderBy(a => a.Username).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

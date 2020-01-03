@@ -30,7 +30,9 @@ namespace GoTravelTour.Controllers
             IEnumerable<Cliente> lista;
             if (col == "-1")
             {
-                return _context.Clientes.ToList();
+                return _context.Clientes
+                    .OrderBy(a => a.Nombre)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

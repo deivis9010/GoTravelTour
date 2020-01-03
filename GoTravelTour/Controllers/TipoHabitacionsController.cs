@@ -29,7 +29,9 @@ namespace GoTravelTour.Controllers
             IEnumerable<TipoHabitacion> lista;
             if (col == "-1")
             {
-                return _context.TipoHabitaciones.ToList();
+                return _context.TipoHabitaciones
+                    .OrderBy(a=>a.Nombre)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {

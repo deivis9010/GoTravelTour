@@ -29,7 +29,9 @@ namespace GoTravelTour.Controllers
             IEnumerable<Distribuidor> lista;
             if (col == "-1")
             {
-                return _context.Distribuidores.Include(r => r.ListaProductosDistribuidos).ToList();
+                return _context.Distribuidores.Include(r => r.ListaProductosDistribuidos)
+                    .OrderBy(a=>a.Nombre)
+                    .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -62,8 +64,6 @@ namespace GoTravelTour.Controllers
                             lista = lista.OrderBy(l => l.Nombre);
 
                         }
-
-
 
 
                     }

@@ -35,7 +35,7 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)
                     .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
-
+                    .OrderBy(a => a.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
