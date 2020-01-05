@@ -31,6 +31,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                     .Include(a => a.ListaFechasTemporada)
                     .Include(a => a.Contrato)
+                    .Include(a => a.Contrato.Distribuidor)
+                    .Include(a => a.Contrato.TipoProducto)
                     .OrderBy(a => a.Nombre)
                     .ToList();
             }
@@ -38,12 +40,18 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Temporadas
                     .Include(a => a.ListaFechasTemporada)
+                    .Include(a => a.Contrato)
+                    .Include(a => a.Contrato.Distribuidor)
+                    .Include(a => a.Contrato.TipoProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
                 lista = _context.Temporadas
                     .Include(a => a.ListaFechasTemporada)
+                    .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -194,6 +202,9 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
+
                 .OrderBy(a => a.Nombre)
                 .ToList();
             } else
@@ -202,6 +213,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.ContratoId == idContrato && a.Contrato.TipoProductoId == idTipoProducto && a.Contrato.DistribuidorId == idDistribuidor)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -212,6 +225,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.ContratoId == idContrato && a.Contrato.DistribuidorId == idDistribuidor)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -222,6 +237,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.ContratoId == idContrato && a.Contrato.TipoProductoId == idTipoProducto)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -232,6 +249,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.Contrato.DistribuidorId == idDistribuidor && a.Contrato.TipoProductoId == idTipoProducto)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -242,6 +261,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.ContratoId == idContrato)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -252,6 +273,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.Contrato.DistribuidorId == idDistribuidor)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -262,6 +285,8 @@ namespace GoTravelTour.Controllers
                 return _context.Temporadas
                 .Include(a => a.ListaFechasTemporada)
                 .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                 .Where(a => a.Contrato.TipoProductoId == idTipoProducto)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -269,7 +294,9 @@ namespace GoTravelTour.Controllers
 
             return _context.Temporadas
                .Include(a => a.ListaFechasTemporada)
-               .Include(a => a.Contrato)               
+               .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.TipoProducto)
                .OrderBy(a => a.Nombre)
                .ToList();
 
