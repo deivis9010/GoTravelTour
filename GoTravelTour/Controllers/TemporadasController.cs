@@ -28,13 +28,23 @@ namespace GoTravelTour.Controllers
             IEnumerable<Temporada> lista;
             if (col == "-1")
             {
-                return _context.Temporadas
+                lista = _context.Temporadas
                     .Include(a => a.ListaFechasTemporada)
                     .Include(a => a.Contrato)
                     .Include(a => a.Contrato.Distribuidor)
                     .Include(a => a.Contrato.TipoProducto)
                     .OrderBy(a => a.Nombre)
                     .ToList();
+                if (lista.Count() > 0 )
+                    foreach ( var temp in lista)
+                {
+                    if("Activities".Equals(temp.Contrato.TipoProducto.Nombre) )
+                    temp.RestriccionesActividads = _context.RestriccionesActividades.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
+                    if ("Vehicles".Equals(temp.Contrato.TipoProducto.Nombre))
+                        temp.RestriccionesRentasAutos = _context.RestriccionesRentasAutos.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
+
+                }
+                return lista;
             }
             if (!string.IsNullOrEmpty(filter))
             {
