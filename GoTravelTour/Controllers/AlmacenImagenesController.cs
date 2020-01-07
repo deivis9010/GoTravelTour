@@ -50,7 +50,7 @@ namespace GoTravelTour.Controllers
         // PUT: api/AlmacenImagenes/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutAlmacenImagenes([FromRoute] int id, [FromBody] List<AlmacenImagenes> almacenImagenes)
+        public async Task<IActionResult> PutAlmacenImagenes([FromBody] List<AlmacenImagenes> almacenImagenes)
         {
             if (!ModelState.IsValid)
             {
@@ -76,11 +76,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AlmacenImagenesExists(id))
-                {
-                    return NotFound();
-                }
-                else
+                
                 {
                     throw;
                 }
