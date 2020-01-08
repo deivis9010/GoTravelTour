@@ -16,9 +16,8 @@ namespace GoTravelTour.Models
         public Contrato Contrato { get; set; }
         public List<RangoFechas> ListaFechasTemporada { get; set; }
         [NotMapped]
-        public List<RestriccionesActividad> RestriccionesActividads { get; set; }
-        [NotMapped]
-        public List<RestriccionesRentasAutos> RestriccionesRentasAutos { get; set; }
+        public List<Restricciones> ListaRestricciones { get; set; }
+       
 
 
 

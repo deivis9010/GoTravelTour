@@ -46,8 +46,8 @@ namespace GoTravelTour.Models
         public DbSet<ProductoDistribuidor> ProductoDistribuidores { get; set; }
         public DbSet<RangoFechas> RangoFechas { get; set; }
         public DbSet<Reglas> Reglas { get; set; }
-        public DbSet<RestriccionesActividad> RestriccionesActividades { get; set; }
-        public DbSet<RestriccionesRentasAutos> RestriccionesRentasAutos { get; set; }
+        public DbSet<Restricciones> Restricciones { get; set; }
+        public DbSet<RestriccionesPrecio> RestriccionesPrecios { get; set; }
         public DbSet<Temporada> Temporadas { get; set; }
         public DbSet<CategoriaComodidad> CategoriaComodidades { get; set; }
         public DbSet<Alojamiento> Alojamientos { get; set; }
@@ -58,6 +58,7 @@ namespace GoTravelTour.Models
         public DbSet<Marca> Marcas { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<GoTravelTour.Models.CategoriaHoteles> CategoriaHoteles { get; set; }
+        public DbSet<GoTravelTour.Models.Servicio> Servicio { get; set; }
        
      
 

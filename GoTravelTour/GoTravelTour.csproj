@@ -66,6 +66,12 @@
     <Compile Remove="Migrations\20191227230223_austes.Designer.cs" />
     <Compile Remove="Migrations\20200102154426_refreshh.cs" />
     <Compile Remove="Migrations\20200102154426_refreshh.Designer.cs" />
+    <Compile Remove="Migrations\20200108051127_modifcaciones a retriccionescreaando features.cs" />
+    <Compile Remove="Migrations\20200108051127_modifcaciones a retriccionescreaando features.Designer.cs" />
+    <Compile Remove="Migrations\20200108051627_modifcaciones a retriccionescreaando features.cs" />
+    <Compile Remove="Migrations\20200108051627_modifcaciones a retriccionescreaando features.Designer.cs" />
+    <Compile Remove="Migrations\20200108052735_modifcaciones actividad.cs" />
+    <Compile Remove="Migrations\20200108052735_modifcaciones actividad.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

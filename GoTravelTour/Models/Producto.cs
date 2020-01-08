@@ -10,7 +10,13 @@ namespace GoTravelTour.Models
         public int ProductoId { get; set; }
         public string Nombre { get; set; }
         public string SKU { get; set; }
-        public string DescripcionCorta { get; set; }
+        public string DescripcionCorta { get; set; }        
+        public string Descripcion { get; set; }
+        public string Email { get; set; }
+        public string Telefono { get; set; }
+        public string TelefonoAsistencia { get; set; }
+        public string Schedule { get; set; }
+        public string Location { get; set; }
         public bool IsActivo { get; set; }
         public bool PermiteHacerCopia { get; set; }
         public int ProveedorId { get; set; }

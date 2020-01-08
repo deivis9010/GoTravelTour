@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200108052105_modifcaciones a retriccionescreaando features")]
+    partial class modifcacionesaretriccionescreaandofeatures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -570,18 +572,12 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Descripcion");
-
                     b.Property<string>("DescripcionCorta");
 
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<string>("Email");
-
                     b.Property<bool>("IsActivo");
-
-                    b.Property<string>("Location");
 
                     b.Property<string>("Nombre");
 
@@ -592,12 +588,6 @@ namespace GoTravelTour.Migrations
                     b.Property<int>("ProveedorId");
 
                     b.Property<string>("SKU");
-
-                    b.Property<string>("Schedule");
-
-                    b.Property<string>("Telefono");
-
-                    b.Property<string>("TelefonoAsistencia");
 
                     b.Property<int>("TipoProductoId");
 
@@ -939,6 +929,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("Duracion");
 
+                    b.Property<string>("Email");
+
                     b.Property<bool>("HasTransporte");
 
                     b.Property<string>("Latitud");
@@ -956,6 +948,8 @@ namespace GoTravelTour.Migrations
                     b.Property<bool>("PermiteNino");
 
                     b.Property<int?>("RegionId");
+
+                    b.Property<string>("Telefono");
 
                     b.HasIndex("RegionId");
 

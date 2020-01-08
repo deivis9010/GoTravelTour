@@ -88,11 +88,15 @@ namespace GoTravelTour.Controllers
         // POST: api/AlmacenImagenes
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostAlmacenImagenes([FromBody] List<AlmacenImagenes> almacenImagenes)
+        public async Task<IActionResult> PostAlmacenImagenes(int  id, [FromBody] List<AlmacenImagenes> almacenImagenes)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            if (id != 0)
+            {
+                _context.AlmacenImagenes.RemoveRange( _context.AlmacenImagenes.Where(x =>x.ProductoId == id));
             }
             _context.AlmacenImagenes.AddRange(almacenImagenes);
             

@@ -38,11 +38,9 @@ namespace GoTravelTour.Controllers
                 if (lista.Count() > 0 )
                     foreach ( var temp in lista)
                 {
-                    if("Activities".Equals(temp.Contrato.TipoProducto.Nombre) )
-                    temp.RestriccionesActividads = _context.RestriccionesActividades.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-                    if ("Vehicles".Equals(temp.Contrato.TipoProducto.Nombre))
-                        temp.RestriccionesRentasAutos = _context.RestriccionesRentasAutos.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                    if("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
+                    temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
+                   
                 }
                 return lista;
             }
