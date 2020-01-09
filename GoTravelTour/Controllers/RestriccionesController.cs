@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -75,16 +76,17 @@ namespace GoTravelTour.Controllers
 
             return lista;
         }
-        // GET: api/RestriccionesActividads/Count
+        // GET: api/Restricciones/Count
         [Route("Count")]
         [HttpGet]
-        public int GetRestriccionesActividadesCount()
+        public int GetRestriccionesCount()
         {
             return _context.Restricciones.Count();
         }
 
         // GET: api/Restricciones/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetRestricciones([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -104,6 +106,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Restricciones/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutRestricciones([FromRoute] int id, [FromBody] Restricciones restricciones)
         {
             if (!ModelState.IsValid)
@@ -139,13 +142,14 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Restricciones
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostRestricciones([FromBody] Restricciones restricciones)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            restricciones.Temporada = _context.Temporadas.First(x => x.TemporadaId == restricciones.Temporada.TemporadaId);
             _context.Restricciones.Add(restricciones);
             await _context.SaveChangesAsync();
 
@@ -154,6 +158,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Restricciones/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteRestricciones([FromRoute] int id)
         {
             if (!ModelState.IsValid)

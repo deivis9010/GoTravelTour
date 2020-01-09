@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -48,6 +49,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/RestriccionesPrecios/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutRestriccionesPrecio([FromRoute] int id, [FromBody] RestriccionesPrecio restriccionesPrecio)
         {
             if (!ModelState.IsValid)
@@ -83,6 +85,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/RestriccionesPrecios
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostRestriccionesPrecio([FromBody] RestriccionesPrecio restriccionesPrecio)
         {
             if (!ModelState.IsValid)
@@ -98,6 +101,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/RestriccionesPrecios/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteRestriccionesPrecio([FromRoute] int id)
         {
             if (!ModelState.IsValid)

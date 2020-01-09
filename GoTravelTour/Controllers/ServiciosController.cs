@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -110,6 +111,7 @@ namespace GoTravelTour.Models
 
         // PUT: api/Servicios/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutServicio([FromRoute] int id, [FromBody] Servicio servicio)
         {
             if (!ModelState.IsValid)
@@ -149,6 +151,7 @@ namespace GoTravelTour.Models
 
         // POST: api/Servicios
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostServicio([FromBody] Servicio servicio)
         {
             if (!ModelState.IsValid)
@@ -168,6 +171,7 @@ namespace GoTravelTour.Models
 
         // DELETE: api/Servicios/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteServicio([FromRoute] int id)
         {
             if (!ModelState.IsValid)
