@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200110212424_addTipoServicio")]
+    partial class addTipoServicio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,11 +148,15 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ActividadProductoId");
+
                     b.Property<int>("CategoriaComodidadId");
 
                     b.Property<string>("Nombre");
 
                     b.HasKey("ComodidadesId");
+
+                    b.HasIndex("ActividadProductoId");
 
                     b.HasIndex("CategoriaComodidadId");
 
@@ -806,8 +812,6 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActividadProductoId");
-
                     b.Property<string>("Categoria");
 
                     b.Property<string>("Nombre");
@@ -817,8 +821,6 @@ namespace GoTravelTour.Migrations
                     b.Property<int>("ProductoId");
 
                     b.HasKey("ServicioId");
-
-                    b.HasIndex("ActividadProductoId");
 
                     b.HasIndex("ProductoId");
 
@@ -1071,6 +1073,10 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.Comodidades", b =>
                 {
+                    b.HasOne("GoTravelTour.Models.Actividad")
+                        .WithMany("Comodidades")
+                        .HasForeignKey("ActividadProductoId");
+
                     b.HasOne("GoTravelTour.Models.CategoriaComodidad", "CategoriaComodidad")
                         .WithMany()
                         .HasForeignKey("CategoriaComodidadId")
@@ -1341,10 +1347,6 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.Servicio", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Actividad")
-                        .WithMany("ServiciosAdicionados")
-                        .HasForeignKey("ActividadProductoId");
-
                     b.HasOne("GoTravelTour.Models.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")

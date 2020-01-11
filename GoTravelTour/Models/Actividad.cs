@@ -20,6 +20,6 @@ namespace GoTravelTour.Models
         public bool PermiteNino { get; set; }
         public Region Region { get; set; }
 
-        public List<Comodidades> Comodidades { get; set; }
+        public List<Servicio> ServiciosAdicionados { get; set; } //features
     }
 }

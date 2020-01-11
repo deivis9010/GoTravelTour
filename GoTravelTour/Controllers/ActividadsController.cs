@@ -33,7 +33,8 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
-                    .Include(a => a.Comodidades)
+                    .Include(a => a.ServiciosAdicionados)
+                    .Include(a => a.Region)
                     .OrderBy(a=>a.Nombre)
                     .ToList();
             }
@@ -44,7 +45,9 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
-                    .Include(a => a.Comodidades)
+                    .Include(a => a.ServiciosAdicionados)
+                    .Include(a => a.Region)
+                    .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
@@ -54,7 +57,9 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
-                    .Include(a => a.Comodidades)
+                    .Include(a => a.ServiciosAdicionados)
+                    .Include(a => a.Region)
+                    .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -164,6 +169,17 @@ namespace GoTravelTour.Controllers
             {
                 return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
+            actividad.Region = _context.Regiones.First(f => f.RegionId == actividad.Region.RegionId);
+            if(actividad.ServiciosAdicionados != null && actividad.ServiciosAdicionados.Count() > 0)
+            {
+                int i = 0;
+                while(i < actividad.ServiciosAdicionados.Count())
+                {
+                    actividad.ServiciosAdicionados[i] = _context.Servicio.First(ser => ser.ServicioId == actividad.ServiciosAdicionados[i].ServicioId);
+                    i++;
+                }
+
+            }
             _context.Actividadess.Add(actividad);
             await _context.SaveChangesAsync();
 
@@ -195,5 +211,144 @@ namespace GoTravelTour.Controllers
         {
             return _context.Actividadess.Any(e => e.ProductoId == id);
         }
+
+        // GET: api/Actividads/Filtros
+        [HttpGet]
+        [Route("Filtros")]
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1)
+        {
+            IEnumerable<Contrato> lista = new List<Contrato>();
+
+            if (idContrato == -1 && idDistribuidor == -1)
+            {
+
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor != -1)
+            {
+
+                lista = _context.Contratos
+               .Include(a => a.Distribuidor)
+               .Include(a => a.Temporadas)
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor)
+               .OrderBy(a => a.Nombre)
+               .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.ContratoId == idContrato)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.DistribuidorId == idDistribuidor)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+
+
+            return lista;
+
+        }
+
     }
 }
