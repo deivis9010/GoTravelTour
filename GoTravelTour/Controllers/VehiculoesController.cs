@@ -34,7 +34,7 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
+                    .Include(v => v.ListaDistribuidoresProducto)
                     .OrderBy(a => a.Nombre)
                     .ToList();
             }
@@ -45,7 +45,7 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v => v.Distribuidor)
+                    .Include(v => v.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
@@ -55,8 +55,8 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto).ThenInclude(v=>v.Distribuidor)
-                    //.Include(v => )
+                    .Include(v => v.ListaDistribuidoresProducto)
+                    
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -151,7 +151,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetVehiculo", new { id = vehiculo.ProductoId }, vehiculo);
         }
 
         // POST: api/Vehiculoes

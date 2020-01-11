@@ -136,7 +136,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetTraslado", new { id = traslado.ProductoId }, traslado); ;
         }
 
         // POST: api/Trasladoes

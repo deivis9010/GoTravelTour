@@ -29,18 +29,18 @@ namespace GoTravelTour.Controllers
             IEnumerable<Distribuidor> lista;
             if (col == "-1")
             {
-                return _context.Distribuidores.Include(r => r.ListaProductosDistribuidos)
+                return _context.Distribuidores
                     .OrderBy(a=>a.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Distribuidores.Include(r => r.ListaProductosDistribuidos)
+                lista = _context.Distribuidores
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Distribuidores.Include(r => r.ListaProductosDistribuidos)
+                lista = _context.Distribuidores
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 

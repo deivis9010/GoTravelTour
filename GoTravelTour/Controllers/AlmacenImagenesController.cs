@@ -134,7 +134,7 @@ namespace GoTravelTour.Controllers
         }
 
         // GET: api/AlmacenImagenes/Productos/5
-        [Route ("Productos")]
+        [Route ("Productos/{id}")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAlmacenImagenesByProducto([FromRoute] int id)
         {

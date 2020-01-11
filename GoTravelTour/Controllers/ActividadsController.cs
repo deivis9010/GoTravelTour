@@ -154,7 +154,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetActividad", new { id = actividad.ProductoId }, actividad);
         }
 
         // POST: api/Actividads
