@@ -30,8 +30,8 @@ namespace GoTravelTour.Controllers
             {
                 return _context.Actividadess
                     .Include(a => a.ListaComodidades)
-                    .Include(a => a.ListaDistribuidoresProducto)
-                    .Include(a => a.Proveedor)
+                    
+                    //.Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.ServiciosAdicionados)
                     .Include(a => a.Region)
@@ -42,8 +42,8 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Actividadess
                     .Include(a => a.ListaComodidades)
-                    .Include(a => a.ListaDistribuidoresProducto)
-                    .Include(a => a.Proveedor)
+                    
+                    //.Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.ServiciosAdicionados)
                     .Include(a => a.Region)
@@ -54,8 +54,8 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Actividadess
                     .Include(a => a.ListaComodidades)
-                    .Include(a => a.ListaDistribuidoresProducto)
-                    .Include(a => a.Proveedor)
+                    
+                    //.Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.ServiciosAdicionados)
                     .Include(a => a.Region)
