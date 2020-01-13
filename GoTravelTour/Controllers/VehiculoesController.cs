@@ -29,13 +29,22 @@ namespace GoTravelTour.Controllers
             IEnumerable<Vehiculo> lista;
             if (col == "-1")
             {
-                return _context.Vehiculos
+                lista= _context.Vehiculos
                     .Include(v => v.Marca)
                     .Include(v => v.Modelo)
+                    .Include(v => v.ListaDistribuidoresProducto)
                     //.Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)                    
                     .OrderBy(a => a.Nombre)
                     .ToList();
+                int i = 0;
+                while(i < lista.Count())
+                {
+                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
+                    i++;
+                }
+                   
+                return lista;
             }
             if (!string.IsNullOrEmpty(filter))
             {
@@ -45,6 +54,12 @@ namespace GoTravelTour.Controllers
                     //.Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)                    
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                int i = 0;
+                while (i < lista.Count())
+                {
+                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
+                    i++;
+                }
             }
             else
             {
@@ -55,6 +70,12 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.TipoProducto)
                                      
                     .ToPagedList(pageIndex, pageSize).ToList();
+                int i = 0;
+                while (i < lista.Count())
+                {
+                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
+                    i++;
+                }
             }
 
             switch (sortDirection)
@@ -225,6 +246,9 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
                                 i++;
                             }
 
@@ -256,6 +280,9 @@ namespace GoTravelTour.Controllers
                             {
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 i++;
                             }
@@ -289,6 +316,9 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
                                 i++;
                             }
 
@@ -319,6 +349,9 @@ namespace GoTravelTour.Controllers
                             {
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 i++;
                             }

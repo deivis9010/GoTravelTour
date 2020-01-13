@@ -195,5 +195,22 @@ namespace GoTravelTour.Models
         {
             return _context.Servicio.Any(e => e.ServicioId == id);
         }
+        // GET: api/Servicios/Producto/5
+        [Route("Producto/{id}")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetServicioProducto([FromRoute] int id)
+        {
+            List<Servicio> lista = new List<Servicio>();
+            lista = _context.Servicio.Where(x => x.ProductoId == id).ToList();
+            
+
+            if (lista == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista);
+        }
+
     }
 }
