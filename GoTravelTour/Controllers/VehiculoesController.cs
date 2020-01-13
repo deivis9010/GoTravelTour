@@ -32,17 +32,12 @@ namespace GoTravelTour.Controllers
                 lista= _context.Vehiculos
                     .Include(v => v.Marca)
                     .Include(v => v.Modelo)
+                    .Include(v => v.Proveedor)
+                    .Include(v => v.TipoProducto)
                     .Include(v => v.ListaDistribuidoresProducto)
-                    //.Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)                    
                     .OrderBy(a => a.Nombre)
                     .ToList();
-                int i = 0;
-                while(i < lista.Count())
-                {
-                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
-                    i++;
-                }
+               
                    
                 return lista;
             }
@@ -51,31 +46,22 @@ namespace GoTravelTour.Controllers
                 lista = _context.Vehiculos
                     .Include(v => v.Marca)
                     .Include(v => v.Modelo)
-                    //.Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)                    
+                    .Include(v => v.Proveedor)
+                    .Include(v => v.TipoProducto)
+                    .Include(v => v.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
-                int i = 0;
-                while (i < lista.Count())
-                {
-                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
-                    i++;
-                }
+               
             }
             else
             {
                 lista = _context.Vehiculos
                     .Include(v => v.Marca)
                     .Include(v => v.Modelo)
-                    //.Include(v => v.Proveedor)
+                    .Include(v => v.Proveedor)
                     .Include(v => v.TipoProducto)
-                                     
+                    .Include(v => v.ListaDistribuidoresProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();
-                int i = 0;
-                while (i < lista.Count())
-                {
-                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
-                    i++;
-                }
+              
             }
 
             switch (sortDirection)

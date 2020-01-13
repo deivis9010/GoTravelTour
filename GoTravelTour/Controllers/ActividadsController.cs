@@ -30,56 +30,40 @@ namespace GoTravelTour.Controllers
             {
                 lista= _context.Actividadess
                     .Include(a => a.ListaComodidades)
-                    
-                    //.Include(a => a.Proveedor)
+                    .Include(a => a.ListaDistribuidoresProducto)
+                    .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.ServiciosAdicionados)
-                    //.Include(a => a.Region)
+                    .Include(a => a.Region)
                     .OrderBy(a=>a.Nombre)
                     .ToList();
-                int i = 0;
-                while (i < lista.Count())
-                {
-                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
-                    i++;
-                }
+                
                 return lista;
             }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Actividadess
                     .Include(a => a.ListaComodidades)
-                    
-                    //.Include(a => a.Proveedor)
+                    .Include(v => v.ListaDistribuidoresProducto)
+                    .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.ServiciosAdicionados)
-                    //.Include(a => a.Region)
+                    .Include(a => a.Region)
                     .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
-                int i = 0;
-                while (i < lista.Count())
-                {
-                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
-                    i++;
-                }
+              
             }
             else
             {
                 lista = _context.Actividadess
                     .Include(a => a.ListaComodidades)
-                    
-                    //.Include(a => a.Proveedor)
+                    .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
                     .Include(a => a.ServiciosAdicionados)
-                    //.Include(a => a.Region)
+                    .Include(a => a.Region)
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
-                int i = 0;
-                while (i < lista.Count())
-                {
-                    lista.ToList()[i].Proveedor = _context.Proveedores.Single(x => x.ProveedorId == lista.ToList()[i].ProveedorId);
-                    i++;
-                }
+               
             }
 
             switch (sortDirection)
