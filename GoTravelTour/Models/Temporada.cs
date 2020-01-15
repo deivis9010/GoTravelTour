@@ -17,7 +17,10 @@ namespace GoTravelTour.Models
         public List<RangoFechas> ListaFechasTemporada { get; set; }
         [NotMapped]
         public List<Restricciones> ListaRestricciones { get; set; }
-       
+        [NotMapped]
+        public List<PrecioRentaAutos> ListaPrecioAutos { get; set; }
+        [NotMapped]
+        public List<PrecioActividad> ListaPrecioActividad { get; set; }
 
 
 

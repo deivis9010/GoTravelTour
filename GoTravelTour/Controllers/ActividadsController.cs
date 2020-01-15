@@ -244,6 +244,9 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividades
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
                                 int j = 0;
                                 while (j < contrato.Temporadas[i].ListaRestricciones.Count())
                                 {
@@ -285,6 +288,9 @@ namespace GoTravelTour.Controllers
                             while (i < contrato.Temporadas.Count())
                             {
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividades
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -330,6 +336,9 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividades
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
                                 int j = 0;
                                 while (j < contrato.Temporadas[i].ListaRestricciones.Count())
                                 {
@@ -370,6 +379,9 @@ namespace GoTravelTour.Controllers
                             while (i < contrato.Temporadas.Count())
                             {
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividades
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
