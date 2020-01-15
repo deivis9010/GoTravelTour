@@ -244,6 +244,14 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
@@ -279,6 +287,14 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
@@ -314,6 +330,14 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
@@ -348,6 +372,14 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;

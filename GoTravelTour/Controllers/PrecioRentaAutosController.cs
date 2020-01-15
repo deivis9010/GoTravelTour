@@ -122,7 +122,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            precioRentaAutos.Contrato = _context.Contratos.First(x => x.ContratoId == precioRentaAutos.Contrato.ContratoId);
+            precioRentaAutos.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioRentaAutos.Temporada.TemporadaId);
             _context.Entry(precioRentaAutos).State = EntityState.Modified;
 
             try
@@ -152,7 +153,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            precioRentaAutos.Contrato = _context.Contratos.First(x => x.ContratoId == precioRentaAutos.Contrato.ContratoId);
+            precioRentaAutos.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioRentaAutos.Temporada.TemporadaId);
             _context.PrecioRentaAutos.Add(precioRentaAutos);
             await _context.SaveChangesAsync();
 

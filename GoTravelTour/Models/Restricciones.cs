@@ -14,6 +14,8 @@ namespace GoTravelTour.Models
         public bool IsActivo { get; set; }
         //public int TemporadaId { get; set; }             
         public Temporada Temporada { get; set; }
+        [NotMapped]
+        public List<RestriccionesPrecio> PrecioRestriccionesProdutos;
 
     }
 }

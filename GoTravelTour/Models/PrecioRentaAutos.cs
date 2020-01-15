@@ -10,8 +10,8 @@ namespace GoTravelTour.Models
     {
         public int PrecioRentaAutosId { get; set; }
         public int DiasExtra { get; set; }
-        public double Seguro { get; set; }
-        public double Precio { get; set; }
+        public decimal Seguro { get; set; }
+        public decimal Deposito { get; set; }
         //public bool IsActivo { get; set; }
        //public int ContratoId { get; set; }
         //public int TemporadaId { get; set; }
