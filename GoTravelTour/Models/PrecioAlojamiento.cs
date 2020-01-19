@@ -9,14 +9,14 @@ namespace GoTravelTour.Models
     public class PrecioAlojamiento
     {
         public int PrecioAlojamientoId { get; set; }
-        public double Precio { get; set; }
+        public decimal Precio { get; set; }
         //public int ContratoId { get; set; }
         //public int TemporadaId { get; set; }
         public int ProductoId { get; set; }
         //public int HabitacionId { get; set; }
         [ForeignKey("ProductoId")]
         public Producto Hotel { get; set; }
-        public Contrato Contrato { get; set; }
+       // public Contrato Contrato { get; set; }
         public Temporada Temporada { get; set; }
         public Habitacion Habitacion { get; set; }
         public List<Modificador> Modificadores { get; set; }

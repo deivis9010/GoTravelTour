@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -122,8 +123,41 @@ namespace GoTravelTour.Controllers
             return Ok(contrato);
         }
 
+        private void EliminarTemporadas ( Contrato contrato)
+        {
+            int j = 0;
+            while (j < contrato.Temporadas.Count())
+            {
+                Temporada temp = contrato.Temporadas[j];
+                bool esta = false;
+
+                int i = 0;
+                while (i < contrato.NombreTemporadas.Count() && !esta)
+                {
+                    NombreTemporada nombres = contrato.NombreTemporadas[i];
+                    if (nombres.Nombre == temp.Nombre)
+                    {
+                        esta = true;
+                        break;
+                    }
+                    i++;
+                }
+
+                if (!esta)
+                {
+                    contrato.Temporadas.Remove(temp);
+                    _context.Temporadas.Remove(temp);
+                    j--;
+                }
+
+                j++;
+            }
+            _context.SaveChanges();
+        }
+
         // PUT: api/Contratoes/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutContrato([FromRoute] int id, [FromBody] Contrato contrato)
         {
             if (!ModelState.IsValid)
@@ -139,8 +173,46 @@ namespace GoTravelTour.Controllers
             {
                 return CreatedAtAction("GetContrato", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
+            try
+            {
+                EliminarTemporadas(contrato);
+            } catch(Exception ex)
+            {
+                return CreatedAtAction("UpdateContrato", new { id = -4, error = "Temporada en uso no puede ser eliminada" }, new { id = -4, error = "Temporada en uso no puede ser eliminada" });
+            }
+            
+            if (contrato.NombreTemporadas.Count > 0)
+            {
+
+                foreach (NombreTemporada nt in contrato.NombreTemporadas)
+                {
+                    int i = 0;
+                    bool existeTemporada = false;
+                    while (i < contrato.Temporadas.Count() && !existeTemporada)
+                    {
+
+                        if (nt.Nombre == contrato.Temporadas[i].Nombre)
+                        {
+                            existeTemporada = true;
+                            _context.Entry(contrato.Temporadas[i]).State = EntityState.Modified;
+                        }
+
+                        i++;
+                    }
+                    if (!existeTemporada)
+                    {
+                        Temporada t = new Temporada();
+                        t.Nombre = nt.Nombre;
+                        t.ContratoId = contrato.ContratoId;
+                        contrato.Temporadas.Add(t);
+                        _context.Temporadas.Add(t);
+                    }
+                   
+                }
+            }
 
             _context.Entry(contrato).State = EntityState.Modified;
+          
 
             try
             {
@@ -163,6 +235,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Contratoes
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostContrato([FromBody] Contrato contrato)
         {
             if (!ModelState.IsValid)
@@ -205,6 +278,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Contratoes/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteContrato([FromRoute] int id)
         {
             if (!ModelState.IsValid)

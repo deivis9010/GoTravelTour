@@ -37,7 +37,6 @@ namespace GoTravelTour.Models
         public DbSet<Modificador> Modificadores { get; set; }
         public DbSet<ModificadorProductos> ModificadorProductos { get; set; }
         public DbSet<PosibleCombinacion> PosibleCombinaciones { get; set; }
-        public DbSet<PrecioActividad> PrecioActividades { get; set; }
         public DbSet<PrecioAlojamiento> PrecioAlojamiento { get; set; }
         public DbSet<PrecioPlanesAlimenticios> PrecioPlanesAlimenticios { get; set; }
         public DbSet<PrecioComodidades> PrecioComodidades { get; set; }
@@ -60,6 +59,9 @@ namespace GoTravelTour.Models
         public DbSet<CategoriaHoteles> CategoriaHoteles { get; set; }
         public DbSet<Servicio> Servicio { get; set; }
         public DbSet<TipoServicio> TipoServicio { get; set; }
+        public DbSet<CategoriaAuto> CategoriaAuto { get; set; }
+        public DbSet<VehiculoCategoriaAuto> VehiculoCategoriaAuto { get; set; }
+        public DbSet<Sobreprecio> Sobreprecio { get; set; }
        
      
 

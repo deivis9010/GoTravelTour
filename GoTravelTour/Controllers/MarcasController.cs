@@ -75,7 +75,7 @@ namespace GoTravelTour.Controllers
         [HttpGet]
         public int GetMarcasCount()
         {
-            return _context.PlanesAlimenticios.Count();
+            return _context.Marcas.Count();
         }
 
 

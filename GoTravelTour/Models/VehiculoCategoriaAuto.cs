@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace GoTravelTour.Models
 {
-    public class RestriccionesPrecio
+    public class VehiculoCategoriaAuto
     {
-        public int RestriccionesPrecioId { get; set; }
-        public decimal Precio { get; set; }
-        public int RestriccionesId { get; set; }
-        public Restricciones Restricciones { get; set; }
+        public int VehiculoCategoriaAutoId { get; set; }
         public int ProductoId { get; set; }
+        [ForeignKey("ProductoId")]
         public Producto Producto { get; set; }
-       
+        public int CategoriaAutoId { get; set; }
+        public CategoriaAuto CategoriaAuto { get; set; }
     }
 }

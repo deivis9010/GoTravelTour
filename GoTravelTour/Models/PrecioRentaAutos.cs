@@ -18,7 +18,7 @@ namespace GoTravelTour.Models
         public int ProductoId { get; set; }
         [ForeignKey("ProductoId")]
         public Producto Auto { get; set; }
-        public Contrato Contrato { get; set; }
+        //public Contrato Contrato { get; set; }
         public Temporada Temporada { get; set; }
     }
 

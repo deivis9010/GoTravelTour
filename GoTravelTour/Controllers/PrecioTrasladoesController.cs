@@ -30,7 +30,7 @@ namespace GoTravelTour.Controllers
             {
                 return _context.PrecioTraslados
                     .Include(a => a.Temporada)
-                    .Include(a => a.Contrato)
+                    .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Traslado)
                     .ToList();
     }
@@ -38,7 +38,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.PrecioTraslados
                     .Include(a => a.Temporada)
-                    .Include(a => a.Contrato)
+                    .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Traslado)
                     .Where(p => (p.Traslado.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
@@ -46,7 +46,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.PrecioTraslados
                     .Include(a => a.Temporada)
-                    .Include(a => a.Contrato)
+                    .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Traslado)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
@@ -122,7 +122,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            precioTraslado.Temporada =  _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
             _context.Entry(precioTraslado).State = EntityState.Modified;
 
             try
@@ -152,7 +152,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            precioTraslado.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
             _context.PrecioTraslados.Add(precioTraslado);
             await _context.SaveChangesAsync();
 

@@ -8,6 +8,7 @@ namespace GoTravelTour.Models
     public class PrecioComodidades
     {
         public int PrecioComodidadesId { get; set; }
+        public decimal Precio { get; set; }
         public int ComodidadesId { get; set; }
         public int ProductoId { get; set; }
         public Comodidades Comodidad { get; set; }

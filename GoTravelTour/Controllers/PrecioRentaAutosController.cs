@@ -30,7 +30,7 @@ namespace GoTravelTour.Controllers
             {
                 return _context.PrecioRentaAutos
                     .Include(a => a.Temporada)
-                    .Include(a => a.Contrato)
+                    .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Auto)
                     .ToList();
             }
@@ -38,7 +38,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.PrecioRentaAutos
                     .Include(a => a.Temporada)
-                    .Include(a => a.Contrato)
+                    .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Auto)
                     .Where(p => (p.Auto.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
@@ -46,7 +46,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.PrecioRentaAutos
                     .Include(a => a.Temporada)
-                    .Include(a => a.Contrato)
+                    .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Auto)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
@@ -122,7 +122,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            precioRentaAutos.Contrato = _context.Contratos.First(x => x.ContratoId == precioRentaAutos.Contrato.ContratoId);
+            //precioRentaAutos.Contrato = _context.Contratos.First(x => x.ContratoId == precioRentaAutos.Contrato.ContratoId);
             precioRentaAutos.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioRentaAutos.Temporada.TemporadaId);
             _context.Entry(precioRentaAutos).State = EntityState.Modified;
 
@@ -153,7 +153,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            precioRentaAutos.Contrato = _context.Contratos.First(x => x.ContratoId == precioRentaAutos.Contrato.ContratoId);
+            //precioRentaAutos.Contrato = _context.Contratos.First(x => x.ContratoId == precioRentaAutos.Contrato.ContratoId);
             precioRentaAutos.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioRentaAutos.Temporada.TemporadaId);
             _context.PrecioRentaAutos.Add(precioRentaAutos);
             await _context.SaveChangesAsync();

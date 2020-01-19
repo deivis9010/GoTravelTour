@@ -9,7 +9,7 @@ namespace GoTravelTour.Models
     public class PrecioTraslado
     {
         public int PrecioTrasladoId { get; set; }
-        public double Precio { get; set; }
+        public decimal Precio { get; set; }
         //public bool IsActivo { get; set; }
         //public int ContratoId { get; set; }
         //public int TemporadaId { get; set; }
@@ -17,7 +17,7 @@ namespace GoTravelTour.Models
         public int RutasId { get; set; }        
         [ForeignKey("ProductoId")]
         public Producto Traslado { get; set; }
-        public Contrato Contrato { get; set; }
+        //public Contrato Contrato { get; set; }
         public Temporada Temporada { get; set; }
         public Rutas Rutas { get; set; }
 

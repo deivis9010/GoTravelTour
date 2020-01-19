@@ -167,7 +167,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            Utiles.Utiles u = new Utiles.Utiles(_context);
+            vehiculo.SKU = u.GetSKUCodigo();
             _context.Vehiculos.Add(vehiculo);
            
                 await _context.SaveChangesAsync();
