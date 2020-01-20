@@ -123,10 +123,10 @@ namespace GoTravelTour.Models
             {
                 return BadRequest();
             }
-            if (_context.Servicio.Any(c => c.Nombre == servicio.Nombre && servicio.ServicioId != id))
+           /* if (_context.Servicio.Any(c => c.Nombre == servicio.Nombre && servicio.ServicioId != id))
             {
                 return CreatedAtAction("GetServicio", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            }*/
 
             _context.Entry(servicio).State = EntityState.Modified;
 
@@ -159,10 +159,10 @@ namespace GoTravelTour.Models
                 return BadRequest(ModelState);
             }
 
-            if (_context.Servicio.Any(c => c.Nombre == servicio.Nombre ))
+           /* if (_context.Servicio.Any(c => c.Nombre == servicio.Nombre ))
             {
                 return CreatedAtAction("GetServicio", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            }*/
             _context.Servicio.Add(servicio);
             await _context.SaveChangesAsync();
 
