@@ -302,5 +302,75 @@ namespace GoTravelTour.Controllers
         {
             return _context.Contratos.Any(e => e.ContratoId == id);
         }
+
+
+        // GET: api/Contratoes/Filtros
+        [HttpGet]
+        [Route("Filtros")]
+        public IEnumerable<Contrato> GetContratosByFiltros(string tipoprod = "", int idDistribuidor = -1, bool IsActivo= true)
+        {
+            IEnumerable<Contrato> lista = new List<Contrato>();
+
+            if (tipoprod == "" && idDistribuidor == -1)
+            {
+
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                    .Include(a => a.Temporadas)
+                    .Include(a => a.TipoProducto)
+                .Where(a => a.IsActivo == IsActivo)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+              
+                return lista;
+            }
+            else
+              if (tipoprod != "" && idDistribuidor != -1)
+            {
+
+                lista = _context.Contratos
+               .Include(a => a.Distribuidor)
+                    .Include(a => a.Temporadas)
+                    .Include(a => a.TipoProducto)
+               .Where(a => a.TipoProducto.Nombre == tipoprod && a.DistribuidorId == idDistribuidor &&  a.IsActivo == IsActivo)
+               .OrderBy(a => a.Nombre)
+               .ToList();
+               
+                return lista;
+            }
+            else
+              if (tipoprod != "" && idDistribuidor == -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                    .Include(a => a.Temporadas)
+                    .Include(a => a.TipoProducto)
+                .Where(a => a.TipoProducto.Nombre == tipoprod && a.IsActivo == IsActivo)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+
+               
+                return lista;
+            }
+            else
+              if (tipoprod == "" && idDistribuidor != -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                    .Include(a => a.Temporadas)
+                    .Include(a => a.TipoProducto)
+                .Where(a => a.DistribuidorId == idDistribuidor)
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                
+                return lista;
+            }
+
+
+            return lista;
+
+        }
+
+
     }
 }

@@ -186,5 +186,8 @@ namespace GoTravelTour.Controllers
         {
             return _context.Distribuidores.Any(e => e.DistribuidorId == id);
         }
+
+
+
     }
 }

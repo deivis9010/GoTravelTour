@@ -218,6 +218,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
+                .Where(a =>a.TipoProducto.Nombre == "Vehicle")
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -265,7 +266,7 @@ namespace GoTravelTour.Controllers
                  lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)                
-                .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor)
+                .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor &&  a.TipoProducto.Nombre == "Vehicle")
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -310,7 +311,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.ContratoId == idContrato )
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Vehicle")
                 .OrderBy(a => a.Nombre)
                 .ToList();
 
@@ -356,7 +357,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.DistribuidorId == idDistribuidor )
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Vehicle")
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
