@@ -147,10 +147,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Sobreprecio.Any(c => c.TipoProducto.Nombre == sobreprecio.TipoProducto.Nombre ))
+            /*if (_context.Sobreprecio.Any(c => c.TipoProducto.Nombre == sobreprecio.TipoProducto.Nombre ))
             {
                 return CreatedAtAction("GetSobreprecio", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            }*/
             _context.Sobreprecio.Add(sobreprecio);
             await _context.SaveChangesAsync();
 

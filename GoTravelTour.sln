@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoTravelTour", "GoTravelTour\GoTravelTour.csproj", "{9384789A-582C-4AFB-AC80-47753FBEFD02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoTravelTour", "GoTravelTour.csproj", "{9384789A-582C-4AFB-AC80-47753FBEFD02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

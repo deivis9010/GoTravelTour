@@ -38,7 +38,10 @@ namespace GoTravelTour.Controllers
                     .OrderBy(a => a.Nombre)
                     .ToList();
                
-                   
+                foreach (Vehiculo v in  lista)
+                {
+                    v.ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == v.ProductoId).ToList();
+                }
                 return lista;
             }
             if (!string.IsNullOrEmpty(filter))
@@ -50,7 +53,10 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.TipoProducto)
                     .Include(v => v.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
-               
+                foreach (Vehiculo v in lista)
+                {
+                    v.ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == v.ProductoId).ToList();
+                }
             }
             else
             {
@@ -61,7 +67,10 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.TipoProducto)
                     .Include(v => v.ListaDistribuidoresProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();
-              
+                foreach (Vehiculo v in lista)
+                {
+                    v.ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == v.ProductoId).ToList();
+                }
             }
 
             switch (sortDirection)
@@ -136,6 +145,51 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            List<VehiculoCategoriaAuto> ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == id).ToList();
+            int i = 0;
+            while (i < ListaCategorias.Count())
+            {
+                VehiculoCategoriaAuto c = ListaCategorias[i];
+                bool esta = false;
+                foreach(VehiculoCategoriaAuto c2 in vehiculo.ListaCategorias)
+                {
+                    if(c.VehiculoCategoriaAutoId == c2.VehiculoCategoriaAutoId)
+                    {
+                        esta = true;
+                        break;
+                    }
+                   
+                }
+                if (!esta && c.VehiculoCategoriaAutoId != 0)
+                {
+                    _context.VehiculoCategoriaAuto.Remove(c);
+                    ListaCategorias.Remove(c);
+                    i--;
+                }
+               
+                    i++;
+               
+                
+            }
+            await _context.SaveChangesAsync();
+            i = 0;
+            while (i < vehiculo.ListaCategorias.Count)
+            {
+                VehiculoCategoriaAuto c = vehiculo.ListaCategorias[i];
+                if (c.VehiculoCategoriaAutoId == 0)
+                {
+                    c.ProductoId = vehiculo.ProductoId;
+                    _context.VehiculoCategoriaAuto.Add(c);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                   /* _context.Entry(c).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();*/
+
+                }
+                i++;
+            }
 
             _context.Entry(vehiculo).State = EntityState.Modified;
 
@@ -169,11 +223,22 @@ namespace GoTravelTour.Controllers
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             vehiculo.SKU = u.GetSKUCodigo();
+            
             _context.Vehiculos.Add(vehiculo);
            
                 await _context.SaveChangesAsync();
             
-            
+            if(vehiculo.ListaCategorias.Count() > 0)
+            {
+                foreach (VehiculoCategoriaAuto vca in vehiculo.ListaCategorias)
+                {
+                    VehiculoCategoriaAuto temp = new VehiculoCategoriaAuto();
+                    temp.CategoriaAutoId = vca.CategoriaAutoId;
+                    temp.ProductoId = vehiculo.ProductoId;
+                    _context.VehiculoCategoriaAuto.Add(temp);
+                }
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction("GetVehiculo", new { id = vehiculo.ProductoId }, vehiculo);
         }
