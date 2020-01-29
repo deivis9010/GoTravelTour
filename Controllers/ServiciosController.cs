@@ -30,7 +30,7 @@ namespace GoTravelTour.Models
             {
                 return _context.Servicio          
                     
-                    .Include(a => a.Producto)
+                    
                     .OrderBy(a => a.Nombre)
                     .ToList();
                
@@ -39,14 +39,14 @@ namespace GoTravelTour.Models
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Servicio
-                    .Include(a => a.Producto)
+                    
                     .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
                 lista = _context.Servicio
-                    .Include(a => a.Producto)
+                    
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
