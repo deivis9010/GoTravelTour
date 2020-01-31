@@ -9,7 +9,10 @@ namespace GoTravelTour.Models
     {
         public int TrasladoId { get; set; }
         public int CapacidadTraslado { get; set; }
-        public string ModeloTraslado { get; set; }
+        public string TipoTraslado { get; set; }
+        public int CantidadAdultTras { get; set; }
+        public int CantidadInfantesTras { get; set; }
+        public int CantidadNinoTras { get; set; }
 
 
     }

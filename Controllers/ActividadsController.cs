@@ -241,6 +241,19 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        contrato.Distribuidor.ListaActividades = new List<Actividad>();
+                        if (contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                        {
+                            foreach (ProductoDistribuidor pd in contrato.Distribuidor.ListaProductosDistribuidos)
+                            {
+                                if (pd.Producto.TipoProducto.Nombre == "Activity")
+                                {
+                                    contrato.Distribuidor.ListaActividades
+                                        .Add(_context.Actividadess.Include(a => a.ServiciosAdicionados)
+                                        .Single(x => x.ProductoId == pd.ProductoId));
+                                }
+                            }
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -287,6 +300,19 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        contrato.Distribuidor.ListaActividades = new List<Actividad>();
+                        if (contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                        {
+                            foreach (ProductoDistribuidor pd in contrato.Distribuidor.ListaProductosDistribuidos)
+                            {
+                                if (pd.Producto.TipoProducto.Nombre == "Activity")
+                                {
+                                    contrato.Distribuidor.ListaActividades
+                                        .Add(_context.Actividadess.Include(a => a.ServiciosAdicionados)
+                                        .Single(x => x.ProductoId == pd.ProductoId));
+                                }
+                            }
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -333,6 +359,19 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        contrato.Distribuidor.ListaActividades = new List<Actividad>();
+                        if (contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                        {
+                            foreach (ProductoDistribuidor pd in contrato.Distribuidor.ListaProductosDistribuidos)
+                            {
+                                if (pd.Producto.TipoProducto.Nombre == "Activity")
+                                {
+                                    contrato.Distribuidor.ListaActividades
+                                        .Add(_context.Actividadess.Include(a => a.ServiciosAdicionados)
+                                        .Single(x => x.ProductoId == pd.ProductoId));
+                                }
+                            }
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -377,7 +416,21 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto.TipoProducto)
+                            .Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        contrato.Distribuidor.ListaActividades = new List<Actividad>();
+                        if(contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                        {
+                            foreach (ProductoDistribuidor pd in contrato.Distribuidor.ListaProductosDistribuidos)
+                            {
+                                if(pd.Producto.TipoProducto.Nombre == "Activity")
+                                {
+                                    contrato.Distribuidor.ListaActividades
+                                        .Add(_context.Actividadess.Include(a => a.ServiciosAdicionados)
+                                        .Single(x => x.ProductoId == pd.ProductoId));
+                                }
+                            }
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;

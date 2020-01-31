@@ -182,5 +182,206 @@ namespace GoTravelTour.Controllers
         {
             return _context.Traslados.Any(e => e.ProductoId == id);
         }
+
+
+
+        // GET: api/Trasladoes/Filtros
+        [HttpGet]
+        [Route("Filtros")]
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1)
+        {
+            IEnumerable<Contrato> lista = new List<Contrato>();
+
+            if (idContrato == -1 && idDistribuidor == -1)
+            {
+
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.TipoProducto.Nombre == "Transportation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
+
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor != -1)
+            {
+
+                lista = _context.Contratos
+               .Include(a => a.Distribuidor)
+               .Include(a => a.Temporadas)
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Transportation")
+               .OrderBy(a => a.Nombre)
+               .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Transportation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Transportation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).Where(x => x.DistribuidorId == contrato.DistribuidorId).ToList();
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                int j = 0;
+                                while (j < contrato.Temporadas[i].ListaRestricciones.Count())
+                                {
+                                    contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
+                                        .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
+
+                                    j++;
+                                }
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+
+
+            return lista;
+
+        }
+
     }
 }

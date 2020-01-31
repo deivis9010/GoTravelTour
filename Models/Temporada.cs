@@ -21,7 +21,9 @@ namespace GoTravelTour.Models
         public List<PrecioRentaAutos> ListaPrecioAutos { get; set; }
         [NotMapped]
         public List<PrecioServicio> ListaPrecioServicioActividad { get; set; }
-       
+        [NotMapped]
+        public List<PrecioTraslado> ListaPrecioTraslados { get; set; }
+
 
 
 
