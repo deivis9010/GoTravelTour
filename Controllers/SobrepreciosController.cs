@@ -183,5 +183,25 @@ namespace GoTravelTour.Controllers
         {
             return _context.Sobreprecio.Any(e => e.SobreprecioId == id);
         }
+
+        // GET: api/Sobreprecios/Tipo/5
+        [HttpGet("{idTipoProducto}")]
+        [Route("Tipo/{idTipoProducto}")]
+        public async Task<IActionResult> GetSobreprecioByTipo([FromRoute] int idTipoProducto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            List<Sobreprecio> sobreprecio =  _context.Sobreprecio.Include(x=>x.TipoProducto).Where(a=>a.TipoProductoId == idTipoProducto).ToList();
+
+            if (sobreprecio == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(sobreprecio);
+        }
     }
 }

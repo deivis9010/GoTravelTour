@@ -29,17 +29,30 @@ namespace GoTravelTour.Controllers
             if (col == "-1")
             {
                 return _context.Traslados
+                    .Include(x=> x.Proveedor)
+                    .Include(x => x.TipoProducto)
+                    .Include(a => a.ListaComodidades)
+                    .Include(a => a.ListaDistribuidoresProducto)
                     .OrderBy(a => a.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Traslados
+                    .Include(x => x.Proveedor)
+                    .Include(x => x.TipoProducto)
+                    .Include(a => a.ListaComodidades)
+                    .Include(a => a.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Traslados.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Traslados
+                    .Include(x => x.Proveedor)
+                    .Include(x => x.TipoProducto)
+                    .Include(a => a.ListaComodidades)
+                    .Include(a => a.ListaDistribuidoresProducto)
+                    .ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -114,10 +127,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre && traslado.TrasladoId != id))
-            {
-                return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            //if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre && traslado.TrasladoId != id))
+            //{
+            //    return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            //}
             _context.Entry(traslado).State = EntityState.Modified;
 
             try
@@ -147,10 +160,12 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre))
-            {
-                return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            //if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre))
+            //{
+            //    return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            //}
+            Utiles.Utiles u = new Utiles.Utiles(_context);
+            traslado.SKU = u.GetSKUCodigo();
             _context.Traslados.Add(traslado);
             await _context.SaveChangesAsync();
 
