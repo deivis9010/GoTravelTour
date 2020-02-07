@@ -13,8 +13,7 @@ namespace GoTravelTour.Models
         public string Telefono { get; set; }
         public bool IsActivo { get; set; }
         public List<ProductoDistribuidor> ListaProductosDistribuidos { get; set; }
-        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
-        public List<Actividad> ListaActividades { get; set; }
+        
 
 
     }

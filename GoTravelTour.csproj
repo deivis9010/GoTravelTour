@@ -74,6 +74,8 @@
     <Compile Remove="Migrations\20200108052735_modifcaciones actividad.Designer.cs" />
     <Compile Remove="Migrations\20200131040320_mdificandotraslado.cs" />
     <Compile Remove="Migrations\20200131040320_mdificandotraslado.Designer.cs" />
+    <Compile Remove="Migrations\20200206041836_quitandoCampo.cs" />
+    <Compile Remove="Migrations\20200206041836_quitandoCampo.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

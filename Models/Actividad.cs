@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace GoTravelTour.Models
         public bool PermiteInfante { get; set; }
         public bool PermiteNino { get; set; }
         public Region Region { get; set; }
-
+        [NotMapped]
         public List<Servicio> ServiciosAdicionados { get; set; } //features
     }
 }

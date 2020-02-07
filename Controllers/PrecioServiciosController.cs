@@ -89,6 +89,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            precioServicio.Temporada = _context.Temporadas.Single(x => x.TemporadaId == precioServicio.Temporada.TemporadaId);
 
             _context.PrecioServicio.Add(precioServicio);
             await _context.SaveChangesAsync();
