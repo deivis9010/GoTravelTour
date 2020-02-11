@@ -20,7 +20,7 @@ namespace GoTravelTour.Models
         public bool PermiteHacerCopia { get; set; }
         // public int TipoProductoId { get; set; }
         public TipoProducto TipoProducto { get; set; }
-        public Contrato Contrato { get; set; }
+        public Temporada Temporada { get; set; }
 
 
     }
