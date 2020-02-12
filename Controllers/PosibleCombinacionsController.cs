@@ -188,5 +188,26 @@ namespace GoTravelTour.Controllers
         {
             return _context.PosibleCombinaciones.Any(e => e.PosibleCombinacionId == id);
         }
+
+        // GET: api/PosibleCombinacions/Tipo/5
+        [HttpGet("{idTipoHabitacion}")]
+        [Route("Tipo/{idTipoHabitacion}")]
+        public async Task<IActionResult> GetSPosibleCombincacionByTipo([FromRoute] int idTipoHabitacion)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            List<PosibleCombinacion> combinaciones = _context.PosibleCombinaciones.Include(x => x.TipoHabitacion).Where(a => a.TipoHabitacionId == idTipoHabitacion).ToList();
+
+            if (combinaciones == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(combinaciones);
+        }
+
     }
 }

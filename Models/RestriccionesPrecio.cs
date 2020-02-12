@@ -14,6 +14,7 @@ namespace GoTravelTour.Models
         public Restricciones Restricciones { get; set; }
         public int ProductoId { get; set; }
         public Producto Producto { get; set; }
+        public int? ServicioId { get; set; }
        
     }
 }

@@ -7,7 +7,8 @@ namespace GoTravelTour.Models
 {
     public class Habitacion
     {
-        public int HabitacionId { get; set; }        
+        public int HabitacionId { get; set; }
+        public string Nombre { get; set; }
         public string SKU { get; set; }
         public string Descripcion { get; set; }
         public bool IsActiva { get; set; }
