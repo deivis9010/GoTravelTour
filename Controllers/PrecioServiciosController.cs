@@ -59,7 +59,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            precioServicio.Temporada = _context.Temporadas.Single(x => x.TemporadaId == precioServicio.Temporada.TemporadaId);
             _context.Entry(precioServicio).State = EntityState.Modified;
 
             try
