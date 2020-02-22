@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -116,6 +117,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Trasladoes/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutTraslado([FromRoute] int id, [FromBody] Traslado traslado)
         {
             if (!ModelState.IsValid)
@@ -154,6 +156,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Trasladoes
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostTraslado([FromBody] Traslado traslado)
         {
             if (!ModelState.IsValid)
@@ -174,6 +177,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Trasladoes/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTraslado([FromRoute] int id)
         {
             if (!ModelState.IsValid)

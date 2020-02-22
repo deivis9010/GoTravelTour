@@ -32,6 +32,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Temporada)
                     .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Traslado)
+                    .Include(a => a.Rutas)
                     .ToList();
     }
             if (!string.IsNullOrEmpty(filter))
@@ -40,6 +41,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Temporada)
                     .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Traslado)
+                    .Include(a => a.Rutas)
                     .Where(p => (p.Traslado.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
@@ -48,6 +50,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Temporada)
                     .Include(a => a.Temporada.Contrato)
                     .Include(a => a.Traslado)
+                    .Include(a => a.Rutas)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -122,7 +125,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            precioTraslado.Temporada =  _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
+            precioTraslado.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
+            precioTraslado.Rutas = _context.Rutas.First(x => x.RutasId == precioTraslado.RutasId);
             _context.Entry(precioTraslado).State = EntityState.Modified;
 
             try
@@ -153,6 +157,7 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
             precioTraslado.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
+            precioTraslado.Rutas = _context.Rutas.First(x => x.RutasId == precioTraslado.RutasId);
             _context.PrecioTraslados.Add(precioTraslado);
             await _context.SaveChangesAsync();
 

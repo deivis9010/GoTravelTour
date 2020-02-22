@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
+using PagedList;
 
 namespace GoTravelTour.Controllers
 {
@@ -22,9 +23,76 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Modificadors
         [HttpGet]
-        public IEnumerable<Modificador> GetModificadores()
+        public IEnumerable<Modificador> GetModificadores(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            return _context.Modificadores;
+            IEnumerable<Modificador> lista;
+            if (col == "-1")
+            {
+                lista = _context.Modificadores
+                    //.Include(a => a.Temporada)
+                   // .Include(a => a.TipoProducto)
+                    .OrderBy(a => a.IdentificadorModificador)
+                    .ToList();
+
+
+                return lista;
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.Modificadores
+                    //.Include(a => a.Temporada)
+                    //.Include(a => a.TipoProducto)
+                    .OrderBy(a => a.IdentificadorModificador)
+
+                    .Where(p => (p.IdentificadorModificador.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+
+            }
+            else
+            {
+                lista = _context.Modificadores
+                    //.Include(a => a.Temporada)
+                   // .Include(a => a.TipoProducto)
+                    .OrderBy(a => a.IdentificadorModificador)
+
+                    .ToPagedList(pageIndex, pageSize).ToList();
+
+            }
+
+            switch (sortDirection)
+            {
+                case "desc":
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderByDescending(l => l.IdentificadorModificador);
+
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        if ("Nombre".Equals(col))
+                        {
+                            lista = lista.OrderBy(l => l.IdentificadorModificador);
+
+                        }
+                    }
+
+                    break;
+            }
+
+
+            return lista;
+        }
+
+        // GET: api/CombinacionHuespedes/Count
+        [Route("Count")]
+        [HttpGet]
+        public int GetCombinacionHuespedesCount()
+        {
+            return _context.CombinacionHuespedes.Count();
         }
 
         // GET: api/Modificadors/5

@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200219041048_cambiosalojamientp")]
+    partial class cambiosalojamientp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -603,8 +605,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("ProveedorId");
 
-                    b.Property<int?>("PuntoInteresId");
-
                     b.Property<string>("SKU");
 
                     b.Property<string>("Schedule");
@@ -618,8 +618,6 @@ namespace GoTravelTour.Migrations
                     b.HasKey("ProductoId");
 
                     b.HasIndex("ProveedorId");
-
-                    b.HasIndex("PuntoInteresId");
 
                     b.HasIndex("TipoProductoId");
 
@@ -1047,26 +1045,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("Categoria");
 
-                    b.Property<string>("CheckIn");
-
-                    b.Property<string>("CheckOut");
-
-                    b.Property<string>("Direccion");
-
-                    b.Property<int>("EdadAdultoMax");
-
-                    b.Property<int>("EdadAdultoMin");
-
-                    b.Property<int>("EdadInfanteMax");
-
-                    b.Property<int>("EdadInfanteMin");
-
-                    b.Property<int>("EdadNinoMax");
-
-                    b.Property<int>("EdadNinoMin");
-
-                    b.Property<string>("InfoLegal");
-
                     b.Property<string>("Latitud")
                         .HasColumnName("Alojamiento_Latitud");
 
@@ -1079,14 +1057,8 @@ namespace GoTravelTour.Migrations
                     b.Property<bool>("PermiteInfante")
                         .HasColumnName("Alojamiento_PermiteInfante");
 
-                    b.Property<bool>("PermiteMascota");
-
                     b.Property<bool>("PermiteNino")
                         .HasColumnName("Alojamiento_PermiteNino");
-
-                    b.Property<string>("PoliticaCancelacion");
-
-                    b.Property<string>("PoliticaNino");
 
                     b.Property<int>("TipoAlojamientoId");
 
@@ -1334,10 +1306,6 @@ namespace GoTravelTour.Migrations
                         .WithMany("Productos")
                         .HasForeignKey("ProveedorId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GoTravelTour.Models.PuntoInteres", "PuntoInteres")
-                        .WithMany()
-                        .HasForeignKey("PuntoInteresId");
 
                     b.HasOne("GoTravelTour.Models.TipoProducto", "TipoProducto")
                         .WithMany()
