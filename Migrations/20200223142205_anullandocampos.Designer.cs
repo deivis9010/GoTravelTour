@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200223142205_anullandocampos")]
+    partial class anullandocampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1073,15 +1075,15 @@ namespace GoTravelTour.Migrations
                     b.Property<string>("Longitud")
                         .HasColumnName("Alojamiento_Longitud");
 
-                    b.Property<bool?>("PermiteAdult")
+                    b.Property<bool>("PermiteAdult")
                         .HasColumnName("Alojamiento_PermiteAdult");
 
-                    b.Property<bool?>("PermiteInfante")
+                    b.Property<bool>("PermiteInfante")
                         .HasColumnName("Alojamiento_PermiteInfante");
 
-                    b.Property<bool?>("PermiteMascota");
+                    b.Property<bool>("PermiteMascota");
 
-                    b.Property<bool?>("PermiteNino")
+                    b.Property<bool>("PermiteNino")
                         .HasColumnName("Alojamiento_PermiteNino");
 
                     b.Property<string>("PoliticaCancelacion");

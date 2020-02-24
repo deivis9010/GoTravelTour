@@ -137,6 +137,10 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
+            alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
+            alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
+            alojamiento.TipoAlojamiento = _context.TipoAlojamientos.First(x => x.TipoAlojamientoId == alojamiento.TipoAlojamientoId);
+
             _context.Entry(alojamiento).State = EntityState.Modified;
 
             try
@@ -169,7 +173,10 @@ namespace GoTravelTour.Controllers
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             alojamiento.SKU = u.GetSKUCodigo();
-            
+            alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
+            alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
+            alojamiento.TipoAlojamiento = _context.TipoAlojamientos.First(x => x.TipoAlojamientoId == alojamiento.TipoAlojamientoId);
+            alojamiento.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == alojamiento.TipoProductoId);
             _context.Alojamientos.Add(alojamiento);
             await _context.SaveChangesAsync();
 

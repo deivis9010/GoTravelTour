@@ -235,6 +235,7 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Include(x => x.Rutas)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -284,6 +285,7 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Include(x => x.Rutas)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -331,6 +333,7 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Include(x => x.Rutas)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -377,6 +380,7 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    .Include(x => x.Rutas)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 

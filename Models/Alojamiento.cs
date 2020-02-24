@@ -17,16 +17,16 @@ namespace GoTravelTour.Models
         public string PoliticaNino { get; set; }
         public string PoliticaCancelacion { get; set; }
         public string InfoLegal { get; set; }
-        public int EdadAdultoMax { get; set; }
-        public int EdadNinoMax { get; set; }
-        public int EdadInfanteMax { get; set; }
-        public int EdadAdultoMin { get; set; }
-        public int EdadNinoMin { get; set; }
-        public int EdadInfanteMin { get; set; }
-        public bool PermiteMascota { get; set; }
-        public bool PermiteAdult { get; set; }
-        public bool PermiteInfante { get; set; }
-        public bool PermiteNino { get; set; }
+        public int? EdadAdultoMax { get; set; }
+        public int? EdadNinoMax { get; set; }
+        public int? EdadInfanteMax { get; set; }
+        public int? EdadAdultoMin { get; set; }
+        public int? EdadNinoMin { get; set; }
+        public int? EdadInfanteMin { get; set; }
+        public bool? PermiteMascota { get; set; }
+        public bool? PermiteAdult { get; set; }
+        public bool? PermiteInfante { get; set; }
+        public bool? PermiteNino { get; set; }
         public int TipoAlojamientoId { get; set; }
         public TipoAlojamiento TipoAlojamiento { get; set; }
         public List<ModificadorProductos> ListaHoteles { get; set; } 
