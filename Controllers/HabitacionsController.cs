@@ -32,6 +32,8 @@ namespace GoTravelTour.Controllers
                 lista = _context.Habitaciones
                     .Include(a => a.Producto )
                     .Include(a => a.TipoHabitacion)
+                    .Include(a => a.ListaServiciosHabitacion)
+
                     .OrderBy(a=> a.Descripcion)
                     
                     .ToList();
@@ -45,6 +47,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Habitaciones
                     .Include(a => a.Producto)
                     .Include(a => a.TipoHabitacion)
+                    .Include(a => a.ListaServiciosHabitacion)
                     .OrderBy(a => a.Descripcion)
                     .Where(p => (p.Descripcion.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
 
@@ -54,6 +57,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Habitaciones
                     .Include(a => a.Producto)
                     .Include(a => a.TipoHabitacion)
+                    .Include(a => a.ListaServiciosHabitacion)
                     .OrderBy(a => a.Descripcion)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
@@ -193,5 +197,22 @@ namespace GoTravelTour.Controllers
         {
             return _context.Habitaciones.Any(e => e.HabitacionId == id);
         }
+
+
+        // GET: api/Habitacions/Producto/{idP}
+        [HttpGet]
+        [Route("Producto/{idP}")]
+        public IEnumerable<Habitacion> GetHabitacionesByIdProductos([FromRoute] int idP = -1)
+        {
+            var habitacion = _context.Habitaciones
+                .Include(x=>x.Producto)
+                .Include(x => x.TipoHabitacion)
+                .Include(x => x.ListaServiciosHabitacion)
+                .Where(x => x.ProductoId == idP);
+
+            return habitacion;
+        }
+
+
     }
 }

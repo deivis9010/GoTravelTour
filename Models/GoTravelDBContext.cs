@@ -64,6 +64,8 @@ namespace GoTravelTour.Models
         public DbSet<Sobreprecio> Sobreprecio { get; set; }
         public DbSet<GoTravelTour.Models.PrecioServicio> PrecioServicio { get; set; }
         public DbSet<GoTravelTour.Models.NombreHabitacion> NombreHabitacion { get; set; }
+        public DbSet<GoTravelTour.Models.ServiciosHabitacion> ServiciosHabitacion { get; set; }
+        public DbSet<GoTravelTour.Models.HabitacionServiciosHabitacion> HabitacionServiciosHabitacion { get; set; }
        
      
 
