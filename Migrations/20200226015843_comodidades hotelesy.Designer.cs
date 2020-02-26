@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200226015843_comodidades hotelesy")]
+    partial class comodidadeshotelesy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1077,7 +1079,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("AlojamientoId");
 
-                    b.Property<int>("CategoriaHotelesId");
+                    b.Property<string>("Categoria");
 
                     b.Property<string>("CheckIn");
 
@@ -1123,8 +1125,6 @@ namespace GoTravelTour.Migrations
                     b.Property<string>("PoliticaNino");
 
                     b.Property<int>("TipoAlojamientoId");
-
-                    b.HasIndex("CategoriaHotelesId");
 
                     b.HasIndex("TipoAlojamientoId");
 
@@ -1526,11 +1526,6 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.Alojamiento", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.CategoriaHoteles", "CategoriaHoteles")
-                        .WithMany()
-                        .HasForeignKey("CategoriaHotelesId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("GoTravelTour.Models.TipoAlojamiento", "TipoAlojamiento")
                         .WithMany()
                         .HasForeignKey("TipoAlojamientoId")

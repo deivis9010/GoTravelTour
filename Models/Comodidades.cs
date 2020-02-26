@@ -11,5 +11,6 @@ namespace GoTravelTour.Models
         public string Nombre { get; set; }
         public int CategoriaComodidadId { get; set; }
         public CategoriaComodidad CategoriaComodidad { get; set; }
+        public List<ComodidadesProductos> ListaProductos { get; set; }
     }
 }
