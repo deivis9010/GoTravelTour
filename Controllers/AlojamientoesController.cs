@@ -165,7 +165,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(alojamiento);
         }
 
         // POST: api/Alojamientoes
