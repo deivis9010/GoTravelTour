@@ -190,6 +190,37 @@ namespace GoTravelTour.Controllers
                 }
                 i++;
             }
+            List<ComodidadesProductos> comodidades = _context.ComodidadesProductos.Where(x => x.ProductoId == vehiculo.ProductoId).ToList();
+            foreach (var item in comodidades)
+            {
+                _context.ComodidadesProductos.Remove(item);
+            }
+
+            List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == vehiculo.ProductoId).ToList();
+            foreach (var item in distribuidors)
+            {
+                _context.ProductoDistribuidores.Remove(item);
+            }
+
+            foreach (var item in vehiculo.ListaDistribuidoresProducto)
+            {
+                item.ProductoId = vehiculo.ProductoId;
+                _context.ProductoDistribuidores.Add(item);
+            }
+
+            foreach (var item in vehiculo.ListaComodidades)
+            {
+                item.ProductoId = vehiculo.ProductoId;
+                _context.ComodidadesProductos.Add(item);
+            }
+
+            vehiculo.Proveedor = _context.Proveedores.First(x => x.ProveedorId == vehiculo.ProveedorId);
+            vehiculo.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == vehiculo.PuntoInteres.PuntoInteresId);
+            vehiculo.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == vehiculo.TipoProductoId);
+            vehiculo.Marca = _context.Marcas.First(x => x.MarcaId == vehiculo.MarcaId);
+            vehiculo.Modelo = _context.Modelos.First(x => x.ModeloId == vehiculo.ModeloId);
+            
+
 
             _context.Entry(vehiculo).State = EntityState.Modified;
 
@@ -223,10 +254,15 @@ namespace GoTravelTour.Controllers
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             vehiculo.SKU = u.GetSKUCodigo();
-            
+            vehiculo.Proveedor = _context.Proveedores.First(x => x.ProveedorId == vehiculo.ProveedorId);
+            vehiculo.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == vehiculo.PuntoInteres.PuntoInteresId);
+            vehiculo.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == vehiculo.TipoProductoId);
+            vehiculo.Marca = _context.Marcas.First(x => x.MarcaId == vehiculo.MarcaId);
+            vehiculo.Modelo = _context.Modelos.First(x => x.ModeloId == vehiculo.ModeloId);
+
+
             _context.Vehiculos.Add(vehiculo);
-           
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             
             if(vehiculo.ListaCategorias.Count() > 0)
             {

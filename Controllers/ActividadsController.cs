@@ -152,6 +152,32 @@ namespace GoTravelTour.Controllers
                 return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
             actividad.Region = _context.Regiones.First(x => x.RegionId == actividad.Region.RegionId);
+            actividad.Proveedor = _context.Proveedores.First(x => x.ProveedorId == actividad.ProveedorId);
+            actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
+            actividad.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == actividad.TipoProductoId);
+           
+            List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == actividad.ProductoId).ToList();
+            foreach (var item in distribuidors)
+            {
+                _context.ProductoDistribuidores.Remove(item);
+            }
+            List<ComodidadesProductos> comodidades = _context.ComodidadesProductos.Where(x => x.ProductoId == actividad.ProductoId).ToList();
+            foreach (var item in comodidades)
+            {
+                _context.ComodidadesProductos.Remove(item);
+            }
+
+            foreach (var item in actividad.ListaDistribuidoresProducto)
+            {
+                item.ProductoId = actividad.ProductoId;
+                _context.ProductoDistribuidores.Add(item);
+            }
+            foreach (var item in actividad.ListaComodidades)
+            {
+                item.ProductoId = actividad.ProductoId;
+                _context.ComodidadesProductos.Add(item);
+
+            }
 
             _context.Entry(actividad).State = EntityState.Modified;
 

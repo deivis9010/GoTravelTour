@@ -146,12 +146,42 @@ namespace GoTravelTour.Controllers
             alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
             alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
             alojamiento.TipoAlojamiento = _context.TipoAlojamientos.First(x => x.TipoAlojamientoId == alojamiento.TipoAlojamientoId);
+            alojamiento.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == alojamiento.TipoProductoId);
+            alojamiento.CategoriaHoteles = _context.CategoriaHoteles.First(x => x.CategoriaHotelesId == alojamiento.CategoriaHotelesId);
+            
+            List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
+            foreach (var item in distribuidors)
+            {
+                _context.ProductoDistribuidores.Remove(item);
+            }
+            List<ComodidadesProductos> comodidades = _context.ComodidadesProductos.Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
+            foreach (var item in comodidades)
+            {
+                _context.ComodidadesProductos.Remove(item);
+            }
 
+            foreach (var item in alojamiento.ListaDistribuidoresProducto)
+            {
+                item.ProductoId = alojamiento.ProductoId;
+                _context.ProductoDistribuidores.Add(item);
+            }
+            foreach (var item in alojamiento.ListaComodidades)
+            {
+                item.ProductoId = alojamiento.ProductoId;
+                _context.ComodidadesProductos.Add(item);
+
+            }
             _context.Entry(alojamiento).State = EntityState.Modified;
+
+
+
 
             try
             {
                 await _context.SaveChangesAsync();
+                
+                
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -183,6 +213,7 @@ namespace GoTravelTour.Controllers
             alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
             alojamiento.TipoAlojamiento = _context.TipoAlojamientos.First(x => x.TipoAlojamientoId == alojamiento.TipoAlojamientoId);
             alojamiento.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == alojamiento.TipoProductoId);
+            alojamiento.CategoriaHoteles = _context.CategoriaHoteles.First(x => x.CategoriaHotelesId == alojamiento.CategoriaHotelesId);
             _context.Alojamientos.Add(alojamiento);
             await _context.SaveChangesAsync();
 

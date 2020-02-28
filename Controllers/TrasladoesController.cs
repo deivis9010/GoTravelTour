@@ -133,6 +133,33 @@ namespace GoTravelTour.Controllers
             //{
             //    return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             //}
+
+            List<ComodidadesProductos> comodidades = _context.ComodidadesProductos.Where(x => x.ProductoId == traslado.ProductoId).ToList();
+            foreach (var item in comodidades)
+            {
+                _context.ComodidadesProductos.Remove(item);
+            }
+
+            List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == traslado.ProductoId).ToList();
+            foreach (var item in distribuidors)
+            {
+                _context.ProductoDistribuidores.Remove(item);
+            }
+           
+            foreach (var item in traslado.ListaDistribuidoresProducto)
+            {
+                item.ProductoId = traslado.ProductoId;
+                _context.ProductoDistribuidores.Add(item);
+            }
+
+            foreach (var item in traslado.ListaComodidades)
+            {
+                item.ProductoId = traslado.ProductoId;
+                _context.ComodidadesProductos.Add(item);
+            }
+            traslado.Proveedor = _context.Proveedores.First(x => x.ProveedorId == traslado.ProveedorId);
+            traslado.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == traslado.PuntoInteres.PuntoInteresId);
+            traslado.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == traslado.TipoProductoId);
             _context.Entry(traslado).State = EntityState.Modified;
 
             try
@@ -169,6 +196,9 @@ namespace GoTravelTour.Controllers
             //}
             Utiles.Utiles u = new Utiles.Utiles(_context);
             traslado.SKU = u.GetSKUCodigo();
+            traslado.Proveedor = _context.Proveedores.First(x => x.ProveedorId == traslado.ProveedorId);
+            traslado.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == traslado.PuntoInteres.PuntoInteresId);
+            traslado.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == traslado.TipoProductoId);
             _context.Traslados.Add(traslado);
             await _context.SaveChangesAsync();
 
