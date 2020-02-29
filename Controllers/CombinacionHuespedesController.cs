@@ -127,7 +127,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            combinacionHuespedes.Habitacion = _context.Habitaciones.First(h => h.HabitacionId == combinacionHuespedes.Habitacion.HabitacionId);
             _context.Entry(combinacionHuespedes).State = EntityState.Modified;
 
             try
@@ -146,7 +146,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(combinacionHuespedes);
         }
 
         // POST: api/CombinacionHuespedes
@@ -157,6 +157,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            combinacionHuespedes.Habitacion = _context.Habitaciones.First(h => h.HabitacionId == combinacionHuespedes.Habitacion.HabitacionId);
 
             _context.CombinacionHuespedes.Add(combinacionHuespedes);
             await _context.SaveChangesAsync();
@@ -189,5 +190,8 @@ namespace GoTravelTour.Controllers
         {
             return _context.CombinacionHuespedes.Any(e => e.CombinacionHuespedesId == id);
         }
-    }
+
+        
+
+        }
 }

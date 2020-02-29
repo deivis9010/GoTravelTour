@@ -18,7 +18,7 @@ namespace GoTravelTour.Models
         public bool PermiteHacerCopia { get; set; }
         public TipoHabitacion TipoHabitacion { get; set; }
         public Producto Producto { get; set; }
-        
+        public List<CombinacionHuespedes> ListaCombinacionesDisponibles { get; set; }
         public List<HabitacionServiciosHabitacion> ListaServiciosHabitacion { get; set; }
     }
 }
