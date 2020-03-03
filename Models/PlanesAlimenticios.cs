@@ -10,6 +10,7 @@ namespace GoTravelTour.Models
         public int PlanesAlimenticiosId { get; set; }
         public string Nombre { get; set; }
         public string Codigo { get; set; }
+        public List<AlojamientosPlanesAlimenticios> ListaAlojamientos { get; set; }
 
     }
 }

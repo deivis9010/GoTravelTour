@@ -66,6 +66,9 @@ namespace GoTravelTour.Models
         public DbSet<GoTravelTour.Models.NombreHabitacion> NombreHabitacion { get; set; }
         public DbSet<GoTravelTour.Models.ServiciosHabitacion> ServiciosHabitacion { get; set; }
         public DbSet<GoTravelTour.Models.HabitacionServiciosHabitacion> HabitacionServiciosHabitacion { get; set; }
+        public DbSet<GoTravelTour.Models.AlojamientosPlanesAlimenticios> AlojamientosPlanesAlimenticios { get; set; }
+        public DbSet<GoTravelTour.Models.ConfiguracionVoucher> ConfiguracionVoucher { get; set; }
+        public DbSet<GoTravelTour.Models.Paquete> Paquete { get; set; }
        
      
 

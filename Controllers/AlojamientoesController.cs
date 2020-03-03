@@ -37,6 +37,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.TipoAlojamiento)
                     .Include(a => a.PuntoInteres)
                     .Include(a => a.CategoriaHoteles)
+                    .Include(a => a.ListaPlanesAlimenticios)
                     .OrderBy(a => a.Nombre)
                     .ToList();
 
@@ -54,6 +55,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.TipoAlojamiento)                   
                     .Include(a => a.PuntoInteres)
                     .Include(a => a.CategoriaHoteles)
+                    .Include(a => a.ListaPlanesAlimenticios)
                     .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
 
@@ -68,6 +70,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.TipoAlojamiento)
                     .Include(a => a.PuntoInteres)
                     .Include(a => a.CategoriaHoteles)
+                    .Include(a => a.ListaPlanesAlimenticios)
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
@@ -155,6 +158,12 @@ namespace GoTravelTour.Controllers
                 _context.ProductoDistribuidores.Remove(item);
             }
             List<ComodidadesProductos> comodidades = _context.ComodidadesProductos.Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
+            foreach (var item in comodidades)
+            {
+                _context.ComodidadesProductos.Remove(item);
+            }
+
+           // List<AlojamientosPlanesAlimenticios> planes = _context..Where(x => x. == alojamiento.ProductoId).ToList();
             foreach (var item in comodidades)
             {
                 _context.ComodidadesProductos.Remove(item);
