@@ -9,5 +9,6 @@ namespace GoTravelTour.Models
     {
         public int TipoHabitacionId { get; set; }
         public string Nombre { get; set; }
+        public List<HabitacionTipoHabitacion> ListaHabitaciones { get; set; }
     }
 }

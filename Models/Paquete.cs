@@ -16,5 +16,6 @@ namespace GoTravelTour.Models
         public string TipoImagen1 { get; set; }
         public string ImageContent2 { get; set; }
         public string TipoImagen2 { get; set; }
+        public bool IsActivo { get; set; }
     }
 }

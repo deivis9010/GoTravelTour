@@ -13,10 +13,9 @@ namespace GoTravelTour.Models
         public string Descripcion { get; set; }
         public bool IsActiva { get; set; }
         public bool IsPayPerRoom { get; set; }
-        public int TipoHabitacionId { get; set; }
         public int ProductoId { get; set; }
         public bool PermiteHacerCopia { get; set; }
-        public TipoHabitacion TipoHabitacion { get; set; }
+        public List<HabitacionTipoHabitacion> ListaTiposHabitaciones { get; set; }
         public Producto Producto { get; set; }
         public List<CombinacionHuespedes> ListaCombinacionesDisponibles { get; set; }
         public List<HabitacionServiciosHabitacion> ListaServiciosHabitacion { get; set; }

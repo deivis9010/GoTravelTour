@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace GoTravelTour.Models
 {
-    public class NombreHabitacion
+    public class CategoriaHabitacion
     {
-        //Ocean View Garden View
-        public int NombreHabitacionId { get; set; }
+        //standar suite
+        public int CategoriaHabitacionId { get; set; }
         public string Nombre { get; set; }
     }
 }

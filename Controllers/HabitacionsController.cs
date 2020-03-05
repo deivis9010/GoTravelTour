@@ -31,7 +31,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Habitaciones
                     .Include(a => a.Producto )
-                    .Include(a => a.TipoHabitacion)
+                    .Include(a => a.ListaTiposHabitaciones)
                     .Include(a => a.ListaServiciosHabitacion)
                     .Include(a => a.ListaCombinacionesDisponibles)
                     .OrderBy(a=> a.Descripcion)
@@ -46,7 +46,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Habitaciones
                     .Include(a => a.Producto)
-                    .Include(a => a.TipoHabitacion)
+                    .Include(a => a.ListaTiposHabitaciones)
                     .Include(a => a.ListaServiciosHabitacion)
                     .Include(a => a.ListaCombinacionesDisponibles)
                     .OrderBy(a => a.Descripcion)
@@ -57,7 +57,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Habitaciones
                     .Include(a => a.Producto)
-                    .Include(a => a.TipoHabitacion)
+                    .Include(a => a.ListaTiposHabitaciones)
                     .Include(a => a.ListaServiciosHabitacion)
                     .Include(a => a.ListaCombinacionesDisponibles)
                     .OrderBy(a => a.Descripcion)
@@ -153,7 +153,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(habitacion);
         }
 
         // POST: api/Habitacions
@@ -208,7 +208,7 @@ namespace GoTravelTour.Controllers
         {
             var habitacion = _context.Habitaciones
                 .Include(x=>x.Producto)
-                .Include(x => x.TipoHabitacion)
+                .Include(x => x.ListaTiposHabitaciones)
                 .Include(x => x.ListaServiciosHabitacion)
                 .Where(x => x.ProductoId == idP);
 

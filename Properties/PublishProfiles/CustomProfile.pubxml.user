@@ -6,19 +6,9 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAjIgMypiSb0Cdf1izprO6xwAAAAACAAAAAAAQZgAAAAEAACAAAAByCdK/5QoPIG9Z4So1vvF/L0D6DMPcvgd4+KhOX1D+ewAAAAAOgAAAAAIAACAAAABNs5POdQ1ofOhL0ENDjFQAvpY7SSS80wJKG4vNJgH2+zAAAADDQxdTMzvzaCVXpaxrAYQ4vYtoUEtvNeJr5pHJQ7Ucb46OpANhIbS3Y406bnJxlppAAAAA+ktcMuOkNvh2i8Njw5/C8Odyb9ku+C7kpp7D+QqMr9SK5E88MoHBsO4BYLtIAr6HBtZV9b42xPkZ85oz98RxDQ==</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAArvWeUNBSikC7di/SmpVREgAAAAACAAAAAAAQZgAAAAEAACAAAAAYKiZv/IQi7kyGOlUmrlS7jjcd505xwgYwlGTl81kIeQAAAAAOgAAAAAIAACAAAADxxKlwWYAT3BYHorip4+9uzV5dSM4lJEoSe/EJ5mEuxzAAAAAvPNIppwD6jNkC0EpzBAvGe+7MpZfvzAQc1keKe1DIFyHy22r2xIBcxxzDVoe1Ak1AAAAAUkrg11N3nLePOVPMgDesy3hT1f45m1mzvucoUo6Eli/YwtT/hMToP1FXM31XczA+fMbuRtHB7eVKhkDYxJ5D8w==</EncryptedPassword>
     <_PublishTargetUrl>ftp://ftp.site4now.net/frontend</_PublishTargetUrl>
   </PropertyGroup>
-  <ItemGroup>
-    <DestinationConnectionStrings Include="GoTravelConnection">
-      <Value>Server=sql5041.site4now.net,1433%3b Initial Catalog =  DB_A50D95_GoTravelDB%3b Integrated Security = True%3b User Id =  DB_A50D95_GoTravelDB_admin%3b Password =  Gotravel123</Value>
-    </DestinationConnectionStrings>
-  </ItemGroup>
-  <ItemGroup>
-    <EFMigrations Include="GoTravelTour.Models.GoTravelDBContext">
-      <Value>Server=sql5041.site4now.net,1433%3b Initial Catalog =  DB_A50D95_GoTravelDB%3b Integrated Security = True%3b User Id =  DB_A50D95_GoTravelDB_admin%3b Password =  Gotravel123</Value>
-    </EFMigrations>
-  </ItemGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
       <publishTime>08/11/2019 17:59:57</publishTime>
