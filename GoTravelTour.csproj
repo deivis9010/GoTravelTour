@@ -80,6 +80,14 @@
     <Compile Remove="Migrations\20200225030029_serviciosHabitacion.Designer.cs" />
     <Compile Remove="Migrations\20200225031135_serviciosHabitacion.cs" />
     <Compile Remove="Migrations\20200225031135_serviciosHabitacion.Designer.cs" />
+    <Compile Remove="Migrations\20200306004819_modificando habitaciones.cs" />
+    <Compile Remove="Migrations\20200306004819_modificando habitaciones.Designer.cs" />
+    <Compile Remove="Migrations\20200306005038_modificando habitaciones.cs" />
+    <Compile Remove="Migrations\20200306005038_modificando habitaciones.Designer.cs" />
+    <Compile Remove="Migrations\20200306005229_modificando habitaciones.cs" />
+    <Compile Remove="Migrations\20200306005229_modificando habitaciones.Designer.cs" />
+    <Compile Remove="Migrations\20200306010105_modificando habitaciones.cs" />
+    <Compile Remove="Migrations\20200306010105_modificando habitaciones.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,6 +111,7 @@
     <PackageReference Include="MimeKit" Version="2.4.1" />
     <PackageReference Include="PagedList" Version="1.17.0" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

@@ -31,6 +31,8 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Habitaciones
                     .Include(a => a.Producto )
+                    .Include(a => a.NombreHabitacion)
+                    .Include(a => a.CategoriaHabitacion)
                     .Include(a => a.ListaTiposHabitaciones)
                     .Include(a => a.ListaServiciosHabitacion)
                     .Include(a => a.ListaCombinacionesDisponibles)
@@ -46,6 +48,8 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Habitaciones
                     .Include(a => a.Producto)
+                    .Include(a => a.NombreHabitacion)
+                    .Include(a => a.CategoriaHabitacion)
                     .Include(a => a.ListaTiposHabitaciones)
                     .Include(a => a.ListaServiciosHabitacion)
                     .Include(a => a.ListaCombinacionesDisponibles)
@@ -57,6 +61,8 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Habitaciones
                     .Include(a => a.Producto)
+                    .Include(a => a.NombreHabitacion)
+                    .Include(a => a.CategoriaHabitacion)
                     .Include(a => a.ListaTiposHabitaciones)
                     .Include(a => a.ListaServiciosHabitacion)
                     .Include(a => a.ListaCombinacionesDisponibles)
@@ -134,7 +140,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            habitacion.NombreHabitacion = _context.NombreHabitacion.First(x => x.NombreHabitacionId == habitacion.NombreHabitacion.NombreHabitacionId);
+            habitacion.CategoriaHabitacion = _context.CategoriaHabitacion.First(x => x.CategoriaHabitacionId == habitacion.CategoriaHabitacion.CategoriaHabitacionId);
             _context.Entry(habitacion).State = EntityState.Modified;
 
             try
@@ -167,6 +174,8 @@ namespace GoTravelTour.Controllers
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             habitacion.SKU = u.GetSKUCodigo();
+            habitacion.NombreHabitacion = _context.NombreHabitacion.First(x => x.NombreHabitacionId == habitacion.NombreHabitacion.NombreHabitacionId);
+            habitacion.CategoriaHabitacion = _context.CategoriaHabitacion.First(x => x.CategoriaHabitacionId == habitacion.CategoriaHabitacion.CategoriaHabitacionId);
             _context.Habitaciones.Add(habitacion);
             await _context.SaveChangesAsync();
 
