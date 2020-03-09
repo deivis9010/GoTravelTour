@@ -140,8 +140,28 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            habitacion.NombreHabitacion = _context.NombreHabitacion.First(x => x.NombreHabitacionId == habitacion.NombreHabitacion.NombreHabitacionId);
-            habitacion.CategoriaHabitacion = _context.CategoriaHabitacion.First(x => x.CategoriaHabitacionId == habitacion.CategoriaHabitacion.CategoriaHabitacionId);
+            if (habitacion.NombreHabitacion != null && habitacion.NombreHabitacion.NombreHabitacionId > 0)
+                habitacion.NombreHabitacion = _context.NombreHabitacion.First(x => x.NombreHabitacionId == habitacion.NombreHabitacion.NombreHabitacionId);
+            if (habitacion.CategoriaHabitacion != null && habitacion.CategoriaHabitacion.CategoriaHabitacionId > 0)
+                habitacion.CategoriaHabitacion = _context.CategoriaHabitacion.First(x => x.CategoriaHabitacionId == habitacion.CategoriaHabitacion.CategoriaHabitacionId);
+
+            //Eliminando combinaciones anteriores
+            List<CombinacionHuespedes> combAnteriores = _context.CombinacionHuespedes.Where(x => x.Habitacion.HabitacionId == habitacion.HabitacionId && x.ProductoId == habitacion.ProductoId).ToList();
+            foreach( var item in combAnteriores)
+            {
+                _context.CombinacionHuespedes.Remove(item);
+            }          
+
+            if (habitacion.ListaCombinacionesDisponibles != null)
+            {
+                int i = 0;
+                while (i < habitacion.ListaCombinacionesDisponibles.Count())
+                {
+                    habitacion.ListaCombinacionesDisponibles[i] = _context.CombinacionHuespedes.Find(habitacion.ListaCombinacionesDisponibles[i].CombinacionHuespedesId);
+                    i++;
+                }
+            }
+
             _context.Entry(habitacion).State = EntityState.Modified;
 
             try
@@ -174,8 +194,20 @@ namespace GoTravelTour.Controllers
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             habitacion.SKU = u.GetSKUCodigo();
+             if (habitacion.NombreHabitacion != null && habitacion.NombreHabitacion.NombreHabitacionId > 0)
             habitacion.NombreHabitacion = _context.NombreHabitacion.First(x => x.NombreHabitacionId == habitacion.NombreHabitacion.NombreHabitacionId);
-            habitacion.CategoriaHabitacion = _context.CategoriaHabitacion.First(x => x.CategoriaHabitacionId == habitacion.CategoriaHabitacion.CategoriaHabitacionId);
+            if (habitacion.CategoriaHabitacion != null && habitacion.CategoriaHabitacion.CategoriaHabitacionId > 0)
+                habitacion.CategoriaHabitacion = _context.CategoriaHabitacion.First(x => x.CategoriaHabitacionId == habitacion.CategoriaHabitacion.CategoriaHabitacionId);
+
+            if (habitacion.ListaCombinacionesDisponibles != null)
+            {
+                int i = 0;
+                while( i < habitacion.ListaCombinacionesDisponibles.Count())
+                {
+                    habitacion.ListaCombinacionesDisponibles[i] = _context.CombinacionHuespedes.Find(habitacion.ListaCombinacionesDisponibles[i].CombinacionHuespedesId);
+                    i++;
+                }
+            }
             _context.Habitaciones.Add(habitacion);
             await _context.SaveChangesAsync();
 

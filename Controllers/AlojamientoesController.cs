@@ -255,5 +255,199 @@ namespace GoTravelTour.Controllers
         {
             return _context.Alojamientos.Any(e => e.ProductoId == id);
         }
+
+
+
+
+        // GET: api/Alojamientoes/Filtros
+        [HttpGet]
+        [Route("Filtros")]
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1)
+        {
+            IEnumerable<Contrato> lista = new List<Contrato>();
+
+            if (idContrato == -1 && idDistribuidor == -1)
+            {
+
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.TipoProducto.Nombre == "Accommodation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                            .Include(x => x.Producto)
+                            .ThenInclude(x => x.TipoProducto)
+                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
+
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                               
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
+                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId ).ToList();
+                                ;
+
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor != -1)
+            {
+
+                lista = _context.Contratos
+               .Include(a => a.Distribuidor)
+               .Include(a => a.Temporadas)
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+               .OrderBy(a => a.Nombre)
+               .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                            .Include(x => x.Producto)
+                            .ThenInclude(x => x.TipoProducto)
+                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
+
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
+                                           .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
+                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Accommodation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                            .Include(x => x.Producto)
+                            .ThenInclude(x => x.TipoProducto)
+                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
+
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
+                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
+                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1)
+            {
+                lista = _context.Contratos
+                .Include(a => a.Distribuidor)
+                .Include(a => a.Temporadas)
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                            .Include(x => x.Producto)
+                            .ThenInclude(x => x.TipoProducto)
+                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
+
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        {
+                            int i = 0;
+                            while (i < contrato.Temporadas.Count())
+                            {
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
+                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
+                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
+                                 .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;
+
+                                i++;
+                            }
+
+                        }
+
+
+                    }
+                return lista;
+            }
+
+
+            return lista;
+
+        }
+
+
+
+
     }
 }

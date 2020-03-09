@@ -24,7 +24,11 @@ namespace GoTravelTour.Models
         [NotMapped]
         public List<PrecioTraslado> ListaPrecioTraslados { get; set; }
         [NotMapped]
-        public List<Modificador> ListaModificadores { get; set; }
+        public List<ModificadorProductos> ListaModificadores { get; set; }
+        [NotMapped]
+        public List<PrecioPlanesAlimenticios> ListaPrecioPlanes { get; set; }
+        [NotMapped]
+        public List<PrecioAlojamiento> ListaPrecioAlojamientos { get; set; }
 
 
 

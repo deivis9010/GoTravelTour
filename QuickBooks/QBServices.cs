@@ -1,253 +1,179 @@
 ﻿using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
+using Intuit.Ipp.OAuth2PlatformClient;
 using Intuit.Ipp.QueryFilter;
 using Intuit.Ipp.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GoTravelTour.QuickBooks
 {
     public class QBServices
     {
-       /* public void AddInvoice()
-        {
-           // Intuit.Ipp.Security.OAuthRequestValidator reqValidator = new Intuit.Ipp.Security.OAuthRequestValidator(accessToken, accessTokenSecret, consumerKey, consumerKeySecret);
-           /* ServiceContext context = new ServiceContext(realmId, IntuitServicesType.QBO, reqValidator);
+              
 
-            Invoice added = Helper.Add(qboContextoAuth, CreateInvoice(qboContextoAuth));*/
-
-        //}
-
-      /*  internal Invoice CreateInvoice(ServiceContext context)
-        {
-            Customer customer = null;//FindorAdd(context, new Customer());
-            /* TaxCode taxCode = FindorAdd(context, new TaxCode());
-            Account account = FindOrADDAccount(context, AccountTypeEnum.AccountsReceivable, AccountClassificationEnum.Liability);*/
-/*
-            Invoice invoice = new Invoice();
-            invoice.Deposit = new Decimal(0.00);
-            invoice.DepositSpecified = true;
-            invoice.AllowIPNPayment = false;
-            invoice.AllowIPNPaymentSpecified = true;
-
-            invoice.CustomerRef = new ReferenceType()
-            {
-                name = customer.DisplayName,
-                Value = customer.Id
-            };
-            invoice.DueDate = DateTime.UtcNow.Date;
-            invoice.DueDateSpecified = true;
-            invoice.GlobalTaxCalculation = GlobalTaxCalculationEnum.TaxExcluded;
-            invoice.GlobalTaxCalculationSpecified = true;
-            invoice.TotalAmt = new Decimal(0.00);
-            invoice.TotalAmtSpecified = true;
-            invoice.ApplyTaxAfterDiscount = false;
-            invoice.ApplyTaxAfterDiscountSpecified = true;
-
-            invoice.PrintStatus = Intuit.Ipp.Data.PrintStatusEnum.NotSet;
-            invoice.PrintStatusSpecified = true;
-            invoice.EmailStatus = EmailStatusEnum.NotSet;
-            invoice.EmailStatusSpecified = true;
-            invoice.ARAccountRef = new ReferenceType()
-            {
-                type = Enum.GetName(typeof(objectNameEnumType), objectNameEnumType.Account),
-                name = "Account Receivable",
-                Value = "QB:37"
-            };
-            invoice.Balance = new Decimal(0.00);
-            invoice.BalanceSpecified = true;
-
-            List<Line> lineList = new List<Line>();
-            Line line = new Line();
-            line.Description = "Description";
-            line.Amount = new Decimal(100.00);
-            line.AmountSpecified = true;
-
-            line.DetailType = LineDetailTypeEnum.DescriptionOnly;
-            line.DetailTypeSpecified = true;
-
-            lineList.Add(line);
-            invoice.Line = lineList.ToArray();
-            Intuit.Ipp.Data.TxnTaxDetail txnTaxDetail = new TxnTaxDetail();
-            txnTaxDetail.DefaultTaxCodeRef = new ReferenceType()
-            {
-                //Value = taxCode.Id,
-                type = Enum.GetName(typeof(objectNameEnumType), objectNameEnumType.Customer),
-                //name = taxCode.Name
-            };
-
-            txnTaxDetail.TotalTax = new Decimal(0.00);
-            txnTaxDetail.TotalTaxSpecified = true;
-
-
-            return invoice;
-        }*/
-
-        
         /*AGREGADO 29/02/20202*/
         // <summary>
         /// This routine creates an Invoice object
         /// </summary>
-       /* private void CreateInvoice()
-        {
-            /// Step 1: Initialize OAuth2RequestValidator and ServiceContext
-            OAuth2RequestValidator ouathValidator = new OAuth2RequestValidator(
-                (string)Application["accessToken"]);
-            ServiceContext serviceContext = new ServiceContext(
-                (string)Application["realmId"],
-                IntuitServicesType.QBO, ouathValidator);
-            /// Step 2: Initialize an Invoice object
-            Invoice invoice = new Invoice();
-            invoice.Deposit = new Decimal(0.00);
-            invoice.DepositSpecified = true;
+        private void CreateInvoice()
+         {
+              /// Step 1: Initialize OAuth2RequestValidator and ServiceContext
+         /*     OAuth2RequestValidator ouathValidator = new OAuth2RequestValidator(
+                  (string)Application["accessToken"]);
+              ServiceContext serviceContext = new ServiceContext(
+                  (string)Application["realmId"],
+                  IntuitServicesType.QBO, ouathValidator);
+              /// Step 2: Initialize an Invoice object
+              Invoice invoice = new Invoice();
+              invoice.Deposit = new Decimal(0.00);
+              invoice.DepositSpecified = true;
 
-            /// Step 3: Invoice is always created for a customer, so retrieve reference to a customer and set it in Invoice
-            QueryService<Customer> querySvc =
-                new QueryService<Customer>(serviceContext);
-            Customer customer = querySvc.ExecuteIdsQuery
-                ("SELECT * FROM Customer WHERE CompanyName like 'Amy%'").
-                FirstOrDefault();
-            invoice.CustomerRef = new ReferenceType()
-            {
-                Value = customer.Id
-            };
+              /// Step 3: Invoice is always created for a customer, so retrieve reference to a customer and set it in Invoice
+              QueryService<Customer> querySvc =
+                  new QueryService<Customer>(serviceContext);
+              Customer customer = querySvc.ExecuteIdsQuery
+                  ("SELECT * FROM Customer WHERE CompanyName like 'Amy%'").
+                  FirstOrDefault();
+              invoice.CustomerRef = new ReferenceType()
+              {
+                  Value = customer.Id
+              };
 
-            /// Step 4: Invoice is always created for an item so the retrieve reference to an item and create a Line item to the invoice
-            QueryService<Item> querySvcItem =
-                new QueryService<Item>(serviceContext);
-            Item item = querySvcItem.ExecuteIdsQuery(
-                "SELECT * FROM Item WHERE Name = 'Lighting'"); FirstOrDefault();
-            List<Line> lineList = new List<Line>();
-            Line line = new Line();
-            line.Description = "Description";
-            line.Amount = new Decimal(100.00);
-            line.AmountSpecified = true;
-            lineList.Add(line);
-            invoice.Line = lineList.ToArray();
+              /// Step 4: Invoice is always created for an item so the retrieve reference to an item and create a Line item to the invoice
+              QueryService<Item> querySvcItem =
+                  new QueryService<Item>(serviceContext);
+              Item item = querySvcItem.ExecuteIdsQuery(  "SELECT * FROM Item WHERE Name = 'Lighting'").FirstOrDefault();
+              List<Line> lineList = new List<Line>();
+              Line line = new Line();
+              line.Description = "Description";
+              line.Amount = new Decimal(100.00);
+              line.AmountSpecified = true;
+              lineList.Add(line);
+              invoice.Line = lineList.ToArray();
 
-            SalesItemLineDetail salesItemLineDeatil = new SalesItemLineDetail();
-            salesItemLineDeatil.Qty = new Decimal(1.0);
-            salesItemLineDeatil.ItemRef = new ReferenceType
-            {
-                Value = item.Id
-            };
-            line.AnyIntuitObject = salesItemLineDeatil;
+              SalesItemLineDetail salesItemLineDeatil = new SalesItemLineDetail();
+              salesItemLineDeatil.Qty = new Decimal(1.0);
+              salesItemLineDeatil.ItemRef = new ReferenceType
+              {
+                  Value = item.Id
+              };
+              line.AnyIntuitObject = salesItemLineDeatil;
 
-            line.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
-            line.DetailTypeSpecified = true;
+              line.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+              line.DetailTypeSpecified = true;
 
-            /// Step 5: Set other properties such as total amount, due date, email status, and transaction date
-            invoice.DueDate = DateTime.UtcNow.Date;
-            invoice.DueDateSpecified = true;
+              /// Step 5: Set other properties such as total amount, due date, email status, and transaction date
+              invoice.DueDate = DateTime.UtcNow.Date;
+              invoice.DueDateSpecified = true;
 
-            invoice.TotalAmt = new Decimal(10.00);
-            invoice.TotalAmtSpecified = true;
+              invoice.TotalAmt = new Decimal(10.00);
+              invoice.TotalAmtSpecified = true;
 
-            invoice.EmailStatus = EmailStatusEnum.NotSet;
-            invoice.EmailStatusSpecified = true;
+              invoice.EmailStatus = EmailStatusEnum.NotSet;
+              invoice.EmailStatusSpecified = true;
 
-            invoice.Balance = new Decimal(10.00);
-            invoice.BalanceSpecified = true;
+              invoice.Balance = new Decimal(10.00);
+              invoice.BalanceSpecified = true;
 
-            invoice.TxnDate = DateTime.UtcNow.Date;
-            invoice.TxnDateSpecified = true;
-            invoice.TxnTaxDetail = new TxnTaxDetail()
-            {
-                TotalTax = Convert.ToDecimal(10),
-                TotalTaxSpecified = true
-            };
+              invoice.TxnDate = DateTime.UtcNow.Date;
+              invoice.TxnDateSpecified = true;
+              invoice.TxnTaxDetail = new TxnTaxDetail()
+              {
+                  TotalTax = Convert.ToDecimal(10),
+                  TotalTaxSpecified = true
+              };
 
-            ///Step 6: Initialize the service object and create Invoice
-            DataService service = new DataService(serviceContext);
-            Invoice addedInvoice = service.Add<Invoice>(invoice);
-        }
+              ///Step 6: Initialize the service object and create Invoice
+              DataService service = new DataService(serviceContext);
+              Invoice addedInvoice = service.Add<Invoice>(invoice);*/
+          }
 
-        /// <summary>
-        /// //////////-------------------------------------------------
-        /// </summary>
-        //Initialize OAuth2RequestValidator and ServiceContext
-        ServiceContext serviceContext = base.IntializeContext(realmId);
-        DataService dataService = new DataService(serviceContext);
+          /// <summary>
+          /// //////////-------------------------------------------------
+          /// </summary>
+        /*  //Initialize OAuth2RequestValidator and ServiceContext
+          ServiceContext serviceContext = base.IntializeContext(realmId);
+          DataService dataService = new DataService(serviceContext);
 
-        //create income account
-        Account newAccount = new Account
-        {
-            Name = "My " + type.ToString() + random.Next(),
-            AccountType = AccountTypeEnum.Income,
-            AccountSubType = AccountSubTypeEnum.SalesOfProductIncome.ToString(),
-            AccountTypeSpecified = true,
-            SubAccountSpecified = true
-        };
-        Account addedIncomeAccount = dataService.Add<Account>(newAccount);
+          //create income account
+          Account newAccount = new Account
+          {
+              Name = "My " + type.ToString() + random.Next(),
+              AccountType = AccountTypeEnum.Income,
+              AccountSubType = AccountSubTypeEnum.SalesOfProductIncome.ToString(),
+              AccountTypeSpecified = true,
+              SubAccountSpecified = true
+          };
+          Account addedIncomeAccount = dataService.Add<Account>(newAccount);
 
-        //create expense account
-        newAccount = new Account{
-   Name = "My "+type.ToString()+ random.Next(),
-   AccountType = AccountTypeEnum.CostofGoodsSold,
-   AccountSubType = AccountSubTypeEnum.SuppliesMaterialsCogs.ToString(),
-   AccountTypeSpecified = true,
-   SubAccountSpecified = true
-};
-    Account addedIncomeAccount = dataService.Add<Account>(newAccount);
+          //create expense account
+          newAccount = new Account{
+     Name = "My "+type.ToString()+ random.Next(),
+     AccountType = AccountTypeEnum.CostofGoodsSold,
+     AccountSubType = AccountSubTypeEnum.SuppliesMaterialsCogs.ToString(),
+     AccountTypeSpecified = true,
+     SubAccountSpecified = true
+  };
+      Account addedIncomeAccount = dataService.Add<Account>(newAccount);
 
-    //create asset account
-    Account newAccount = new Account
-    {
-        Name = "My " + type.ToString() + random.Next(),
-        AccountType = AccountTypeEnum.OtherAsset,
-        AccountSubType = AccountSubTypeEnum.Inventory.ToString(),
-        AccountTypeSpecified = true,
-        SubAccountSpecified = true
-    };
-    Account addedIncomeAccount = dataService.Add<Account>(newAccount);
+      //create asset account
+      Account newAccount = new Account
+      {
+          Name = "My " + type.ToString() + random.Next(),
+          AccountType = AccountTypeEnum.OtherAsset,
+          AccountSubType = AccountSubTypeEnum.Inventory.ToString(),
+          AccountTypeSpecified = true,
+          SubAccountSpecified = true
+      };
+      Account addedIncomeAccount = dataService.Add<Account>(newAccount);
 
-    //create inventory item using income, expense, asset account
-    Item newItem = new Item
-    {
-        Type = ItemTypeEnum.Inventory,
-        Name = "My Inventory 15" + Guid.NewGuid().ToString("N"),
-        QtyOnHand = 10,
-        InvStartDate = DateTime.Today,
-        Description = "New Inventory with quantity 10",
-        TrackQtyOnHand = true,
-        TypeSpecified = true,
-        QtyOnHandSpecified = true,
-        TrackQtyOnHandSpecified = true,
-        InvStartDateSpecified = true
-    };
-    newItem.IncomeAccountRef = new ReferenceType() { Value = incomeAccount.Id};
-    newItem.ExpenseAccountRef = new ReferenceType() { Value = expenseAccount.Id};
-    newItem.AssetAccountRef = new ReferenceType() { Value = assetAccount.Id};
-    Item addedInventory = dataService.Add<Item>(newItem);
+      //create inventory item using income, expense, asset account
+      Item newItem = new Item
+      {
+          Type = ItemTypeEnum.Inventory,
+          Name = "My Inventory 15" + Guid.NewGuid().ToString("N"),
+          QtyOnHand = 10,
+          InvStartDate = DateTime.Today,
+          Description = "New Inventory with quantity 10",
+          TrackQtyOnHand = true,
+          TypeSpecified = true,
+          QtyOnHandSpecified = true,
+          TrackQtyOnHandSpecified = true,
+          InvStartDateSpecified = true
+      };
+      newItem.IncomeAccountRef = new ReferenceType() { Value = incomeAccount.Id};
+      newItem.ExpenseAccountRef = new ReferenceType() { Value = expenseAccount.Id};
+      newItem.AssetAccountRef = new ReferenceType() { Value = assetAccount.Id};
+      Item addedInventory = dataService.Add<Item>(newItem);
 
-    //create invoice for the inventory item
-    Invoice invoice = new Invoice();
-    invoice.CustomerRef = new ReferenceType() { Value = customer.Id};
+      //create invoice for the inventory item
+      Invoice invoice = new Invoice();
+      invoice.CustomerRef = new ReferenceType() { Value = customer.Id};
 
-    List<Line> lineList = new List<Line>();
-    Line line = new Line();
-    line.Amount = new Decimal(100.00);
-    line.AmountSpecified = true;
-lineList.Add(line);
-invoice.Line = lineList.ToArray();
-SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
-    salesItemLineDetail.Qty = new Decimal(1.0);
-    salesItemLineDetail.QtySpecified = true;
-salesItemLineDetail.ItemRef = new ReferenceType() { Value = addedInventory.Id};
-    line.AnyIntuitObject = salesItemLineDetail;
-ine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
-line.DetailTypeSpecified = true;
-Invoice addedInvoice = dataService.Add<Invoice>(invoice);
+      List<Line> lineList = new List<Line>();
+      Line line = new Line();
+      line.Amount = new Decimal(100.00);
+      line.AmountSpecified = true;
+  lineList.Add(line);
+  invoice.Line = lineList.ToArray();
+  SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+      salesItemLineDetail.Qty = new Decimal(1.0);
+      salesItemLineDetail.QtySpecified = true;
+  salesItemLineDetail.ItemRef = new ReferenceType() { Value = addedInventory.Id};
+      line.AnyIntuitObject = salesItemLineDetail;
+  ine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+  line.DetailTypeSpecified = true;
+  Invoice addedInvoice = dataService.Add<Invoice>(invoice);
 
-    // Query inventory item - the quantity should be reduced
-    QueryService<Item> querySvcItem = new QueryService<Item>(serviceContext);
-    Item queryInventory = querySvcItem.ExecuteIdsQuery("SELECT * FROM Item WHERE Name = '" + addedInventory.Name + "'").FirstOrDefault();
+      // Query inventory item - the quantity should be reduced
+      QueryService<Item> querySvcItem = new QueryService<Item>(serviceContext);
+      Item queryInventory = querySvcItem.ExecuteIdsQuery("SELECT * FROM Item WHERE Name = '" + addedInventory.Name + "'").FirstOrDefault();
 
-    */
-    
+      */
 
-}
+
+    }
 }
