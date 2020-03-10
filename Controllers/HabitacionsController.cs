@@ -161,7 +161,17 @@ namespace GoTravelTour.Controllers
                     i++;
                 }
             }
+            //Eliminando combinaciones anteriores
+            List<HabitacionTipoHabitacion> habTipos = _context.HabitacionTipoHabitacion.Where(x => x.Habitacion.HabitacionId == habitacion.HabitacionId ).ToList();
+            foreach (var item in habTipos)
+            {
+                _context.HabitacionTipoHabitacion.Remove(item);
+            }
 
+            if (habitacion.ListaTiposHabitaciones != null)
+            {
+                _context.HabitacionTipoHabitacion.AddRange(habitacion.ListaTiposHabitaciones);
+            }
             _context.Entry(habitacion).State = EntityState.Modified;
 
             try

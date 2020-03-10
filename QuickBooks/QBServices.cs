@@ -20,11 +20,13 @@ namespace GoTravelTour.QuickBooks
         /// </summary>
         private void CreateInvoice()
          {
-              /// Step 1: Initialize OAuth2RequestValidator and ServiceContext
-         /*     OAuth2RequestValidator ouathValidator = new OAuth2RequestValidator(
-                  (string)Application["accessToken"]);
+            /// Step 1: Initialize OAuth2RequestValidator and ServiceContext
+           /* OAuth2RequestValidator ouathValidator = new OAuth2RequestValidator
+                ("eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..8kEFifQZUal6IAOtBS6aFA.Ni8W1v-cl0-J3AaNukGulrlVxtNXqq77A1P4S3cu4xk_IP8rNBXpGrMsHTBXcnlc1MvJ_uq8eN1x8Ks-G21woOBpNea8fDl4lqy-OJGpMG-Rd-2F6Y4GUCN_CYEhS-1Q2ci-0DnKIZcmnlcXUGoGYOaqtoIPwS5eHNMfPIJeGV56f5BkvA1MzDOAoPISzd5vWZbnzGGOKJzPeAbDmAd1GNCJedW1vZbBSdQlGWwQ3sCy_lUTny_X2Z1VEoLXNAZ0L9qWqFClVkd3Jo3tiMUhoo3RiIlpvCiUQDc9wsqzZ8HBMO3OSgnyLbSEX6G-RgQ9zIkwr7poZ3x0k4JX9JcQcGLlxRM0HUerzxY5tj9-xPzVcE2HydXI7LbovIEghlOVquBGbSb15_mDZQBt33-mZqddYGcJ8WuTfR5IUZeU1R5d_GjKdAiBLSNyfAtNmw17C-WxsTqDuRcwdbz5_0bcPnonJDxlKbDwahPC8ymYh27mFWCFxddFmSb_5edUSQw8LQrRXI5BzBlHjua4392nrSCyDEt0s0RFixk9-hiRMno2eVBEq9zq7ybhHgyvE19M0Og7_rB9AJX9E5Eq17nqS5vqWG8Yj3vG9n0GbhfB7RDPJ6XDKuODHYivcUcWQZuA0W51DibNQbPBSDuzaxanuXylteMQyP-P4eO1_lCg1DzGWhmwfIuwALBEsNBN5F5sEvo1yFfAlHNWYFUoimeUyEvaJ7HfhT5baRYB3tRpjyIAyjQjMPyIaVrGsTVw1LhEnjAcqFVl85WVaXVzSRZWrRu04pihyU9ojLVXeS_n-J4kGGiFgi3zSSDg8-70SkMeLVa6RjzOJnUX30Z_w8o2_ymrkKd-MoqKOAquMz6YOh4t7RujMwjtX00f9GLiz4Uv8Tol2_Ho8zXxdc3eX1xZEg.ZixFqUaCpy83nU2eiqCbVg");
+                  //(string)Application["accessToken"]);
               ServiceContext serviceContext = new ServiceContext(
-                  (string)Application["realmId"],
+                  "4620816365037572030",
+                  //(string)Application["realmId"], QB_GOTravel - devp este es el realmid para desarrollo se genera en la pagina en usuaurio logueado playground
                   IntuitServicesType.QBO, ouathValidator);
               /// Step 2: Initialize an Invoice object
               Invoice invoice = new Invoice();
