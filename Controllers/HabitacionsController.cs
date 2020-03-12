@@ -157,7 +157,7 @@ namespace GoTravelTour.Controllers
                 int i = 0;
                 while (i < habitacion.ListaCombinacionesDisponibles.Count())
                 {
-                    habitacion.ListaCombinacionesDisponibles[i] = _context.CombinacionHuespedes.Find(habitacion.ListaCombinacionesDisponibles[i].CombinacionHuespedesId);
+                     _context.CombinacionHuespedes.Add(habitacion.ListaCombinacionesDisponibles[i]);
                     i++;
                 }
             }
@@ -259,6 +259,8 @@ namespace GoTravelTour.Controllers
         {
             var habitacion = _context.Habitaciones
                 .Include(x=>x.Producto)
+                .Include(x => x.NombreHabitacion)
+                .Include(x => x.CategoriaHabitacion)
                 .Include(x => x.ListaTiposHabitaciones)
                 .Include(x => x.ListaServiciosHabitacion)
                 .Where(x => x.ProductoId == idP);

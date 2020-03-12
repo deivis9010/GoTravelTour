@@ -7,6 +7,7 @@ using GoTravelTour.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using QuickBooks.Helper;
 
 namespace GoTravelTour
 {
@@ -32,6 +35,13 @@ namespace GoTravelTour
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
 
             // CONFIGURACIÓN DEL SERVICIO DE AUTENTICACIÓN JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -50,6 +60,9 @@ namespace GoTravelTour
                         )
                     };
                 });
+            //Configuracion QuickBooks
+            services.AddTransient<IServices, Services>();
+            services.Configure<OAuth2Keys>(Configuration.GetSection("OAuth2Keys"));
 
             services.AddCors(c =>
             {

@@ -23,19 +23,23 @@ namespace GoTravelTour.QuickBooks
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
-        public static string environment ="";
+        public static string environment ="sandbox";
 
         public static OAuth2Client auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
 
-
+        [HttpGet]
+        [Route("Connect")]
         public ActionResult InitiateAuth(string submitButton)
         {
+            //return Ok("entramos");
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-            return Redirect(authorizeUrl);
+            //return Ok(authorizeUrl);
+            return Redirect("http://localhost:59649/api/QBIntegracion/Responses?client_id=ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR&response_type=code&scope=com.intuit.quickbooks.accounting&redirect_uri=https%3A%2F%2Fdeveloper.intuit.com%2Fv2%2FOAuth2Playground%2FRedirectUrl&state=932f04eafe848ed844a5bed93f9033da8c836c6762ffab24ce5a3e51baf1ad94" );
         }
-
+        [HttpGet]
+        [Route("Responses")]
         public ActionResult ApiCallService()
         {
             string realmId = "GOTravel";//Session["realmId"].ToString();
