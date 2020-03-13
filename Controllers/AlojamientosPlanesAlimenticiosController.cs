@@ -29,20 +29,20 @@ namespace GoTravelTour.Controllers
             if (col == "-1")
             {
                 return _context.AlojamientosPlanesAlimenticios
-                    .Include(x => x.Alojamiento)
+                    .Include(x => x.Producto)
                     .Include(x => x.PlanesAlimenticios)
                     .OrderBy(a => a.PlanesAlimenticios.Nombre)
                     .ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.AlojamientosPlanesAlimenticios.Include(x => x.PlanesAlimenticios).Include(x => x.Alojamiento)
+                lista = _context.AlojamientosPlanesAlimenticios.Include(x => x.PlanesAlimenticios).Include(x => x.Producto)
                     .Where(p => (p.PlanesAlimenticios.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
                 lista = _context.AlojamientosPlanesAlimenticios.Include(x => x.PlanesAlimenticios)
-                    .Include(x => x.Alojamiento).ToPagedList(pageIndex, pageSize).ToList();
+                    .Include(x => x.Producto).ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)

@@ -23,7 +23,7 @@ using QuickBooks.Models;
 
 namespace QuickBooks.Helper
 {
-    public class Services : IServices
+    /*public class Services : IServices
     {
         private readonly TokensContext _tokens;
         public Services(TokensContext tokens)
@@ -91,5 +91,5 @@ namespace QuickBooks.Helper
 
 
 
-    }
+    //}
 }

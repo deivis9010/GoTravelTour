@@ -153,6 +153,7 @@ namespace GoTravelTour.Controllers
             }
             actividad.Region = _context.Regiones.First(x => x.RegionId == actividad.Region.RegionId);
             actividad.Proveedor = _context.Proveedores.First(x => x.ProveedorId == actividad.ProveedorId);
+            if(actividad.PuntoInteres!= null)
             actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
             actividad.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == actividad.TipoProductoId);
            
@@ -167,11 +168,13 @@ namespace GoTravelTour.Controllers
                 _context.ComodidadesProductos.Remove(item);
             }
 
+            if(actividad.ListaDistribuidoresProducto != null)
             foreach (var item in actividad.ListaDistribuidoresProducto)
             {
                 item.ProductoId = actividad.ProductoId;
                 _context.ProductoDistribuidores.Add(item);
             }
+            if (actividad.ListaComodidades != null)
             foreach (var item in actividad.ListaComodidades)
             {
                 item.ProductoId = actividad.ProductoId;

@@ -263,6 +263,7 @@ namespace GoTravelTour.Controllers
                 .Include(x => x.CategoriaHabitacion)
                 .Include(x => x.ListaTiposHabitaciones)
                 .Include(x => x.ListaServiciosHabitacion)
+                .Include(a => a.ListaCombinacionesDisponibles)
                 .Where(x => x.ProductoId == idP);
 
             return habitacion;

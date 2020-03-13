@@ -201,21 +201,22 @@ namespace GoTravelTour.Controllers
             {
                 _context.ProductoDistribuidores.Remove(item);
             }
-
+            if (vehiculo.ListaDistribuidoresProducto != null)
             foreach (var item in vehiculo.ListaDistribuidoresProducto)
             {
                 item.ProductoId = vehiculo.ProductoId;
                 _context.ProductoDistribuidores.Add(item);
             }
-
-            foreach (var item in vehiculo.ListaComodidades)
+            if (vehiculo.ListaComodidades != null)
+                foreach (var item in vehiculo.ListaComodidades)
             {
                 item.ProductoId = vehiculo.ProductoId;
                 _context.ComodidadesProductos.Add(item);
             }
 
             vehiculo.Proveedor = _context.Proveedores.First(x => x.ProveedorId == vehiculo.ProveedorId);
-            vehiculo.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == vehiculo.PuntoInteres.PuntoInteresId);
+            if (vehiculo.PuntoInteres != null)
+                vehiculo.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == vehiculo.PuntoInteres.PuntoInteresId);
             vehiculo.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == vehiculo.TipoProductoId);
             vehiculo.Marca = _context.Marcas.First(x => x.MarcaId == vehiculo.MarcaId);
             vehiculo.Modelo = _context.Modelos.First(x => x.ModeloId == vehiculo.ModeloId);
@@ -255,7 +256,8 @@ namespace GoTravelTour.Controllers
             Utiles.Utiles u = new Utiles.Utiles(_context);
             vehiculo.SKU = u.GetSKUCodigo();
             vehiculo.Proveedor = _context.Proveedores.First(x => x.ProveedorId == vehiculo.ProveedorId);
-            vehiculo.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == vehiculo.PuntoInteres.PuntoInteresId);
+            if (vehiculo.PuntoInteres != null)
+                vehiculo.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == vehiculo.PuntoInteres.PuntoInteresId);
             vehiculo.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == vehiculo.TipoProductoId);
             vehiculo.Marca = _context.Marcas.First(x => x.MarcaId == vehiculo.MarcaId);
             vehiculo.Modelo = _context.Modelos.First(x => x.ModeloId == vehiculo.ModeloId);

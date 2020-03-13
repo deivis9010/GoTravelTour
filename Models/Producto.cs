@@ -32,6 +32,7 @@ namespace GoTravelTour.Models
         public Proveedor Proveedor { get; set; }
         public List<ProductoDistribuidor> ListaDistribuidoresProducto { get; set; }
         public List<ComodidadesProductos>ListaComodidades { get; set; }
-       
+        public List<AlojamientosPlanesAlimenticios> ListaPlanesAlimenticios { get; set; }
+
     }
 }

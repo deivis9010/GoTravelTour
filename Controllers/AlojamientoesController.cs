@@ -147,7 +147,8 @@ namespace GoTravelTour.Controllers
             }
 
             alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
-            alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
+            if (alojamiento.PuntoInteres != null)
+                alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
             alojamiento.TipoAlojamiento = _context.TipoAlojamientos.First(x => x.TipoAlojamientoId == alojamiento.TipoAlojamientoId);
             alojamiento.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == alojamiento.TipoProductoId);
             alojamiento.CategoriaHoteles = _context.CategoriaHoteles.First(x => x.CategoriaHotelesId == alojamiento.CategoriaHotelesId);
@@ -163,7 +164,7 @@ namespace GoTravelTour.Controllers
                 _context.ComodidadesProductos.Remove(item);
             }
 
-           // List<AlojamientosPlanesAlimenticios> planes = _context..Where(x => x. == alojamiento.ProductoId).ToList();
+            List<AlojamientosPlanesAlimenticios> planes = _context.AlojamientosPlanesAlimenticios.Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
             foreach (var item in comodidades)
             {
                 _context.ComodidadesProductos.Remove(item);

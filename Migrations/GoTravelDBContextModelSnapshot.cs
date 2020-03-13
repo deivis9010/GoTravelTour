@@ -48,15 +48,15 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AlojamientoId");
-
                     b.Property<int>("PlanesAlimenticiosId");
+
+                    b.Property<int>("ProductoId");
 
                     b.HasKey("AlojamientosPlanesAlimenticiosId");
 
-                    b.HasIndex("AlojamientoId");
-
                     b.HasIndex("PlanesAlimenticiosId");
+
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("AlojamientosPlanesAlimenticios");
                 });
@@ -1300,14 +1300,14 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.AlojamientosPlanesAlimenticios", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Alojamiento", "Alojamiento")
-                        .WithMany("ListaPlanesAlimenticios")
-                        .HasForeignKey("AlojamientoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("GoTravelTour.Models.PlanesAlimenticios", "PlanesAlimenticios")
                         .WithMany("ListaAlojamientos")
                         .HasForeignKey("PlanesAlimenticiosId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Producto", "Producto")
+                        .WithMany("ListaPlanesAlimenticios")
+                        .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

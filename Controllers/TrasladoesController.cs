@@ -145,20 +145,21 @@ namespace GoTravelTour.Controllers
             {
                 _context.ProductoDistribuidores.Remove(item);
             }
-           
+            if (traslado.ListaDistribuidoresProducto != null)
             foreach (var item in traslado.ListaDistribuidoresProducto)
             {
                 item.ProductoId = traslado.ProductoId;
                 _context.ProductoDistribuidores.Add(item);
             }
-
+            if (traslado.ListaDistribuidoresProducto != null)
             foreach (var item in traslado.ListaComodidades)
             {
                 item.ProductoId = traslado.ProductoId;
                 _context.ComodidadesProductos.Add(item);
             }
             traslado.Proveedor = _context.Proveedores.First(x => x.ProveedorId == traslado.ProveedorId);
-            traslado.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == traslado.PuntoInteres.PuntoInteresId);
+            if (traslado.ListaDistribuidoresProducto != null)
+               traslado.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == traslado.PuntoInteres.PuntoInteresId);
             traslado.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == traslado.TipoProductoId);
             _context.Entry(traslado).State = EntityState.Modified;
 
@@ -197,6 +198,7 @@ namespace GoTravelTour.Controllers
             Utiles.Utiles u = new Utiles.Utiles(_context);
             traslado.SKU = u.GetSKUCodigo();
             traslado.Proveedor = _context.Proveedores.First(x => x.ProveedorId == traslado.ProveedorId);
+            if (traslado.PuntoInteres != null)
             traslado.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == traslado.PuntoInteres.PuntoInteresId);
             traslado.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == traslado.TipoProductoId);
             _context.Traslados.Add(traslado);
