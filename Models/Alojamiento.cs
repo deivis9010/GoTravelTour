@@ -29,8 +29,7 @@ namespace GoTravelTour.Models
         public bool? PermiteInfante { get; set; }
         public bool? PermiteNino { get; set; }
         public int TipoAlojamientoId { get; set; }
-        public TipoAlojamiento TipoAlojamiento { get; set; }
-        public List<ModificadorProductos> ListaHoteles { get; set; }       
+        public TipoAlojamiento TipoAlojamiento { get; set; }         
         public CategoriaHoteles CategoriaHoteles { get; set; }
 
 

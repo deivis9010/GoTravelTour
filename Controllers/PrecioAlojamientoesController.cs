@@ -123,7 +123,9 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-
+            precioAlojamiento.Contrato = _context.Contratos.Find(precioAlojamiento.Contrato.ContratoId);
+            precioAlojamiento.Temporada = _context.Temporadas.Find(precioAlojamiento.Temporada.TemporadaId);
+            precioAlojamiento.Habitacion = _context.Habitaciones.Find(precioAlojamiento.Habitacion.HabitacionId);
             _context.Entry(precioAlojamiento).State = EntityState.Modified;
 
             try
@@ -142,7 +144,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(precioAlojamiento);
         }
 
         // POST: api/PrecioAlojamientoes
@@ -153,6 +155,11 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            precioAlojamiento.Contrato = _context.Contratos.Find(precioAlojamiento.Contrato.ContratoId);
+            precioAlojamiento.Temporada = _context.Temporadas.Find(precioAlojamiento.Temporada.TemporadaId);
+            precioAlojamiento.Habitacion = _context.Habitaciones.Find(precioAlojamiento.Habitacion.HabitacionId);
+
 
             _context.PrecioAlojamiento.Add(precioAlojamiento);
             await _context.SaveChangesAsync();

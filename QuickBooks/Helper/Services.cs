@@ -23,7 +23,7 @@ using QuickBooks.Models;
 
 namespace QuickBooks.Helper
 {
-    /*public class Services : IServices
+    public class Services : IServices
     {
         private readonly TokensContext _tokens;
         public Services(TokensContext tokens)
@@ -53,7 +53,7 @@ namespace QuickBooks.Helper
         /// </summary>
        
         /// <param name="apiCallFunction"></param>
-      /*  public async System.Threading.Tasks.Task QBOApiCall(Action<ServiceContext> apiCallFunction)
+     /*   public async System.Threading.Tasks.Task QBOApiCall(Action<ServiceContext> apiCallFunction)
         {
             OAuth2Client oauthClient = new OAuth2Client(OAuth2Keys.ClientId, OAuth2Keys.ClientSecret, OAuth2Keys.RedirectUrl, OAuth2Keys.Environment);
 
@@ -91,5 +91,5 @@ namespace QuickBooks.Helper
 
 
 
-    //}
+    }
 }

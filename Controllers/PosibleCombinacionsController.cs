@@ -124,6 +124,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            if (_context.PosibleCombinaciones.Any(c => c.CantAdult == posibleCombinacion.CantAdult && c.CantNino == posibleCombinacion.CantNino && c.CantInfantes == posibleCombinacion.CantInfantes && id != posibleCombinacion.PosibleCombinacionId))
+            {
+                return CreatedAtAction("GetPosibleCombinacion", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
 
             _context.Entry(posibleCombinacion).State = EntityState.Modified;
 
@@ -156,6 +160,11 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
             posibleCombinacion.TipoHabitacion = _context.TipoHabitaciones.First(x => x.TipoHabitacionId == posibleCombinacion.TipoHabitacionId);
+
+            if (_context.PosibleCombinaciones.Any(c => c.CantAdult == posibleCombinacion.CantAdult && c.CantNino == posibleCombinacion.CantNino && c.CantInfantes == posibleCombinacion.CantInfantes ))
+            {
+                return CreatedAtAction("GetPosibleCombinacion", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             _context.PosibleCombinaciones.Add(posibleCombinacion);
             await _context.SaveChangesAsync();
 

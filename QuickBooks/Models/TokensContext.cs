@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace QuickBooks.Models
 {
-    /*public partial class TokensContext : DbContext
+    public partial class TokensContext : DbContext
     {
         public TokensContext()
         {
@@ -46,5 +46,5 @@ namespace QuickBooks.Models
                     .HasMaxLength(1000);
             });
         }
-    }*/
+    }
 }
