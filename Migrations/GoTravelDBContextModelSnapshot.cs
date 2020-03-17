@@ -1254,9 +1254,13 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("CapacidadTraslado");
 
+                    b.Property<int>("TipoTransporteId");
+
                     b.Property<string>("TipoTraslado");
 
                     b.Property<int>("TrasladoId");
+
+                    b.HasIndex("TipoTransporteId");
 
                     b.ToTable("Traslado");
 
@@ -1678,6 +1682,14 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.TipoAlojamiento", "TipoAlojamiento")
                         .WithMany()
                         .HasForeignKey("TipoAlojamientoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.Traslado", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.TipoTransporte", "TipoTransporte")
+                        .WithMany()
+                        .HasForeignKey("TipoTransporteId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
