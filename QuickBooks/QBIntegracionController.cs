@@ -10,6 +10,7 @@ using Intuit.Ipp.QueryFilter;
 using Intuit.Ipp.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -22,7 +23,9 @@ namespace GoTravelTour.QuickBooks
        
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
-        public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
+        //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
+        public static string redirectUrl = " http://localhost:59649/api/QBIntegracion/Responses";
+       
         public static string environment ="sandbox";
 
         public static OAuth2Client auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
@@ -35,14 +38,29 @@ namespace GoTravelTour.QuickBooks
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-            //return Ok(authorizeUrl);
-            return Redirect("http://localhost:59649/api/QBIntegracion/Responses?client_id=ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR&response_type=code&scope=com.intuit.quickbooks.accounting&redirect_uri=https%3A%2F%2Fdeveloper.intuit.com%2Fv2%2FOAuth2Playground%2FRedirectUrl&state=932f04eafe848ed844a5bed93f9033da8c836c6762ffab24ce5a3e51baf1ad94" );
+            return Ok(authorizeUrl);
+            //return Redirect("http://localhost:59649/api/QBIntegracion/Responses"+authorizeUrl );
         }
+
+       /* private async Task GetAuthTokensAsync(string code, string realmId)
+        {
+            oAuth2Client = new OAuth2Client(OAuth2Keys.ClientId, OAuth2Keys.ClientSecret, OAuth2Keys.RedirectUrl, OAuth2Keys.Environment);
+            var tokenResponse = await oAuth2Client.GetBearerTokenAsync(code);
+            OAuth2Keys.RealmId = realmId;
+            Token token = _tokens.Token.FirstOrDefault(t => t.RealmId == realmId);
+            if (token == null)
+            {
+                _tokens.Add(new Token { RealmId = realmId, AccessToken = tokenResponse.AccessToken, RefreshToken = tokenResponse.RefreshToken });
+                await _tokens.SaveChangesAsync();
+            }
+        }*/
+
         [HttpGet]
         [Route("Responses")]
-        public ActionResult ApiCallService()
+        public ActionResult ApiCallService(/*string realmId, string code*/)
         {
-            string realmId = "GOTravel";//Session["realmId"].ToString();
+            //string token = auth2Client.GetBearerTokenAsync(code).Result.AccessToken;
+            string realmId = "";// Session["realmId"].ToString();
             var principal = User as ClaimsPrincipal;
             OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(principal.FindFirst("access_token").Value);
             // Create a ServiceContext with Auth tokens and realmId

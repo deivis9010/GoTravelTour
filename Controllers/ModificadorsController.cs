@@ -31,7 +31,8 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                       .Include(a => a.Contrato)
                       .Include(a => a.Contrato.Distribuidor)
-                      
+                      .Include(a => a.Contrato.Temporadas)
+
                        .Include(a => a.ListaHoteles)
                        .Include(a => a.ListaReglas)
                        .Include(a => a.Proveedor)
@@ -41,7 +42,8 @@ namespace GoTravelTour.Controllers
                 if(lista.Count() > 0)
                 foreach (Modificador mod in lista)
                 {
-                    mod.Contrato.Distribuidor.ListaProductosDistribuidos= _context.ProductoDistribuidores.Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
+                    mod.Contrato.Distribuidor.ListaProductosDistribuidos= _context.ProductoDistribuidores
+                         .Include(x => x.Producto). Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
                 }
                 
 
@@ -52,17 +54,19 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                       .Include(a => a.Contrato)
                        .Include(a => a.Contrato.Distribuidor)
-                   
+                   .Include(a => a.Contrato.Temporadas)
                    .Include(a => a.ListaHoteles)
                    .Include(a => a.ListaReglas)
                    .Include(a => a.Proveedor)
+
                     .OrderBy(a => a.IdentificadorModificador)
 
                     .Where(p => (p.IdentificadorModificador.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
                 if (lista.Count() > 0)
                     foreach (Modificador mod in lista)
                     {
-                        mod.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
+                        mod.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                            .Include(x => x.Producto).Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
                     }
             }
             else
@@ -71,7 +75,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                       .Include(a => a.Contrato)
                        .Include(a => a.Contrato.Distribuidor)
-                       
+                       .Include(a => a.Contrato.Temporadas)
                        .Include(a => a.ListaHoteles)
                        .Include(a => a.ListaReglas)
                        .Include(a => a.Proveedor)
@@ -82,7 +86,8 @@ namespace GoTravelTour.Controllers
                 if (lista.Count() > 0)
                     foreach (Modificador mod in lista)
                     {
-                        mod.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
+                        mod.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                            .Include(x => x.Producto).Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
                     }
 
             }
@@ -284,7 +289,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                 .Include(a => a.Contrato)
                 .Include(a => a.Contrato.Distribuidor)
-                
+                .Include(a => a.Contrato.Temporadas)
                 .Include(a => a.ListaHoteles)
                 .Include(a => a.ListaReglas)
                 .Include(a => a.Proveedor)
@@ -295,6 +300,7 @@ namespace GoTravelTour.Controllers
                 foreach( Modificador modificador in lista)
                 {
                     modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                        .Include(x => x.Producto)
                        .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                        .ToList();
                 }
@@ -310,7 +316,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                .Include(a => a.Contrato)
                .Include(a => a.Contrato.Distribuidor)
-               
+               .Include(a => a.Contrato.Temporadas)
                .Include(a => a.ListaHoteles)
                .Include(a => a.ListaReglas)
                .Include(a => a.Proveedor)
@@ -321,6 +327,7 @@ namespace GoTravelTour.Controllers
                 foreach (Modificador modificador in lista)
                 {
                     modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                        .Include(x => x.Producto)
                        .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                        .ToList();
                 }
@@ -332,10 +339,11 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                 .Include(a => a.Contrato)
                  .Include(a => a.Contrato.Distribuidor)
-                
+                .Include(a => a.Contrato.Temporadas)
                 .Include(a => a.ListaHoteles)
                 .Include(a => a.ListaReglas)
                 .Include(a => a.Proveedor)
+
                  .Where(a => a.Contrato.ContratoId == idContrato)
                 .OrderBy(a => a.IdentificadorModificador)
                 .ToList();
@@ -344,6 +352,7 @@ namespace GoTravelTour.Controllers
                 foreach (Modificador modificador in lista)
                 {
                     modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                        .Include(x => x.Producto)
                        .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                        .ToList();
                 }
@@ -356,7 +365,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Modificadores
                .Include(a => a.Contrato)
                .Include(a => a.Contrato.Distribuidor)
-              
+              .Include(a => a.Contrato.Temporadas)
                .Include(a => a.ListaHoteles)
                .Include(a => a.ListaReglas)
                .Include(a => a.Proveedor)
@@ -366,6 +375,7 @@ namespace GoTravelTour.Controllers
                 foreach (Modificador modificador in lista)
                 {
                     modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+                        .Include(x => x.Producto)
                        .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                        .ToList();
                 }

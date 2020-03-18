@@ -15,6 +15,7 @@ namespace GoTravelTour.Models
         public bool PermiteHacerCopia { get; set; }
         public Contrato Contrato { get; set; }
         public List<RangoFechas> ListaFechasTemporada { get; set; }
+        public List<ModificadorTemporada> ListaModificadoresActivos { get; set; }
         [NotMapped]
         public List<Restricciones> ListaRestricciones { get; set; }
         [NotMapped]

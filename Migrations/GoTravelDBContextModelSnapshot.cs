@@ -461,6 +461,25 @@ namespace GoTravelTour.Migrations
                     b.ToTable("ModificadorProductos");
                 });
 
+            modelBuilder.Entity("GoTravelTour.Models.ModificadorTemporada", b =>
+                {
+                    b.Property<int>("ModificadorTemporadaId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ModificadorId");
+
+                    b.Property<int>("TemporadaId");
+
+                    b.HasKey("ModificadorTemporadaId");
+
+                    b.HasIndex("ModificadorId");
+
+                    b.HasIndex("TemporadaId");
+
+                    b.ToTable("ModificadorTemporada");
+                });
+
             modelBuilder.Entity("GoTravelTour.Models.NombreHabitacion", b =>
                 {
                     b.Property<int>("NombreHabitacionId")
@@ -1428,6 +1447,19 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.Producto", "Producto")
                         .WithMany("ListaHoteles")
                         .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.ModificadorTemporada", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.Modificador", "Modificador")
+                        .WithMany("ListaTemporadasAfectadas")
+                        .HasForeignKey("ModificadorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Temporada", "Temporada")
+                        .WithMany("ListaModificadoresActivos")
+                        .HasForeignKey("TemporadaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

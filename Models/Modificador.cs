@@ -22,6 +22,7 @@ namespace GoTravelTour.Models
         public Contrato Contrato { get; set; }
         public List<ModificadorProductos> ListaHoteles { get; set; } //Hoteles sobre los cuales es valido el modificador
         public List<Reglas> ListaReglas { get; set; } // una x la cantidad de personas en el modificador
+        public List<ModificadorTemporada> ListaTemporadasAfectadas { get; set; }
 
 
 
