@@ -192,5 +192,7 @@ namespace GoTravelTour.Controllers
         {
             return _context.PrecioAlojamiento.Any(e => e.PrecioAlojamientoId == id);
         }
+
+        
     }
 }

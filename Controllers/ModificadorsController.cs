@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -150,6 +151,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Modificadors/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutModificador([FromRoute] int id, [FromBody] Modificador modificador)
         {
             if (!ModelState.IsValid)
@@ -225,6 +227,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Modificadors
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostModificador([FromBody] Modificador modificador)
         {
             if (!ModelState.IsValid)
@@ -236,7 +239,7 @@ namespace GoTravelTour.Controllers
                 .Include(x=>x.Distribuidor)
                 .Single(x => x.ContratoId == modificador.Contrato.ContratoId);
 
-            modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+            modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x=>x.Producto)
                 .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                 .ToList();
 
@@ -251,6 +254,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Modificadors/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteModificador([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -293,6 +297,7 @@ namespace GoTravelTour.Controllers
                 .Include(a => a.ListaHoteles)
                 .Include(a => a.ListaReglas)
                 .Include(a => a.Proveedor)
+                .Include(a => a.ListaTemporadasAfectadas)
 
                 .OrderBy(a => a.IdentificadorModificador)
                 .ToList();
@@ -320,6 +325,7 @@ namespace GoTravelTour.Controllers
                .Include(a => a.ListaHoteles)
                .Include(a => a.ListaReglas)
                .Include(a => a.Proveedor)
+               .Include(a => a.ListaTemporadasAfectadas)
                .Where(a => a.Contrato.ContratoId == idContrato && a.Contrato.Distribuidor.DistribuidorId == idDistribuidor)
                .OrderBy(a => a.IdentificadorModificador)
                .ToList();
@@ -343,6 +349,7 @@ namespace GoTravelTour.Controllers
                 .Include(a => a.ListaHoteles)
                 .Include(a => a.ListaReglas)
                 .Include(a => a.Proveedor)
+                 .Include(a => a.ListaTemporadasAfectadas)
 
                  .Where(a => a.Contrato.ContratoId == idContrato)
                 .OrderBy(a => a.IdentificadorModificador)
@@ -369,6 +376,7 @@ namespace GoTravelTour.Controllers
                .Include(a => a.ListaHoteles)
                .Include(a => a.ListaReglas)
                .Include(a => a.Proveedor)
+                .Include(a => a.ListaTemporadasAfectadas)
                 .Where(a => a.Contrato.DistribuidorId == idDistribuidor)
                 .OrderBy(a => a.IdentificadorModificador)
                 .ToList();
