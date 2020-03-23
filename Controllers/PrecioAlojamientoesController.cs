@@ -32,6 +32,7 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.Habitacion)
                     .Include(x => x.Hotel)
                     .Include(x => x.Temporada)
+                    .Include(x => x.TipoHabitacion)
                     .OrderBy(a => a.Habitacion.Nombre)
                     .ToList();
             }
@@ -40,6 +41,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.PrecioAlojamiento.Include(x => x.Habitacion)
                     .Include(x => x.Hotel)
                     .Include(x => x.Temporada)
+                    .Include(x => x.TipoHabitacion)
                     .OrderBy(a => a.Habitacion.Nombre)
                     .Where(p => (p.Habitacion.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
             }
@@ -49,6 +51,7 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.Habitacion)
                     .Include(x => x.Hotel)
                     .Include(x => x.Temporada)
+                    .Include(x => x.TipoHabitacion)
                     .OrderBy(a => a.Habitacion.Nombre).ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -126,6 +129,7 @@ namespace GoTravelTour.Controllers
             precioAlojamiento.Contrato = _context.Contratos.Find(precioAlojamiento.Contrato.ContratoId);
             precioAlojamiento.Temporada = _context.Temporadas.Find(precioAlojamiento.Temporada.TemporadaId);
             precioAlojamiento.Habitacion = _context.Habitaciones.Find(precioAlojamiento.Habitacion.HabitacionId);
+            precioAlojamiento.TipoHabitacion = _context.TipoHabitaciones.Find(precioAlojamiento.TipoHabitacion.TipoHabitacionId);
             _context.Entry(precioAlojamiento).State = EntityState.Modified;
 
             try
@@ -159,7 +163,7 @@ namespace GoTravelTour.Controllers
             precioAlojamiento.Contrato = _context.Contratos.Find(precioAlojamiento.Contrato.ContratoId);
             precioAlojamiento.Temporada = _context.Temporadas.Find(precioAlojamiento.Temporada.TemporadaId);
             precioAlojamiento.Habitacion = _context.Habitaciones.Find(precioAlojamiento.Habitacion.HabitacionId);
-
+            precioAlojamiento.TipoHabitacion = _context.TipoHabitaciones.Find(precioAlojamiento.TipoHabitacion.TipoHabitacionId);
 
             _context.PrecioAlojamiento.Add(precioAlojamiento);
             await _context.SaveChangesAsync();

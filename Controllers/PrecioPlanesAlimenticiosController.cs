@@ -31,7 +31,7 @@ namespace GoTravelTour.Controllers
             {
                 return _context.PrecioPlanesAlimenticios
                     .Include(x=>x.Hotel)
-                    .Include(x => x.Temporada)
+                    .Include(x => x.PlanesAlimenticios)
 
                     .OrderBy(a => a.Hotel.Nombre).ToList();
             }
@@ -39,14 +39,14 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.PrecioPlanesAlimenticios
                     .Include(x => x.Hotel)
-                    .Include(x => x.Temporada)
+                    .Include(x => x.PlanesAlimenticios)
                     .Where(p => (p.Hotel.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
                 lista = _context.PrecioPlanesAlimenticios
                     .Include(x => x.Hotel)
-                    .Include(x => x.Temporada).ToPagedList(pageIndex, pageSize).ToList();
+                    .Include(x => x.PlanesAlimenticios).ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -120,6 +120,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+
+            
 
             _context.Entry(precioPlanesAlimenticios).State = EntityState.Modified;
 

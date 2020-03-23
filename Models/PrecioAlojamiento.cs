@@ -18,6 +18,7 @@ namespace GoTravelTour.Models
         public Contrato Contrato { get; set; }
         public Temporada Temporada { get; set; }
         public Habitacion Habitacion { get; set; }
+        public TipoHabitacion TipoHabitacion { get; set; }
         //public List<Modificador> Modificadores { get; set; }
     }
 }

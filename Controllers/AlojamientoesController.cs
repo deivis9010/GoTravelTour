@@ -285,6 +285,8 @@ namespace GoTravelTour.Controllers
                             .ThenInclude(x => x.TipoProducto)
                             .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
 
+                       
+
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -294,9 +296,16 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
-                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId ).ToList();
-                                ;
+
+                                if(contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                                foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
+                                {
+                                        contrato.Temporadas[i].ListaPrecioPlanes.Add( _context.PrecioPlanesAlimenticios
+                                                                                   .First(x => x.ProductoId== item.ProductoId));
+                                        ;
+                                }
+                                
+
 
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
@@ -337,9 +346,13 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
                                            .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
-                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                                if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                                    foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
+                                    {
+                                        contrato.Temporadas[i].ListaPrecioPlanes.Add(_context.PrecioPlanesAlimenticios
+                                                                                   .First(x => x.ProductoId == item.ProductoId));
+                                        ;
+                                    }
 
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
@@ -381,9 +394,13 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
-                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                                if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                                    foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
+                                    {
+                                        contrato.Temporadas[i].ListaPrecioPlanes.Add(_context.PrecioPlanesAlimenticios
+                                                                                   .First(x => x.ProductoId == item.ProductoId));
+                                        ;
+                                    }
 
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
@@ -424,9 +441,13 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioPlanes = _context.PrecioPlanesAlimenticios
-                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                                if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
+                                    foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
+                                    {
+                                        contrato.Temporadas[i].ListaPrecioPlanes.Add(_context.PrecioPlanesAlimenticios
+                                                                                   .First(x => x.ProductoId == item.ProductoId));
+                                        ;
+                                    }
 
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();

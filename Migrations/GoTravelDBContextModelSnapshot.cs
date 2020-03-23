@@ -589,6 +589,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("TemporadaId");
 
+                    b.Property<int?>("TipoHabitacionId");
+
                     b.HasKey("PrecioAlojamientoId");
 
                     b.HasIndex("ContratoId");
@@ -598,6 +600,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("ProductoId");
 
                     b.HasIndex("TemporadaId");
+
+                    b.HasIndex("TipoHabitacionId");
 
                     b.ToTable("PrecioAlojamiento");
                 });
@@ -629,17 +633,17 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("PlanesAlimenticiosId");
+
                     b.Property<decimal>("Precio");
 
                     b.Property<int>("ProductoId");
 
-                    b.Property<int?>("TemporadaId");
-
                     b.HasKey("PrecioPlanesAlimenticiosId");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("PlanesAlimenticiosId");
 
-                    b.HasIndex("TemporadaId");
+                    b.HasIndex("ProductoId");
 
                     b.ToTable("PrecioPlanesAlimenticios");
                 });
@@ -1489,6 +1493,10 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.Temporada", "Temporada")
                         .WithMany()
                         .HasForeignKey("TemporadaId");
+
+                    b.HasOne("GoTravelTour.Models.TipoHabitacion", "TipoHabitacion")
+                        .WithMany()
+                        .HasForeignKey("TipoHabitacionId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.PrecioComodidades", b =>
@@ -1506,14 +1514,15 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.PrecioPlanesAlimenticios", b =>
                 {
+                    b.HasOne("GoTravelTour.Models.PlanesAlimenticios", "PlanesAlimenticios")
+                        .WithMany()
+                        .HasForeignKey("PlanesAlimenticiosId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("GoTravelTour.Models.Producto", "Hotel")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GoTravelTour.Models.Temporada", "Temporada")
-                        .WithMany()
-                        .HasForeignKey("TemporadaId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.PrecioRentaAutos", b =>
