@@ -1209,7 +1209,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("AlojamientoId");
 
-                    b.Property<int>("CategoriaHotelesId");
+                    b.Property<int?>("CategoriaHotelesId");
 
                     b.Property<string>("CheckIn");
 
@@ -1717,8 +1717,7 @@ namespace GoTravelTour.Migrations
                 {
                     b.HasOne("GoTravelTour.Models.CategoriaHoteles", "CategoriaHoteles")
                         .WithMany()
-                        .HasForeignKey("CategoriaHotelesId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CategoriaHotelesId");
 
                     b.HasOne("GoTravelTour.Models.TipoAlojamiento", "TipoAlojamiento")
                         .WithMany()

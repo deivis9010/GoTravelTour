@@ -8,7 +8,7 @@ namespace GoTravelTour.Models
     public class Alojamiento: Producto
     {
         public int AlojamientoId { get; set; }
-        public int CategoriaHotelesId { get; set; }
+        public int? CategoriaHotelesId { get; set; }
         public int NumeroEstrellas { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }

@@ -154,7 +154,7 @@ namespace GoTravelTour.Controllers
                 item.ProductoId = traslado.ProductoId;
                 _context.ProductoDistribuidores.Add(item);
             }
-            if (traslado.ListaDistribuidoresProducto != null)
+            if (traslado.ListaComodidades != null)
             foreach (var item in traslado.ListaComodidades)
             {
                 item.ProductoId = traslado.ProductoId;

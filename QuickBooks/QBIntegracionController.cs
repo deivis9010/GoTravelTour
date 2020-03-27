@@ -38,8 +38,8 @@ namespace GoTravelTour.QuickBooks
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-            return Ok(authorizeUrl);
-            //return Redirect("http://localhost:59649/api/QBIntegracion/Responses"+authorizeUrl );
+            //return Ok(authorizeUrl);
+            return Redirect("http://localhost:59649/api/QBIntegracion/Responses"+authorizeUrl );
         }
 
        /* private async Task GetAuthTokensAsync(string code, string realmId)
@@ -59,6 +59,7 @@ namespace GoTravelTour.QuickBooks
         [Route("Responses")]
         public ActionResult ApiCallService(/*string realmId, string code*/)
         {
+           
             //string token = auth2Client.GetBearerTokenAsync(code).Result.AccessToken;
             string realmId = "";// Session["realmId"].ToString();
             var principal = User as ClaimsPrincipal;
