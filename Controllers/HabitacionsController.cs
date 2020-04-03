@@ -234,6 +234,10 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
+            List<CombinacionHuespedes> list= _context.CombinacionHuespedes.Where(x => x.Habitacion.HabitacionId == id).ToList();
+          
+            _context.CombinacionHuespedes.RemoveRange(list);
+            
             var habitacion = await _context.Habitaciones.FindAsync(id);
             if (habitacion == null)
             {

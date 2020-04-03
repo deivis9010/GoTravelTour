@@ -271,7 +271,9 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
-                                    .Include(x => x.Rutas)
+                                     .Include(x => x.Rutas)
+                                    .Include(x => x.Rutas.PuntoInteresDestino)
+                                    .Include(x => x.Rutas.PuntoInteresOrigen)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -321,7 +323,9 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
-                                    .Include(x => x.Rutas)
+                                     .Include(x => x.Rutas)
+                                    .Include(x => x.Rutas.PuntoInteresDestino)
+                                    .Include(x => x.Rutas.PuntoInteresOrigen)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -370,6 +374,8 @@ namespace GoTravelTour.Controllers
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
                                     .Include(x => x.Rutas)
+                                    .Include(x => x.Rutas.PuntoInteresDestino)
+                                    .Include(x => x.Rutas.PuntoInteresOrigen)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -416,7 +422,10 @@ namespace GoTravelTour.Controllers
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioTraslados = _context.PrecioTraslados
+                                    
                                     .Include(x => x.Rutas)
+                                    .Include(x => x.Rutas.PuntoInteresDestino)
+                                    .Include(x => x.Rutas.PuntoInteresOrigen)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 

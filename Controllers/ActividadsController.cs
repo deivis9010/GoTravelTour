@@ -302,6 +302,9 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaRestricciones = _context.Restricciones
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
+                                /*contrato.Temporadas[i].ListaPrecioActividad = _context.Pr
+                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
+                                ;*/
                                 contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;

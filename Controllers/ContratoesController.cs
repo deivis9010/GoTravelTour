@@ -169,10 +169,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.Contratos.Any(c => c.Nombre == contrato.Nombre && contrato.ContratoId != id))
+           /* if (_context.Contratos.Any(c => c.Nombre == contrato.Nombre && contrato.ContratoId != id))
             {
                 return CreatedAtAction("GetContrato", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            }*/
             try
             {
                 EliminarTemporadas(contrato);
@@ -242,10 +242,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Contratos.Any(c => c.Nombre == contrato.Nombre))
+           /* if (_context.Contratos.Any(c => c.Nombre == contrato.Nombre))
             {
                 return CreatedAtAction("GetContratos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }
+            }*/
             if (contrato.NombreTemporadas.Count > 0)
             {
                 contrato.Temporadas = new List<Temporada>();

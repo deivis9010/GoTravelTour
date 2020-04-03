@@ -88,6 +88,10 @@
     <Compile Remove="Migrations\20200306005229_modificando habitaciones.Designer.cs" />
     <Compile Remove="Migrations\20200306010105_modificando habitaciones.cs" />
     <Compile Remove="Migrations\20200306010105_modificando habitaciones.Designer.cs" />
+    <Compile Remove="Migrations\20200329135535_test.cs" />
+    <Compile Remove="Migrations\20200329135535_test.Designer.cs" />
+    <Compile Remove="Migrations\20200403024826_test.cs" />
+    <Compile Remove="Migrations\20200403024826_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -72,6 +72,7 @@ namespace GoTravelTour.Models
         public DbSet<GoTravelTour.Models.CategoriaHabitacion> CategoriaHabitacion { get; set; }
         public DbSet<GoTravelTour.Models.HabitacionTipoHabitacion> HabitacionTipoHabitacion { get; set; }
         public DbSet<GoTravelTour.Models.ModificadorTemporada> ModificadorTemporada { get; set; }
+        public DbSet<GoTravelTour.Models.PrecioActividad> PrecioActividad { get; set; }
     
      
 

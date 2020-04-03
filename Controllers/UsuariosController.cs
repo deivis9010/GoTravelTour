@@ -37,11 +37,13 @@ namespace GoTravelTour.Controllers
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Usuarios.Include(c => c.cliente).Include(r => r.rol)
+                    .OrderBy(a => a.Username)
                     .Where(p => (p.Username.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
                 lista = _context.Usuarios.Include(c => c.cliente).Include(r => r.rol)
+                    .OrderBy(a => a.Username)
                     .ToPagedList(pageIndex, pageSize).ToList();
               }
 
