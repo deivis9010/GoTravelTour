@@ -579,7 +579,11 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Precio");
+                    b.Property<decimal>("PrecioAdulto");
+
+                    b.Property<decimal>("PrecioInfante");
+
+                    b.Property<decimal>("PrecioNino");
 
                     b.Property<int>("ProductoId");
 

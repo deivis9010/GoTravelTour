@@ -30,11 +30,11 @@ namespace GoTravelTour.Controllers
             if (col == "-1")
             {
                 lista= _context.Vehiculos
-                    .Include(v => v.Marca)
+                    //.Include(v => v.Marca)
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto)
+                  //  .Include(v => v.TipoProducto)
+                  //  .Include(v => v.ListaDistribuidoresProducto)
                     .OrderBy(a => a.Nombre)
                     .ToList();
                
@@ -47,11 +47,11 @@ namespace GoTravelTour.Controllers
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Vehiculos
-                    .Include(v => v.Marca)
+                    //.Include(v => v.Marca)
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto)
+                  //  .Include(v => v.TipoProducto)
+                    //.Include(v => v.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
                 foreach (Vehiculo v in lista)
                 {
@@ -61,11 +61,11 @@ namespace GoTravelTour.Controllers
             else
             {
                 lista = _context.Vehiculos
-                    .Include(v => v.Marca)
-                    .Include(v => v.Modelo)
+                   // .Include(v => v.Marca)
+                   .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
-                    .Include(v => v.TipoProducto)
-                    .Include(v => v.ListaDistribuidoresProducto)
+                   // .Include(v => v.TipoProducto)
+                 //   .Include(v => v.ListaDistribuidoresProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();
                 foreach (Vehiculo v in lista)
                 {
@@ -121,7 +121,15 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
+            /*  var vehiculo = await _context.Vehiculos
+                  .FindAsync(id);*/
+            var vehiculo =  _context.Vehiculos
+               .Include(v => v.Marca)
+               .Include(v => v.Modelo)
+               .Include(v => v.Proveedor)
+               .Include(v => v.TipoProducto)
+               .Include(v => v.ListaDistribuidoresProducto)
+           .Single(x=>x.ProductoId == id);
 
             if (vehiculo == null)
             {

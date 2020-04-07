@@ -9,7 +9,9 @@ namespace GoTravelTour.Models
     public class PrecioActividad
     {
         public int PrecioActividadId { get; set; }
-        public decimal Precio { get; set; }
+        public decimal PrecioAdulto { get; set; }
+        public decimal PrecioNino { get; set; }
+        public decimal PrecioInfante { get; set; }
         [ForeignKey("ProdcutoId")]
         public int ProductoId { get; set; }
         public Producto Producto { get; set; }

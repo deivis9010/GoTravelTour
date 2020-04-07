@@ -126,7 +126,9 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
             precioTraslado.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
-            precioTraslado.Rutas = _context.Rutas.First(x => x.RutasId == precioTraslado.RutasId);
+            precioTraslado.Rutas = _context.Rutas
+                .Include(x=>x.PuntoInteresDestino)
+                .Include(x => x.PuntoInteresDestino).First(x => x.RutasId == precioTraslado.RutasId);
             _context.Entry(precioTraslado).State = EntityState.Modified;
 
             try
@@ -157,7 +159,9 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
             precioTraslado.Temporada = _context.Temporadas.First(x => x.TemporadaId == precioTraslado.Temporada.TemporadaId);
-            precioTraslado.Rutas = _context.Rutas.First(x => x.RutasId == precioTraslado.RutasId);
+            precioTraslado.Rutas = _context.Rutas
+                .Include(x => x.PuntoInteresDestino)
+                .Include(x => x.PuntoInteresDestino).First(x => x.RutasId == precioTraslado.RutasId);
             _context.PrecioTraslados.Add(precioTraslado);
             await _context.SaveChangesAsync();
 

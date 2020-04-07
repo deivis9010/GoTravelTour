@@ -172,6 +172,18 @@ namespace GoTravelTour.Controllers
             {
                 _context.HabitacionTipoHabitacion.AddRange(habitacion.ListaTiposHabitaciones);
             }
+            //Eliminando servicios habitaciones anteriores
+            List<HabitacionServiciosHabitacion> servHab = _context.HabitacionServiciosHabitacion.Where(x => x.HabitacionId == habitacion.HabitacionId).ToList();
+            foreach (var item in servHab)
+            {
+                _context.HabitacionServiciosHabitacion.Remove(item);
+            }
+
+            if (habitacion.ListaServiciosHabitacion != null)
+            {
+                _context.HabitacionServiciosHabitacion.AddRange(habitacion.ListaServiciosHabitacion);
+            }
+
             _context.Entry(habitacion).State = EntityState.Modified;
 
             try
