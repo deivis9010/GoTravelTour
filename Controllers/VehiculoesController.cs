@@ -131,6 +131,8 @@ namespace GoTravelTour.Controllers
                .Include(v => v.ListaDistribuidoresProducto)
            .Single(x=>x.ProductoId == id);
 
+            vehiculo.ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == vehiculo.ProductoId).ToList();
+
             if (vehiculo == null)
             {
                 return NotFound();
