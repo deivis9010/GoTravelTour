@@ -24,7 +24,7 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Alojamientoes
         [HttpGet]
-        public IEnumerable<Alojamiento> GetAlojamientos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<Alojamiento> GetAlojamientos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor=0)
         {
             IEnumerable<Alojamiento> lista;
             if (col == "-1")
@@ -35,9 +35,10 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Proveedor)
                    // .Include(a => a.TipoProducto)
                     .Include(a => a.TipoAlojamiento)
-                   // .Include(a => a.PuntoInteres)
-                   // .Include(a => a.CategoriaHoteles)
-                   // .Include(a => a.ListaPlanesAlimenticios)
+                    // .Include(a => a.PuntoInteres)
+                    // .Include(a => a.CategoriaHoteles)
+                    // .Include(a => a.ListaPlanesAlimenticios)
+                    .Where(x => x.ProveedorId == idProveedor)
                     .OrderBy(a => a.Nombre)
                     .ToList();
 
@@ -282,7 +283,7 @@ namespace GoTravelTour.Controllers
         // GET: api/Alojamientoes/Filtros
         [HttpGet]
         [Route("Filtros")]
-        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1)
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0)
         {
             IEnumerable<Contrato> lista = new List<Contrato>();
 
@@ -299,12 +300,17 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                            .Include(x => x.Producto)
-                            .ThenInclude(x => x.TipoProducto)
-                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
-
-                       
+                      
+                        if (idProducto == 0)
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                        }
+                        else
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                        }
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
@@ -356,11 +362,16 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                            .Include(x => x.Producto)
-                            .ThenInclude(x => x.TipoProducto)
-                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
-
+                        if (idProducto == 0)
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                        }
+                        else
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -409,11 +420,16 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                            .Include(x => x.Producto)
-                            .ThenInclude(x => x.TipoProducto)
-                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
-
+                        if (idProducto == 0)
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                        }
+                        else
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -461,11 +477,16 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                            .Include(x => x.Producto)
-                            .ThenInclude(x => x.TipoProducto)
-                            .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
-
+                        if (idProducto == 0)
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                        }
+                        else
+                        {
+                            contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                        }
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;

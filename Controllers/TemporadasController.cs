@@ -32,7 +32,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.ListaFechasTemporada)
                     .Include(a => a.Contrato)
                     .Include(a => a.Contrato.Distribuidor)
-                    .Include(a => a.Contrato.TipoProducto)                    
+                    .Include(a => a.Contrato.TipoProducto)
                     .OrderBy(a => a.Nombre)
 
                     .ToList();
@@ -202,7 +202,7 @@ namespace GoTravelTour.Controllers
         // GET: api/Temporadas/Filtros
         [HttpGet]
         [Route("Filtros")]
-        public IEnumerable<Temporada> GetTemporadasByFiltros(int idContrato = -1, int idDistribuidor = -1, int idTipoProducto = -1)
+        public IEnumerable<Temporada> GetTemporadasByFiltros(int idContrato = -1, int idDistribuidor = -1, int idTipoProducto = -1 , int idProveedor=0)
         {
             IEnumerable<Temporada> lista;
             
@@ -221,6 +221,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor).ToList();
+                        }
 
                     }
                 return lista;
@@ -241,6 +245,10 @@ namespace GoTravelTour.Controllers
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
 
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -260,7 +268,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -281,7 +292,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -301,7 +315,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -321,7 +338,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -341,7 +361,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId==idDistribuidor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -361,7 +384,10 @@ namespace GoTravelTour.Controllers
                     {
                         if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                             temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                        if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                        {
+                            temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor).ToList();
+                        }
                     }
                 return lista;
             }
@@ -378,7 +404,10 @@ namespace GoTravelTour.Controllers
                 {
                     if ("Activity".Equals(temp.Contrato.TipoProducto.Nombre) || "Vehicle".Equals(temp.Contrato.TipoProducto.Nombre))
                         temp.ListaRestricciones = _context.Restricciones.Include(x => x.Temporada).Where(x => x.Temporada.TemporadaId == temp.TemporadaId).ToList();
-
+                    if ("Accommodation".Equals(temp.Contrato.TipoProducto.Nombre))
+                    {
+                        temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Where(x => x.Producto.ProveedorId == idProveedor).ToList();
+                    }
                 }
             return lista;
 

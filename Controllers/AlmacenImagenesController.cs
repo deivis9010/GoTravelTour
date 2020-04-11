@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace GoTravelTour.Controllers
 {
@@ -98,6 +101,21 @@ namespace GoTravelTour.Controllers
             {
                 _context.AlmacenImagenes.RemoveRange( _context.AlmacenImagenes.Where(x =>x.ProductoId == id));
             }
+            try
+            {
+               // Directory.CreateDirectory("C:\\inetpub\\wwwroot\\publicEliecer\\sources");
+                TransformarYSalvarImagenes(almacenImagenes, id.ToString());
+            }
+            catch (Exception ex)
+            {
+
+                return CreatedAtAction("GetAlmacenImagenes", new { id = 0, msg = ex.Message + ex.StackTrace}, new { id = 0, msg = ex.Message +ex.StackTrace });
+                throw;
+            }
+
+            
+
+
             _context.AlmacenImagenes.AddRange(almacenImagenes);
             
             
@@ -152,6 +170,131 @@ namespace GoTravelTour.Controllers
 
             return Ok(almacenImagenes);
         }
+
+
+        public static bool SaveImages(AlmacenImagenes foto, string path )
+        {
+            bool result = false;
+
+            try
+            {
+
+                string content = foto.ImageContent.Substring(foto.ImageContent.LastIndexOf(',') + 1);
+                byte[] bytes = Convert.FromBase64String(content);
+                string ext = foto.TipoImagen.Split("/")[1];
+                string file = Path.Combine(path, foto.NombreImagen + "."+ext);
+               
+                Directory.CreateDirectory(Path.Combine(path));
+                
+                if (bytes.Length > 0)
+                {
+                    using (var stream = new FileStream(file, FileMode.Create))
+                    {
+                        stream.Write(bytes, 0, bytes.Length);
+                        stream.Flush();
+                    }
+                }
+                result = true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+                //string message = e.Message;
+            }
+
+            return result;
+        }
+
+        public static bool RedimensionAndSaveImages(string ImageContent, string ImageName, string path, int height, int width)
+        {
+            bool result = false;
+            try
+            {
+                string content = ImageContent.Substring(ImageContent.LastIndexOf(',') + 1);
+                byte[] bytes = Convert.FromBase64String(content);
+                string file = Path.Combine(path, ImageName);
+                if (bytes.Length > 0)
+                {
+                    using (MemoryStream stream = new MemoryStream(bytes))
+                    {
+                        Image img = Image.FromStream(stream);
+                        int h = img.Height;
+                        int w = img.Width;
+                        int newW = (w * height) / h;
+                        Bitmap newImg = new Bitmap(img, newW, height);
+
+                        if (newW > width)
+                        {
+                            Rectangle rectOrig = new Rectangle((newW - width) / 2, 0, width, height);
+                            Bitmap bmp = new Bitmap(rectOrig.Width, rectOrig.Height);
+                            Graphics g = Graphics.FromImage(bmp);
+                            g.DrawImage(newImg, 0, 0, rectOrig, GraphicsUnit.Pixel);
+                            using (var aux = new FileStream(file, FileMode.Create))
+                            {
+                                bmp.Save(aux, ImageFormat.Jpeg);
+                                aux.Flush();
+                            }
+
+                        }
+                        else
+                        {
+                            Graphics g = Graphics.FromImage(newImg);
+                            g.DrawImage(img, 0, 0, newImg.Width, newImg.Height);
+                            using (var aux = new FileStream(file, FileMode.Create))
+                            {
+                                newImg.Save(aux, ImageFormat.Jpeg);
+                                aux.Flush();
+                            }
+                        }
+                        stream.Flush();
+                    }
+                }
+                result = true;
+            }
+            catch (Exception e)
+            {
+                string message = e.Message;
+            }
+
+            return result;
+        }
+
+
+        private void TransformarYSalvarImagenes(List<AlmacenImagenes> almacenImagenes, string id)
+        {
+            string path = "sources/" + id + "/";
+           // try
+            //{
+                if (Directory.Exists(path))
+                {
+
+                    DirectoryInfo directory = new DirectoryInfo(path);
+                    foreach (FileInfo file in directory.GetFiles("*.*"))
+                    {
+
+                        file.Delete();
+
+                    }
+
+
+                    Directory.Delete(path);
+                }
+          //  }
+          //  catch(Exception ex)
+          //  {
+               // throw ex;
+          //  }
+           
+            foreach (var img in almacenImagenes)
+            {
+                
+                SaveImages(img, path);
+                string ext = img.TipoImagen.Split("/")[1];
+                string file = Path.Combine(path, img.NombreImagen + "." + ext);
+                img.ImageContent = "https:/gotravelandtours.com/publicEliecer/"+path+ img.NombreImagen + "." + ext;
+            }
+        }
+
 
     }
 }

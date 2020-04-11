@@ -15,7 +15,7 @@ namespace GoTravelTour.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -506,6 +506,68 @@ namespace GoTravelTour.Migrations
                     b.ToTable("NombreTemporadas");
                 });
 
+            modelBuilder.Entity("GoTravelTour.Models.Orden", b =>
+                {
+                    b.Property<int>("OrdenId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClienteId");
+
+                    b.Property<int?>("CreadorUsuarioId");
+
+                    b.Property<int>("Duracion");
+
+                    b.Property<string>("Estado");
+
+                    b.Property<DateTime?>("FechaActualizacion");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<bool>("HasVoucher");
+
+                    b.Property<string>("IntercomConferceNumber");
+
+                    b.Property<string>("Nombre");
+
+                    b.Property<string>("Notas");
+
+                    b.Property<string>("NumeroOrden");
+
+                    b.Property<bool>("OFACrequired");
+
+                    b.Property<int?>("SobreprecioId");
+
+                    b.HasKey("OrdenId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("CreadorUsuarioId");
+
+                    b.HasIndex("SobreprecioId");
+
+                    b.ToTable("Orden");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenProducto", b =>
+                {
+                    b.Property<int>("OrdenProductoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("OrdenId");
+
+                    b.Property<int>("ProductoId");
+
+                    b.HasKey("OrdenProductoId");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("OrdenProducto");
+                });
+
             modelBuilder.Entity("GoTravelTour.Models.Paquete", b =>
                 {
                     b.Property<int>("PaqueteId")
@@ -869,9 +931,13 @@ namespace GoTravelTour.Migrations
 
                     b.Property<DateTime>("FechaInicio");
 
+                    b.Property<int?>("ProductoId");
+
                     b.Property<int>("TemporadaId");
 
                     b.HasKey("RangoFechasId");
+
+                    b.HasIndex("ProductoId");
 
                     b.HasIndex("TemporadaId");
 
@@ -1492,6 +1558,35 @@ namespace GoTravelTour.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("GoTravelTour.Models.Orden", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Usuario", "Creador")
+                        .WithMany()
+                        .HasForeignKey("CreadorUsuarioId");
+
+                    b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
+                        .WithMany()
+                        .HasForeignKey("SobreprecioId");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenProducto", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.Orden", "Orden")
+                        .WithMany("ListaProductosEnOrden")
+                        .HasForeignKey("OrdenId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Producto", "Producto")
+                        .WithMany("ListaOrdenesConEsteProducto")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("GoTravelTour.Models.PosibleCombinacion", b =>
                 {
                     b.HasOne("GoTravelTour.Models.TipoHabitacion", "TipoHabitacion")
@@ -1643,6 +1738,10 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.RangoFechas", b =>
                 {
+                    b.HasOne("GoTravelTour.Models.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId");
+
                     b.HasOne("GoTravelTour.Models.Temporada", "Temporada")
                         .WithMany("ListaFechasTemporada")
                         .HasForeignKey("TemporadaId")
