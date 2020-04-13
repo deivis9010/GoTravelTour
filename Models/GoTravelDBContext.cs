@@ -74,9 +74,6 @@ namespace GoTravelTour.Models
         public DbSet<GoTravelTour.Models.ModificadorTemporada> ModificadorTemporada { get; set; }
         public DbSet<GoTravelTour.Models.PrecioActividad> PrecioActividad { get; set; }
     
-     
-
-
 
 
 

@@ -720,6 +720,8 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ContratoDelPrecioContratoId");
+
                     b.Property<int>("PlanesAlimenticiosId");
 
                     b.Property<decimal>("Precio");
@@ -727,6 +729,8 @@ namespace GoTravelTour.Migrations
                     b.Property<int>("ProductoId");
 
                     b.HasKey("PrecioPlanesAlimenticiosId");
+
+                    b.HasIndex("ContratoDelPrecioContratoId");
 
                     b.HasIndex("PlanesAlimenticiosId");
 
@@ -1646,6 +1650,10 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.PrecioPlanesAlimenticios", b =>
                 {
+                    b.HasOne("GoTravelTour.Models.Contrato", "ContratoDelPrecio")
+                        .WithMany()
+                        .HasForeignKey("ContratoDelPrecioContratoId");
+
                     b.HasOne("GoTravelTour.Models.PlanesAlimenticios", "PlanesAlimenticios")
                         .WithMany()
                         .HasForeignKey("PlanesAlimenticiosId")

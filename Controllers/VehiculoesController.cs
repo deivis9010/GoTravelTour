@@ -347,7 +347,7 @@ namespace GoTravelTour.Controllers
                         else
                         {
                             contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                         }
                         
                         if( contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
@@ -406,7 +406,7 @@ namespace GoTravelTour.Controllers
                         else
                         {
                             contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                         }
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
@@ -463,7 +463,7 @@ namespace GoTravelTour.Controllers
                         else
                         {
                             contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                         }
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
@@ -519,7 +519,7 @@ namespace GoTravelTour.Controllers
                         else
                         {
                             contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == 0).ToList();
+                           .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                         }
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)

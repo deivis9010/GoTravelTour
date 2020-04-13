@@ -12,7 +12,8 @@ namespace GoTravelTour.Models
         public decimal Precio { get; set; }
         public int PlanesAlimenticiosId { get; set; }
         public PlanesAlimenticios PlanesAlimenticios { get; set; }
-        //public int ContratoId { get; set; }
+        
+        public Contrato ContratoDelPrecio { get; set; }
         //public int TemporadaId { get; set; }
         public int ProductoId { get; set; }
         [ForeignKey("ProductoId")]

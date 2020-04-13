@@ -27,4 +27,9 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <Value>Server=localhost%3b Initial Catalog = GoTravelDB%3b Integrated Security = True%3b User Id = sa%3b Password = 123</Value>
     </DestinationConnectionStrings>
   </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="GoTravelTour.Models.GoTravelDBContext">
+      <Value>Server=localhost%3b Initial Catalog = GoTravelDB%3b Integrated Security = True%3b User Id = sa%3b Password = 123</Value>
+    </EFMigrations>
+  </ItemGroup>
 </Project>

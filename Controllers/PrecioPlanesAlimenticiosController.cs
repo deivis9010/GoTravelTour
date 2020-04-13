@@ -121,8 +121,8 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
-            
 
+            precioPlanesAlimenticios.ContratoDelPrecio = _context.Contratos.Include(x => x.Distribuidor).Where(x => x.ContratoId == precioPlanesAlimenticios.ContratoDelPrecio.ContratoId).Single();
             _context.Entry(precioPlanesAlimenticios).State = EntityState.Modified;
 
             try
@@ -152,7 +152,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            precioPlanesAlimenticios.ContratoDelPrecio = _context.Contratos.Include(x => x.Distribuidor).Where(x => x.ContratoId == precioPlanesAlimenticios.ContratoDelPrecio.ContratoId).Single();
             _context.PrecioPlanesAlimenticios.Add(precioPlanesAlimenticios);
             await _context.SaveChangesAsync();
 
