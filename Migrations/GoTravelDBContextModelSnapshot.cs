@@ -1746,7 +1746,7 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.RangoFechas", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Producto", "Producto")
+                    b.HasOne("GoTravelTour.Models.Alojamiento", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId");
 

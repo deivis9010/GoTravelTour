@@ -181,8 +181,8 @@ namespace GoTravelTour.Controllers
 
                 string content = foto.ImageContent.Substring(foto.ImageContent.LastIndexOf(',') + 1);
                 byte[] bytes = Convert.FromBase64String(content);
-                string ext = foto.TipoImagen.Split("/")[1];
-                string file = Path.Combine(path, foto.NombreImagen + "."+ext);
+                //string ext = foto.TipoImagen.Split("/")[1];
+                string file = Path.Combine(path, foto.NombreImagen );
                
                 Directory.CreateDirectory(Path.Combine(path));
                 
@@ -262,7 +262,7 @@ namespace GoTravelTour.Controllers
 
         private void TransformarYSalvarImagenes(List<AlmacenImagenes> almacenImagenes, string id)
         {
-            string path = "sources/" + id + "/";
+            string path = "../sources/" + id + "/";
            // try
             //{
                 if (Directory.Exists(path))
@@ -289,9 +289,9 @@ namespace GoTravelTour.Controllers
             {
                 
                 SaveImages(img, path);
-                string ext = img.TipoImagen.Split("/")[1];
-                string file = Path.Combine(path, img.NombreImagen + "." + ext);
-                img.ImageContent = "https:/gotravelandtours.com/publicEliecer/"+path+ img.NombreImagen + "." + ext;
+                //string ext = img.TipoImagen.Split("/")[1];
+                string file = Path.Combine(path, img.NombreImagen /*+ "." + ext*/);
+                img.ImageContent = "https://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
             }
         }
 

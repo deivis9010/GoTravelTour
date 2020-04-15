@@ -115,7 +115,7 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
             if(rangoFechas.Producto!=null && rangoFechas.Producto.ProductoId>0)
-            rangoFechas.Producto = _context.Productos.Single(x => x.ProductoId == rangoFechas.Producto.ProductoId);
+            rangoFechas.Producto = _context.Alojamientos.First(x => x.ProductoId == rangoFechas.Producto.ProductoId);
             _context.Entry(rangoFechas).State = EntityState.Modified;
 
             try
@@ -146,8 +146,9 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
             if (rangoFechas.Producto != null && rangoFechas.Producto.ProductoId > 0)
-                rangoFechas.Producto = _context.Productos.Single(x => x.ProductoId == rangoFechas.Producto.ProductoId);
+                rangoFechas.Producto = _context.Alojamientos.First(x => x.ProductoId == rangoFechas.Producto.ProductoId);
             _context.RangoFechas.Add(rangoFechas);
             await _context.SaveChangesAsync();
 
