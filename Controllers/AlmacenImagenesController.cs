@@ -99,7 +99,13 @@ namespace GoTravelTour.Controllers
             }
             if (id != 0)
             {
-                _context.AlmacenImagenes.RemoveRange( _context.AlmacenImagenes.Where(x =>x.ProductoId == id));
+                List<AlmacenImagenes> list = _context.AlmacenImagenes.Where(x => x.ProductoId == id).ToList();
+                foreach(var img in list)
+                {
+                    if(!img.ImageContent.StartsWith("http"))
+                    _context.AlmacenImagenes.Remove(img);
+                }
+                
             }
             try
             {
@@ -291,7 +297,7 @@ namespace GoTravelTour.Controllers
                 SaveImages(img, path);
                 //string ext = img.TipoImagen.Split("/")[1];
                 string file = Path.Combine(path, img.NombreImagen /*+ "." + ext*/);
-                img.ImageContent = "https://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
+                img.ImageContent = "http://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
             }
         }
 

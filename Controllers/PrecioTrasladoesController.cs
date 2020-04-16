@@ -125,7 +125,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.PrecioTraslados.Any(x => x.RutasId == precioTraslado.RutasId && x.ProductoId == precioTraslado.ProductoId) && precioTraslado.PrecioTrasladoId !=id)
+            if (_context.PrecioTraslados.Any(x => x.RutasId == precioTraslado.RutasId && x.ProductoId == precioTraslado.ProductoId && x.Temporada.TemporadaId == precioTraslado.Temporada.TemporadaId))
             {
                 return CreatedAtAction("GetPrecioTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -162,7 +162,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if(_context.PrecioTraslados.Any(x=>x.RutasId==precioTraslado.RutasId && x.ProductoId == precioTraslado.ProductoId))
+            if(_context.PrecioTraslados.Any(x=>x.RutasId==precioTraslado.RutasId && x.ProductoId == precioTraslado.ProductoId && x.Temporada.TemporadaId== precioTraslado.Temporada.TemporadaId)  )
             {
                 return CreatedAtAction("GetPrecioTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
