@@ -99,13 +99,27 @@ namespace GoTravelTour.Controllers
             }
             if (id != 0)
             {
-                List<AlmacenImagenes> list = _context.AlmacenImagenes.Where(x => x.ProductoId == id).ToList();
-                foreach(var img in list)
+               
+                int i = 0;
+                while ( i < almacenImagenes.Count())
                 {
-                    if(!img.ImageContent.StartsWith("http"))
-                    _context.AlmacenImagenes.Remove(img);
+                    var img = almacenImagenes[i];
+                    if (img.AlmacenImagenesId != 0)
+                    {
+                        if (img.ImageContent != null && !img.ImageContent.StartsWith("http"))
+                            _context.AlmacenImagenes.Remove(_context.AlmacenImagenes.Find(img.AlmacenImagenesId));
+                        else
+                        {
+                            almacenImagenes.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                   
+                    i++;
                 }
+
                 
+
             }
             try
             {
@@ -301,6 +315,40 @@ namespace GoTravelTour.Controllers
             }
         }
 
+
+        // POST: api/AlmacenImagenes
+        [HttpPost]
+        [Route("setmain")]
+       
+        public async Task<IActionResult> PostSetMain(int idProducto=0, int idImagen=0)
+        {
+            if (idProducto<=0 || idImagen<= 0)
+            {
+                return BadRequest(ModelState);
+            }
+
+            List<AlmacenImagenes> lista = _context.AlmacenImagenes.Where(x => x.ProductoId == idProducto).ToList();
+
+
+            foreach (var item in lista)
+            {
+                if(item.AlmacenImagenesId == idImagen)
+                {
+                    item.Localizacion = "main";
+                }
+                else
+                {
+                    item.Localizacion = "galery";
+                }
+
+                _context.Entry(item).State = EntityState.Modified;
+
+            }
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAlmacenImagenes", new { id = 0, msg = "Imagen principal colocada" });
+        }
 
     }
 }

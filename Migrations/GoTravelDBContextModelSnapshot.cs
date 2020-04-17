@@ -268,6 +268,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<DateTime?>("FechaInicioTravel");
 
+                    b.Property<int>("FormaCobro");
+
                     b.Property<bool>("IsActivo");
 
                     b.Property<string>("Nombre");

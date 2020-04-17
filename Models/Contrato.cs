@@ -12,6 +12,7 @@ namespace GoTravelTour.Models
         public string Nombre { get; set; }
         public bool IsActivo { get; set; }
         public bool OfertaEspecial { get; set; }
+        public int FormaCobro { get; set; } // 1-por dia 2- PrimeraTemp 3-UltimaTemp
         public string CodigoOfertaEspecial { get; set; }       
         public DateTime? FechaInicioTravel { get; set; }
         public DateTime? FechaFinTravel { get; set; }
