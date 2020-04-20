@@ -14,8 +14,7 @@ namespace GoTravelTour.Models
         public int MarcaId { get; set; }
         public int ModeloId { get; set; }
         public Marca Marca { get; set; }
-        public Modelo Modelo { get; set; }
-        [NotMapped]
+        public Modelo Modelo { get; set; }       
         public List<VehiculoCategoriaAuto> ListaCategorias { get; set; }
 
 

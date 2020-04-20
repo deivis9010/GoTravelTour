@@ -62,17 +62,23 @@ namespace GoTravelTour.Models
         public DbSet<CategoriaAuto> CategoriaAuto { get; set; }
         public DbSet<VehiculoCategoriaAuto> VehiculoCategoriaAuto { get; set; }
         public DbSet<Sobreprecio> Sobreprecio { get; set; }
-        public DbSet<GoTravelTour.Models.PrecioServicio> PrecioServicio { get; set; }
-        public DbSet<GoTravelTour.Models.NombreHabitacion> NombreHabitacion { get; set; }
-        public DbSet<GoTravelTour.Models.ServiciosHabitacion> ServiciosHabitacion { get; set; }
-        public DbSet<GoTravelTour.Models.HabitacionServiciosHabitacion> HabitacionServiciosHabitacion { get; set; }
-        public DbSet<GoTravelTour.Models.AlojamientosPlanesAlimenticios> AlojamientosPlanesAlimenticios { get; set; }
-        public DbSet<GoTravelTour.Models.ConfiguracionVoucher> ConfiguracionVoucher { get; set; }
-        public DbSet<GoTravelTour.Models.Paquete> Paquete { get; set; }
-        public DbSet<GoTravelTour.Models.CategoriaHabitacion> CategoriaHabitacion { get; set; }
-        public DbSet<GoTravelTour.Models.HabitacionTipoHabitacion> HabitacionTipoHabitacion { get; set; }
-        public DbSet<GoTravelTour.Models.ModificadorTemporada> ModificadorTemporada { get; set; }
-        public DbSet<GoTravelTour.Models.PrecioActividad> PrecioActividad { get; set; }
+        public DbSet<PrecioServicio> PrecioServicio { get; set; }
+        public DbSet<NombreHabitacion> NombreHabitacion { get; set; }
+        public DbSet<ServiciosHabitacion> ServiciosHabitacion { get; set; }
+        public DbSet<HabitacionServiciosHabitacion> HabitacionServiciosHabitacion { get; set; }
+        public DbSet<AlojamientosPlanesAlimenticios> AlojamientosPlanesAlimenticios { get; set; }
+        public DbSet<ConfiguracionVoucher> ConfiguracionVoucher { get; set; }
+        public DbSet<Paquete> Paquete { get; set; }
+        public DbSet<CategoriaHabitacion> CategoriaHabitacion { get; set; }
+        public DbSet<HabitacionTipoHabitacion> HabitacionTipoHabitacion { get; set; }
+        public DbSet<ModificadorTemporada> ModificadorTemporada { get; set; }
+        public DbSet<PrecioActividad> PrecioActividad { get; set; }
+        public DbSet<Orden> Orden { get; set; }
+        public DbSet<GoTravelTour.Models.OrdenActividad> OrdenActividad { get; set; }
+        public DbSet<GoTravelTour.Models.OrdenAlojamiento> OrdenAlojamiento { get; set; }
+        public DbSet<GoTravelTour.Models.OrdenTraslado> OrdenTraslado { get; set; }
+        public DbSet<GoTravelTour.Models.OrdenVehiculo> OrdenVehiculo { get; set; }
+       
     
 
 

@@ -94,6 +94,8 @@
     <Compile Remove="Migrations\20200403024826_test.Designer.cs" />
     <Compile Remove="Migrations\20200412171155_modificando precio planes.cs" />
     <Compile Remove="Migrations\20200412171155_modificando precio planes.Designer.cs" />
+    <Compile Remove="Migrations\20200420005110_primera version ordenes.cs" />
+    <Compile Remove="Migrations\20200420005110_primera version ordenes.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

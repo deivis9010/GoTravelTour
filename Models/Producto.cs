@@ -34,7 +34,7 @@ namespace GoTravelTour.Models
         public List<ComodidadesProductos>ListaComodidades { get; set; }
         public List<AlojamientosPlanesAlimenticios> ListaPlanesAlimenticios { get; set; } //Solo alojaminetos
         public List<ModificadorProductos> ListaHoteles { get; set; } //Solo alojamientos
-        public List<OrdenProducto> ListaOrdenesConEsteProducto { get; set; }
+        
 
     }
 }

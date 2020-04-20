@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using Microsoft.AspNetCore.Authorization;
 using PagedList;
+using GoTravelTour.Utiles;
 
 namespace GoTravelTour.Controllers
 {
@@ -545,5 +546,46 @@ namespace GoTravelTour.Controllers
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).ToList();
             }
         }
+
+
+
+        // GET: api/Vehiculoes/BuscarOrden
+        [HttpGet]
+        [Route("BuscarOrden")]
+        public List<OrdenVehiculo> GetOrdenVehiculos(BuscadorVehiculo buscador)
+        {
+            List<OrdenVehiculo> lista = new List<OrdenVehiculo>();
+
+            List<Vehiculo> vehiculos =  _context.Vehiculos.Where(x => x.ListaCategorias.Any(y => y.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId)
+            && x.TipoTransmision == buscador.TipoTransmision).ToList();
+           
+            foreach (var v in vehiculos)
+            {
+                List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x=>x.Temporada.ListaFechasTemporada)
+                    .Include(x => x.Temporada.Contrato.Distribuidor)
+                    .Where(x => x.ProductoId == v.ProductoId).ToList();
+                foreach(var p in precios)
+                {
+                    OrdenVehiculo ov = new OrdenVehiculo();
+                    if (p.Temporada.ListaFechasTemporada.Any(x=>(x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) || 
+                     (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio)))
+                    {
+                        ov.PrecioRentaAutos = p;
+                        ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                        ov.Vehiculo = v;
+                        
+                        lista.Add(ov);
+                    }
+
+                }
+            }
+
+
+            return lista.OrderByDescending(x=>x.PrecioRentaAutos.Deposito).ToList();
+
+        }
+
+
+
     }
 }

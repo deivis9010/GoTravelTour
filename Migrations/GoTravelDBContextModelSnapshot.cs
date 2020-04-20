@@ -518,21 +518,25 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("CreadorUsuarioId");
 
-                    b.Property<int>("Duracion");
-
                     b.Property<string>("Estado");
 
                     b.Property<DateTime?>("FechaActualizacion");
 
                     b.Property<DateTime>("FechaCreacion");
 
+                    b.Property<DateTime?>("FechaPeticion");
+
                     b.Property<bool>("HasVoucher");
 
                     b.Property<string>("IntercomConferceNumber");
 
-                    b.Property<string>("Nombre");
+                    b.Property<string>("NombreClienteFinal");
+
+                    b.Property<string>("NombreOrden");
 
                     b.Property<string>("Notas");
+
+                    b.Property<string>("NumeroAsistencia");
 
                     b.Property<string>("NumeroOrden");
 
@@ -551,23 +555,226 @@ namespace GoTravelTour.Migrations
                     b.ToTable("Orden");
                 });
 
-            modelBuilder.Entity("GoTravelTour.Models.OrdenProducto", b =>
+            modelBuilder.Entity("GoTravelTour.Models.OrdenActividad", b =>
                 {
-                    b.Property<int>("OrdenProductoId")
+                    b.Property<int>("OrdenActividadId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("OrdenId");
+                    b.Property<int>("ActividadId");
 
-                    b.Property<int>("ProductoId");
+                    b.Property<int?>("CantAdulto");
 
-                    b.HasKey("OrdenProductoId");
+                    b.Property<int?>("CantInfante");
+
+                    b.Property<int?>("CantNino");
+
+                    b.Property<string>("DescripcionServicio");
+
+                    b.Property<string>("DireccionReferencia");
+
+                    b.Property<int>("DistribuidorId");
+
+                    b.Property<DateTime>("FechaActividad");
+
+                    b.Property<string>("NombreCliente");
+
+                    b.Property<string>("NotasAdicionales");
+
+                    b.Property<string>("NumeroConfirmacion");
+
+                    b.Property<int?>("OrdenId");
+
+                    b.Property<int?>("PrecioActividadId");
+
+                    b.Property<bool>("PremiteCopia");
+
+                    b.Property<string>("TelefonoReferencia");
+
+                    b.Property<string>("VenueName");
+
+                    b.HasKey("OrdenActividadId");
+
+                    b.HasIndex("ActividadId");
+
+                    b.HasIndex("DistribuidorId");
 
                     b.HasIndex("OrdenId");
 
-                    b.HasIndex("ProductoId");
+                    b.HasIndex("PrecioActividadId");
 
-                    b.ToTable("OrdenProducto");
+                    b.ToTable("OrdenActividad");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenAlojamiento", b =>
+                {
+                    b.Property<int>("OrdenAlojamientoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AlojamientoId");
+
+                    b.Property<int?>("CantAdulto");
+
+                    b.Property<int?>("CantInfante");
+
+                    b.Property<int?>("CantNino");
+
+                    b.Property<DateTime>("Checkin");
+
+                    b.Property<DateTime>("Checkout");
+
+                    b.Property<int?>("ConfiguracionVoucherId");
+
+                    b.Property<string>("DescripcionServicio");
+
+                    b.Property<string>("DireccionReferencia");
+
+                    b.Property<int>("DistribuidorId");
+
+                    b.Property<int?>("HabitacionId");
+
+                    b.Property<string>("NombreCliente");
+
+                    b.Property<string>("NotasAdicionales");
+
+                    b.Property<string>("NumeroConfirmacion");
+
+                    b.Property<int?>("OrdenId");
+
+                    b.Property<int>("PlanesAlimenticiosId");
+
+                    b.Property<int?>("PrecioAlojamientoId");
+
+                    b.Property<bool>("PremiteCopia");
+
+                    b.Property<string>("TelefonoReferencia");
+
+                    b.Property<string>("VenueName");
+
+                    b.HasKey("OrdenAlojamientoId");
+
+                    b.HasIndex("AlojamientoId");
+
+                    b.HasIndex("ConfiguracionVoucherId");
+
+                    b.HasIndex("DistribuidorId");
+
+                    b.HasIndex("HabitacionId");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("PlanesAlimenticiosId");
+
+                    b.HasIndex("PrecioAlojamientoId");
+
+                    b.ToTable("OrdenAlojamiento");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>
+                {
+                    b.Property<int>("OrdenTrasladoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CantAdulto");
+
+                    b.Property<int?>("CantInfante");
+
+                    b.Property<int?>("CantNino");
+
+                    b.Property<int?>("ConfiguracionVoucherId");
+
+                    b.Property<string>("DescripcionServicio");
+
+                    b.Property<int>("DistribuidorId");
+
+                    b.Property<DateTime>("FechaRecogida");
+
+                    b.Property<string>("InformacionLlegada");
+
+                    b.Property<string>("InformacionSalida");
+
+                    b.Property<int?>("LugarEntregaPuntoInteresId");
+
+                    b.Property<int?>("LugarRecogidaPuntoInteresId");
+
+                    b.Property<string>("NombreCliente");
+
+                    b.Property<string>("NumeroConfirmacion");
+
+                    b.Property<int?>("OrdenId");
+
+                    b.Property<int?>("PrecioTrasladoId");
+
+                    b.Property<bool>("PremiteCopia");
+
+                    b.Property<string>("TipoTraslado");
+
+                    b.Property<int?>("TrasladoProductoId");
+
+                    b.HasKey("OrdenTrasladoId");
+
+                    b.HasIndex("ConfiguracionVoucherId");
+
+                    b.HasIndex("DistribuidorId");
+
+                    b.HasIndex("LugarEntregaPuntoInteresId");
+
+                    b.HasIndex("LugarRecogidaPuntoInteresId");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("PrecioTrasladoId");
+
+                    b.HasIndex("TrasladoProductoId");
+
+                    b.ToTable("OrdenTraslado");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenVehiculo", b =>
+                {
+                    b.Property<int>("OrdenVehiculoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DistribuidorId");
+
+                    b.Property<DateTime>("FechaEntrega");
+
+                    b.Property<DateTime>("FechaRecogida");
+
+                    b.Property<int?>("LugarEntregaPuntoInteresId");
+
+                    b.Property<int?>("LugarRecogidaPuntoInteresId");
+
+                    b.Property<string>("NombreCliente");
+
+                    b.Property<string>("NumeroConfirmacion");
+
+                    b.Property<int?>("OrdenId");
+
+                    b.Property<int?>("PrecioRentaAutosId");
+
+                    b.Property<bool>("PremiteCopia");
+
+                    b.Property<int>("VehiculoId");
+
+                    b.HasKey("OrdenVehiculoId");
+
+                    b.HasIndex("DistribuidorId");
+
+                    b.HasIndex("LugarEntregaPuntoInteresId");
+
+                    b.HasIndex("LugarRecogidaPuntoInteresId");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("PrecioRentaAutosId");
+
+                    b.HasIndex("VehiculoId");
+
+                    b.ToTable("OrdenVehiculo");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Paquete", b =>
@@ -1256,11 +1463,15 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("ProductoId");
 
+                    b.Property<int?>("VehiculoProductoId");
+
                     b.HasKey("VehiculoCategoriaAutoId");
 
                     b.HasIndex("CategoriaAutoId");
 
                     b.HasIndex("ProductoId");
+
+                    b.HasIndex("VehiculoProductoId");
 
                     b.ToTable("VehiculoCategoriaAuto");
                 });
@@ -1580,16 +1791,119 @@ namespace GoTravelTour.Migrations
                         .HasForeignKey("SobreprecioId");
                 });
 
-            modelBuilder.Entity("GoTravelTour.Models.OrdenProducto", b =>
+            modelBuilder.Entity("GoTravelTour.Models.OrdenActividad", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Orden", "Orden")
-                        .WithMany("ListaProductosEnOrden")
-                        .HasForeignKey("OrdenId")
+                    b.HasOne("GoTravelTour.Models.Actividad", "Actividad")
+                        .WithMany()
+                        .HasForeignKey("ActividadId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GoTravelTour.Models.Producto", "Producto")
-                        .WithMany("ListaOrdenesConEsteProducto")
-                        .HasForeignKey("ProductoId")
+                    b.HasOne("GoTravelTour.Models.Distribuidor", "Distribuidor")
+                        .WithMany()
+                        .HasForeignKey("DistribuidorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Orden")
+                        .WithMany("ListaActividadOrden")
+                        .HasForeignKey("OrdenId");
+
+                    b.HasOne("GoTravelTour.Models.PrecioActividad", "PrecioActividad")
+                        .WithMany()
+                        .HasForeignKey("PrecioActividadId");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenAlojamiento", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.Alojamiento", "Alojamiento")
+                        .WithMany()
+                        .HasForeignKey("AlojamientoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.ConfiguracionVoucher", "ConfiguracionVoucher")
+                        .WithMany()
+                        .HasForeignKey("ConfiguracionVoucherId");
+
+                    b.HasOne("GoTravelTour.Models.Distribuidor", "Distribuidor")
+                        .WithMany()
+                        .HasForeignKey("DistribuidorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Habitacion", "Habitacion")
+                        .WithMany()
+                        .HasForeignKey("HabitacionId");
+
+                    b.HasOne("GoTravelTour.Models.Orden")
+                        .WithMany("ListaAlojamientoOrden")
+                        .HasForeignKey("OrdenId");
+
+                    b.HasOne("GoTravelTour.Models.PlanesAlimenticios", "PlanAlimenticio")
+                        .WithMany()
+                        .HasForeignKey("PlanesAlimenticiosId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.PrecioAlojamiento", "PrecioAlojamiento")
+                        .WithMany()
+                        .HasForeignKey("PrecioAlojamientoId");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.ConfiguracionVoucher", "ConfiguracionVoucher")
+                        .WithMany()
+                        .HasForeignKey("ConfiguracionVoucherId");
+
+                    b.HasOne("GoTravelTour.Models.Distribuidor", "Distribuidor")
+                        .WithMany()
+                        .HasForeignKey("DistribuidorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarEntrega")
+                        .WithMany()
+                        .HasForeignKey("LugarEntregaPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarRecogida")
+                        .WithMany()
+                        .HasForeignKey("LugarRecogidaPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.Orden")
+                        .WithMany("ListaTrasladoOrden")
+                        .HasForeignKey("OrdenId");
+
+                    b.HasOne("GoTravelTour.Models.PrecioTraslado", "PrecioTraslado")
+                        .WithMany()
+                        .HasForeignKey("PrecioTrasladoId");
+
+                    b.HasOne("GoTravelTour.Models.Traslado", "Traslado")
+                        .WithMany()
+                        .HasForeignKey("TrasladoProductoId");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenVehiculo", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.Distribuidor", "Distribuidor")
+                        .WithMany()
+                        .HasForeignKey("DistribuidorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarEntrega")
+                        .WithMany()
+                        .HasForeignKey("LugarEntregaPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarRecogida")
+                        .WithMany()
+                        .HasForeignKey("LugarRecogidaPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.Orden")
+                        .WithMany("ListaVehiculosOrden")
+                        .HasForeignKey("OrdenId");
+
+                    b.HasOne("GoTravelTour.Models.PrecioRentaAutos", "PrecioRentaAutos")
+                        .WithMany()
+                        .HasForeignKey("PrecioRentaAutosId");
+
+                    b.HasOne("GoTravelTour.Models.Vehiculo", "Vehiculo")
+                        .WithMany()
+                        .HasForeignKey("VehiculoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1850,6 +2164,10 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.Vehiculo")
+                        .WithMany("ListaCategorias")
+                        .HasForeignKey("VehiculoProductoId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Actividad", b =>

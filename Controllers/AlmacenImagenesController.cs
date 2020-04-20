@@ -311,7 +311,8 @@ namespace GoTravelTour.Controllers
                 SaveImages(img, path);
                 //string ext = img.TipoImagen.Split("/")[1];
                 string file = Path.Combine(path, img.NombreImagen /*+ "." + ext*/);
-                img.ImageContent = "http://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
+                //img.ImageContent = "http://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
+                img.ImageContent = "http://localhost/sources/" + id + "/" + img.NombreImagen /*+ "." + ext*/;
             }
         }
 
@@ -348,6 +349,33 @@ namespace GoTravelTour.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAlmacenImagenes", new { id = 0, msg = "Imagen principal colocada" });
+        }
+
+
+        // POST: api/AlmacenImagenes
+        [HttpPost]
+        [Route("getmain")]
+
+        public async Task<IActionResult> PostGetMain(int idProducto = 0)
+        {
+            if (idProducto <= 0 )
+            {
+                return BadRequest(ModelState);
+            }
+
+            List<AlmacenImagenes> lista = _context.AlmacenImagenes.Where(x => x.ProductoId == idProducto).ToList();
+
+            AlmacenImagenes res = new AlmacenImagenes();
+            foreach (var item in lista)
+            {
+                if (item.Localizacion == "main")
+                {
+                    res = item;
+                }               
+
+            }
+                       
+            return Ok(res);
         }
 
     }
