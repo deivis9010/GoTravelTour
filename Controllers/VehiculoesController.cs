@@ -320,10 +320,92 @@ namespace GoTravelTour.Controllers
             return _context.Vehiculos.Any(e => e.ProductoId == id);
         }
 
+
+        // GET: api/Vehiculoes/FiltrosCount
+        [HttpGet]
+        [Route("FiltrosCount")]
+        public IEnumerable<Contrato> GetContratosByFiltrosCount(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0)
+        {
+            IEnumerable<Contrato> lista = new List<Contrato>();
+
+            if (idContrato == -1 && idDistribuidor == -1)
+            {
+
+                lista = _context.Contratos
+               
+                .Where(a => a.TipoProducto.Nombre == "Vehicle")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                      
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor != -1)
+            {
+
+                lista = _context.Contratos
+              
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Vehicle")
+               .OrderBy(a => a.Nombre)
+               .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                       
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1)
+            {
+                lista = _context.Contratos
+              
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Vehicle")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);                       
+                    }
+                return lista;
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1)
+            {
+                lista = _context.Contratos
+               
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Vehicle")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+                       contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                    }
+                return lista;
+            }
+
+
+            return lista;
+
+        }
+
+
         // GET: api/Vehiculoes/Filtros
         [HttpGet]
         [Route("Filtros")]
-        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor=0, int idProducto=0)
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor=0, int idProducto=0, int pageIndex = 1, int pageSize = 1)
         {
             IEnumerable<Contrato> lista= new  List<Contrato>();            
 
@@ -340,7 +422,8 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
 
                         if ( contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
@@ -390,7 +473,8 @@ namespace GoTravelTour.Controllers
                     {
 
 
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
@@ -438,7 +522,8 @@ namespace GoTravelTour.Controllers
                     {
 
 
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -484,7 +569,8 @@ namespace GoTravelTour.Controllers
                     {
 
 
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
@@ -523,30 +609,61 @@ namespace GoTravelTour.Controllers
             return lista;
 
         }
-        private void FiltrarProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
+
+        private void FiltrarProductoProveedor(int idProveedor, int idProducto, Contrato contrato, int pageIndex = 1, int pageSize = 1)
         {
             if (idProducto == 0 && idProveedor == 0)
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle").ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle")
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
             else if ((idProducto != 0 && idProveedor == 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.ProductoId == idProducto).ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.ProductoId == idProducto)
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor).ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor)
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto)
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
         }
 
+        private int CantidadProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
+        {
+            
+            if (idProducto == 0 && idProveedor == 0)
+            {
+                return _context.ProductoDistribuidores
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle").Count();
+            }
+            else if ((idProducto != 0 && idProveedor == 0))
+            {
+                return _context.ProductoDistribuidores
+                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.ProductoId == idProducto).Count();
+            }
+            else if ((idProducto == 0 && idProveedor != 0))
+            {
+                return _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor).Count();
+            }
+            else
+            {
+                return _context.ProductoDistribuidores
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
+            }
+        }
+
+               
 
 
         // GET: api/Vehiculoes/BuscarOrden
@@ -554,6 +671,12 @@ namespace GoTravelTour.Controllers
         [Route("BuscarOrden")]
         public List<OrdenVehiculo> GetOrdenVehiculos(BuscadorVehiculo buscador)
         {
+            // TODO agregar el calculo de la orden teniendo en  cuenta
+            /// restriccionen
+            /// surcharger
+            /// surcharge cliente
+            /// deposito seguro extra
+            /// 
             List<OrdenVehiculo> lista = new List<OrdenVehiculo>();
 
             List<Vehiculo> vehiculos =  _context.Vehiculos.Where(x => x.ListaCategorias.Any(y => y.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId)

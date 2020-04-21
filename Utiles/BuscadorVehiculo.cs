@@ -12,7 +12,7 @@ namespace GoTravelTour.Utiles
         {
 
         }
-        public Usuario Usuario { get; set; }
+        public Cliente Cliente { get; set; }
         public CategoriaAuto CategoriaAuto { get; set; }
         public string TipoTransmision { get; set; }
         public DateTime FechaRecogida { get; set; }

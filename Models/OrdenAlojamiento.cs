@@ -33,6 +33,7 @@ namespace GoTravelTour.Models
         public Alojamiento Alojamiento { set; get; }
         //FIN----------------
         public bool PremiteCopia { get; set; }
+        public decimal PrecioOrden { get; set; }
 
 
     }

@@ -28,5 +28,6 @@ namespace GoTravelTour.Models
         public List<OrdenTraslado> ListaTrasladoOrden { get; set; }
         public List<OrdenAlojamiento> ListaAlojamientoOrden { get; set; }
         public List<OrdenActividad> ListaActividadOrden { get; set; }
+        public decimal PrecioGeneralOrden { get; set; }
     }
 }

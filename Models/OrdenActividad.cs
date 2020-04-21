@@ -26,6 +26,7 @@ namespace GoTravelTour.Models
         public PrecioActividad PrecioActividad { get; set; }
        // public List<PrecioServicio> Servicios { get; set; }
         public bool PremiteCopia { get; set; }
+        public decimal PrecioOrden { get; set; }
 
     }
 }

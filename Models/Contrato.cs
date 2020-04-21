@@ -26,7 +26,9 @@ namespace GoTravelTour.Models
         public List<Temporada> Temporadas { get; set; }
         [NotMapped]
         public List<NombreTemporada> NombreTemporadas { get; set; }
-       
+        [NotMapped]
+        public int CantidadProductosTotal { get; set; }
+
 
 
     }

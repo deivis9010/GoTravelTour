@@ -27,6 +27,7 @@ namespace GoTravelTour.Models
         public PuntoInteres LugarEntrega { get; set; }    
         public Traslado Traslado { get; set; }
         public bool PremiteCopia { get; set; }
+        public decimal PrecioOrden { get; set; }
 
     }
 }

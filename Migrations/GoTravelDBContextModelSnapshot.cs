@@ -542,6 +542,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("OFACrequired");
 
+                    b.Property<decimal>("PrecioGeneralOrden");
+
                     b.Property<int?>("SobreprecioId");
 
                     b.HasKey("OrdenId");
@@ -586,6 +588,8 @@ namespace GoTravelTour.Migrations
                     b.Property<int?>("OrdenId");
 
                     b.Property<int?>("PrecioActividadId");
+
+                    b.Property<decimal>("PrecioOrden");
 
                     b.Property<bool>("PremiteCopia");
 
@@ -646,6 +650,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("PrecioAlojamientoId");
 
+                    b.Property<decimal>("PrecioOrden");
+
                     b.Property<bool>("PremiteCopia");
 
                     b.Property<string>("TelefonoReferencia");
@@ -705,6 +711,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("OrdenId");
 
+                    b.Property<decimal>("PrecioOrden");
+
                     b.Property<int?>("PrecioTrasladoId");
 
                     b.Property<bool>("PremiteCopia");
@@ -753,6 +761,8 @@ namespace GoTravelTour.Migrations
                     b.Property<string>("NumeroConfirmacion");
 
                     b.Property<int?>("OrdenId");
+
+                    b.Property<decimal>("PrecioOrden");
 
                     b.Property<int?>("PrecioRentaAutosId");
 

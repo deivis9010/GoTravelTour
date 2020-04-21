@@ -156,6 +156,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim()))
+            {
+                return CreatedAtAction("GetAlojamiento", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
 
             alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
             if (alojamiento.PuntoInteres != null && alojamiento.PuntoInteres.PuntoInteresId > 0)
@@ -235,6 +239,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if (_context.Alojamientos.Any(x=>x.Nombre.Trim()==alojamiento.Nombre.Trim()))
+            {
+                return CreatedAtAction("GetAlojamiento", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             alojamiento.SKU = u.GetSKUCodigo();
             alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
@@ -280,10 +288,99 @@ namespace GoTravelTour.Controllers
 
 
 
+        // GET: api/Alojamientoes/FiltrosCount
+        [HttpGet]
+        [Route("FiltrosCount")]
+        public IEnumerable<Contrato> GetContratosByFiltrosCount(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0)
+        {
+            IEnumerable<Contrato> lista = new List<Contrato>();
+
+            if (idContrato == -1 && idDistribuidor == -1)
+            {
+
+                lista = _context.Contratos
+                
+                .Where(a => a.TipoProducto.Nombre == "Accommodation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        
+
+                      
+
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor != -1)
+            {
+
+                lista = _context.Contratos
+             
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+               .OrderBy(a => a.Nombre)
+               .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                       
+                    }
+                return lista;
+            }
+            else
+              if (idContrato != -1 && idDistribuidor == -1)
+            {
+                lista = _context.Contratos
+               
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Accommodation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        
+
+                    }
+                return lista;
+            }
+            else
+              if (idContrato == -1 && idDistribuidor != -1)
+            {
+                lista = _context.Contratos
+                
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+                .OrderBy(a => a.Nombre)
+                .ToList();
+                if (lista.Count() > 0)
+                    foreach (var contrato in lista)
+                    {
+
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                       
+
+
+                    }
+                return lista;
+            }
+
+
+            return lista;
+
+        }
+
+
         // GET: api/Alojamientoes/Filtros
         [HttpGet]
         [Route("Filtros")]
-        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0)
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0, int pageIndex = 1, int pageSize = 1)
         {
             IEnumerable<Contrato> lista = new List<Contrato>();
 
@@ -300,31 +397,31 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
 
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
                             while (i < contrato.Temporadas.Count())
                             {
-                               
+
                                 contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
                                     .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 contrato.Temporadas[i].ListaPrecioPlanes = new List<PrecioPlanesAlimenticios>();
                                 if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
-                                foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
-                                {
+                                    foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
+                                    {
                                         if (_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
                                         {
                                             List<PrecioPlanesAlimenticios> temp = new List<PrecioPlanesAlimenticios>();
-                                            temp = _context.PrecioPlanesAlimenticios.Where(x => x.ProductoId == item.ProductoId  && x.ContratoDelPrecio.ContratoId == contrato.ContratoId).ToList();
+                                            temp = _context.PrecioPlanesAlimenticios.Where(x => x.ProductoId == item.ProductoId && x.ContratoDelPrecio.ContratoId == contrato.ContratoId).ToList();
                                             contrato.Temporadas[i].ListaPrecioPlanes.AddRange(temp);
                                         }
                                     }
-                                
+
 
 
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
@@ -352,8 +449,8 @@ namespace GoTravelTour.Controllers
                 if (lista.Count() > 0)
                     foreach (var contrato in lista)
                     {
-
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -401,7 +498,8 @@ namespace GoTravelTour.Controllers
                 if (lista.Count() > 0)
                     foreach (var contrato in lista)
                     {
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -449,7 +547,8 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
 
-                        FiltrarProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
                         if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
@@ -463,14 +562,14 @@ namespace GoTravelTour.Controllers
                                 if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
                                     foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
                                     {
-                                        if(_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
+                                        if (_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
                                         {
-                                            List<PrecioPlanesAlimenticios> temp =new List<PrecioPlanesAlimenticios>();
+                                            List<PrecioPlanesAlimenticios> temp = new List<PrecioPlanesAlimenticios>();
                                             temp = _context.PrecioPlanesAlimenticios.Where(x => x.ProductoId == item.ProductoId && x.ContratoDelPrecio.ContratoId == contrato.ContratoId).ToList();
                                             contrato.Temporadas[i].ListaPrecioPlanes.AddRange(temp);
                                         }
-                                        
-                                        
+
+
                                     }
 
                                 contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas
@@ -492,27 +591,60 @@ namespace GoTravelTour.Controllers
 
         }
 
-        private void FiltrarProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
+        private void FiltrarProductoProveedor(int idProveedor, int idProducto, Contrato contrato, int pageIndex = 1, int pageSize = 1)
         {
             if (idProducto == 0 && idProveedor == 0)
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation")
+                .ToPagedList(pageIndex, pageSize).ToList();
             }else if((idProducto != 0 && idProveedor == 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.ProductoId == idProducto).ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.ProductoId == idProducto)
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor)
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).ToList();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto)
+               .ToPagedList(pageIndex, pageSize).ToList();
             }
         }
+
+        public int CantidadProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
+        {
+             
+            if (idProducto == 0 && idProveedor == 0)
+            {
+                return  _context.ProductoDistribuidores
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").Count();
+            }
+            else if ((idProducto != 0 && idProveedor == 0))
+            {
+                return _context.ProductoDistribuidores
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.ProductoId == idProducto).Count();
+               
+            }
+            else if ((idProducto == 0 && idProveedor != 0))
+            {
+                return _context.ProductoDistribuidores
+                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).Count();
+              
+            }
+            else
+            {
+                return _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
+                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
+               
+            }
+        }
+
     }
 }
