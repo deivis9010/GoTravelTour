@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +23,8 @@ namespace GoTravelTour.Models
         public string ImageContent { get; set; } //Para el logo url
         public string ImageMimeType { get; set; } //Para el logo
         public string ImageName { get; set; } //Para el logo
-        public double? Descuento { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Descuento { get; set; }
         public bool IsActivo { get; set; }
         public bool IsPublic { get; set; }
         public string Pais { get; set; }

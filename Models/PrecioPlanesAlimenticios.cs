@@ -8,7 +8,8 @@ namespace GoTravelTour.Models
 {
     public class PrecioPlanesAlimenticios
     {
-        public int PrecioPlanesAlimenticiosId { get; set; }       
+        public int PrecioPlanesAlimenticiosId { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Precio { get; set; }
         public int PlanesAlimenticiosId { get; set; }
         public PlanesAlimenticios PlanesAlimenticios { get; set; }

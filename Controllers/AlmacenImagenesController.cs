@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using GoTravelTour.Utiles;
 
 namespace GoTravelTour.Controllers
 {
@@ -335,11 +336,11 @@ namespace GoTravelTour.Controllers
             {
                 if(item.AlmacenImagenesId == idImagen)
                 {
-                    item.Localizacion = "main";
+                    item.Localizacion = ValoresAuxiliares.IMAGEN_LOC_MAIN;
                 }
                 else
                 {
-                    item.Localizacion = "galery";
+                    item.Localizacion = ValoresAuxiliares.IMAGEN_LOC_GALLERY;
                 }
 
                 _context.Entry(item).State = EntityState.Modified;
@@ -368,7 +369,7 @@ namespace GoTravelTour.Controllers
             AlmacenImagenes res = new AlmacenImagenes();
             foreach (var item in lista)
             {
-                if (item.Localizacion == "main")
+                if (item.Localizacion == ValoresAuxiliares.IMAGEN_LOC_MAIN)
                 {
                     res = item;
                 }               

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
 using Microsoft.AspNetCore.Authorization;
+using GoTravelTour.Utiles;
 
 namespace GoTravelTour.Controllers
 {
@@ -300,7 +301,7 @@ namespace GoTravelTour.Controllers
 
                 lista = _context.Contratos
                 
-                .Where(a => a.TipoProducto.Nombre == "Accommodation")
+                .Where(a => a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -322,7 +323,7 @@ namespace GoTravelTour.Controllers
 
                 lista = _context.Contratos
              
-               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                .OrderBy(a => a.Nombre)
                .ToList();
                 if (lista.Count() > 0)
@@ -338,7 +339,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Contratos
                
-                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Accommodation")
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
 
@@ -356,7 +357,7 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Contratos
                 
-                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -390,7 +391,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.TipoProducto.Nombre == "Accommodation")
+                .Where(a => a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -443,7 +444,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                .Include(a => a.Distribuidor)
                .Include(a => a.Temporadas)
-               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                .OrderBy(a => a.Nombre)
                .ToList();
                 if (lista.Count() > 0)
@@ -491,7 +492,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Accommodation")
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
 
@@ -540,7 +541,7 @@ namespace GoTravelTour.Controllers
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Accommodation")
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -596,24 +597,24 @@ namespace GoTravelTour.Controllers
             if (idProducto == 0 && idProveedor == 0)
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation")
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .ToPagedList(pageIndex, pageSize).ToList();
             }else if((idProducto != 0 && idProveedor == 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.ProductoId == idProducto)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.ProductoId == idProducto)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
         }
@@ -624,24 +625,24 @@ namespace GoTravelTour.Controllers
             if (idProducto == 0 && idProveedor == 0)
             {
                 return  _context.ProductoDistribuidores
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation").Count();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).Count();
             }
             else if ((idProducto != 0 && idProveedor == 0))
             {
                 return _context.ProductoDistribuidores
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.ProductoId == idProducto).Count();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.ProductoId == idProducto).Count();
                
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 return _context.ProductoDistribuidores
-                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).Count();
+                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor).Count();
               
             }
             else
             {
                 return _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
+                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
                
             }
         }

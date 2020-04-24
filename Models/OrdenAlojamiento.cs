@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,6 +34,7 @@ namespace GoTravelTour.Models
         public Alojamiento Alojamiento { set; get; }
         //FIN----------------
         public bool PremiteCopia { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioOrden { get; set; }
 
 

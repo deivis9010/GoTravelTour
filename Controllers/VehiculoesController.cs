@@ -25,12 +25,12 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Vehiculoes
         [HttpGet]
-        public IEnumerable<Vehiculo> GetVehiculos (string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor=0)
+        public IEnumerable<Vehiculo> GetVehiculos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor = 0)
         {
             IEnumerable<Vehiculo> lista;
             if (col == "-1")
             {
-                lista= _context.Vehiculos
+                lista = _context.Vehiculos
                     //.Include(v => v.Marca)
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
@@ -39,8 +39,8 @@ namespace GoTravelTour.Controllers
                    .Where(x => x.ProveedorId == idProveedor)
                     .OrderBy(a => a.Nombre)
                     .ToList();
-               
-                foreach (Vehiculo v in  lista)
+
+                foreach (Vehiculo v in lista)
                 {
                     v.ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == v.ProductoId).ToList();
                 }
@@ -52,7 +52,7 @@ namespace GoTravelTour.Controllers
                     //.Include(v => v.Marca)
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
-                  //  .Include(v => v.TipoProducto)
+                    //  .Include(v => v.TipoProducto)
                     //.Include(v => v.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
                 foreach (Vehiculo v in lista)
@@ -66,8 +66,8 @@ namespace GoTravelTour.Controllers
                    // .Include(v => v.Marca)
                    .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
-                   // .Include(v => v.TipoProducto)
-                 //   .Include(v => v.ListaDistribuidoresProducto)
+                    // .Include(v => v.TipoProducto)
+                    //   .Include(v => v.ListaDistribuidoresProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();
                 foreach (Vehiculo v in lista)
                 {
@@ -125,13 +125,13 @@ namespace GoTravelTour.Controllers
 
             /*  var vehiculo = await _context.Vehiculos
                   .FindAsync(id);*/
-            var vehiculo =  _context.Vehiculos
+            var vehiculo = _context.Vehiculos
                .Include(v => v.Marca)
                .Include(v => v.Modelo)
                .Include(v => v.Proveedor)
                .Include(v => v.TipoProducto)
                .Include(v => v.ListaDistribuidoresProducto)
-           .Single(x=>x.ProductoId == id);
+           .Single(x => x.ProductoId == id);
 
             vehiculo.ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == vehiculo.ProductoId).ToList();
 
@@ -163,14 +163,14 @@ namespace GoTravelTour.Controllers
             {
                 VehiculoCategoriaAuto c = ListaCategorias[i];
                 bool esta = false;
-                foreach(VehiculoCategoriaAuto c2 in vehiculo.ListaCategorias)
+                foreach (VehiculoCategoriaAuto c2 in vehiculo.ListaCategorias)
                 {
-                    if(c.VehiculoCategoriaAutoId == c2.VehiculoCategoriaAutoId)
+                    if (c.VehiculoCategoriaAutoId == c2.VehiculoCategoriaAutoId)
                     {
                         esta = true;
                         break;
                     }
-                   
+
                 }
                 if (!esta && c.VehiculoCategoriaAutoId != 0)
                 {
@@ -178,10 +178,10 @@ namespace GoTravelTour.Controllers
                     ListaCategorias.Remove(c);
                     i--;
                 }
-               
-                    i++;
-               
-                
+
+                i++;
+
+
             }
             await _context.SaveChangesAsync();
             i = 0;
@@ -196,8 +196,8 @@ namespace GoTravelTour.Controllers
                 }
                 else
                 {
-                   /* _context.Entry(c).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();*/
+                    /* _context.Entry(c).State = EntityState.Modified;
+                     await _context.SaveChangesAsync();*/
 
                 }
                 i++;
@@ -214,17 +214,17 @@ namespace GoTravelTour.Controllers
                 _context.ProductoDistribuidores.Remove(item);
             }
             if (vehiculo.ListaDistribuidoresProducto != null)
-            foreach (var item in vehiculo.ListaDistribuidoresProducto)
-            {
-                item.ProductoId = vehiculo.ProductoId;
-                _context.ProductoDistribuidores.Add(item);
-            }
+                foreach (var item in vehiculo.ListaDistribuidoresProducto)
+                {
+                    item.ProductoId = vehiculo.ProductoId;
+                    _context.ProductoDistribuidores.Add(item);
+                }
             if (vehiculo.ListaComodidades != null)
                 foreach (var item in vehiculo.ListaComodidades)
-            {
-                item.ProductoId = vehiculo.ProductoId;
-                _context.ComodidadesProductos.Add(item);
-            }
+                {
+                    item.ProductoId = vehiculo.ProductoId;
+                    _context.ComodidadesProductos.Add(item);
+                }
 
             vehiculo.Proveedor = _context.Proveedores.First(x => x.ProveedorId == vehiculo.ProveedorId);
             if (vehiculo.PuntoInteres != null)
@@ -232,7 +232,7 @@ namespace GoTravelTour.Controllers
             vehiculo.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == vehiculo.TipoProductoId);
             vehiculo.Marca = _context.Marcas.First(x => x.MarcaId == vehiculo.MarcaId);
             vehiculo.Modelo = _context.Modelos.First(x => x.ModeloId == vehiculo.ModeloId);
-            
+
 
 
             _context.Entry(vehiculo).State = EntityState.Modified;
@@ -277,8 +277,8 @@ namespace GoTravelTour.Controllers
 
             _context.Vehiculos.Add(vehiculo);
             await _context.SaveChangesAsync();
-            
-            if(vehiculo.ListaCategorias.Count() > 0)
+
+            if (vehiculo.ListaCategorias.Count() > 0)
             {
                 foreach (VehiculoCategoriaAuto vca in vehiculo.ListaCategorias)
                 {
@@ -332,8 +332,8 @@ namespace GoTravelTour.Controllers
             {
 
                 lista = _context.Contratos
-               
-                .Where(a => a.TipoProducto.Nombre == "Vehicle")
+
+                .Where(a => a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -341,7 +341,7 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                      
+
                     }
                 return lista;
             }
@@ -350,8 +350,8 @@ namespace GoTravelTour.Controllers
             {
 
                 lista = _context.Contratos
-              
-               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Vehicle")
+
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                .OrderBy(a => a.Nombre)
                .ToList();
                 if (lista.Count() > 0)
@@ -360,7 +360,7 @@ namespace GoTravelTour.Controllers
 
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                       
+
                     }
                 return lista;
             }
@@ -368,15 +368,15 @@ namespace GoTravelTour.Controllers
               if (idContrato != -1 && idDistribuidor == -1)
             {
                 lista = _context.Contratos
-              
-                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Vehicle")
+
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                 .OrderBy(a => a.Nombre)
                 .ToList();
 
                 if (lista.Count() > 0)
                     foreach (var contrato in lista)
                     {
-                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);                       
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
                     }
                 return lista;
             }
@@ -384,14 +384,14 @@ namespace GoTravelTour.Controllers
               if (idContrato == -1 && idDistribuidor != -1)
             {
                 lista = _context.Contratos
-               
-                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Vehicle")
+
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
                     foreach (var contrato in lista)
                     {
-                       contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
                     }
                 return lista;
             }
@@ -405,17 +405,17 @@ namespace GoTravelTour.Controllers
         // GET: api/Vehiculoes/Filtros
         [HttpGet]
         [Route("Filtros")]
-        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor=0, int idProducto=0, int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<Contrato> GetContratosByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0, int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<Contrato> lista= new  List<Contrato>();            
+            IEnumerable<Contrato> lista = new List<Contrato>();
 
             if (idContrato == -1 && idDistribuidor == -1)
             {
-                
+
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a =>a.TipoProducto.Nombre == "Vehicle")
+                .Where(a => a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -425,7 +425,7 @@ namespace GoTravelTour.Controllers
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
                         FiltrarProductoProveedor(idProveedor, idProducto, contrato, pageIndex, pageSize);
 
-                        if ( contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
+                        if (contrato.Temporadas != null && contrato.Temporadas.Count() > 0)
                         {
                             int i = 0;
                             while (i < contrato.Temporadas.Count())
@@ -441,7 +441,7 @@ namespace GoTravelTour.Controllers
                                 {
                                     contrato.Temporadas[i].ListaRestricciones[j].PrecioRestriccionesProdutos = _context.RestriccionesPrecios
                                         .Where(x => x.RestriccionesId == contrato.Temporadas[i].ListaRestricciones[j].RestriccionesId).ToList();
-                                   
+
                                     j++;
                                 }
 
@@ -450,10 +450,10 @@ namespace GoTravelTour.Controllers
                                 ;
                                 i++;
                             }
-                            
+
 
                         }
-                        
+
 
                     }
                 return lista;
@@ -461,13 +461,13 @@ namespace GoTravelTour.Controllers
             else
               if (idContrato != -1 && idDistribuidor != -1)
             {
-                
-                 lista = _context.Contratos
-                .Include(a => a.Distribuidor)
-                .Include(a => a.Temporadas)                
-                .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor &&  a.TipoProducto.Nombre == "Vehicle")
-                .OrderBy(a => a.Nombre)
-                .ToList();
+
+                lista = _context.Contratos
+               .Include(a => a.Distribuidor)
+               .Include(a => a.Temporadas)
+               .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
+               .OrderBy(a => a.Nombre)
+               .ToList();
                 if (lista.Count() > 0)
                     foreach (var contrato in lista)
                     {
@@ -507,13 +507,13 @@ namespace GoTravelTour.Controllers
                     }
                 return lista;
             }
-            else             
-              if (idContrato != -1 && idDistribuidor == -1 )
+            else
+              if (idContrato != -1 && idDistribuidor == -1)
             {
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == "Vehicle")
+                .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                 .OrderBy(a => a.Nombre)
                 .ToList();
 
@@ -556,12 +556,12 @@ namespace GoTravelTour.Controllers
                 return lista;
             }
             else
-              if (idContrato == -1 && idDistribuidor != -1 )
+              if (idContrato == -1 && idDistribuidor != -1)
             {
                 lista = _context.Contratos
                 .Include(a => a.Distribuidor)
                 .Include(a => a.Temporadas)
-                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == "Vehicle")
+                .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
@@ -583,7 +583,7 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioAutos = _context.PrecioRentaAutos
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                
+
                                 int j = 0;
                                 while (j < contrato.Temporadas[i].ListaRestricciones.Count())
                                 {
@@ -615,100 +615,349 @@ namespace GoTravelTour.Controllers
             if (idProducto == 0 && idProveedor == 0)
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle")
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
             else if ((idProducto != 0 && idProveedor == 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.ProductoId == idProducto)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE && x.ProductoId == idProducto)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE && x.Producto.ProveedorId == idProveedor)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
             else
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto)
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto)
                .ToPagedList(pageIndex, pageSize).ToList();
             }
         }
 
         private int CantidadProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
         {
-            
+
             if (idProducto == 0 && idProveedor == 0)
             {
                 return _context.ProductoDistribuidores
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle").Count();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).Count();
             }
             else if ((idProducto != 0 && idProveedor == 0))
             {
                 return _context.ProductoDistribuidores
-                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.ProductoId == idProducto).Count();
+                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE && x.ProductoId == idProducto).Count();
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 return _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor).Count();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE && x.Producto.ProveedorId == idProveedor).Count();
             }
             else
             {
                 return _context.ProductoDistribuidores
-               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Vehicle" && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
+               .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
             }
         }
 
-               
+
 
 
         // GET: api/Vehiculoes/BuscarOrden
         [HttpGet]
         [Route("BuscarOrden")]
-        public List<OrdenVehiculo> GetOrdenVehiculos(BuscadorVehiculo buscador)
+        public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador)
         {
             // TODO agregar el calculo de la orden teniendo en  cuenta
-            /// restriccionen
-            /// surcharger
-            /// surcharge cliente
-            /// deposito seguro extra
-            /// 
-            List<OrdenVehiculo> lista = new List<OrdenVehiculo>();
 
-            List<Vehiculo> vehiculos =  _context.Vehiculos.Where(x => x.ListaCategorias.Any(y => y.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId)
-            && x.TipoTransmision == buscador.TipoTransmision).ToList();
-           
-            foreach (var v in vehiculos)
+            /// surcharger
+
+            List<OrdenVehiculo> lista = new List<OrdenVehiculo>(); //Lista  a devolver (candidatos)
+
+            //Para saber que autos entran en la categoria pasada por parametros
+            List<VehiculoCategoriaAuto> cats = _context.VehiculoCategoriaAuto.Where(x => x.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId).ToList();
+
+            //Se buscan todos los auto con la transmision pasada por parametros
+            List<Vehiculo> vehiculos = _context.Vehiculos.Where(x => x.TipoTransmision == buscador.TipoTransmision).ToList();
+
+
+            foreach (var v in vehiculos) //Se recorren los vehiculos que coinciden con el tipo de transmision
             {
-                List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x=>x.Temporada.ListaFechasTemporada)
+
+                if (cats.Any(x => x.ProductoId == v.ProductoId)) //Si el vehiculo es de la categoria buscada se calcula su precio
+                {
+
+                    List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
                     .Include(x => x.Temporada.Contrato.Distribuidor)
                     .Where(x => x.ProductoId == v.ProductoId).ToList();
-                foreach(var p in precios)
-                {
-                    OrdenVehiculo ov = new OrdenVehiculo();
-                    if (p.Temporada.ListaFechasTemporada.Any(x=>(x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) || 
-                     (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio)))
+                    foreach (var p in precios)
                     {
-                        ov.PrecioRentaAutos = p;
-                        ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
-                        ov.Vehiculo = v;
-                        
-                        lista.Add(ov);
-                    }
+                        OrdenVehiculo ov = new OrdenVehiculo();
+                        if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
+                         (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
+                        {
+                            Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                            ov.PrecioRentaAutos = p;
+                            ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                            ov.Vehiculo = v;
+                            int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
+                            int cantDias = 0; // auxilar para rangos
+                            int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
+                            //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                            List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderByDescending(x => x.Maximo).ToList();
 
+
+                            switch (p.Temporada.Contrato.FormaCobro)// 1-por dia 2- PrimeraTemp 3-UltimaTemp                           
+                            {
+                                case 1:
+                                    {
+                                        Met_CalcularPrecioAutoPorDia(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        Met_CalcularPrecioAutoPorPrimeraTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        Met_CalcularPrecioAutoPorSegundaTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        break;
+                                    }
+                            }
+
+                            ov.PrecioOrden = c.Descuento + (DiasRestantes * p.DiasExtra) + (cantDiasGenenarl * p.Seguro);
+
+
+
+                            List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).ToList();
+
+                            foreach (Sobreprecio s in sobreprecios)
+                            {
+                                if(s.PrecioDesde<= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
+                                {
+                                    if (s.PagoPorDia)
+                                    {
+                                        if(s.ValorDinero != null)
+                                        {
+                                            ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero;
+                                        }
+                                        else
+                                        {
+                                            ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden*((decimal)s.ValorPorCiento/100);
+                                        }
+                                       
+                                    }
+                                    else
+                                    {
+
+                                        if (s.ValorDinero != null)
+                                        {
+                                            ov.PrecioOrden += (decimal)s.ValorDinero;
+                                        }
+                                        else
+                                        {
+                                            ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        }
+                                       
+                                    }
+                                    break;
+                                }
+
+                            }
+
+
+                            lista.Add(ov);
+                        }
+
+                    }
                 }
+
             }
 
 
-            return lista.OrderByDescending(x=>x.PrecioRentaAutos.Deposito).ToList();
+            return lista.OrderByDescending(x => x.PrecioRentaAutos.Deposito).ToList();
 
         }
 
+        private void Met_CalcularPrecioAutoPorSegundaTemporada(BuscadorVehiculo buscador, Vehiculo v, PrecioRentaAutos p, OrdenVehiculo ov, int cantDiasGenenarl, ref int cantDias, ref int DiasRestantes, List<Restricciones> restricciones)
+        {
+            int i = 0;
+            bool encontroRangoValido = false; //es para saber si la cantidad de dias a rentar entra en el rango de alguna restriccion
+                                              //Recorro todas los rangos de fecha para ir calculando precio total
+            while (i < p.Temporada.ListaFechasTemporada.Count)
+            {
+                RangoFechas rf = p.Temporada.ListaFechasTemporada[i];
+                Restricciones rt = new Restricciones();// Se usara para obtener el rango mayor de dias a alquilar y poder calcular precios a partir de ahi
+                if (rf.FechaInicio <= buscador.FechaEntrega && buscador.FechaEntrega <= rf.FechaFin)
+                {
+                    //Si fecha de recogida cae en rango la cantidad de dias sera la general 
+                    cantDias = cantDiasGenenarl;
+                    foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+                    {
+                        rt = item;
+                        if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        {
+                            ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
+                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                            encontroRangoValido = true;
+                            break;
+                        }
+                    }
+                    if (!encontroRangoValido)
+                    {
+                        cantDias = rt.Maximo;
+                        DiasRestantes -= cantDias;
+                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                    }
+                }
+                i++;
+            }
+        }
+
+        private void Met_CalcularPrecioAutoPorPrimeraTemporada(BuscadorVehiculo buscador, Vehiculo v, PrecioRentaAutos p, OrdenVehiculo ov, int cantDiasGenenarl, ref int cantDias, ref int DiasRestantes, List<Restricciones> restricciones)
+        {
+            int i = 0;
+            bool encontroRangoValido = false; //es para saber si la cantidad de dias a rentar entra en el rango de alguna restriccion
+                                              //Recorro todas los rangos de fecha para ir calculando precio total
+            while (i < p.Temporada.ListaFechasTemporada.Count)
+            {
+                RangoFechas rf = p.Temporada.ListaFechasTemporada[i];
+                Restricciones rt = new Restricciones();// Se usara para obtener el rango mayor de dias a alquilar y poder calcular precios a partir de ahi
+                if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin)
+                {
+                    //Si fecha de recogida cae en rango la cantidad de dias sera la general 
+                    cantDias = cantDiasGenenarl;
+                    foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+                    {
+                        rt = item;
+                        if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        {
+                            ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
+                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                            encontroRangoValido = true;
+                            break;
+                        }
+                    }
+                    if (!encontroRangoValido)
+                    {
+                        cantDias = rt.Maximo;
+                        DiasRestantes -= cantDias;
+                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                    }
+                }
+                i++;
+            }
+        }
+
+        /// <summary>
+        /// Este metodo realiza el procedimiento de ir acumulando el valor de precio del auto
+        /// segun las fechas y los dias de renta
+        /// </summary>
+        /// <param name="buscador"> parametros de busqueda</param>
+        /// <param name="v">Auto que quiere rentar</param>
+        /// <param name="p">atributos precio del auto a rentar</param>
+        /// <param name="ov">Orden del auto a rentar</param>
+        /// <param name="cantDiasGenenarl">Cantidad de dias a resevar</param>
+        /// <param name="cantDias">variable auxiliar para llevar la cantidad de dias en un rango de fecha</param>
+        /// <param name="DiasRestantes">dias que van a ir quedando luego de se vayan calculadno los dias segun los rangos de fechas en las temporadsa</param>
+        /// <param name="restricciones">Restricciones de Precio para el vehiculos</param>
+        private void Met_CalcularPrecioAutoPorDia(BuscadorVehiculo buscador, Vehiculo v, PrecioRentaAutos p, OrdenVehiculo ov, int cantDiasGenenarl, ref int cantDias, ref int DiasRestantes, List<Restricciones> restricciones)
+        {
+            int i = 0;
+            bool encontroRangoValido = false; //es para saber si la cantidad de dias a rentar entra en el rango de alguna restriccion
+            //Recorro todas los rangos de fecha para ir calculando precio total
+            while (i < p.Temporada.ListaFechasTemporada.Count)
+            {
+                RangoFechas rf = p.Temporada.ListaFechasTemporada[i];
+                Restricciones rt = new Restricciones();// Se usara para obtener el rango mayor de dias a alquilar y poder calcular precios a partir de ahi
+
+                if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin &&
+                  rf.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= rf.FechaInicio)
+                {
+                    //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
+                    cantDias = cantDiasGenenarl;
+
+                    foreach (var item in restricciones) // se evalua por restricciones el valor de la cantidad de dias
+                    {
+                        rt = item;
+                        if (item.Minimo <= cantDias && cantDias <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        {
+                            ov.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId== item.RestriccionesId).Precio * cantDias;
+                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                            encontroRangoValido = true;
+                            break;
+                        }
+                    }
+                    if (!encontroRangoValido)
+                    {
+                        cantDias = rt.Maximo;
+                        DiasRestantes -= cantDias;
+                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                    }
+                }
+                else
+                     if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin)
+                {
+                    //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
+                    cantDias = (rf.FechaFin - buscador.FechaRecogida).Days;
+                    foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+                    {
+                        if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        {
+                            rt = item;
+                            ov.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId== item.RestriccionesId).Precio * cantDias;
+                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                            encontroRangoValido = true;
+                            break;
+                        }
+                    }
+                    if (!encontroRangoValido)
+                    {
+                        cantDias = rt.Maximo;
+                        DiasRestantes -= cantDias;
+                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                    }
+                }
+                else
+                if (rf.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= rf.FechaInicio)
+                {
+                    //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
+                    cantDias = (rf.FechaFin - buscador.FechaEntrega).Days;
+                    foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+                    {
+                        rt = item;
+                        if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        {
+                            ov.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId== item.RestriccionesId).Precio * cantDias;
+                           
+                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                            encontroRangoValido = true;
+                            break;
+                        }
+                    }
+                    if (!encontroRangoValido)
+                    {
+                        cantDias = rt.Maximo;
+                        DiasRestantes -= cantDias;
+                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                    }
+                }
+
+              
 
 
+
+                i++;
+            }
+        }
     }
 }

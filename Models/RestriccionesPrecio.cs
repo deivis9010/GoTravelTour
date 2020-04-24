@@ -9,6 +9,7 @@ namespace GoTravelTour.Models
     public class RestriccionesPrecio
     {
         public int RestriccionesPrecioId { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Precio { get; set; }
         public int RestriccionesId { get; set; }
         public Restricciones Restricciones { get; set; }

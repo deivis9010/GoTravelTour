@@ -96,6 +96,12 @@
     <Compile Remove="Migrations\20200412171155_modificando precio planes.Designer.cs" />
     <Compile Remove="Migrations\20200420005110_primera version ordenes.cs" />
     <Compile Remove="Migrations\20200420005110_primera version ordenes.Designer.cs" />
+    <Compile Remove="Migrations\20200423002110_modificandoPrecios.cs" />
+    <Compile Remove="Migrations\20200423002110_modificandoPrecios.Designer.cs" />
+    <Compile Remove="Migrations\20200423003417_modificandoPrecios.cs" />
+    <Compile Remove="Migrations\20200423003417_modificandoPrecios.Designer.cs" />
+    <Compile Remove="Migrations\20200423004904_modificandoPrecios.cs" />
+    <Compile Remove="Migrations\20200423004904_modificandoPrecios.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

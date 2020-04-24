@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace GoTravelTour.Models
         public List<OrdenTraslado> ListaTrasladoOrden { get; set; }
         public List<OrdenAlojamiento> ListaAlojamientoOrden { get; set; }
         public List<OrdenActividad> ListaActividadOrden { get; set; }
-        public decimal PrecioGeneralOrden { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal PrecioGeneralOrden { get { return Sobreprecio.PrecioDesde; } set { PrecioGeneralOrden = value; } }
     }
 }

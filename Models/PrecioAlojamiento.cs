@@ -9,10 +9,9 @@ namespace GoTravelTour.Models
     public class PrecioAlojamiento
     {
         public int PrecioAlojamientoId { get; set; }
-        public decimal Precio { get; set; }
-        
-        public int ProductoId { get; set; }
-        
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Precio { get; set; }        
+        public int ProductoId { get; set; }        
         [ForeignKey("ProductoId")]
         public Producto Hotel { get; set; }
         public Contrato Contrato { get; set; }

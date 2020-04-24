@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
 using Microsoft.AspNetCore.Authorization;
+using GoTravelTour.Utiles;
 
 namespace GoTravelTour.Controllers
 {
@@ -44,7 +45,7 @@ namespace GoTravelTour.Controllers
                 foreach (Modificador mod in lista)
                 {
                     mod.Contrato.Distribuidor.ListaProductosDistribuidos= _context.ProductoDistribuidores
-                         .Include(x => x.Producto). Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
+                         .Include(x => x.Producto). Where(b => b.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
                 }
                 
 
@@ -67,7 +68,7 @@ namespace GoTravelTour.Controllers
                     foreach (Modificador mod in lista)
                     {
                         mod.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                            .Include(x => x.Producto).Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
+                            .Include(x => x.Producto).Where(b => b.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
                     }
             }
             else
@@ -88,7 +89,7 @@ namespace GoTravelTour.Controllers
                     foreach (Modificador mod in lista)
                     {
                         mod.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                            .Include(x => x.Producto).Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
+                            .Include(x => x.Producto).Where(b => b.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && b.DistribuidorId == mod.Contrato.Distribuidor.DistribuidorId).ToList();
                     }
 
             }
@@ -169,7 +170,7 @@ namespace GoTravelTour.Controllers
                .Include(x => x.Distribuidor)
                .Single(x => x.ContratoId == modificador.Contrato.ContratoId);
             modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
-                .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
+                .Where(b => b.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                 .ToList();
 
             //Eliminando reglas anteriores
@@ -240,7 +241,7 @@ namespace GoTravelTour.Controllers
                 .Single(x => x.ContratoId == modificador.Contrato.ContratoId);
 
             modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x=>x.Producto)
-                .Where(b => b.Producto.TipoProducto.Nombre == "Accommodation" && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
+                .Where(b => b.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                 .ToList();
 
            
@@ -308,12 +309,12 @@ namespace GoTravelTour.Controllers
                     if (idProducto == 0)
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor).ToList();
                     }
                     else
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                     }
 
                   
@@ -347,12 +348,12 @@ namespace GoTravelTour.Controllers
                     if (idProducto == 0)
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor).ToList();
                     }
                     else
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                     }
                     modificador.ListaReglas = _context.Reglas
                        .Include(x => x.TipoHabitacion)
@@ -383,12 +384,12 @@ namespace GoTravelTour.Controllers
                     if (idProducto == 0)
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor).ToList();
                     }
                     else
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                     }
                     modificador.ListaReglas = _context.Reglas
                        .Include(x => x.TipoHabitacion)
@@ -417,12 +418,12 @@ namespace GoTravelTour.Controllers
                     if (idProducto == 0)
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor).ToList();
                     }
                     else
                     {
                         modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto)
-                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == "Accommodation" && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
+                       .Where(x => x.DistribuidorId == modificador.Contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.Producto.ProductoId == idProducto).ToList();
                     }
                     modificador.ListaReglas = _context.Reglas
                        .Include(x => x.TipoHabitacion)

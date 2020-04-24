@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace GoTravelTour.Models
         public int VehiculoId { get; set; }
         public Vehiculo Vehiculo { get; set; }
         public bool PremiteCopia { get; set; }
-        [Range(0, 9999999.99)]
+        [Column(TypeName ="decimal(18,2)")]
         public decimal PrecioOrden { get; set; }
 
 

@@ -125,7 +125,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("Correo");
 
-                    b.Property<double?>("Descuento");
+                    b.Property<decimal>("Descuento")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Direccion");
 
@@ -542,7 +543,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("OFACrequired");
 
-                    b.Property<decimal>("PrecioGeneralOrden");
+                    b.Property<decimal>("PrecioGeneralOrden")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("SobreprecioId");
 
@@ -589,7 +591,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("PrecioActividadId");
 
-                    b.Property<decimal>("PrecioOrden");
+                    b.Property<decimal>("PrecioOrden")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<bool>("PremiteCopia");
 
@@ -650,7 +653,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("PrecioAlojamientoId");
 
-                    b.Property<decimal>("PrecioOrden");
+                    b.Property<decimal>("PrecioOrden")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<bool>("PremiteCopia");
 
@@ -711,7 +715,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("OrdenId");
 
-                    b.Property<decimal>("PrecioOrden");
+                    b.Property<decimal>("PrecioOrden")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("PrecioTrasladoId");
 
@@ -762,7 +767,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("OrdenId");
 
-                    b.Property<decimal>("PrecioOrden");
+                    b.Property<decimal>("PrecioOrden")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("PrecioRentaAutosId");
 
@@ -860,11 +866,14 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("PrecioAdulto");
+                    b.Property<decimal>("PrecioAdulto")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("PrecioInfante");
+                    b.Property<decimal>("PrecioInfante")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("PrecioNino");
+                    b.Property<decimal>("PrecioNino")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 
@@ -889,7 +898,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("HabitacionId");
 
-                    b.Property<decimal>("Precio");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 
@@ -920,7 +930,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("ComodidadesId");
 
-                    b.Property<decimal>("Precio");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 
@@ -943,7 +954,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("PlanesAlimenticiosId");
 
-                    b.Property<decimal>("Precio");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 
@@ -964,13 +976,15 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Deposito");
+                    b.Property<decimal>("Deposito")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("DiasExtra");
 
                     b.Property<int>("ProductoId");
 
-                    b.Property<decimal>("Seguro");
+                    b.Property<decimal>("Seguro")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("TemporadaId");
 
@@ -991,13 +1005,17 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("HorasAdicionales");
 
-                    b.Property<decimal?>("Incluido");
+                    b.Property<decimal?>("Incluido")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal?>("PrecioAdulto");
+                    b.Property<decimal?>("PrecioAdulto")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal?>("PrecioInfante");
+                    b.Property<decimal?>("PrecioInfante")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal?>("PrecioNino");
+                    b.Property<decimal?>("PrecioNino")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ServicioId");
 
@@ -1018,7 +1036,8 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Precio");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 
@@ -1190,9 +1209,11 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("ModificadorId");
 
-                    b.Property<double>("PrecioFijo");
+                    b.Property<decimal>("PrecioFijo")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<double>("PrecioPorCiento");
+                    b.Property<decimal>("PrecioPorCiento")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("TipoHabitacionId");
 
@@ -1236,7 +1257,8 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Precio");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 
@@ -1329,15 +1351,19 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("PagoPorDia");
 
-                    b.Property<decimal>("PrecioDesde");
+                    b.Property<decimal>("PrecioDesde")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("PrecioHasta");
+                    b.Property<decimal>("PrecioHasta")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("TipoProductoId");
 
-                    b.Property<decimal>("ValorDinero");
+                    b.Property<decimal?>("ValorDinero")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("ValorPorCiento");
+                    b.Property<decimal?>("ValorPorCiento")
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("SobreprecioId");
 
@@ -1473,15 +1499,11 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("ProductoId");
 
-                    b.Property<int?>("VehiculoProductoId");
-
                     b.HasKey("VehiculoCategoriaAutoId");
 
                     b.HasIndex("CategoriaAutoId");
 
                     b.HasIndex("ProductoId");
-
-                    b.HasIndex("VehiculoProductoId");
 
                     b.ToTable("VehiculoCategoriaAuto");
                 });
@@ -2174,10 +2196,6 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GoTravelTour.Models.Vehiculo")
-                        .WithMany("ListaCategorias")
-                        .HasForeignKey("VehiculoProductoId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Actividad", b =>

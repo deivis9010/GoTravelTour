@@ -16,11 +16,9 @@ namespace GoTravelTour.Models
         public string Telefono { get; set; }
         public string TelefonoAsistencia { get; set; }
         public string Schedule { get; set; }
-        public string Location { get; set; }
-       
+        public string Location { get; set; }       
         public bool IsActivo { get; set; }
-        public bool PermiteHacerCopia { get; set; }
-        
+        public bool PermiteHacerCopia { get; set; }        
         public int ProveedorId { get; set; }
         //public int RegionId { get; set; }
         //public int PuntoInteresId { get; set; }
