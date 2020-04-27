@@ -10,8 +10,8 @@ namespace GoTravelTour.Models
     public class PrecioRentaAutos
     {
         public int PrecioRentaAutosId { get; set; }
-
-        public int DiasExtra { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal DiasExtra { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal Seguro { get; set; }
         [Column(TypeName = "decimal(18,4)")]

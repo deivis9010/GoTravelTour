@@ -667,7 +667,7 @@ namespace GoTravelTour.Controllers
 
 
         // GET: api/Vehiculoes/BuscarOrden
-        [HttpGet]
+        [HttpPost]
         [Route("BuscarOrden")]
         public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador)
         {
@@ -678,37 +678,40 @@ namespace GoTravelTour.Controllers
             List<OrdenVehiculo> lista = new List<OrdenVehiculo>(); //Lista  a devolver (candidatos)
 
             //Para saber que autos entran en la categoria pasada por parametros
-            List<VehiculoCategoriaAuto> cats = _context.VehiculoCategoriaAuto.Where(x => x.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId).ToList();
+            // List<VehiculoCategoriaAuto> cats = _context.VehiculoCategoriaAuto.Where(x => x.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId).ToList();
 
             //Se buscan todos los auto con la transmision pasada por parametros
-            List<Vehiculo> vehiculos = _context.Vehiculos.Where(x => x.TipoTransmision == buscador.TipoTransmision).ToList();
+            List<Vehiculo> vehiculos = _context.Vehiculos.Where(x => x.IsActivo && x.TipoTransmision == buscador.TipoTransmision && x.MarcaId == buscador.Marca.MarcaId).ToList();
 
 
             foreach (var v in vehiculos) //Se recorren los vehiculos que coinciden con el tipo de transmision
             {
 
-                if (cats.Any(x => x.ProductoId == v.ProductoId)) //Si el vehiculo es de la categoria buscada se calcula su precio
+                //if (cats.Any(x => x.ProductoId == v.ProductoId)) //Si el vehiculo es de la categoria buscada se calcula su precio
+                //{
+
+                List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
+                .Include(x => x.Temporada.Contrato.Distribuidor)
+                .Where(x => x.ProductoId == v.ProductoId).ToList();
+                foreach (var p in precios)
                 {
 
-                    List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
-                    .Include(x => x.Temporada.Contrato.Distribuidor)
-                    .Where(x => x.ProductoId == v.ProductoId).ToList();
-                    foreach (var p in precios)
+                    OrdenVehiculo ov = new OrdenVehiculo();
+                    if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
+                     (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
                     {
-                        OrdenVehiculo ov = new OrdenVehiculo();
-                        if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
-                         (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
+                        Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                        ov.PrecioRentaAutos = p;
+                        ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                        ov.Vehiculo = v;
+                        int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
+                        int cantDias = 0; // auxilar para rangos
+                        int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
+                                                              //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                        List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderByDescending(x => x.Maximo).ToList();
+                        bool agregarOrden = true;
+                        try
                         {
-                            Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
-                            ov.PrecioRentaAutos = p;
-                            ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
-                            ov.Vehiculo = v;
-                            int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
-                            int cantDias = 0; // auxilar para rangos
-                            int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
-                            //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
-                            List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderByDescending(x => x.Maximo).ToList();
-
 
                             switch (p.Temporada.Contrato.FormaCobro)// 1-por dia 2- PrimeraTemp 3-UltimaTemp                           
                             {
@@ -734,52 +737,59 @@ namespace GoTravelTour.Controllers
                                     }
                             }
 
-                            ov.PrecioOrden = c.Descuento + (DiasRestantes * p.DiasExtra) + (cantDiasGenenarl * p.Seguro);
+                        }
+                        catch
+                        {
+                            agregarOrden = false;
+                        }
+                        
+
+                        ov.PrecioOrden += c.Descuento + (DiasRestantes * p.DiasExtra) + (cantDiasGenenarl * p.Seguro);
 
 
 
-                            List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).ToList();
+                        List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).ToList();
 
-                            foreach (Sobreprecio s in sobreprecios)
+                        foreach (Sobreprecio s in sobreprecios)
+                        {
+                            if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
                             {
-                                if(s.PrecioDesde<= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
+                                if (s.PagoPorDia)
                                 {
-                                    if (s.PagoPorDia)
+                                    if (s.ValorDinero != null)
                                     {
-                                        if(s.ValorDinero != null)
-                                        {
-                                            ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero;
-                                        }
-                                        else
-                                        {
-                                            ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden*((decimal)s.ValorPorCiento/100);
-                                        }
-                                       
+                                        ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero;
                                     }
                                     else
                                     {
-
-                                        if (s.ValorDinero != null)
-                                        {
-                                            ov.PrecioOrden += (decimal)s.ValorDinero;
-                                        }
-                                        else
-                                        {
-                                            ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                        }
-                                       
+                                        ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
                                     }
-                                    break;
-                                }
 
+                                }
+                                else
+                                {
+
+                                    if (s.ValorDinero != null)
+                                    {
+                                        ov.PrecioOrden += (decimal)s.ValorDinero;
+                                    }
+                                    else
+                                    {
+                                        ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                    }
+
+                                }
+                                break;
                             }
 
-
-                            lista.Add(ov);
                         }
 
+                        if (agregarOrden)
+                            lista.Add(ov);
                     }
+
                 }
+                //}
 
             }
 
@@ -792,10 +802,12 @@ namespace GoTravelTour.Controllers
         {
             int i = 0;
             bool encontroRangoValido = false; //es para saber si la cantidad de dias a rentar entra en el rango de alguna restriccion
-                                              //Recorro todas los rangos de fecha para ir calculando precio total
-            while (i < p.Temporada.ListaFechasTemporada.Count)
+
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.OrderBy(x => x.FechaInicio).ToList();
+            //Recorro todas los rangos de fecha para ir calculando precio total
+            while (i < listaRangos.Count)
             {
-                RangoFechas rf = p.Temporada.ListaFechasTemporada[i];
+                RangoFechas rf = listaRangos[i];
                 Restricciones rt = new Restricciones();// Se usara para obtener el rango mayor de dias a alquilar y poder calcular precios a partir de ahi
                 if (rf.FechaInicio <= buscador.FechaEntrega && buscador.FechaEntrega <= rf.FechaFin)
                 {
@@ -812,7 +824,7 @@ namespace GoTravelTour.Controllers
                             break;
                         }
                     }
-                    if (!encontroRangoValido)
+                    if (!encontroRangoValido && rt.RestriccionesId > 0)
                     {
                         cantDias = rt.Maximo;
                         DiasRestantes -= cantDias;
@@ -827,10 +839,11 @@ namespace GoTravelTour.Controllers
         {
             int i = 0;
             bool encontroRangoValido = false; //es para saber si la cantidad de dias a rentar entra en el rango de alguna restriccion
-                                              //Recorro todas los rangos de fecha para ir calculando precio total
-            while (i < p.Temporada.ListaFechasTemporada.Count)
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.OrderBy(x => x.FechaInicio).ToList();
+            //Recorro todas los rangos de fecha para ir calculando precio total
+            while (i < listaRangos.Count)
             {
-                RangoFechas rf = p.Temporada.ListaFechasTemporada[i];
+                RangoFechas rf = listaRangos[i];
                 Restricciones rt = new Restricciones();// Se usara para obtener el rango mayor de dias a alquilar y poder calcular precios a partir de ahi
                 if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin)
                 {
@@ -847,7 +860,7 @@ namespace GoTravelTour.Controllers
                             break;
                         }
                     }
-                    if (!encontroRangoValido)
+                    if (!encontroRangoValido && rt.RestriccionesId > 0)
                     {
                         cantDias = rt.Maximo;
                         DiasRestantes -= cantDias;
@@ -874,10 +887,11 @@ namespace GoTravelTour.Controllers
         {
             int i = 0;
             bool encontroRangoValido = false; //es para saber si la cantidad de dias a rentar entra en el rango de alguna restriccion
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.OrderBy(x => x.FechaInicio).ToList();
             //Recorro todas los rangos de fecha para ir calculando precio total
-            while (i < p.Temporada.ListaFechasTemporada.Count)
+            while (i < listaRangos.Count && DiasRestantes > 0)
             {
-                RangoFechas rf = p.Temporada.ListaFechasTemporada[i];
+                RangoFechas rf = listaRangos[i];
                 Restricciones rt = new Restricciones();// Se usara para obtener el rango mayor de dias a alquilar y poder calcular precios a partir de ahi
 
                 if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin &&
@@ -891,13 +905,13 @@ namespace GoTravelTour.Controllers
                         rt = item;
                         if (item.Minimo <= cantDias && cantDias <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
                         {
-                            ov.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId== item.RestriccionesId).Precio * cantDias;
+                            ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                             encontroRangoValido = true;
                             break;
                         }
                     }
-                    if (!encontroRangoValido)
+                    if (!encontroRangoValido && rt.RestriccionesId > 0)
                     {
                         cantDias = rt.Maximo;
                         DiasRestantes -= cantDias;
@@ -905,59 +919,137 @@ namespace GoTravelTour.Controllers
                     }
                 }
                 else
-                     if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin)
                 {
-                    //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                    cantDias = (rf.FechaFin - buscador.FechaRecogida).Days;
-                    foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+
+                    if (buscador.FechaRecogida < rf.FechaInicio && rf.FechaFin < buscador.FechaEntrega)
                     {
-                        if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        //Si el rango esta incluido en el rango de recogida y entrega la cantidad de dias sera la diferencia del rango de fecha
+                        cantDias = (rf.FechaFin - rf.FechaInicio).Days + 1;
+                        foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+                        {
+                            if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                            {
+                                rt = item;
+                                ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
+                                DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                                encontroRangoValido = true;
+                                break;
+                            }
+                        }
+                        if (!encontroRangoValido && rt.RestriccionesId > 0)
+                        {
+                            cantDias = rt.Maximo;
+                            DiasRestantes -= cantDias;
+                            ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                        }
+
+                    }
+                    else
+                   if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida < rf.FechaFin)
+                    {
+                        //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
+                        cantDias = (rf.FechaFin - buscador.FechaRecogida).Days;
+                        foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
+                        {
+                            if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                            {
+                                rt = item;
+                                ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
+                                DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                                encontroRangoValido = true;
+                                break;
+                            }
+                        }
+                        if (!encontroRangoValido && rt.RestriccionesId > 0)
+                        {
+                            cantDias = rt.Maximo;
+                            DiasRestantes -= cantDias;
+                            ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                        }
+                    }
+                    else
+                   if (rf.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= rf.FechaInicio)
+                    {
+                        //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
+                        cantDias = (buscador.FechaEntrega - rf.FechaInicio).Days + 1;
+                        foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                         {
                             rt = item;
-                            ov.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId== item.RestriccionesId).Precio * cantDias;
-                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
-                            encontroRangoValido = true;
-                            break;
+                            if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                            {
+                                ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
+
+                                DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                                encontroRangoValido = true;
+                                break;
+                            }
                         }
-                    }
-                    if (!encontroRangoValido)
-                    {
-                        cantDias = rt.Maximo;
-                        DiasRestantes -= cantDias;
-                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                    }
-                }
-                else
-                if (rf.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= rf.FechaInicio)
-                {
-                    //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                    cantDias = (rf.FechaFin - buscador.FechaEntrega).Days;
-                    foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
-                    {
-                        rt = item;
-                        if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
+                        if (!encontroRangoValido && rt.RestriccionesId > 0)
                         {
-                            ov.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId== item.RestriccionesId).Precio * cantDias;
-                           
-                            DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
-                            encontroRangoValido = true;
-                            break;
+                            cantDias = rt.Maximo;
+                            DiasRestantes -= cantDias;
+                            ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
                         }
                     }
-                    if (!encontroRangoValido)
-                    {
-                        cantDias = rt.Maximo;
-                        DiasRestantes -= cantDias;
-                        ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                    }
+
+
                 }
 
-              
+
+
 
 
 
                 i++;
             }
         }
+
+
+
+        // Post: api/Vehiculoes/Activar
+        [HttpPost]
+        [Route("Activar")]
+        public async Task<IActionResult> PostAcivarVehiculo([FromBody] Vehiculo v)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            
+           if(v.IsActivo)
+            if(!_context.PrecioRentaAutos.Any(x=>x.ProductoId==v.ProductoId) ||
+               !_context.RestriccionesPrecios.Any(x => x.ProductoId == v.ProductoId)){
+
+                return CreatedAtAction("ActivarVehiculo", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -2, error = "Ya existe" });
+            }
+
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VehiculoExists(v.ProductoId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetVehiculo", new { id = v.ProductoId }, v);
+        }
+
+
+
+
+
     }
 }

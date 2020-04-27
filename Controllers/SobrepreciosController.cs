@@ -115,7 +115,10 @@ namespace GoTravelTour.Controllers
             {
                 return CreatedAtAction("GetSobreprecio", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
-
+            if (!ValidarRango(sobreprecio))
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
+            }
 
             _context.Entry(sobreprecio).State = EntityState.Modified;
 
@@ -147,10 +150,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            /*if (_context.Sobreprecio.Any(c => c.TipoProducto.Nombre == sobreprecio.TipoProducto.Nombre ))
+            if (!ValidarRango(sobreprecio))
             {
-                return CreatedAtAction("GetSobreprecio", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            }*/
+                return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
+            }
             _context.Sobreprecio.Add(sobreprecio);
             await _context.SaveChangesAsync();
 
@@ -203,5 +206,38 @@ namespace GoTravelTour.Controllers
 
             return Ok(sobreprecio);
         }
+
+
+
+        /// <summary>
+        /// Validar que los rangos de precio no se solapen
+        /// </summary>     
+        /// <param name="newRango"></param>
+        /// <returns></returns>
+        private bool ValidarRango(Sobreprecio newRango)
+        {
+            if (newRango.TipoProductoId <= 0)
+            {
+                return false;
+            }
+
+            List<Sobreprecio> rangos = _context.Sobreprecio.Where(x => x.TipoProductoId == newRango.TipoProductoId).ToList();
+            foreach (var r in rangos)
+            {
+                if (r.PrecioDesde <= newRango.PrecioDesde && newRango.PrecioDesde <= r.PrecioHasta ||
+                    r.PrecioDesde <= newRango.PrecioHasta && newRango.PrecioHasta <= r.PrecioHasta)
+                {
+                    return false;
+                }
+            }
+
+
+
+            return true;
+        }
+
+
+
+
     }
 }

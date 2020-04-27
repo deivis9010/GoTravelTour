@@ -98,12 +98,14 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (id != 0)
-            {
-               
+            List<string> noBorrar = new List<string>();
+             
                 int i = 0;
+              
+
                 while ( i < almacenImagenes.Count())
                 {
+                    
                     var img = almacenImagenes[i];
                     if (img.AlmacenImagenesId != 0)
                     {
@@ -111,6 +113,8 @@ namespace GoTravelTour.Controllers
                             _context.AlmacenImagenes.Remove(_context.AlmacenImagenes.Find(img.AlmacenImagenesId));
                         else
                         {
+                            if (img.ImageContent != null && img.ImageContent.StartsWith("http"))
+                                noBorrar.Add(img.NombreImagen);
                             almacenImagenes.RemoveAt(i);
                             i--;
                         }
@@ -121,11 +125,11 @@ namespace GoTravelTour.Controllers
 
                 
 
-            }
+            
             try
             {
                // Directory.CreateDirectory("C:\\inetpub\\wwwroot\\publicEliecer\\sources");
-                TransformarYSalvarImagenes(almacenImagenes, id.ToString());
+                TransformarYSalvarImagenes(almacenImagenes, id.ToString(), noBorrar);
             }
             catch (Exception ex)
             {
@@ -193,7 +197,46 @@ namespace GoTravelTour.Controllers
         }
 
 
-        public static bool SaveImages(AlmacenImagenes foto, string path )
+       
+        private void TransformarYSalvarImagenes(List<AlmacenImagenes> almacenImagenes, string id, List<string> imgenesANoBorrar)
+        {
+            string path = "../sources/" + id + "/";
+           // try
+            //{
+                if (Directory.Exists(path))
+                {
+
+                    DirectoryInfo directory = new DirectoryInfo(path);
+                    foreach (FileInfo file in directory.GetFiles("*.*"))
+                    {
+
+                     if(!imgenesANoBorrar.Any(x=>x==file.Name))
+                        file.Delete();
+
+                    }
+
+
+                   //Directory.Delete(path);
+                }
+          //  }
+          //  catch(Exception ex)
+          //  {
+               // throw ex;
+          //  }
+           
+            foreach (var img in almacenImagenes)
+            {
+                
+                SaveImages(img, path);
+                //string ext = img.TipoImagen.Split("/")[1];
+                string file = Path.Combine(path, img.NombreImagen /*+ "." + ext*/);
+                img.ImageContent = "http://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
+                //img.ImageContent = "http://localhost/sources/" + id + "/" + img.NombreImagen /*+ "." + ext*/;
+            }
+        }
+
+
+        public static bool SaveImages(AlmacenImagenes foto, string path)
         {
             bool result = false;
 
@@ -203,10 +246,10 @@ namespace GoTravelTour.Controllers
                 string content = foto.ImageContent.Substring(foto.ImageContent.LastIndexOf(',') + 1);
                 byte[] bytes = Convert.FromBase64String(content);
                 //string ext = foto.TipoImagen.Split("/")[1];
-                string file = Path.Combine(path, foto.NombreImagen );
-               
+                string file = Path.Combine(path, foto.NombreImagen);
+
                 Directory.CreateDirectory(Path.Combine(path));
-                
+
                 if (bytes.Length > 0)
                 {
                     using (var stream = new FileStream(file, FileMode.Create))
@@ -280,42 +323,6 @@ namespace GoTravelTour.Controllers
             return result;
         }
 
-
-        private void TransformarYSalvarImagenes(List<AlmacenImagenes> almacenImagenes, string id)
-        {
-            string path = "../sources/" + id + "/";
-           // try
-            //{
-                if (Directory.Exists(path))
-                {
-
-                    DirectoryInfo directory = new DirectoryInfo(path);
-                    foreach (FileInfo file in directory.GetFiles("*.*"))
-                    {
-
-                        file.Delete();
-
-                    }
-
-
-                    Directory.Delete(path);
-                }
-          //  }
-          //  catch(Exception ex)
-          //  {
-               // throw ex;
-          //  }
-           
-            foreach (var img in almacenImagenes)
-            {
-                
-                SaveImages(img, path);
-                //string ext = img.TipoImagen.Split("/")[1];
-                string file = Path.Combine(path, img.NombreImagen /*+ "." + ext*/);
-                //img.ImageContent = "http://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
-                img.ImageContent = "http://localhost/sources/" + id + "/" + img.NombreImagen /*+ "." + ext*/;
-            }
-        }
 
 
         // POST: api/AlmacenImagenes

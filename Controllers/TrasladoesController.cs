@@ -603,5 +603,129 @@ namespace GoTravelTour.Controllers
             }
         }
 
+
+        // GET: api/Trasladoes/BuscarOrden
+        /*   // GET: api/Vehiculoes/BuscarOrden
+           [HttpPost]
+           [Route("BuscarOrden")]
+           public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador)
+           {
+               // TODO agregar el calculo de la orden teniendo en  cuenta
+
+               /// surcharger
+
+               List<OrdenVehiculo> lista = new List<OrdenVehiculo>(); //Lista  a devolver (candidatos)
+
+               //Para saber que autos entran en la categoria pasada por parametros
+               List<VehiculoCategoriaAuto> cats = _context.VehiculoCategoriaAuto.Where(x => x.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId).ToList();
+
+               //Se buscan todos los auto con la transmision pasada por parametros
+               List<Vehiculo> vehiculos = _context.Vehiculos.Where(x => x.TipoTransmision == buscador.TipoTransmision).ToList();
+
+
+               foreach (var v in vehiculos) //Se recorren los vehiculos que coinciden con el tipo de transmision
+               {
+
+                   if (cats.Any(x => x.ProductoId == v.ProductoId)) //Si el vehiculo es de la categoria buscada se calcula su precio
+                   {
+
+                       List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
+                       .Include(x => x.Temporada.Contrato.Distribuidor)
+                       .Where(x => x.ProductoId == v.ProductoId).ToList();
+                       foreach (var p in precios)
+                       {
+                           OrdenVehiculo ov = new OrdenVehiculo();
+                           if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
+                            (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
+                           {
+                               Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                               ov.PrecioRentaAutos = p;
+                               ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                               ov.Vehiculo = v;
+                               int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
+                               int cantDias = 0; // auxilar para rangos
+                               int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
+                               //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                               List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderByDescending(x => x.Maximo).ToList();
+
+
+                               switch (p.Temporada.Contrato.FormaCobro)// 1-por dia 2- PrimeraTemp 3-UltimaTemp                           
+                               {
+                                   case 1:
+                                       {
+                                           Met_CalcularPrecioAutoPorDia(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+                                           break;
+                                       }
+                                   case 2:
+                                       {
+                                           Met_CalcularPrecioAutoPorPrimeraTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+
+                                           break;
+                                       }
+                                   case 3:
+                                       {
+                                           Met_CalcularPrecioAutoPorSegundaTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+                                           break;
+                                       }
+                                   default:
+                                       {
+                                           break;
+                                       }
+                               }
+
+                               ov.PrecioOrden += c.Descuento + (DiasRestantes * p.DiasExtra) + (cantDiasGenenarl * p.Seguro);
+
+
+
+                               List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).ToList();
+
+                               foreach (Sobreprecio s in sobreprecios)
+                               {
+                                   if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
+                                   {
+                                       if (s.PagoPorDia)
+                                       {
+                                           if (s.ValorDinero != null)
+                                           {
+                                               ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero;
+                                           }
+                                           else
+                                           {
+                                               ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                           }
+
+                                       }
+                                       else
+                                       {
+
+                                           if (s.ValorDinero != null)
+                                           {
+                                               ov.PrecioOrden += (decimal)s.ValorDinero;
+                                           }
+                                           else
+                                           {
+                                               ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                           }
+
+                                       }
+                                       break;
+                                   }
+
+                               }
+
+
+                               lista.Add(ov);
+                           }
+
+                       }
+                   }
+
+               }
+
+
+               return lista.OrderByDescending(x => x.PrecioRentaAutos.Deposito).ToList();
+
+           }*/
+
     }
 }

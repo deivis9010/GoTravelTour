@@ -979,7 +979,8 @@ namespace GoTravelTour.Migrations
                     b.Property<decimal>("Deposito")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int>("DiasExtra");
+                    b.Property<decimal>("DiasExtra")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ProductoId");
 

@@ -116,6 +116,17 @@ namespace GoTravelTour.Controllers
             }
             if(rangoFechas.Producto!=null && rangoFechas.Producto.ProductoId>0)
             rangoFechas.Producto = _context.Alojamientos.First(x => x.ProductoId == rangoFechas.Producto.ProductoId);
+
+           
+            if ((rangoFechas.FechaFin-rangoFechas.FechaInicio).Days <= 0)
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -4, error = "El rango debe tener al menos un dia" }, new { id = -4, error = "El rango debe tener al menos un dia" });
+            }
+            if (!ValidarRangoFecha(rangoFechas))
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
+            }
+
             _context.Entry(rangoFechas).State = EntityState.Modified;
 
             try
@@ -149,6 +160,17 @@ namespace GoTravelTour.Controllers
             
             if (rangoFechas.Producto != null && rangoFechas.Producto.ProductoId > 0)
                 rangoFechas.Producto = _context.Alojamientos.First(x => x.ProductoId == rangoFechas.Producto.ProductoId);
+
+            var d = (rangoFechas.FechaFin - rangoFechas.FechaInicio).Days;
+            if ((rangoFechas.FechaFin - rangoFechas.FechaInicio).Days <= 0)
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -4, error = "El rango debe tener al menos un dia" }, new { id = -4, error = "El rango debe tener al menos un dia" });
+            }
+            if (!ValidarRangoFecha(rangoFechas))
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
+            }
+
             _context.RangoFechas.Add(rangoFechas);
             await _context.SaveChangesAsync();
 
@@ -180,6 +202,38 @@ namespace GoTravelTour.Controllers
         private bool RangoFechasExists(int id)
         {
             return _context.RangoFechas.Any(e => e.RangoFechasId == id);
+        }
+        
+        /// <summary>
+        /// Validar que los rangos de fechas no se solapen
+        /// </summary>
+        /// <param name="newRango"></param>
+        /// <returns></returns>
+        private bool ValidarRangoFecha(RangoFechas newRango)
+        {
+            if (newRango.TemporadaId <=0 || newRango.FechaInicio == null ||
+                newRango.FechaFin == null)
+            {
+                return false;
+            }
+            Temporada temp = _context.Temporadas.Include(x=>x.Contrato.Temporadas).First(x => x.TemporadaId == newRango.TemporadaId);
+            Contrato cont = temp.Contrato;
+
+            foreach (var item in cont.Temporadas)
+            {
+                List<RangoFechas> rangos = _context.RangoFechas.Where(x=>x.TemporadaId == item.TemporadaId).ToList();
+                foreach (var rf in rangos)
+                {
+                    if (rf.FechaInicio <= newRango.FechaInicio && newRango.FechaInicio <= rf.FechaFin ||
+                       rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin)
+                    {
+                        return false;
+                    }
+                }
+
+
+            }
+            return true;
         }
     }
 }

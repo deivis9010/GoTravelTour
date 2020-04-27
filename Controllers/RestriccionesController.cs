@@ -118,6 +118,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            if (!ValidarRango(restricciones))
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
+            }
 
             _context.Entry(restricciones).State = EntityState.Modified;
 
@@ -148,6 +152,11 @@ namespace GoTravelTour.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (!ValidarRango(restricciones))
+            {
+                return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
             }
             restricciones.Temporada = _context.Temporadas.First(x => x.TemporadaId == restricciones.Temporada.TemporadaId);
             _context.Restricciones.Add(restricciones);
@@ -182,5 +191,35 @@ namespace GoTravelTour.Controllers
         {
             return _context.Restricciones.Any(e => e.RestriccionesId == id);
         }
+
+
+        /// <summary>
+        /// Validar que los rangos de valores no se solapen
+        /// </summary>     
+        /// <param name="newRango"></param>
+        /// <returns></returns>
+        private bool ValidarRango(Restricciones newRango)
+        {
+            if ( newRango.Temporada==null || newRango.Temporada.TemporadaId <= 0)
+            {
+                return false;
+            }
+            
+            List<Restricciones> rangos = _context.Restricciones.Where(x => x.Temporada.TemporadaId == newRango.Temporada.TemporadaId).ToList();
+            foreach (var r in rangos)
+            {
+                if (r.Minimo <= newRango.Minimo && newRango.Minimo <= r.Maximo ||
+                    r.Minimo <= newRango.Maximo && newRango.Maximo <= r.Maximo)
+                {
+                    return false;
+                }
+            }
+
+
+            
+            return true;
+        }
+
+
     }
 }

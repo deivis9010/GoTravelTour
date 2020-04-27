@@ -405,7 +405,7 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividad
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio
+                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio.Include(x => x.Servicio)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -457,7 +457,7 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividad
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio
+                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio.Include(x => x.Servicio)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -507,7 +507,7 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividad
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio
+                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio.Include(x=>x.Servicio)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -557,7 +557,7 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividad
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio
+                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio.Include(x => x.Servicio)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
