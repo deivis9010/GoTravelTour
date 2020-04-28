@@ -1021,7 +1021,7 @@ namespace GoTravelTour.Controllers
             if(!_context.PrecioRentaAutos.Any(x=>x.ProductoId==v.ProductoId) ||
                !_context.RestriccionesPrecios.Any(x => x.ProductoId == v.ProductoId)){
 
-                return CreatedAtAction("ActivarVehiculo", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -2, error = "Ya existe" });
+                return CreatedAtAction("ActivarVehiculo", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
             }
 
 
@@ -1047,8 +1047,7 @@ namespace GoTravelTour.Controllers
             return CreatedAtAction("GetVehiculo", new { id = v.ProductoId }, v);
         }
 
-
-
+       
 
 
     }

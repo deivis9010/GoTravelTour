@@ -157,7 +157,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim()))
+            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim() && alojamiento.ProductoId != id))
             {
                 return CreatedAtAction("GetAlojamiento", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

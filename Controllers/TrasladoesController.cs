@@ -605,28 +605,31 @@ namespace GoTravelTour.Controllers
 
 
         // GET: api/Trasladoes/BuscarOrden
-        /*   // GET: api/Vehiculoes/BuscarOrden
+          
            [HttpPost]
            [Route("BuscarOrden")]
-           public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador)
+           public List<OrdenTraslado> GetOrdenVehiculos([FromBody] BuscadorTraslado buscador)
            {
-               // TODO agregar el calculo de la orden teniendo en  cuenta
+             
 
-               /// surcharger
+               List<OrdenTraslado> lista = new List<OrdenTraslado>(); //Lista  a devolver (candidatos)
 
-               List<OrdenVehiculo> lista = new List<OrdenVehiculo>(); //Lista  a devolver (candidatos)
+               
 
-               //Para saber que autos entran en la categoria pasada por parametros
-               List<VehiculoCategoriaAuto> cats = _context.VehiculoCategoriaAuto.Where(x => x.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId).ToList();
-
-               //Se buscan todos los auto con la transmision pasada por parametros
-               List<Vehiculo> vehiculos = _context.Vehiculos.Where(x => x.TipoTransmision == buscador.TipoTransmision).ToList();
+               //Se buscan todos los traslados con la transmision pasada por parametros
+               List<Traslado> traslados = _context.Traslados.Where(x => x.CapacidadTraslado >= buscador.CantidadPasajeros &&
+               x.TipoTraslado == buscador.TipoTraslado).ToList();
 
 
-               foreach (var v in vehiculos) //Se recorren los vehiculos que coinciden con el tipo de transmision
+               foreach (var t in traslados) //Se recorren los vehiculos que coinciden con el tipo de transmision
                {
 
-                   if (cats.Any(x => x.ProductoId == v.ProductoId)) //Si el vehiculo es de la categoria buscada se calcula su precio
+                List<Rutas> posiblesRutas = _context.Rutas.Where(x => (x.PuntoInteresOrigen.PuntoInteresId == buscador.Origen.PuntoInteresId &&
+                x.PuntoInteresDestino.PuntoInteresId == buscador.Destino.PuntoInteresId) ||
+                x.PuntoInteresOrigen.PuntoInteresId == buscador.Destino.PuntoInteresId &&
+                x.PuntoInteresDestino.PuntoInteresId == buscador.Origen.PuntoInteresId).ToList();
+
+                   /*if (cats.Any(x => x.ProductoId == v.ProductoId)) //Si el vehiculo es de la categoria buscada se calcula su precio
                    {
 
                        List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
@@ -718,14 +721,58 @@ namespace GoTravelTour.Controllers
                            }
 
                        }
-                   }
+                   }*/
 
                }
 
 
-               return lista.OrderByDescending(x => x.PrecioRentaAutos.Deposito).ToList();
+            //return lista.OrderByDescending(x => x.PrecioRentaAutos.Deposito).ToList();
+            return null;
 
-           }*/
+           }
+
+
+        // Post: api/Trasladoes/Activar
+        [HttpPost]
+        [Route("Activar")]
+        public async Task<IActionResult> PostAcivarTraslado([FromBody] Traslado t)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            if (t.IsActivo)
+                if (!_context.PrecioTraslados.Any(x => x.ProductoId == t.ProductoId) )
+                {
+
+                    return CreatedAtAction("ActivarTraslado", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
+                }
+
+
+
+            _context.Entry(t).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TrasladoExists(t.ProductoId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetVehiculo", new { id = t.ProductoId }, t);
+        }
+
 
     }
 }
