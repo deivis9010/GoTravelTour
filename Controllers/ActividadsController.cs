@@ -194,11 +194,32 @@ namespace GoTravelTour.Controllers
 
             }
 
+            List<Servicio> aEliminar = _context.Servicio.Where(x => x.ProductoId == actividad.ProductoId).ToList();
+            foreach (var elim in aEliminar)
+            {
+                _context.Servicio.Remove(elim);
+            }
+            if (actividad.ServiciosAdicionados != null)
+                foreach (var ser in actividad.ServiciosAdicionados)
+                {
+
+                    Servicio servicio = new Servicio();
+                    servicio = ser;
+                    servicio.ProductoId = actividad.ProductoId;
+                    _context.Servicio.Add(servicio);
+                    //actividad.ServiciosAdicionados[i] = _context.Servicio.First(ser => ser.ServicioId == actividad.ServiciosAdicionados[i].ServicioId);
+
+
+                }
+
             _context.Entry(actividad).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
+
+                
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -641,6 +662,49 @@ namespace GoTravelTour.Controllers
                 .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
                
             }
+        }
+
+
+        // Post: api/Actividads/Activar
+        [HttpPost]
+        [Route("Activar")]
+        public async Task<IActionResult> PostAcivarActividads([FromBody] Actividad a)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            if (a.IsActivo)
+                if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) ||
+                    !_context.RestriccionesPrecios.Any(x => x.ProductoId == a.ProductoId))
+                {
+
+                    return CreatedAtAction("ActivarActividad", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
+                }
+
+
+
+            _context.Entry(a).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ActividadExists(a.ProductoId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetActividads", new { id = a.ProductoId }, a);
         }
 
 

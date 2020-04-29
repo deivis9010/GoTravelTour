@@ -1517,7 +1517,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("CantidadPersonas");
 
-                    b.Property<int>("Duracion");
+                    b.Property<int?>("Duracion");
 
                     b.Property<bool>("HasTransporte");
 
@@ -1525,7 +1525,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("Longitud");
 
-                    b.Property<int>("MaxDuracion");
+                    b.Property<int?>("MaxDuracion");
 
                     b.Property<string>("Modalidad");
 

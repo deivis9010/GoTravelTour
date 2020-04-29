@@ -25,7 +25,7 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Alojamientoes
         [HttpGet]
-        public IEnumerable<Alojamiento> GetAlojamientos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor=0)
+        public IEnumerable<Alojamiento> GetAlojamientos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor = 0)
         {
             IEnumerable<Alojamiento> lista;
             if (col == "-1")
@@ -34,7 +34,7 @@ namespace GoTravelTour.Controllers
                     //.Include(a => a.ListaComodidades)
                     //.Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
-                   // .Include(a => a.TipoProducto)
+                    // .Include(a => a.TipoProducto)
                     .Include(a => a.TipoAlojamiento)
                     // .Include(a => a.PuntoInteres)
                     // .Include(a => a.CategoriaHoteles)
@@ -43,7 +43,7 @@ namespace GoTravelTour.Controllers
                     .OrderBy(a => a.Nombre)
                     .ToList();
 
-              
+
 
                 return lista;
             }
@@ -51,13 +51,13 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Alojamientos
                     //.Include(a => a.ListaComodidades)
-                   // .Include(a => a.ListaDistribuidoresProducto)
+                    // .Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
-                   // .Include(a => a.TipoProducto)
-                    .Include(a => a.TipoAlojamiento)                   
-                   // .Include(a => a.PuntoInteres)
-                   //.Include(a => a.CategoriaHoteles)
-                   // .Include(a => a.ListaPlanesAlimenticios)
+                    // .Include(a => a.TipoProducto)
+                    .Include(a => a.TipoAlojamiento)
+                    // .Include(a => a.PuntoInteres)
+                    //.Include(a => a.CategoriaHoteles)
+                    // .Include(a => a.ListaPlanesAlimenticios)
                     .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
 
@@ -66,13 +66,13 @@ namespace GoTravelTour.Controllers
             {
                 lista = _context.Alojamientos
                     //.Include(a => a.ListaComodidades)
-                   // .Include(a => a.ListaDistribuidoresProducto)
+                    // .Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
-                   // .Include(a => a.TipoProducto)
+                    // .Include(a => a.TipoProducto)
                     .Include(a => a.TipoAlojamiento)
                     //.Include(a => a.PuntoInteres)
                     //.Include(a => a.CategoriaHoteles)
-                   // .Include(a => a.ListaPlanesAlimenticios)
+                    // .Include(a => a.ListaPlanesAlimenticios)
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
@@ -102,7 +102,7 @@ namespace GoTravelTour.Controllers
 
                     break;
             }
-           
+
 
             return lista;
         }
@@ -125,15 +125,15 @@ namespace GoTravelTour.Controllers
 
             /*var alojamiento = await _context.Alojamientos
                 .FindAsync(id);*/
-                var alojamiento =  _context.Alojamientos
-                 .Include(a => a.ListaComodidades)
-                    .Include(a => a.ListaDistribuidoresProducto)
-                    .Include(a => a.Proveedor)
-                    .Include(a => a.TipoProducto)
-                    .Include(a => a.TipoAlojamiento)
-                    .Include(a => a.PuntoInteres)
-                    .Include(a => a.CategoriaHoteles)
-                    .Include(a => a.ListaPlanesAlimenticios).Single(x=>x.ProductoId==id);
+            var alojamiento = _context.Alojamientos
+             .Include(a => a.ListaComodidades)
+                .Include(a => a.ListaDistribuidoresProducto)
+                .Include(a => a.Proveedor)
+                .Include(a => a.TipoProducto)
+                .Include(a => a.TipoAlojamiento)
+                .Include(a => a.PuntoInteres)
+                .Include(a => a.CategoriaHoteles)
+                .Include(a => a.ListaPlanesAlimenticios).Single(x => x.ProductoId == id);
 
             if (alojamiento == null)
             {
@@ -169,7 +169,7 @@ namespace GoTravelTour.Controllers
             alojamiento.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == alojamiento.TipoProductoId);
             if (alojamiento.CategoriaHotelesId > 0)
                 alojamiento.CategoriaHoteles = _context.CategoriaHoteles.First(x => x.CategoriaHotelesId == alojamiento.CategoriaHotelesId);
-            
+
             List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
             foreach (var item in distribuidors)
             {
@@ -186,24 +186,26 @@ namespace GoTravelTour.Controllers
             {
                 _context.AlojamientosPlanesAlimenticios.Remove(item);
             }
+            if (alojamiento.ListaDistribuidoresProducto != null)
+                foreach (var item in alojamiento.ListaDistribuidoresProducto)
+                {
+                    item.ProductoId = alojamiento.ProductoId;
+                    _context.ProductoDistribuidores.Add(item);
+                }
+            if (alojamiento.ListaComodidades != null)
+                foreach (var item in alojamiento.ListaComodidades)
+                {
+                    item.ProductoId = alojamiento.ProductoId;
+                    _context.ComodidadesProductos.Add(item);
 
-            foreach (var item in alojamiento.ListaDistribuidoresProducto)
-            {
-                item.ProductoId = alojamiento.ProductoId;
-                _context.ProductoDistribuidores.Add(item);
-            }
-            foreach (var item in alojamiento.ListaComodidades)
-            {
-                item.ProductoId = alojamiento.ProductoId;
-                _context.ComodidadesProductos.Add(item);
+                }
+            if (alojamiento.ListaPlanesAlimenticios != null)
+                foreach (var item in alojamiento.ListaPlanesAlimenticios)
+                {
+                    item.ProductoId = alojamiento.ProductoId;
+                    _context.AlojamientosPlanesAlimenticios.Add(item);
 
-            }
-            foreach (var item in alojamiento.ListaPlanesAlimenticios)
-            {
-                item.ProductoId = alojamiento.ProductoId;
-                _context.AlojamientosPlanesAlimenticios.Add(item);
-
-            }
+                }
             _context.Entry(alojamiento).State = EntityState.Modified;
 
 
@@ -212,8 +214,8 @@ namespace GoTravelTour.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                
-                
+
+
 
             }
             catch (DbUpdateConcurrencyException)
@@ -240,19 +242,19 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Alojamientos.Any(x=>x.Nombre.Trim()==alojamiento.Nombre.Trim()))
+            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim()))
             {
                 return CreatedAtAction("GetAlojamiento", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             alojamiento.SKU = u.GetSKUCodigo();
             alojamiento.Proveedor = _context.Proveedores.First(x => x.ProveedorId == alojamiento.ProveedorId);
-            if(alojamiento.PuntoInteres!= null && alojamiento.PuntoInteres.PuntoInteresId > 0)
-            alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
+            if (alojamiento.PuntoInteres != null && alojamiento.PuntoInteres.PuntoInteresId > 0)
+                alojamiento.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == alojamiento.PuntoInteres.PuntoInteresId);
             alojamiento.TipoAlojamiento = _context.TipoAlojamientos.First(x => x.TipoAlojamientoId == alojamiento.TipoAlojamientoId);
             alojamiento.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == alojamiento.TipoProductoId);
-            if(alojamiento.CategoriaHotelesId > 0)
-            alojamiento.CategoriaHoteles = _context.CategoriaHoteles.First(x => x.CategoriaHotelesId == alojamiento.CategoriaHotelesId);
+            if (alojamiento.CategoriaHotelesId > 0)
+                alojamiento.CategoriaHoteles = _context.CategoriaHoteles.First(x => x.CategoriaHotelesId == alojamiento.CategoriaHotelesId);
             _context.Alojamientos.Add(alojamiento);
             await _context.SaveChangesAsync();
             alojamiento.ListaPlanesAlimenticios = _context.AlojamientosPlanesAlimenticios.Include(x => x.PlanesAlimenticios).Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
@@ -300,7 +302,7 @@ namespace GoTravelTour.Controllers
             {
 
                 lista = _context.Contratos
-                
+
                 .Where(a => a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -309,9 +311,9 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                        
 
-                      
+
+
 
 
                     }
@@ -322,7 +324,7 @@ namespace GoTravelTour.Controllers
             {
 
                 lista = _context.Contratos
-             
+
                .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                .OrderBy(a => a.Nombre)
                .ToList();
@@ -330,7 +332,7 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                       
+
                     }
                 return lista;
             }
@@ -338,7 +340,7 @@ namespace GoTravelTour.Controllers
               if (idContrato != -1 && idDistribuidor == -1)
             {
                 lista = _context.Contratos
-               
+
                 .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -347,7 +349,7 @@ namespace GoTravelTour.Controllers
                     foreach (var contrato in lista)
                     {
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                        
+
 
                     }
                 return lista;
@@ -356,7 +358,7 @@ namespace GoTravelTour.Controllers
               if (idContrato == -1 && idDistribuidor != -1)
             {
                 lista = _context.Contratos
-                
+
                 .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -365,7 +367,7 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                       
+
 
 
                     }
@@ -599,7 +601,8 @@ namespace GoTravelTour.Controllers
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION)
                 .ToPagedList(pageIndex, pageSize).ToList();
-            }else if((idProducto != 0 && idProveedor == 0))
+            }
+            else if ((idProducto != 0 && idProveedor == 0))
             {
                 contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.ProductoId == idProducto)
@@ -621,30 +624,73 @@ namespace GoTravelTour.Controllers
 
         public int CantidadProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
         {
-             
+
             if (idProducto == 0 && idProveedor == 0)
             {
-                return  _context.ProductoDistribuidores
+                return _context.ProductoDistribuidores
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).Count();
             }
             else if ((idProducto != 0 && idProveedor == 0))
             {
                 return _context.ProductoDistribuidores
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.ProductoId == idProducto).Count();
-               
+
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 return _context.ProductoDistribuidores
                 .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor).Count();
-              
+
             }
             else
             {
                 return _context.ProductoDistribuidores.Include(x => x.Producto).ThenInclude(x => x.TipoProducto)
                 .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
-               
+
             }
+        }
+
+
+        // Post: api/Alojamientoes/Activar
+        [HttpPost]
+        [Route("Activar")]
+        public async Task<IActionResult> PostAcivarAlojamientoes([FromBody] Alojamiento a)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            if (a.IsActivo)
+                if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) ||
+                    !_context.RestriccionesPrecios.Any(x => x.ProductoId == a.ProductoId))
+                {
+
+                    return CreatedAtAction("ActivarAlojamiento", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
+                }
+
+
+
+            _context.Entry(a).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AlojamientoExists(a.ProductoId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetAlojamoiento", new { id = a.ProductoId }, a);
         }
 
     }

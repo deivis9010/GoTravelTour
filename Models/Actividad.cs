@@ -11,8 +11,8 @@ namespace GoTravelTour.Models
         public int ActividadId { get; set; }
         public string Modalidad { get; set; } //Grupal o no
         public int CantidadPersonas { get; set; }
-        public int Duracion { get; set; }
-        public int MaxDuracion { get; set; }
+        public int? Duracion { get; set; }
+        public int? MaxDuracion { get; set; }
         public bool HasTransporte { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }       
