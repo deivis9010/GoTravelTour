@@ -794,7 +794,7 @@ namespace GoTravelTour.Controllers
             }
 
 
-            return lista.OrderByDescending(x => x.PrecioRentaAutos.Deposito).ToList();
+            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
 
         }
 
@@ -1009,21 +1009,21 @@ namespace GoTravelTour.Controllers
         // Post: api/Vehiculoes/Activar
         [HttpPost]
         [Route("Activar")]
-        public async Task<IActionResult> PostAcivarVehiculo([FromBody] Vehiculo v)
+        public async Task<IActionResult> PostAcivarVehiculo([FromBody] Vehiculo ve)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            
-           if(v.IsActivo)
+            Vehiculo v = _context.Vehiculos.Single(x=>x.ProductoId==ve.ProductoId);
+           if (ve.IsActivo)
             if(!_context.PrecioRentaAutos.Any(x=>x.ProductoId==v.ProductoId) ||
                !_context.RestriccionesPrecios.Any(x => x.ProductoId == v.ProductoId)){
 
                 return CreatedAtAction("ActivarVehiculo", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
             }
-
+            v.IsActivo = ve.IsActivo;
 
 
             _context.Entry(v).State = EntityState.Modified;

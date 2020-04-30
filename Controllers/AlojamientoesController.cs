@@ -654,15 +654,15 @@ namespace GoTravelTour.Controllers
         // Post: api/Alojamientoes/Activar
         [HttpPost]
         [Route("Activar")]
-        public async Task<IActionResult> PostAcivarAlojamientoes([FromBody] Alojamiento a)
+        public async Task<IActionResult> PostAcivarAlojamientoes([FromBody] Alojamiento al)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-
-            if (a.IsActivo)
+            Alojamiento a = _context.Alojamientos.Where(x => x.ProductoId == al.ProductoId).Single();
+            if (al.IsActivo)
                 if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) ||
                     !_context.RestriccionesPrecios.Any(x => x.ProductoId == a.ProductoId))
                 {
@@ -670,7 +670,7 @@ namespace GoTravelTour.Controllers
                     return CreatedAtAction("ActivarAlojamiento", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
                 }
 
-
+            a.IsActivo = al.IsActivo;
 
             _context.Entry(a).State = EntityState.Modified;
 

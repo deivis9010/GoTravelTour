@@ -668,21 +668,22 @@ namespace GoTravelTour.Controllers
         // Post: api/Actividads/Activar
         [HttpPost]
         [Route("Activar")]
-        public async Task<IActionResult> PostAcivarActividads([FromBody] Actividad a)
+        public async Task<IActionResult> PostAcivarActividads([FromBody] Actividad al)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-
-            if (a.IsActivo)
+            Actividad a = _context.Actividadess.Single(x => x.ProductoId == al.ProductoId);
+            if (al.IsActivo)
                 if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) ||
                     !_context.RestriccionesPrecios.Any(x => x.ProductoId == a.ProductoId))
                 {
 
                     return CreatedAtAction("ActivarActividad", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
                 }
+            a.IsActivo = al.IsActivo;
 
 
 

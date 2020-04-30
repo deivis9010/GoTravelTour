@@ -605,10 +605,9 @@ namespace GoTravelTour.Controllers
 
 
         // GET: api/Trasladoes/BuscarOrden
-          
-           [HttpPost]
-           [Route("BuscarOrden")]
-           public List<OrdenTraslado> GetOrdenVehiculos([FromBody] BuscadorTraslado buscador)
+        [HttpPost]
+        [Route("BuscarOrden")]
+        public List<OrdenTraslado> GetOrdenVehiculos([FromBody] BuscadorTraslado buscador)
            {
              
 
@@ -681,32 +680,29 @@ namespace GoTravelTour.Controllers
                }
 
 
-            //return lista.OrderByDescending(x => x.PrecioRentaAutos.Deposito).ToList();
-            return null;
+            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
 
-           }
+
+        }
 
 
         // Post: api/Trasladoes/Activar
         [HttpPost]
         [Route("Activar")]
-        public async Task<IActionResult> PostAcivarTraslado([FromBody] Traslado t)
+        public async Task<IActionResult> PostAcivarTraslado([FromBody] Traslado tl)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-
-            if (t.IsActivo)
+            Traslado t = _context.Traslados.Single(x => x.ProductoId == tl.ProductoId);
+            if (tl.IsActivo)
                 if (!_context.PrecioTraslados.Any(x => x.ProductoId == t.ProductoId) )
                 {
-
                     return CreatedAtAction("ActivarTraslado", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
                 }
-
-
-
+                       
             _context.Entry(t).State = EntityState.Modified;
 
             try
