@@ -122,6 +122,138 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
+            orden.Cliente = _context.Clientes.Single(x => x.ClienteId == orden.ClienteId);
+            orden.Creador = _context.Usuarios.Single(x => x.UsuarioId == orden.Creador.UsuarioId);
+            orden.FechaCreacion = DateTime.Now;
+
+            List<OrdenVehiculo> veAborrar = _context.OrdenVehiculo.Where(x => x.OrdenId == orden.OrdenId).ToList();
+            foreach(var vo in veAborrar)
+            {
+                _context.OrdenVehiculo.Remove(vo);
+            }
+           
+            if (orden.ListaVehiculosOrden != null)
+            {
+                foreach (var vo in orden.ListaVehiculosOrden)
+                {
+                    vo.PrecioRentaAutos = _context.PrecioRentaAutos
+                        .Include(x => x.Temporada)
+                        .Include(x => x.Auto)
+                        .Single(x => x.PrecioRentaAutosId == vo.PrecioRentaAutos.PrecioRentaAutosId);
+                    vo.Vehiculo = _context.Vehiculos
+                        .Include(x => x.Marca)
+                        .Include(x => x.Modelo)
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+
+                        .Single(x => x.ProductoId == vo.Vehiculo.ProductoId);
+                    vo.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == vo.DistribuidorId);
+                    /*vo.LugarEntrega = _context.PuntosInteres
+                                       .Include(x=>x.Region)
+                                             .Single(x => x.PuntoInteresId== vo.LugarEntrega.PuntoInteresId);
+                    vo.LugarRecogida = _context.PuntosInteres
+                                             .Include(x => x.Region)
+                                             .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
+                                            
+    */
+                    _context.OrdenVehiculo.Add(vo);
+
+                }
+            }
+            List<OrdenTraslado> trAborrar = _context.OrdenTraslado.Where(x => x.OrdenId == orden.OrdenId).ToList();
+            foreach (var to in trAborrar)
+            {
+                _context.OrdenTraslado.Remove(to);
+            }
+            if (orden.ListaTrasladoOrden != null)
+            {
+                foreach (var to in orden.ListaTrasladoOrden)
+                {
+                    to.PrecioTraslado = _context.PrecioTraslados
+                        .Include(x => x.Temporada)
+                        .Include(x => x.Rutas)
+                        .Include(x => x.Traslado)
+                        .Single(x => x.PrecioTrasladoId == to.PrecioTraslado.PrecioTrasladoId);
+                    to.Traslado = _context.Traslados
+                        .Include(x => x.TipoTransporte)
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == to.Traslado.ProductoId);
+                    to.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == to.DistribuidorId);
+                    to.PuntoOrigen = _context.PuntosInteres
+                                       .Include(x => x.Region)
+                                             .Single(x => x.PuntoInteresId == to.PuntoOrigen.PuntoInteresId);
+                    to.PuntoDestino = _context.PuntosInteres
+                                             .Include(x => x.Region)
+                                             .Single(x => x.PuntoInteresId == to.PuntoDestino.PuntoInteresId);
+
+                    _context.OrdenTraslado.Add(to);
+
+                }
+            }
+
+            List<OrdenActividad> acAborrar = _context.OrdenActividad.Where(x => x.OrdenId == orden.OrdenId).ToList();
+            foreach (var aco in acAborrar)
+            {
+                _context.OrdenActividad.Remove(aco);
+            }
+
+            if (orden.ListaActividadOrden != null)
+            {
+                foreach (var oac in orden.ListaActividadOrden)
+                {
+                    oac.PrecioActividad = _context.PrecioActividad
+                        .Include(x => x.Temporada)
+
+                        .Single(x => x.PrecioActividadId == oac.PrecioActividad.PrecioActividadId);
+                    oac.Actividad = _context.Actividadess
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == oac.Actividad.ProductoId);
+                    oac.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == oac.DistribuidorId);
+
+                    _context.OrdenActividad.Add(oac);
+                }
+               
+            }
+
+            List<OrdenAlojamiento> alAborrar = _context.OrdenAlojamiento.Where(x => x.OrdenId == orden.OrdenId).ToList();
+            foreach (var alo in alAborrar)
+            {
+                _context.OrdenAlojamiento.Remove(alo);
+            }
+
+            if (orden.ListaAlojamientoOrden != null)
+            {
+                foreach (var oal in orden.ListaAlojamientoOrden)
+                {
+                    oal.PrecioAlojamiento = _context.PrecioAlojamiento
+                        .Include(x => x.Temporada)
+                        .Include(x => x.Contrato)
+                        .Include(x => x.Habitacion)
+                         .Include(x => x.TipoHabitacion)
+                        .Single(x => x.PrecioAlojamientoId == oal.PrecioAlojamiento.Precio);
+                    oal.Alojamiento = _context.Alojamientos
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == oal.Alojamiento.ProductoId);
+                    oal.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == oal.DistribuidorId);
+                    oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+
+                    oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
+
+                    _context.OrdenAlojamiento.Add(oal);
+                }
+            }
+
             _context.Entry(orden).State = EntityState.Modified;
 
             try
@@ -150,6 +282,113 @@ namespace GoTravelTour.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            orden.Cliente = _context.Clientes.Single(x => x.ClienteId == orden.ClienteId);
+            orden.Creador = _context.Usuarios.Single(x => x.UsuarioId == orden.Creador.UsuarioId);
+            orden.FechaCreacion = DateTime.Now;
+
+            if (orden.ListaVehiculosOrden != null)
+            {
+                foreach (var vo in orden.ListaVehiculosOrden)
+                {
+                    vo.PrecioRentaAutos = _context.PrecioRentaAutos
+                        .Include(x=>x.Temporada)
+                        .Include(x => x.Auto)
+                        .Single(x => x.PrecioRentaAutosId == vo.PrecioRentaAutos.PrecioRentaAutosId);
+                    vo.Vehiculo = _context.Vehiculos
+                        .Include(x => x.Marca)
+                        .Include(x => x.Modelo)
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)                        
+
+                        .Single(x => x.ProductoId == vo.Vehiculo.ProductoId);
+                    vo.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == vo.DistribuidorId);
+                    /*vo.LugarEntrega = _context.PuntosInteres
+                                       .Include(x=>x.Region)
+                                             .Single(x => x.PuntoInteresId== vo.LugarEntrega.PuntoInteresId);
+                    vo.LugarRecogida = _context.PuntosInteres
+                                             .Include(x => x.Region)
+                                             .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
+                                            
+    */
+
+                }
+            }
+
+            if (orden.ListaTrasladoOrden != null)
+            {
+                foreach (var to in orden.ListaTrasladoOrden)
+                {
+                    to.PrecioTraslado = _context.PrecioTraslados
+                        .Include(x => x.Temporada)
+                        .Include(x => x.Rutas)
+                        .Include(x => x.Traslado)
+                        .Single(x => x.PrecioTrasladoId == to.PrecioTraslado.PrecioTrasladoId);
+                    to.Traslado = _context.Traslados
+                        .Include(x => x.TipoTransporte)                        
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == to.Traslado.ProductoId);
+                    to.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == to.DistribuidorId);
+                    to.PuntoOrigen = _context.PuntosInteres
+                                       .Include(x => x.Region)
+                                             .Single(x => x.PuntoInteresId == to.PuntoOrigen.PuntoInteresId);
+                    to.PuntoDestino = _context.PuntosInteres
+                                             .Include(x => x.Region)
+                                             .Single(x => x.PuntoInteresId == to.PuntoDestino.PuntoInteresId);
+
+
+
+                }
+            }
+
+            if (orden.ListaActividadOrden != null)
+            {
+                foreach (var oac in orden.ListaActividadOrden)
+                {
+                    oac.PrecioActividad = _context.PrecioActividad
+                        .Include(x => x.Temporada)
+                        
+                        .Single(x => x.PrecioActividadId == oac.PrecioActividad.PrecioActividadId);
+                    oac.Actividad = _context.Actividadess                        
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == oac.Actividad.ProductoId);
+                    oac.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == oac.DistribuidorId);
+                    
+
+                }
+            }
+
+            if (orden.ListaAlojamientoOrden != null)
+            {
+                foreach (var oal in orden.ListaAlojamientoOrden)
+                {
+                    oal.PrecioAlojamiento = _context.PrecioAlojamiento
+                        .Include(x => x.Temporada)
+                        .Include(x=>x.Contrato)
+                        .Include(x => x.Habitacion)
+                         .Include(x => x.TipoHabitacion)
+                        .Single(x => x.PrecioAlojamientoId == oal.PrecioAlojamiento.Precio);
+                    oal.Alojamiento = _context.Alojamientos
+                        .Include(x => x.Proveedor)
+                        .Include(x => x.PuntoInteres)
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == oal.Alojamiento.ProductoId);
+                    oal.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == oal.DistribuidorId);
+                    oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+
+                    oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
+                  
+
+                }
             }
 
             _context.Orden.Add(orden);

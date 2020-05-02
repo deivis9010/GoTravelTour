@@ -744,7 +744,7 @@ namespace GoTravelTour.Controllers
                         }
                         
 
-                        ov.PrecioOrden += c.Descuento + (DiasRestantes * p.DiasExtra) + (cantDiasGenenarl * p.Seguro);
+                        ov.PrecioOrden +=  (DiasRestantes * p.DiasExtra) + (cantDiasGenenarl * p.Seguro);
 
 
 
@@ -758,11 +758,11 @@ namespace GoTravelTour.Controllers
                                 {
                                     if (s.ValorDinero != null)
                                     {
-                                        ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero;
+                                        ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero  + ((decimal)s.ValorDinero * c.Descuento / 100);
                                     }
                                     else
                                     {
-                                        ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                     }
 
                                 }
@@ -771,11 +771,11 @@ namespace GoTravelTour.Controllers
 
                                     if (s.ValorDinero != null)
                                     {
-                                        ov.PrecioOrden += (decimal)s.ValorDinero;
+                                        ov.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento / 100);
                                     }
                                     else
                                     {
-                                        ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                     }
 
                                 }

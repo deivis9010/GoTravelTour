@@ -14,9 +14,12 @@ namespace GoTravelTour.Models
         public string NombreCliente { get; set; }
         public DateTime FechaRecogida { get; set; }
         public DateTime FechaEntrega { get; set; }
+        public int OrdenId { get; set; }
+        public Orden Orden { get; set; }
         public PuntoInteres LugarRecogida { get; set; }
         public PuntoInteres LugarEntrega { get; set; }
-        public int DistribuidorId { get; set; }
+        public int DistribuidorId { get; set; }      
+
         public PrecioRentaAutos PrecioRentaAutos { get; set; }
         public Distribuidor Distribuidor { get; set; }
         public int VehiculoId { get; set; }

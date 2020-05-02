@@ -19,6 +19,8 @@ namespace GoTravelTour.Models
         public string NumeroConfirmacion { get; set; }
         public string DescripcionServicio { get; set; }
         public string NotasAdicionales { get; set; }
+        public int OrdenId { get; set; }
+        public Orden Orden { get; set; }
         public DateTime Checkin { get; set; }
         public DateTime Checkout { get; set; }
         public ConfiguracionVoucher ConfiguracionVoucher { set; get; }

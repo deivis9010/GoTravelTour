@@ -18,14 +18,17 @@ namespace GoTravelTour.Models
         public string NombreCliente { get; set; }
         public string InformacionSalida { get; set; }
         public string DescripcionServicio { get; set; }
+        public bool IsIdaVuelta { get; set; }
+        public int OrdenId { get; set; }
+        public Orden Orden { get; set; }
 
         public PrecioTraslado PrecioTraslado { get; set; }  
         public ConfiguracionVoucher ConfiguracionVoucher { set; get; }
         public string TipoTraslado { get; set; } //duda que cosa es y como se gestiona
         public int DistribuidorId { get; set; }
         public Distribuidor Distribuidor { get; set; }       
-        public PuntoInteres LugarRecogida { get; set; }
-        public PuntoInteres LugarEntrega { get; set; }    
+        public PuntoInteres PuntoOrigen { get; set; }
+        public PuntoInteres PuntoDestino { get; set; }    
         public Traslado Traslado { get; set; }
         public bool PremiteCopia { get; set; }
         [Column(TypeName = "decimal(18,4)")]

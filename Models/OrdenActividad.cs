@@ -20,6 +20,8 @@ namespace GoTravelTour.Models
         public string NumeroConfirmacion { get; set; }
         public string DescripcionServicio { get; set; }
         public string NotasAdicionales { get; set; }
+        public int OrdenId { get; set; }
+        public Orden Orden { get; set; }
         public int DistribuidorId { get; set; }
         public Distribuidor Distribuidor { get; set; }
         public int ActividadId { get; set; }

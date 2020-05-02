@@ -24,12 +24,12 @@ namespace GoTravelTour.Models
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaPeticion { get; set; }
         public DateTime? FechaActualizacion { get; set; }
-        public Sobreprecio Sobreprecio { get; set; }
+        //public Sobreprecio Sobreprecio { get; set; }
         public List<OrdenVehiculo> ListaVehiculosOrden { get; set; }
         public List<OrdenTraslado> ListaTrasladoOrden { get; set; }
         public List<OrdenAlojamiento> ListaAlojamientoOrden { get; set; }
         public List<OrdenActividad> ListaActividadOrden { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public decimal PrecioGeneralOrden { get { return Sobreprecio.PrecioDesde; } set { PrecioGeneralOrden = value; } }
+        public decimal PrecioGeneralOrden { get; set; }
     }
 }

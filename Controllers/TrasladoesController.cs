@@ -641,8 +641,9 @@ namespace GoTravelTour.Controllers
                             ov.PrecioTraslado = p;
                             ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
                             ov.Traslado = t;
-                           
-                            ov.PrecioOrden += c.Descuento + p.Precio;
+                            ov.PuntoOrigen = buscador.Origen;
+                            ov.PuntoDestino = buscador.Destino;
+                            ov.PrecioOrden +=  p.Precio;
 
 
                             //Se aplica la ganancia correspondiente
@@ -655,11 +656,11 @@ namespace GoTravelTour.Controllers
                                    
                                         if (s.ValorDinero != null)
                                         {
-                                            ov.PrecioOrden += (decimal)s.ValorDinero;
+                                            ov.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento/100);
                                         }
                                         else
                                         {
-                                            ov.PrecioOrden +=  ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                            ov.PrecioOrden +=  ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento/100);
                                         }
 
                                     
@@ -667,8 +668,9 @@ namespace GoTravelTour.Controllers
                                 }
 
                             }
+                            ov.IsIdaVuelta = buscador.IsIdaVuelta;
 
-
+                            if (ov.IsIdaVuelta) ov.PrecioOrden = 2 * ov.PrecioOrden;
                             lista.Add(ov);
                         }
 

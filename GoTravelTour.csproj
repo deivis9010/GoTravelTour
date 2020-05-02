@@ -102,6 +102,10 @@
     <Compile Remove="Migrations\20200423003417_modificandoPrecios.Designer.cs" />
     <Compile Remove="Migrations\20200423004904_modificandoPrecios.cs" />
     <Compile Remove="Migrations\20200423004904_modificandoPrecios.Designer.cs" />
+    <Compile Remove="Migrations\20200501143211_comprobando.cs" />
+    <Compile Remove="Migrations\20200501143211_comprobando.Designer.cs" />
+    <Compile Remove="Migrations\20200501143528_comprobando.cs" />
+    <Compile Remove="Migrations\20200501143528_comprobando.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
