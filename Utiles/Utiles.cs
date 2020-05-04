@@ -18,6 +18,10 @@ namespace GoTravelTour.Utiles
         {
             _context = context;
         }
+        /// <summary>
+        /// Para obtener el codigo unico para el producto
+        /// </summary>
+        /// <returns></returns>
         public string GetSKUCodigo ()
         {
             bool encontrado = false;
@@ -38,6 +42,22 @@ namespace GoTravelTour.Utiles
             
             
             return sku;
+        }
+
+        
+        public string GetCodigoOrden()
+        {
+           
+            string sku = "";
+            string numeroOrden = "0000000000";
+            int ultimaOrden = _context.Orden.Last().OrdenId + 1;
+            numeroOrden = (numeroOrden + ultimaOrden.ToString()).PadRight(10);
+            sku = "GTT-" + numeroOrden;
+
+
+
+            return sku;
+
         }
 
         public static bool SaveImages(string ImageContent, string ImageName, string path)

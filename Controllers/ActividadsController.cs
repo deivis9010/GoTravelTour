@@ -24,42 +24,42 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Actividads
         [HttpGet]
-        public IEnumerable<Actividad> GetActividadess(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor=0)
+        public IEnumerable<Actividad> GetActividadess(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor = 0)
         {
             IEnumerable<Actividad> lista;
             if (col == "-1")
             {
-                lista= _context.Actividadess
+                lista = _context.Actividadess
                     //.Include(a => a.ListaComodidades)
                     //.Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
                     //.Include(a => a.TipoProducto)                    
                     //.Include(a => a.Region)
-                    .Where(x=>x.ProveedorId==idProveedor)
-                    .OrderBy(a=>a.Nombre)
+                    .Where(x => x.ProveedorId == idProveedor)
+                    .OrderBy(a => a.Nombre)
                     .ToList();
 
-               /* if (lista.Count() > 0)
-                {
-                    foreach (var a in lista)
-                    {
-                        a.ServiciosAdicionados = _context.Servicio.Where(s => s.ProductoId == a.ProductoId).ToList();
-                    }
-                }*/
-                
+                /* if (lista.Count() > 0)
+                 {
+                     foreach (var a in lista)
+                     {
+                         a.ServiciosAdicionados = _context.Servicio.Where(s => s.ProductoId == a.ProductoId).ToList();
+                     }
+                 }*/
+
                 return lista;
             }
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Actividadess
                     //.Include(a => a.ListaComodidades)
-                   // .Include(v => v.ListaDistribuidoresProducto)
+                    // .Include(v => v.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
                     //.Include(a => a.TipoProducto)                    
-                   // .Include(a => a.Region)
+                    // .Include(a => a.Region)
                     .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
-              
+
             }
             else
             {
@@ -70,7 +70,7 @@ namespace GoTravelTour.Controllers
                     //.Include(a => a.Region)
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
-               
+
             }
 
             switch (sortDirection)
@@ -97,13 +97,13 @@ namespace GoTravelTour.Controllers
 
                     break;
             }
-          /*  if (lista.Count() > 0)
-            {
-                foreach (var a in lista)
-                {
-                    a.ServiciosAdicionados = _context.Servicio.Where(s => s.ProductoId == a.ProductoId).ToList();
-                }
-            }*/
+            /*  if (lista.Count() > 0)
+              {
+                  foreach (var a in lista)
+                  {
+                      a.ServiciosAdicionados = _context.Servicio.Where(s => s.ProductoId == a.ProductoId).ToList();
+                  }
+              }*/
 
             return lista;
         }
@@ -128,14 +128,14 @@ namespace GoTravelTour.Controllers
             /*var actividad = await _context.Actividadess
                 .FindAsync(id);*/
 
-            var actividad =  _context.Actividadess
+            var actividad = _context.Actividadess
                     .Include(a => a.ListaComodidades)
                     .Include(v => v.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
-                    .Include(a => a.TipoProducto)                    
+                    .Include(a => a.TipoProducto)
                     .Include(a => a.Region)
-                    .Single(x=> x.ProductoId==id);
-             
+                    .Single(x => x.ProductoId == id);
+
 
             if (actividad == null)
             {
@@ -165,10 +165,10 @@ namespace GoTravelTour.Controllers
             }
             actividad.Region = _context.Regiones.First(x => x.RegionId == actividad.Region.RegionId);
             actividad.Proveedor = _context.Proveedores.First(x => x.ProveedorId == actividad.ProveedorId);
-            if(actividad.PuntoInteres!= null)
-            actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
+            if (actividad.PuntoInteres != null)
+                actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
             actividad.TipoProducto = _context.TipoProductos.First(x => x.TipoProductoId == actividad.TipoProductoId);
-           
+
             List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == actividad.ProductoId).ToList();
             foreach (var item in distribuidors)
             {
@@ -180,19 +180,19 @@ namespace GoTravelTour.Controllers
                 _context.ComodidadesProductos.Remove(item);
             }
 
-            if(actividad.ListaDistribuidoresProducto != null)
-            foreach (var item in actividad.ListaDistribuidoresProducto)
-            {
-                item.ProductoId = actividad.ProductoId;
-                _context.ProductoDistribuidores.Add(item);
-            }
+            if (actividad.ListaDistribuidoresProducto != null)
+                foreach (var item in actividad.ListaDistribuidoresProducto)
+                {
+                    item.ProductoId = actividad.ProductoId;
+                    _context.ProductoDistribuidores.Add(item);
+                }
             if (actividad.ListaComodidades != null)
-            foreach (var item in actividad.ListaComodidades)
-            {
-                item.ProductoId = actividad.ProductoId;
-                _context.ComodidadesProductos.Add(item);
+                foreach (var item in actividad.ListaComodidades)
+                {
+                    item.ProductoId = actividad.ProductoId;
+                    _context.ComodidadesProductos.Add(item);
 
-            }
+                }
 
             List<Servicio> aEliminar = _context.Servicio.Where(x => x.ProductoId == actividad.ProductoId).ToList();
             foreach (var elim in aEliminar)
@@ -218,7 +218,7 @@ namespace GoTravelTour.Controllers
             {
                 await _context.SaveChangesAsync();
 
-                
+
 
             }
             catch (DbUpdateConcurrencyException)
@@ -314,14 +314,14 @@ namespace GoTravelTour.Controllers
             {
 
                 lista = _context.Contratos
-                
+
                 .Where(a => a.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY)
                 .OrderBy(a => a.Nombre)
                 .ToList();
                 if (lista.Count() > 0)
                     foreach (var contrato in lista)
                     {
-                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);                 
+                        contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
 
                     }
                 return lista;
@@ -331,7 +331,7 @@ namespace GoTravelTour.Controllers
             {
 
                 lista = _context.Contratos
-              
+
                .Where(a => a.ContratoId == idContrato && a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY)
                .OrderBy(a => a.Nombre)
                .ToList();
@@ -341,7 +341,7 @@ namespace GoTravelTour.Controllers
 
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                      
+
 
 
                     }
@@ -351,7 +351,7 @@ namespace GoTravelTour.Controllers
               if (idContrato != -1 && idDistribuidor == -1)
             {
                 lista = _context.Contratos
-                
+
                 .Where(a => a.ContratoId == idContrato && a.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -361,7 +361,7 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                       
+
 
 
                     }
@@ -371,7 +371,7 @@ namespace GoTravelTour.Controllers
               if (idContrato == -1 && idDistribuidor != -1)
             {
                 lista = _context.Contratos
-               
+
                 .Where(a => a.DistribuidorId == idDistribuidor && a.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY)
                 .OrderBy(a => a.Nombre)
                 .ToList();
@@ -380,7 +380,7 @@ namespace GoTravelTour.Controllers
                     {
 
                         contrato.CantidadProductosTotal = CantidadProductoProveedor(idProveedor, idProducto, contrato);
-                       
+
 
 
                     }
@@ -528,7 +528,7 @@ namespace GoTravelTour.Controllers
                                 contrato.Temporadas[i].ListaPrecioActividad = _context.PrecioActividad
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
-                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio.Include(x=>x.Servicio)
+                                contrato.Temporadas[i].ListaPrecioServicioActividad = _context.PrecioServicio.Include(x => x.Servicio)
                                     .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 int j = 0;
@@ -637,30 +637,30 @@ namespace GoTravelTour.Controllers
 
         private int CantidadProductoProveedor(int idProveedor, int idProducto, Contrato contrato)
         {
-            
+
             if (idProducto == 0 && idProveedor == 0)
             {
                 return _context.ProductoDistribuidores
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY).Count();
-               
+
             }
             else if ((idProducto != 0 && idProveedor == 0))
             {
                 return _context.ProductoDistribuidores
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY && x.ProductoId == idProducto).Count();
-               
+
             }
             else if ((idProducto == 0 && idProveedor != 0))
             {
                 return _context.ProductoDistribuidores
                .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY && x.Producto.ProveedorId == idProveedor).Count();
-               
+
             }
             else
             {
                 return _context.ProductoDistribuidores
                 .Where(x => x.DistribuidorId == contrato.DistribuidorId && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY && x.Producto.ProveedorId == idProveedor && x.ProductoId == idProducto).Count();
-               
+
             }
         }
 
@@ -706,6 +706,149 @@ namespace GoTravelTour.Controllers
             }
 
             return CreatedAtAction("GetActividads", new { id = a.ProductoId }, a);
+        }
+
+
+
+        // POST: api/Actividads/BuscarOrden
+        [HttpPost]
+        [Route("BuscarOrden")]
+        public List<OrdenActividad> GetOrdenActividades([FromBody] BuscadorActividad buscador, int pageIndex = 1, int pageSize = 1)
+        {
+
+
+            List<OrdenActividad> lista = new List<OrdenActividad>(); //Lista  a devolver (candidatos)
+            string diaSemana = buscador.Fecha.DayOfWeek.ToString();
+
+            switch (diaSemana)
+            {
+                case "Sunday":
+                    {
+                        diaSemana = "7";
+                        break;
+                    }
+                case "Monday":
+                    {
+                        diaSemana = "1";
+                        break;
+                    }
+                case "Tuesday":
+                    {
+                        diaSemana = "2";
+                        break;
+                    }
+               case "Wednesday":
+                    {
+                        diaSemana = "3";
+                        break;
+                    }
+            
+                case "Thursday":
+                    {
+                        diaSemana = "4";
+                        break;
+                    }
+                
+                case "Friday":
+                    {
+                        diaSemana = "5";
+                        break;
+                    }
+                case "Saturday":
+                    {
+                        diaSemana = "6";
+                        break;
+                    }
+            }
+
+            
+            //Se buscan todos los alojamientos segun los parametros
+            List<Actividad> actividades = _context.Actividadess.Where(x => x.IsActivo && x.PuntoInteres.PuntoInteresId == buscador.LugarActividad.PuntoInteresId
+            && x.CantidadPersonas >= (buscador.CantidadAdultos + buscador.CantidadMenores)).ToList();
+
+
+            if (!string.IsNullOrEmpty(buscador.NombreActividad))
+            {
+                actividades = actividades.Where(x => x.Nombre.Contains(buscador.NombreActividad)).ToList();
+            }
+
+            if (buscador.CantidadMenores > 0)
+            {
+                actividades = actividades.Where(x => x.PermiteNino).ToList();
+            }
+
+           actividades = actividades.Where(x => x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
+
+            foreach (var ac in actividades)
+             {
+                Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                                                                                                     //Se buscan los precios correspondientes de las actividades
+                List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
+                        .Include(x => x.Temporada.Contrato.Distribuidor)
+                        .Where(x => x.ProductoId == ac.ProductoId ).ToList();
+                     foreach (var p in precios)
+                     {
+                         OrdenActividad oac = new OrdenActividad();
+                         if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Fecha && buscador.Fecha <= x.FechaFin))) // si la fecha buscada esta en el rango de precios
+                         {
+                            
+                             oac.PrecioActividad = p;
+                             oac.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                             oac.Actividad = ac;
+                             oac.CantAdulto = buscador.CantidadAdultos;
+                             oac.CantNino = buscador.CantidadMenores;
+                             oac.FechaActividad = buscador.Fecha;                             
+                             oac.PrecioOrden += p.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (p.PrecioNino);
+
+                            //busco si la actividad tiene servicios asociados
+                            ac.ServiciosAdicionados = _context.Servicio.Where(x => x.ProductoId == ac.ProductoId).ToList();
+                            foreach (var serv in ac.ServiciosAdicionados)
+                            {
+                              PrecioServicio ps = _context.PrecioServicio.Single(x => x.ServicioId == serv.ServicioId && x.Temporada.TemporadaId == p.Temporada.TemporadaId);
+                              oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino);
+                            }
+
+                        
+
+                        //Se aplica la ganancia correspondiente
+                        List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY).ToList();
+
+                             foreach (Sobreprecio s in sobreprecios)
+                             {
+                                 if (s.PrecioDesde <= oac.PrecioOrden && oac.PrecioOrden <= s.PrecioHasta)
+                                 {
+
+                                     if (s.ValorDinero != null)
+                                     {
+                                        oac.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                     }
+                                     else
+                                     {
+                                oac.PrecioOrden += oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                     }
+
+
+                                     break;
+                                 }
+
+                             }
+                           
+                             lista.Add(oac);
+                         }
+
+                     }
+                 
+
+
+
+             }
+
+
+
+
+            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
+
+
         }
 
 

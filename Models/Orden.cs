@@ -10,8 +10,8 @@ namespace GoTravelTour.Models
     {
         public int OrdenId { get; set; }
         public string Estado { get; set; }
-        public string NumeroOrden { get; set; }        
-        public string NombreOrden { get; set; }
+        public string NumeroOrden { get; set; }    // Codigo de la orden    
+        public string NombreOrden { get; set; } 
         public string NombreClienteFinal { get; set; } //Esto es una referencia al nombre del cliente q va a consumir el servicio
         public int ClienteId { get; set; }
         public bool OFACrequired { get; set; }

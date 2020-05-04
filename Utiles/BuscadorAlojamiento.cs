@@ -14,6 +14,9 @@ namespace GoTravelTour.Utiles
         public PuntoInteres Lugar { get; set; }
         public int CantidadAdultos { get; set; }
         public int CantidadMenores { get; set; }
+        public int CantidadInfantes { get; set; }
+        public int CantidadHabitaciones { get; set; }
+        public int CantidadEstrellas { get; set; }
         public bool IsPasaDia { get; set; }
         public int CantidadNoches { get; set; }
         public DateTime Entrada { get; set; }

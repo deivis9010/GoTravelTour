@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using GoTravelTour.Utiles;
+
 
 namespace GoTravelTour.Controllers
 {
@@ -283,6 +285,9 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            Utiles.Utiles u = new Utiles.Utiles(_context);
+            orden.NumeroOrden = u.GetCodigoOrden();
+           
             orden.Cliente = _context.Clientes.Single(x => x.ClienteId == orden.ClienteId);
             orden.Creador = _context.Usuarios.Single(x => x.UsuarioId == orden.Creador.UsuarioId);
             orden.FechaCreacion = DateTime.Now;
@@ -305,14 +310,14 @@ namespace GoTravelTour.Controllers
                         .Single(x => x.ProductoId == vo.Vehiculo.ProductoId);
                     vo.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == vo.DistribuidorId);
-                    /*vo.LugarEntrega = _context.PuntosInteres
+                    if(vo.LugarEntrega!=null)
+                    vo.LugarEntrega = _context.PuntosInteres
                                        .Include(x=>x.Region)
                                              .Single(x => x.PuntoInteresId== vo.LugarEntrega.PuntoInteresId);
-                    vo.LugarRecogida = _context.PuntosInteres
+                    if (vo.LugarRecogida != null)
+                        vo.LugarRecogida = _context.PuntosInteres
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
-                                            
-    */
 
                 }
             }

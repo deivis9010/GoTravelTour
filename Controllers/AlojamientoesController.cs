@@ -693,5 +693,98 @@ namespace GoTravelTour.Controllers
             return CreatedAtAction("GetAlojamoiento", new { id = a.ProductoId }, a);
         }
 
+
+        // POST: api/Alojamientoes/BuscarOrden
+        [HttpPost]
+        [Route("BuscarOrden")]
+        public List<OrdenAlojamiento> GetOrdenAlojamientos([FromBody] BuscadorAlojamiento buscador)
+        {
+
+
+            List<OrdenAlojamiento> lista = new List<OrdenAlojamiento>(); //Lista  a devolver (candidatos)
+
+
+            //Se buscan todos los alojamientos segun los parametros
+            List<Alojamiento> alojamientos = _context.Alojamientos.Where(x => x.PuntoInteres.PuntoInteresId == buscador.Lugar.PuntoInteresId).ToList();
+
+           /* if (!string.IsNullOrEmpty(buscador.NombreHotel))
+            {
+                alojamientos = alojamientos.Where(x => x.Nombre.Contains(buscador.NombreHotel)).ToList();
+            }
+
+            if (buscador.TipoAlojamiento != null)
+            {
+                alojamientos = alojamientos.Where(x => x.TipoAlojamiento.TipoAlojamientoId == buscador.TipoAlojamiento.TipoAlojamientoId).ToList();
+            }*/
+
+           /* foreach (var a in alojamientos)
+            {
+                //Se buscan las rutas que contienen el punto de origen y destino
+                List<Rutas> posiblesRutas = _context.Rutas.Where(x => (x.PuntoInteresOrigen.PuntoInteresId == buscador.Origen.PuntoInteresId &&
+                x.PuntoInteresDestino.PuntoInteresId == buscador.Destino.PuntoInteresId) ||
+                (x.PuntoInteresOrigen.PuntoInteresId == buscador.Destino.PuntoInteresId &&
+                x.PuntoInteresDestino.PuntoInteresId == buscador.Origen.PuntoInteresId)).ToList();
+
+                foreach (var r in posiblesRutas)
+                {
+                    //Se buscan los precios correspondientes entre ruta y traslado
+                    List<PrecioTraslado> precios = _context.Precioalojamientos.Include(x => x.Temporada.ListaFechasTemporada)
+                       .Include(x => x.Temporada.Contrato.Distribuidor)
+                       .Where(x => x.ProductoId == t.ProductoId && x.RutasId == r.RutasId).ToList();
+                    foreach (var p in precios)
+                    {
+                        OrdenTraslado ov = new OrdenTraslado();
+                        if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Fecha && buscador.Fecha <= x.FechaFin))) // si la fecha buscada esta en el rango de precios
+                        {
+                            Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                            ov.PrecioTraslado = p;
+                            ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                            ov.Traslado = t;
+                            ov.PuntoOrigen = buscador.Origen;
+                            ov.PuntoDestino = buscador.Destino;
+                            ov.PrecioOrden += p.Precio;
+
+
+                            //Se aplica la ganancia correspondiente
+                            List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.TRANSPORTATION).ToList();
+
+                            foreach (Sobreprecio s in sobreprecios)
+                            {
+                                if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
+                                {
+
+                                    if (s.ValorDinero != null)
+                                    {
+                                        ov.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                    }
+                                    else
+                                    {
+                                        ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                    }
+
+
+                                    break;
+                                }
+
+                            }
+                            ov.IsIdaVuelta = buscador.IsIdaVuelta;
+
+                            if (ov.IsIdaVuelta) ov.PrecioOrden = 2 * ov.PrecioOrden;
+                            lista.Add(ov);
+                        }
+
+                    }
+                }
+
+
+
+            }*/
+
+
+            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
+
+
+        }
+
     }
 }

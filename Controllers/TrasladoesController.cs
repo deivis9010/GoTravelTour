@@ -604,10 +604,19 @@ namespace GoTravelTour.Controllers
         }
 
 
+        // GET: api/Trasladoes/BuscarOrdenCount
+        [HttpPost]
+        [Route("BuscarOrdenCount")]
+        public int GetOrdenTrasladosCount([FromBody] BuscadorTraslado buscador)
+        {
+            return 50;
+        }
+
+
         // GET: api/Trasladoes/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenTraslado> GetOrdenVehiculos([FromBody] BuscadorTraslado buscador)
+        public List<OrdenTraslado> GetOrdenTraslados([FromBody] BuscadorTraslado buscador, int pageIndex = 1, int pageSize = 1 )
            {
              
 
@@ -615,9 +624,9 @@ namespace GoTravelTour.Controllers
                
 
                //Se buscan todos los traslados con la transmision pasada por parametros
-               List<Traslado> traslados = _context.Traslados.Where(x => x.CapacidadTraslado >= buscador.CantidadPasajeros).ToList();
+               List<Traslado> traslados = _context.Traslados.Where(x => x.IsActivo && x.CapacidadTraslado >= buscador.CantidadPasajeros).ToList();
 
-
+              
                foreach (var t in traslados) 
                {
                 //Se buscan las rutas que contienen el punto de origen y destino
@@ -682,7 +691,7 @@ namespace GoTravelTour.Controllers
                }
 
 
-            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
+            return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex, pageSize).ToList();
 
 
         }

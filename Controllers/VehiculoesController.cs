@@ -664,12 +664,18 @@ namespace GoTravelTour.Controllers
         }
 
 
-
+        // GET: api/Vehiculoes/BuscarOrdenCount
+        [HttpPost]
+        [Route("BuscarOrdenCount")]
+        public int GetOrdenVehiculosCount([FromBody] BuscadorVehiculo buscador, int pageIndex = 1, int pageSize = 1)
+        {
+            return 50;
+        }
 
         // GET: api/Vehiculoes/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador)
+        public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador, int pageIndex = 1, int pageSize = 1)
         {
             // TODO agregar el calculo de la orden teniendo en  cuenta
 
@@ -794,7 +800,7 @@ namespace GoTravelTour.Controllers
             }
 
 
-            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
+            return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex,pageSize).ToList();
 
         }
 
