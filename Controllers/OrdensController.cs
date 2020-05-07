@@ -150,16 +150,19 @@ namespace GoTravelTour.Controllers
                         .Include(x => x.TipoProducto)
 
                         .Single(x => x.ProductoId == vo.Vehiculo.ProductoId);
+
                     vo.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == vo.DistribuidorId);
-                    /*vo.LugarEntrega = _context.PuntosInteres
+                    if (vo.LugarEntrega != null)
+                        vo.LugarEntrega = _context.PuntosInteres
                                        .Include(x=>x.Region)
                                              .Single(x => x.PuntoInteresId== vo.LugarEntrega.PuntoInteresId);
-                    vo.LugarRecogida = _context.PuntosInteres
+                    if (vo.LugarRecogida != null)
+                        vo.LugarRecogida = _context.PuntosInteres
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
                                             
-    */
+    
                     _context.OrdenVehiculo.Add(vo);
 
                 }

@@ -50,7 +50,12 @@ namespace GoTravelTour.Utiles
            
             string sku = "";
             string numeroOrden = "0000000000";
-            int ultimaOrden = _context.Orden.Last().OrdenId + 1;
+            int ultimaOrden = 0;
+            if (!_context.Orden.Any())
+            {
+                ultimaOrden = 1;
+            }else
+            ultimaOrden = _context.Orden.Last().OrdenId + 1;
             numeroOrden = (numeroOrden + ultimaOrden.ToString()).PadRight(10);
             sku = "GTT-" + numeroOrden;
 
