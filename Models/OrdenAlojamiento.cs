@@ -39,6 +39,8 @@ namespace GoTravelTour.Models
         [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioOrden { get; set; }
 
+        public Sobreprecio Sobreprecio { get; set; }
+        public decimal ValorSobreprecioAplicado { get; set; }
 
     }
 }

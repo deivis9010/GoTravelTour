@@ -660,19 +660,23 @@ namespace GoTravelTour.Controllers
 
                             foreach (Sobreprecio s in sobreprecios)
                             {
+                               
                                 if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
                                 {
-                                   
+                                    ov.Sobreprecio = s;
+                                    decimal valorAplicado = 0;
                                         if (s.ValorDinero != null)
                                         {
-                                            ov.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento/100);
+                                            valorAplicado = (decimal)s.ValorDinero;
+                                            ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento/100);
                                         }
                                         else
                                         {
-                                            ov.PrecioOrden +=  ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento/100);
+                                            valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                            ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento/100);
                                         }
 
-                                    
+                                    ov.ValorSobreprecioAplicado = valorAplicado;
                                     break;
                                 }
 

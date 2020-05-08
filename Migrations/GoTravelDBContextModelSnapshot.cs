@@ -525,6 +525,10 @@ namespace GoTravelTour.Migrations
 
                     b.Property<DateTime>("FechaCreacion");
 
+                    b.Property<DateTime?>("FechaFin");
+
+                    b.Property<DateTime?>("FechaInicio");
+
                     b.Property<DateTime?>("FechaPeticion");
 
                     b.Property<bool>("HasVoucher");
@@ -592,7 +596,11 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("PremiteCopia");
 
+                    b.Property<int?>("SobreprecioId");
+
                     b.Property<string>("TelefonoReferencia");
+
+                    b.Property<decimal>("ValorSobreprecioAplicado");
 
                     b.Property<string>("VenueName");
 
@@ -605,6 +613,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("OrdenId");
 
                     b.HasIndex("PrecioActividadId");
+
+                    b.HasIndex("SobreprecioId");
 
                     b.ToTable("OrdenActividad");
                 });
@@ -654,7 +664,11 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("PremiteCopia");
 
+                    b.Property<int?>("SobreprecioId");
+
                     b.Property<string>("TelefonoReferencia");
+
+                    b.Property<decimal>("ValorSobreprecioAplicado");
 
                     b.Property<string>("VenueName");
 
@@ -673,6 +687,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("PlanesAlimenticiosId");
 
                     b.HasIndex("PrecioAlojamientoId");
+
+                    b.HasIndex("SobreprecioId");
 
                     b.ToTable("OrdenAlojamiento");
                 });
@@ -720,9 +736,13 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int?>("PuntoOrigenPuntoInteresId");
 
+                    b.Property<int?>("SobreprecioId");
+
                     b.Property<string>("TipoTraslado");
 
                     b.Property<int?>("TrasladoProductoId");
+
+                    b.Property<decimal>("ValorSobreprecioAplicado");
 
                     b.HasKey("OrdenTrasladoId");
 
@@ -737,6 +757,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("PuntoDestinoPuntoInteresId");
 
                     b.HasIndex("PuntoOrigenPuntoInteresId");
+
+                    b.HasIndex("SobreprecioId");
 
                     b.HasIndex("TrasladoProductoId");
 
@@ -772,6 +794,10 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("PremiteCopia");
 
+                    b.Property<int?>("SobreprecioId");
+
+                    b.Property<decimal>("ValorSobreprecioAplicado");
+
                     b.Property<int>("VehiculoId");
 
                     b.HasKey("OrdenVehiculoId");
@@ -785,6 +811,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("OrdenId");
 
                     b.HasIndex("PrecioRentaAutosId");
+
+                    b.HasIndex("SobreprecioId");
 
                     b.HasIndex("VehiculoId");
 
@@ -1836,6 +1864,10 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.PrecioActividad", "PrecioActividad")
                         .WithMany()
                         .HasForeignKey("PrecioActividadId");
+
+                    b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
+                        .WithMany()
+                        .HasForeignKey("SobreprecioId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenAlojamiento", b =>
@@ -1871,6 +1903,10 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.PrecioAlojamiento", "PrecioAlojamiento")
                         .WithMany()
                         .HasForeignKey("PrecioAlojamientoId");
+
+                    b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
+                        .WithMany()
+                        .HasForeignKey("SobreprecioId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>
@@ -1901,6 +1937,10 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("PuntoOrigenPuntoInteresId");
 
+                    b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
+                        .WithMany()
+                        .HasForeignKey("SobreprecioId");
+
                     b.HasOne("GoTravelTour.Models.Traslado", "Traslado")
                         .WithMany()
                         .HasForeignKey("TrasladoProductoId");
@@ -1929,6 +1969,10 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.PrecioRentaAutos", "PrecioRentaAutos")
                         .WithMany()
                         .HasForeignKey("PrecioRentaAutosId");
+
+                    b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
+                        .WithMany()
+                        .HasForeignKey("SobreprecioId");
 
                     b.HasOne("GoTravelTour.Models.Vehiculo", "Vehiculo")
                         .WithMany()

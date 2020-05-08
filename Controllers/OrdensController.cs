@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
 using GoTravelTour.Utiles;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -31,6 +31,8 @@ namespace GoTravelTour.Controllers
             if (col == "-1")
             {
                 lista = _context.Orden
+                    .Include(x=>x.Cliente)
+                    .Include(x=>x.Creador)
                     
                     .OrderBy(a => a.NombreOrden)
                     .ToList();
@@ -41,7 +43,8 @@ namespace GoTravelTour.Controllers
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Orden
-                    
+                    .Include(x => x.Cliente)
+                    .Include(x => x.Creador)
                     .OrderBy(a => a.NombreOrden)
                     .Where(p => (p.NombreOrden.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
 
@@ -49,7 +52,8 @@ namespace GoTravelTour.Controllers
             else
             {
                 lista = _context.Orden
-                    
+                    .Include(x => x.Cliente)
+                    .Include(x => x.Creador)
                     .OrderBy(a => a.NombreOrden)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
@@ -112,6 +116,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Ordens/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutOrden([FromRoute] int id, [FromBody] Orden orden)
         {
             if (!ModelState.IsValid)
@@ -126,7 +131,7 @@ namespace GoTravelTour.Controllers
 
             orden.Cliente = _context.Clientes.Single(x => x.ClienteId == orden.ClienteId);
             orden.Creador = _context.Usuarios.Single(x => x.UsuarioId == orden.Creador.UsuarioId);
-            orden.FechaCreacion = DateTime.Now;
+            orden.FechaActualizacion = DateTime.Now;
 
             List<OrdenVehiculo> veAborrar = _context.OrdenVehiculo.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach(var vo in veAborrar)
@@ -282,6 +287,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Ordens
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostOrden([FromBody] Orden orden)
         {
             if (!ModelState.IsValid)
@@ -407,6 +413,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Ordens/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteOrden([FromRoute] int id)
         {
             if (!ModelState.IsValid)

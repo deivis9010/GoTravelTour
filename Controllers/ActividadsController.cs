@@ -817,17 +817,20 @@ namespace GoTravelTour.Controllers
                              {
                                  if (s.PrecioDesde <= oac.PrecioOrden && oac.PrecioOrden <= s.PrecioHasta)
                                  {
-
+                                     oac.Sobreprecio = s;
+                                    decimal valorAplica = 0;
                                      if (s.ValorDinero != null)
                                      {
-                                        oac.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                        valorAplica = (decimal)s.ValorDinero;
+                                        oac.PrecioOrden += valorAplica  + ((decimal)s.ValorDinero * c.Descuento / 100);
                                      }
                                      else
                                      {
-                                oac.PrecioOrden += oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                      valorAplica = oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                       oac.PrecioOrden += valorAplica + (oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                      }
 
-
+                                     oac.ValorSobreprecioAplicado = valorAplica;
                                      break;
                                  }
 

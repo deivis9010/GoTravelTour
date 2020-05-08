@@ -713,7 +713,9 @@ namespace GoTravelTour.Controllers
                         int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
                         int cantDias = 0; // auxilar para rangos
                         int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
-                                                              //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                        ov.FechaRecogida = buscador.FechaRecogida;
+                        ov.FechaEntrega = buscador.FechaEntrega;
+                        //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
                         List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderByDescending(x => x.Maximo).ToList();
                         bool agregarOrden = true;
                         try
@@ -760,15 +762,19 @@ namespace GoTravelTour.Controllers
                         {
                             if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
                             {
+                                ov.Sobreprecio = s;
+                                decimal valorAplicado = 0;
                                 if (s.PagoPorDia)
                                 {
                                     if (s.ValorDinero != null)
                                     {
-                                        ov.PrecioOrden += cantDiasGenenarl * (decimal)s.ValorDinero  + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                        valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
+                                        ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
                                     }
                                     else
                                     {
-                                        ov.PrecioOrden += cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                        valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                     }
 
                                 }
@@ -777,14 +783,17 @@ namespace GoTravelTour.Controllers
 
                                     if (s.ValorDinero != null)
                                     {
-                                        ov.PrecioOrden += (decimal)s.ValorDinero + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                        valorAplicado = (decimal)s.ValorDinero;
+                                        ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
                                     }
                                     else
                                     {
-                                        ov.PrecioOrden += ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                        valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                     }
 
                                 }
+                                ov.ValorSobreprecioAplicado = valorAplicado;
                                 break;
                             }
 

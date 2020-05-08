@@ -21,6 +21,8 @@ namespace GoTravelTour.Models
         public string IntercomConferceNumber { get; set; }
         public Cliente Cliente { get; set; } // hay q tener en cuenta el descuento 
         public Usuario Creador { get; set; }
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaPeticion { get; set; }
         public DateTime? FechaActualizacion { get; set; }
