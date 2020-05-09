@@ -677,7 +677,7 @@ namespace GoTravelTour.Controllers
 
             Actividad a = _context.Actividadess.Single(x => x.ProductoId == al.ProductoId);
             if (al.IsActivo)
-                if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) ||
+                if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) &&
                     !_context.RestriccionesPrecios.Any(x => x.ProductoId == a.ProductoId))
                 {
 

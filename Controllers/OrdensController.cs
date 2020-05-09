@@ -33,7 +33,11 @@ namespace GoTravelTour.Controllers
                 lista = _context.Orden
                     .Include(x=>x.Cliente)
                     .Include(x=>x.Creador)
-                    
+                    .Include(x=>x.ListaActividadOrden)
+                    .Include(x=>x.ListaAlojamientoOrden)
+                    .Include(x => x.ListaTrasladoOrden)
+                    .Include(x => x.ListaVehiculosOrden)
+
                     .OrderBy(a => a.NombreOrden)
                     .ToList();
                                
@@ -45,6 +49,10 @@ namespace GoTravelTour.Controllers
                 lista = _context.Orden
                     .Include(x => x.Cliente)
                     .Include(x => x.Creador)
+                    .Include(x => x.ListaActividadOrden)
+                    .Include(x => x.ListaAlojamientoOrden)
+                    .Include(x => x.ListaTrasladoOrden)
+                    .Include(x => x.ListaVehiculosOrden)
                     .OrderBy(a => a.NombreOrden)
                     .Where(p => (p.NombreOrden.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
 
@@ -54,6 +62,10 @@ namespace GoTravelTour.Controllers
                 lista = _context.Orden
                     .Include(x => x.Cliente)
                     .Include(x => x.Creador)
+                    .Include(x => x.ListaActividadOrden)
+                    .Include(x => x.ListaAlojamientoOrden)
+                    .Include(x => x.ListaTrasladoOrden)
+                    .Include(x => x.ListaVehiculosOrden)
                     .OrderBy(a => a.NombreOrden)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
