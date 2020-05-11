@@ -33,6 +33,7 @@ namespace GoTravelTour.Controllers
                     //.Include(a => a.ListaComodidades)
                     //.Include(a => a.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
+                     .Include(a => a.PuntoInteres)
                     //.Include(a => a.TipoProducto)                    
                     //.Include(a => a.Region)
                     .Where(x => x.ProveedorId == idProveedor)
@@ -55,6 +56,7 @@ namespace GoTravelTour.Controllers
                     //.Include(a => a.ListaComodidades)
                     // .Include(v => v.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
+                    .Include(a => a.PuntoInteres)
                     //.Include(a => a.TipoProducto)                    
                     // .Include(a => a.Region)
                     .OrderBy(a => a.Nombre)
@@ -68,6 +70,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.Proveedor)
                     //.Include(a => a.TipoProducto)                   
                     //.Include(a => a.Region)
+                    .Include(a => a.PuntoInteres)
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
@@ -782,7 +785,7 @@ namespace GoTravelTour.Controllers
             foreach (var ac in actividades)
              {
                 Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
-                                                                                                     //Se buscan los precios correspondientes de las actividades
+                //Se buscan los precios correspondientes de las actividades
                 List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
                         .Include(x => x.Temporada.Contrato.Distribuidor)
                         .Where(x => x.ProductoId == ac.ProductoId ).ToList();

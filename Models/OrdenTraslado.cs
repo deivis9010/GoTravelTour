@@ -13,6 +13,8 @@ namespace GoTravelTour.Models
         public int? CantNino { get; set; }
         public int? CantInfante { get; set; }
         public DateTime FechaRecogida { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaFin { get; set; }
         public string NumeroConfirmacion { get; set; }
         public string InformacionLlegada { get; set; }
         public string NombreCliente { get; set; }

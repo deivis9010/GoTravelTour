@@ -37,6 +37,7 @@ namespace GoTravelTour.Controllers
                     .Include(x=>x.ListaAlojamientoOrden)
                     .Include(x => x.ListaTrasladoOrden)
                     .Include(x => x.ListaVehiculosOrden)
+                    
 
                     .OrderBy(a => a.NombreOrden)
                     .ToList();
@@ -178,8 +179,8 @@ namespace GoTravelTour.Controllers
                         vo.LugarRecogida = _context.PuntosInteres
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
-                                            
-    
+
+                    vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
                     _context.OrdenVehiculo.Add(vo);
 
                 }
@@ -212,6 +213,7 @@ namespace GoTravelTour.Controllers
                     to.PuntoDestino = _context.PuntosInteres
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == to.PuntoDestino.PuntoInteresId);
+                    to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
 
                     _context.OrdenTraslado.Add(to);
 
@@ -239,6 +241,22 @@ namespace GoTravelTour.Controllers
                         .Single(x => x.ProductoId == oac.Actividad.ProductoId);
                     oac.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == oac.DistribuidorId);
+
+                    if (oac.LugarActividad != null)
+                        oac.LugarActividad = _context.PuntosInteres
+                                          .Include(x => x.Region)
+                                                .Single(x => x.PuntoInteresId == oac.LugarActividad.PuntoInteresId);
+                    if (oac.LugarRecogida != null)
+                        oac.LugarRecogida = _context.PuntosInteres
+                                          .Include(x => x.Region)
+                                                .Single(x => x.PuntoInteresId == oac.LugarRecogida.PuntoInteresId);
+                    if (oac.LugarRetorno != null)
+                        oac.LugarRetorno = _context.PuntosInteres
+                                          .Include(x => x.Region)
+                                                .Single(x => x.PuntoInteresId == oac.LugarRetorno.PuntoInteresId);
+
+                    oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
+                    oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
 
                     _context.OrdenActividad.Add(oac);
                 }
@@ -271,7 +289,7 @@ namespace GoTravelTour.Controllers
                     oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
 
                     oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
-
+                    oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
                     _context.OrdenAlojamiento.Add(oal);
                 }
             }
@@ -339,6 +357,7 @@ namespace GoTravelTour.Controllers
                         vo.LugarRecogida = _context.PuntosInteres
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
+                    vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
 
                 }
             }
@@ -367,7 +386,7 @@ namespace GoTravelTour.Controllers
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == to.PuntoDestino.PuntoInteresId);
 
-
+                    to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
 
                 }
             }
@@ -388,7 +407,20 @@ namespace GoTravelTour.Controllers
                     oac.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == oac.DistribuidorId);
                     
+                    if(oac.LugarActividad != null)
+                    oac.LugarActividad = _context.PuntosInteres
+                                      .Include(x => x.Region)
+                                            .Single(x => x.PuntoInteresId == oac.LugarActividad.PuntoInteresId);
+                    if (oac.LugarRecogida != null)
+                        oac.LugarRecogida = _context.PuntosInteres
+                                          .Include(x => x.Region)
+                                                .Single(x => x.PuntoInteresId == oac.LugarRecogida.PuntoInteresId);
+                    if (oac.LugarRetorno != null)
+                        oac.LugarRetorno = _context.PuntosInteres
+                                          .Include(x => x.Region)
+                                                .Single(x => x.PuntoInteresId == oac.LugarRetorno.PuntoInteresId);
 
+                    oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
                 }
             }
 
@@ -412,8 +444,8 @@ namespace GoTravelTour.Controllers
                     oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
 
                     oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
-                  
 
+                    oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
                 }
             }
 
@@ -624,6 +656,46 @@ namespace GoTravelTour.Controllers
         {
             return _context.Orden.Where(x=>x.Estado== estado).Count();
         }
+
+
+
+        // Post: api/Ordens/Activar
+        [HttpPost]
+        [Route("Activar")]
+        public async Task<IActionResult> PostAcivarOrden([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+           
+            v.IsActive = ve.IsActive;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
+
+
 
     }
 }

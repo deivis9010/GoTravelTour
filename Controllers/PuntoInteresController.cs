@@ -193,5 +193,22 @@ namespace GoTravelTour.Controllers
         {
             return _context.PuntosInteres.Any(e => e.PuntoInteresId == id);
         }
+
+        // GET: api/Servicios/PuntosByRegion/5 obtiene dada una region sus puntos de interes
+        [Route("PuntosByRegion/{id}")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPuntosByRegion([FromRoute] int id)
+        {
+            List<PuntoInteres> lista = new List<PuntoInteres>();
+            lista = _context.PuntosInteres.Where(x => x.RegionId == id).ToList();
+
+
+            if (lista == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista);
+        }
     }
 }

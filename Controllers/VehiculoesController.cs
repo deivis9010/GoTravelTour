@@ -34,6 +34,7 @@ namespace GoTravelTour.Controllers
                     //.Include(v => v.Marca)
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
+                    .Include(a => a.PuntoInteres)
                    //  .Include(v => v.TipoProducto)
                    //  .Include(v => v.ListaDistribuidoresProducto)
                    .Where(x => x.ProveedorId == idProveedor)
@@ -52,6 +53,7 @@ namespace GoTravelTour.Controllers
                     //.Include(v => v.Marca)
                     .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
+                    .Include(a => a.PuntoInteres)
                     //  .Include(v => v.TipoProducto)
                     //.Include(v => v.ListaDistribuidoresProducto)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
@@ -66,6 +68,7 @@ namespace GoTravelTour.Controllers
                    // .Include(v => v.Marca)
                    .Include(v => v.Modelo)
                     .Include(v => v.Proveedor)
+                    .Include(a => a.PuntoInteres)
                     // .Include(v => v.TipoProducto)
                     //   .Include(v => v.ListaDistribuidoresProducto)
                     .ToPagedList(pageIndex, pageSize).ToList();

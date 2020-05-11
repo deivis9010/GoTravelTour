@@ -535,6 +535,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("IntercomConferceNumber");
 
+                    b.Property<bool>("IsActive");
+
                     b.Property<string>("NombreClienteFinal");
 
                     b.Property<string>("NombreOrden");

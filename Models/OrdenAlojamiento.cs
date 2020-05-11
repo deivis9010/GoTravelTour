@@ -9,6 +9,8 @@ namespace GoTravelTour.Models
     public class OrdenAlojamiento
     {
         public int OrdenAlojamientoId { set; get; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaFin { get; set; }
         public int? CantAdulto { get; set; }
         public int? CantNino { get; set; }
         public int? CantInfante { get; set; }

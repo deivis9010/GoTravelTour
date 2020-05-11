@@ -11,6 +11,8 @@ namespace GoTravelTour.Models
     {
         public int OrdenVehiculoId { get; set; }
         public string NumeroConfirmacion { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaFin { get; set; }
         public string NombreCliente { get; set; }
         public DateTime FechaRecogida { get; set; }
         public DateTime FechaEntrega { get; set; }

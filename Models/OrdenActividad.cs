@@ -10,6 +10,8 @@ namespace GoTravelTour.Models
     {
         public int OrdenActividadId { get; set; }
         public DateTime FechaActividad { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaFin { get; set; }
         public int? CantAdulto { get; set; }
         public int? CantNino { get; set; }
         public int? CantInfante { get; set; }
@@ -31,6 +33,9 @@ namespace GoTravelTour.Models
         public bool PremiteCopia { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioOrden { get; set; }
+        public PuntoInteres LugarActividad { get; set; }
+        public PuntoInteres LugarRecogida { get; set; }
+        public PuntoInteres LugarRetorno { get; set; }
 
         public Sobreprecio Sobreprecio { get; set; }
         public decimal ValorSobreprecioAplicado { get; set; }
