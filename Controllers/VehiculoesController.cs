@@ -133,6 +133,7 @@ namespace GoTravelTour.Controllers
                .Include(v => v.Modelo)
                .Include(v => v.Proveedor)
                .Include(v => v.TipoProducto)
+               .Include(a => a.PuntoInteres)
                .Include(v => v.ListaDistribuidoresProducto)
            .Single(x => x.ProductoId == id);
 

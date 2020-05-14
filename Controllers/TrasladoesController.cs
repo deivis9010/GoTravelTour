@@ -120,6 +120,7 @@ namespace GoTravelTour.Controllers
                .Include(x => x.TipoProducto)
                .Include(a => a.ListaComodidades)
                .Include(a => a.ListaDistribuidoresProducto)
+               .Include(a => a.PuntoInteres)
                .Include(a => a.TipoTransporte)
 
            .Single(x => x.ProductoId == id);
@@ -653,6 +654,7 @@ namespace GoTravelTour.Controllers
                             ov.PrecioTraslado = p;
                             ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
                             ov.Traslado = t;
+                            ov.FechaRecogida = buscador.Fecha;
                             ov.PuntoOrigen = buscador.Origen;
                             ov.PuntoDestino = buscador.Destino;
                             ov.PrecioOrden +=  p.Precio;

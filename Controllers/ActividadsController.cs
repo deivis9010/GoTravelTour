@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
 using GoTravelTour.Utiles;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoTravelTour.Controllers
 {
@@ -136,6 +137,7 @@ namespace GoTravelTour.Controllers
                     .Include(v => v.ListaDistribuidoresProducto)
                     .Include(a => a.Proveedor)
                     .Include(a => a.TipoProducto)
+                    .Include(a => a.PuntoInteres)
                     .Include(a => a.Region)
                     .Single(x => x.ProductoId == id);
 
@@ -151,6 +153,7 @@ namespace GoTravelTour.Controllers
 
         // PUT: api/Actividads/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutActividad([FromRoute] int id, [FromBody] Actividad actividad)
         {
             if (!ModelState.IsValid)
@@ -241,6 +244,7 @@ namespace GoTravelTour.Controllers
 
         // POST: api/Actividads
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostActividad([FromBody] Actividad actividad)
         {
             if (!ModelState.IsValid)
@@ -255,11 +259,19 @@ namespace GoTravelTour.Controllers
             actividad.SKU = u.GetSKUCodigo();
 
             actividad.Region = _context.Regiones.First(f => f.RegionId == actividad.Region.RegionId);
+            actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
             List<Servicio> temp = new List<Servicio>();
             temp = actividad.ServiciosAdicionados;
             actividad.ServiciosAdicionados = null;
             _context.Actividadess.Add(actividad);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                throw e;
+            }
+           
             if (temp != null && temp.Count() > 0)
             {
                 int i = 0;
@@ -281,6 +293,7 @@ namespace GoTravelTour.Controllers
 
         // DELETE: api/Actividads/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteActividad([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -780,7 +793,10 @@ namespace GoTravelTour.Controllers
                 actividades = actividades.Where(x => x.PermiteNino).ToList();
             }
 
-           actividades = actividades.Where(x => x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
+           var a= actividades[0].Schedule.Split(" ");
+           var b= actividades[0].Schedule.Split(" ").Any(d => d == diaSemana);
+
+            //actividades = actividades.Where(x => x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
 
             foreach (var ac in actividades)
              {

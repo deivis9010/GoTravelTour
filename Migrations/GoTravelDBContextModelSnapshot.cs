@@ -583,6 +583,16 @@ namespace GoTravelTour.Migrations
 
                     b.Property<DateTime>("FechaActividad");
 
+                    b.Property<DateTime>("FechaFin");
+
+                    b.Property<DateTime>("FechaInicio");
+
+                    b.Property<int?>("LugarActividadPuntoInteresId");
+
+                    b.Property<int?>("LugarRecogidaPuntoInteresId");
+
+                    b.Property<int?>("LugarRetornoPuntoInteresId");
+
                     b.Property<string>("NombreCliente");
 
                     b.Property<string>("NotasAdicionales");
@@ -611,6 +621,12 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("ActividadId");
 
                     b.HasIndex("DistribuidorId");
+
+                    b.HasIndex("LugarActividadPuntoInteresId");
+
+                    b.HasIndex("LugarRecogidaPuntoInteresId");
+
+                    b.HasIndex("LugarRetornoPuntoInteresId");
 
                     b.HasIndex("OrdenId");
 
@@ -646,6 +662,10 @@ namespace GoTravelTour.Migrations
                     b.Property<string>("DireccionReferencia");
 
                     b.Property<int>("DistribuidorId");
+
+                    b.Property<DateTime>("FechaFin");
+
+                    b.Property<DateTime>("FechaInicio");
 
                     b.Property<int?>("HabitacionId");
 
@@ -713,6 +733,10 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("DistribuidorId");
 
+                    b.Property<DateTime>("FechaFin");
+
+                    b.Property<DateTime>("FechaInicio");
+
                     b.Property<DateTime>("FechaRecogida");
 
                     b.Property<string>("InformacionLlegada");
@@ -776,6 +800,10 @@ namespace GoTravelTour.Migrations
                     b.Property<int>("DistribuidorId");
 
                     b.Property<DateTime>("FechaEntrega");
+
+                    b.Property<DateTime>("FechaFin");
+
+                    b.Property<DateTime>("FechaInicio");
 
                     b.Property<DateTime>("FechaRecogida");
 
@@ -1857,6 +1885,18 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("DistribuidorId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarActividad")
+                        .WithMany()
+                        .HasForeignKey("LugarActividadPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarRecogida")
+                        .WithMany()
+                        .HasForeignKey("LugarRecogidaPuntoInteresId");
+
+                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarRetorno")
+                        .WithMany()
+                        .HasForeignKey("LugarRetornoPuntoInteresId");
 
                     b.HasOne("GoTravelTour.Models.Orden", "Orden")
                         .WithMany("ListaActividadOrden")
