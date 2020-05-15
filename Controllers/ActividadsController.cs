@@ -729,7 +729,7 @@ namespace GoTravelTour.Controllers
         // POST: api/Actividads/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenActividad> GetOrdenActividades([FromBody] BuscadorActividad buscador, int pageIndex = 1, int pageSize = 1)
+        public List<OrdenActividad> GetOrdenActividades([FromBody] BuscadorActividad buscador, int pageIndex = 1, int pageSize = 10)
         {
 
 
@@ -785,18 +785,17 @@ namespace GoTravelTour.Controllers
 
             if (!string.IsNullOrEmpty(buscador.NombreActividad))
             {
-                actividades = actividades.Where(x => x.Nombre.Contains(buscador.NombreActividad)).ToList();
+                actividades = actividades.Where(x => x.Nombre.Contains(buscador.NombreActividad, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            if (buscador.CantidadMenores > 0)
+            if (buscador.CantidadMenores > 0 && actividades != null && actividades.Any())
             {
                 actividades = actividades.Where(x => x.PermiteNino).ToList();
             }
 
-           var a= actividades[0].Schedule.Split(" ");
-           var b= actividades[0].Schedule.Split(" ").Any(d => d == diaSemana);
-
-            //actividades = actividades.Where(x => x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
+          
+            if(actividades != null && actividades.Any())
+            actividades = actividades.Where(x => x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
 
             foreach (var ac in actividades)
              {
