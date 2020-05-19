@@ -45,13 +45,18 @@ namespace GoTravelTour.Controllers
                 foreach (var ord in lista)
                 {
                     if (ord.ListaActividadOrden != null && ord.ListaActividadOrden.Any())
-                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(d => d.Actividad).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad
+                        .Include(d => d.Actividad).ThenInclude(l => l.ListaDistribuidoresProducto)
+                        .Include(d => d.LugarActividad)
+                        .Include(d => d.LugarRecogida)
+                        .Include(d => d.LugarRetorno)
+                        .First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaAlojamientoOrden != null && ord.ListaAlojamientoOrden.Any())
-                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(d => d.Alojamiento).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(d => d.Alojamiento).ThenInclude(l=>l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaVehiculosOrden != null && ord.ListaVehiculosOrden.Any())
-                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(v => v.Vehiculo).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaTrasladoOrden != null && ord.ListaTrasladoOrden.Any())
-                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(d => d.Traslado).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                 }
 
                 return lista.ToPagedList(pageIndex, pageSize).ToList();
@@ -70,13 +75,16 @@ namespace GoTravelTour.Controllers
                 foreach (var ord in lista)
                 {
                     if (ord.ListaActividadOrden != null && ord.ListaActividadOrden.Any())
-                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(d => d.Actividad).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(d => d.Actividad).ThenInclude(l => l.ListaDistribuidoresProducto)
+                        .Include(d => d.LugarActividad)
+                        .Include(d => d.LugarRecogida)
+                        .Include(d => d.LugarRetorno).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaAlojamientoOrden != null && ord.ListaAlojamientoOrden.Any())
-                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(d => d.Alojamiento).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaVehiculosOrden != null && ord.ListaVehiculosOrden.Any())
-                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(v => v.Vehiculo).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaTrasladoOrden != null && ord.ListaTrasladoOrden.Any())
-                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(d => d.Traslado).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                 }
 
             }
@@ -94,13 +102,16 @@ namespace GoTravelTour.Controllers
                 foreach (var ord in lista)
                 {
                     if(ord.ListaActividadOrden!= null && ord.ListaActividadOrden.Any())
-                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(d=>d.Actividad).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(d=>d.Actividad).ThenInclude(l => l.ListaDistribuidoresProducto)
+                        .Include(d => d.LugarActividad)
+                        .Include(d => d.LugarRecogida)
+                        .Include(d => d.LugarRetorno).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaAlojamientoOrden != null && ord.ListaAlojamientoOrden.Any())
-                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(d => d.Alojamiento).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaVehiculosOrden != null && ord.ListaVehiculosOrden.Any())
-                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(v=>v.Vehiculo).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(v=>v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaTrasladoOrden != null && ord.ListaTrasladoOrden.Any())
-                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(d => d.Traslado).First(r => r.OrdenId == x.OrdenId));
+                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto).First(r => r.OrdenId == x.OrdenId));
                 }
 
             }
@@ -729,6 +740,42 @@ namespace GoTravelTour.Controllers
         }
 
 
+        // Post: api/Ordens/CambiarEstado
+        [HttpPost]
+        [Route("CambiarEstado")]
+        public async Task<IActionResult> PostCambiarEstadoOrden([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+
+            //TODO Validaciones
+            v.Estado = ve.Estado;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
 
     }
 }

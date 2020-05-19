@@ -11,6 +11,8 @@ namespace GoTravelTour.Utiles
         public Cliente Cliente { get; set; }
         public string NombreHotel { get; set; }
         public TipoAlojamiento TipoAlojamiento { get; set; }
+        public TipoHabitacion TipoHabitacion { get; set; }
+        public string NombreHabitacion { get; set; }
         public PuntoInteres Lugar { get; set; }
         public int CantidadAdultos { get; set; }
         public int CantidadMenores { get; set; }
