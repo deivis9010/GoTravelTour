@@ -27,8 +27,11 @@ namespace GoTravelTour.Utiles
         public static string INFANT = "Infant";
         public static string IMAGEN_LOC_MAIN = "main";
         public static string IMAGEN_LOC_GALLERY = "galery";
+        public static string MODFICADOR_TIPOPERSONA_ADULTO = "Adult";
+        public static string MODFICADOR_TIPOPERSONA_NINO = "Child";
+        public static string MODFICADOR_TIPOPERSONA_INFANTE = "Infant";
 
 
-                       
+
     }
 }

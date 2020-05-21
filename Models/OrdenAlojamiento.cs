@@ -30,6 +30,7 @@ namespace GoTravelTour.Models
         public PrecioAlojamiento PrecioAlojamiento { get; set; }
        
         public Habitacion Habitacion { get; set; }
+        public TipoHabitacion TipoHabitacion { get; set; }
         public int DistribuidorId { get; set; }
         public Distribuidor Distribuidor { get; set; }
         public int PlanesAlimenticiosId { get; set; }
