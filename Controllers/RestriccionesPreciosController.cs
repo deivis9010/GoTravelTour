@@ -92,7 +92,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            restriccionesPrecio.Restricciones = _context.Restricciones.Include(r => r.Temporada).First(s => s.RestriccionesId == restriccionesPrecio.RestriccionesId);  
             _context.RestriccionesPrecios.Add(restriccionesPrecio);
             await _context.SaveChangesAsync();
 

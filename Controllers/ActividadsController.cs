@@ -795,7 +795,7 @@ namespace GoTravelTour.Controllers
 
           
             if(actividades != null && actividades.Any())
-            actividades = actividades.Where(x => x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
+            actividades = actividades.Where(x => !string.IsNullOrEmpty(x.Schedule) && x.Schedule.Split(" ").Any(d=>d == diaSemana)).ToList();
 
             foreach (var ac in actividades)
              {
@@ -822,7 +822,9 @@ namespace GoTravelTour.Controllers
                             ac.ServiciosAdicionados = _context.Servicio.Where(x => x.ProductoId == ac.ProductoId).ToList();
                             foreach (var serv in ac.ServiciosAdicionados)
                             {
-                              PrecioServicio ps = _context.PrecioServicio.Single(x => x.ServicioId == serv.ServicioId && x.Temporada.TemporadaId == p.Temporada.TemporadaId);
+                              PrecioServicio ps = _context.PrecioServicio.Single(x => x.ServicioId == serv.ServicioId 
+                              && x.Temporada.TemporadaId == p.Temporada.TemporadaId
+                              && x.Servicio.ProductoId == ac.ProductoId);
                               oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino);
                             }
 

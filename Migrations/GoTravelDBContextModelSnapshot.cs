@@ -690,6 +690,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("TelefonoReferencia");
 
+                    b.Property<int?>("TipoHabitacionId");
+
                     b.Property<decimal>("ValorSobreprecioAplicado");
 
                     b.Property<string>("VenueName");
@@ -711,6 +713,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("PrecioAlojamientoId");
 
                     b.HasIndex("SobreprecioId");
+
+                    b.HasIndex("TipoHabitacionId");
 
                     b.ToTable("OrdenAlojamiento");
                 });
@@ -1949,6 +1953,10 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
                         .WithMany()
                         .HasForeignKey("SobreprecioId");
+
+                    b.HasOne("GoTravelTour.Models.TipoHabitacion", "TipoHabitacion")
+                        .WithMany()
+                        .HasForeignKey("TipoHabitacionId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>

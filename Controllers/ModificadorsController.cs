@@ -169,7 +169,7 @@ namespace GoTravelTour.Controllers
             modificador.Contrato = _context.Contratos
                .Include(x => x.Distribuidor)
                .Single(x => x.ContratoId == modificador.Contrato.ContratoId);
-            modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
+            modificador.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores.Include(x=>x.Producto)
                 .Where(b => b.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION && b.DistribuidorId == modificador.Contrato.Distribuidor.DistribuidorId)
                 .ToList();
 

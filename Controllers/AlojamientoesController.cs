@@ -821,7 +821,9 @@ namespace GoTravelTour.Controllers
                         }
 
                         //Se buscan los precios correspondientes 
-                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Where(x=>x.ProductoId==a.ProductoId).ToList();
+                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x=>x.Precio).Where(x=>x.ProductoId==a.ProductoId).ToList();
+
+                        ov.PrecioOrden += preciosPlanesAlimen.First().Precio;
 
                         //Se aplica la ganancia correspondiente
                         List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.TRANSPORTATION).ToList();
@@ -835,12 +837,12 @@ namespace GoTravelTour.Controllers
                                     {
                                         if (s.ValorDinero != null)
                                         {
-                                            //valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
+                                            valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
                                             ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
                                         }
                                         else
                                         {
-                                            // valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                            valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
                                             ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                         }
 
