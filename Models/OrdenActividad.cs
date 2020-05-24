@@ -33,7 +33,7 @@ namespace GoTravelTour.Models
         public bool PremiteCopia { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioOrden { get; set; }
-        public PuntoInteres LugarActividad { get; set; }
+        public Region LugarActividad { get; set; }
         public PuntoInteres LugarRecogida { get; set; }
         public PuntoInteres LugarRetorno { get; set; }
 

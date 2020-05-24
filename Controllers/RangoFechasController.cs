@@ -224,10 +224,21 @@ namespace GoTravelTour.Controllers
                 List<RangoFechas> rangos = _context.RangoFechas.Where(x=>x.TemporadaId == item.TemporadaId).ToList();
                 foreach (var rf in rangos)
                 {
-                    if (rf.FechaInicio <= newRango.FechaInicio && newRango.FechaInicio <= rf.FechaFin ||
-                       rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin)
+                    if(newRango.Producto != null) // Si esto es distinto de null significa q estoy trabajando con una temporada de hoteles
                     {
-                        return false;
+                        if ((rf.FechaInicio <= newRango.FechaInicio && newRango.FechaInicio <= rf.FechaFin ||
+                      rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin) && rf.Producto.ProductoId == newRango.Producto.ProductoId)
+                        {
+                            return false;
+                        }
+                    }                   
+                    else
+                    {
+                        if ((rf.FechaInicio <= newRango.FechaInicio && newRango.FechaInicio <= rf.FechaFin ||
+                       rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin) )
+                        {
+                            return false;
+                        }
                     }
                 }
 

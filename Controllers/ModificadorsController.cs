@@ -291,17 +291,34 @@ namespace GoTravelTour.Controllers
             if (idContrato == -1 && idDistribuidor == -1)
             {
 
-                lista = _context.Modificadores
+                if(idProveedor != 0)
+                {
+                    lista = _context.Modificadores
                 .Include(a => a.Contrato)
                 .Include(a => a.Contrato.Distribuidor)
                 .Include(a => a.Contrato.Temporadas)
                 .Include(a => a.ListaHoteles)
-               
+
+                .Include(a => a.Proveedor)
+                .Include(a => a.ListaTemporadasAfectadas)
+                .Where(x=>x.Proveedor.ProveedorId == idProveedor)
+                .OrderBy(a => a.IdentificadorModificador)
+                .ToList();
+                }
+                else
+                {
+                    lista = _context.Modificadores
+                .Include(a => a.Contrato)
+                .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.Temporadas)
+                .Include(a => a.ListaHoteles)
+
                 .Include(a => a.Proveedor)
                 .Include(a => a.ListaTemporadasAfectadas)
 
                 .OrderBy(a => a.IdentificadorModificador)
                 .ToList();
+                }
 
                 foreach( Modificador modificador in lista)
                 {
@@ -332,6 +349,21 @@ namespace GoTravelTour.Controllers
               if (idContrato != -1 && idDistribuidor != -1)
             {
 
+                if(idProveedor != 0)
+                {
+                    lista = _context.Modificadores
+               .Include(a => a.Contrato)
+               .Include(a => a.Contrato.Distribuidor)
+               .Include(a => a.Contrato.Temporadas)
+               .Include(a => a.ListaHoteles)
+               .Include(a => a.Proveedor)
+               .Include(a => a.ListaTemporadasAfectadas)
+               .Where(a => a.Contrato.ContratoId == idContrato && a.Contrato.Distribuidor.DistribuidorId == idDistribuidor 
+               && a.Proveedor.ProveedorId == idProveedor)
+               .OrderBy(a => a.IdentificadorModificador)
+               .ToList();
+                }
+                else
                 lista = _context.Modificadores
                .Include(a => a.Contrato)
                .Include(a => a.Contrato.Distribuidor)
@@ -365,6 +397,21 @@ namespace GoTravelTour.Controllers
             else
               if (idContrato != -1 && idDistribuidor == -1)
             {
+                if(idProveedor != 0)
+                {
+                    lista = _context.Modificadores
+                .Include(a => a.Contrato)
+                 .Include(a => a.Contrato.Distribuidor)
+                .Include(a => a.Contrato.Temporadas)
+                .Include(a => a.ListaHoteles)
+
+                .Include(a => a.Proveedor)
+                 .Include(a => a.ListaTemporadasAfectadas)
+
+                 .Where(a => a.Contrato.ContratoId == idContrato && a.Proveedor.ProveedorId == idProveedor)
+                .OrderBy(a => a.IdentificadorModificador)
+                .ToList();
+                }else
                 lista = _context.Modificadores
                 .Include(a => a.Contrato)
                  .Include(a => a.Contrato.Distribuidor)
@@ -402,6 +449,21 @@ namespace GoTravelTour.Controllers
             else
               if (idContrato == -1 && idDistribuidor != -1)
             {
+                if(idProveedor != 0)
+                {
+                    lista = _context.Modificadores
+               .Include(a => a.Contrato)
+               .Include(a => a.Contrato.Distribuidor)
+              .Include(a => a.Contrato.Temporadas)
+               .Include(a => a.ListaHoteles)
+
+               .Include(a => a.Proveedor)
+                .Include(a => a.ListaTemporadasAfectadas)
+                .Where(a => a.Contrato.DistribuidorId == idDistribuidor && idProveedor == a.Proveedor.ProveedorId)
+                .OrderBy(a => a.IdentificadorModificador)
+                .ToList();
+                }
+                else
                 lista = _context.Modificadores
                .Include(a => a.Contrato)
                .Include(a => a.Contrato.Distribuidor)

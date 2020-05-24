@@ -10,7 +10,7 @@ namespace GoTravelTour.Utiles
     {
         public Cliente Cliente { get; set; }        
         public string NombreActividad { get; set; }       
-        public PuntoInteres LugarActividad { get; set; }
+        public Region RegionActividad { get; set; }
         public int CantidadAdultos { get; set; }
         public int CantidadMenores { get; set; }
         public DateTime Fecha { get; set; }

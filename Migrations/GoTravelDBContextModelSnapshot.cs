@@ -587,7 +587,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<DateTime>("FechaInicio");
 
-                    b.Property<int?>("LugarActividadPuntoInteresId");
+                    b.Property<int?>("LugarActividadRegionId");
 
                     b.Property<int?>("LugarRecogidaPuntoInteresId");
 
@@ -622,7 +622,7 @@ namespace GoTravelTour.Migrations
 
                     b.HasIndex("DistribuidorId");
 
-                    b.HasIndex("LugarActividadPuntoInteresId");
+                    b.HasIndex("LugarActividadRegionId");
 
                     b.HasIndex("LugarRecogidaPuntoInteresId");
 
@@ -1890,9 +1890,9 @@ namespace GoTravelTour.Migrations
                         .HasForeignKey("DistribuidorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarActividad")
+                    b.HasOne("GoTravelTour.Models.Region", "LugarActividad")
                         .WithMany()
-                        .HasForeignKey("LugarActividadPuntoInteresId");
+                        .HasForeignKey("LugarActividadRegionId");
 
                     b.HasOne("GoTravelTour.Models.PuntoInteres", "LugarRecogida")
                         .WithMany()

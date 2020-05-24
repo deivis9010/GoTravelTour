@@ -259,7 +259,8 @@ namespace GoTravelTour.Controllers
             actividad.SKU = u.GetSKUCodigo();
 
             actividad.Region = _context.Regiones.First(f => f.RegionId == actividad.Region.RegionId);
-            actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
+            if (actividad.PuntoInteres != null)
+                actividad.PuntoInteres = _context.PuntosInteres.First(x => x.PuntoInteresId == actividad.PuntoInteres.PuntoInteresId);
             List<Servicio> temp = new List<Servicio>();
             temp = actividad.ServiciosAdicionados;
             actividad.ServiciosAdicionados = null;
@@ -779,7 +780,7 @@ namespace GoTravelTour.Controllers
 
             
             //Se buscan todos los alojamientos segun los parametros
-            List<Actividad> actividades = _context.Actividadess.Where(x => x.IsActivo && x.PuntoInteres.PuntoInteresId == buscador.LugarActividad.PuntoInteresId
+            List<Actividad> actividades = _context.Actividadess.Where(x => x.IsActivo && x.Region.RegionId == buscador.RegionActividad.RegionId
             && x.CantidadPersonas >= (buscador.CantidadAdultos + buscador.CantidadMenores)).ToList();
 
 

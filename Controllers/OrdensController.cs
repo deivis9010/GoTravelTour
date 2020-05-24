@@ -315,9 +315,9 @@ namespace GoTravelTour.Controllers
                                              .Single(x => x.DistribuidorId == oac.DistribuidorId);
 
                     if (oac.LugarActividad != null)
-                        oac.LugarActividad = _context.PuntosInteres
-                                          .Include(x => x.Region)
-                                                .Single(x => x.PuntoInteresId == oac.LugarActividad.PuntoInteresId);
+                        oac.LugarActividad = _context.Regiones
+                                          .Include(x => x.PuntosDeInteres)
+                                                .Single(x => x.RegionId == oac.LugarActividad.RegionId);
                     if (oac.LugarRecogida != null)
                         oac.LugarRecogida = _context.PuntosInteres
                                           .Include(x => x.Region)
@@ -482,9 +482,9 @@ namespace GoTravelTour.Controllers
                                              .Single(x => x.DistribuidorId == oac.DistribuidorId);
                     
                     if(oac.LugarActividad != null)
-                    oac.LugarActividad = _context.PuntosInteres
-                                      .Include(x => x.Region)
-                                            .Single(x => x.PuntoInteresId == oac.LugarActividad.PuntoInteresId);
+                    oac.LugarActividad = _context.Regiones
+                                          .Include(x => x.PuntosDeInteres)
+                                                .Single(x => x.RegionId == oac.LugarActividad.RegionId);
                     if (oac.LugarRecogida != null)
                         oac.LugarRecogida = _context.PuntosInteres
                                           .Include(x => x.Region)
