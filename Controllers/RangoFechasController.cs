@@ -221,7 +221,7 @@ namespace GoTravelTour.Controllers
 
             foreach (var item in cont.Temporadas)
             {
-                List<RangoFechas> rangos = _context.RangoFechas.Where(x=>x.TemporadaId == item.TemporadaId).ToList();
+                List<RangoFechas> rangos = _context.RangoFechas.Include(x=>x.Producto).Where(x=>x.TemporadaId == item.TemporadaId).ToList();
                 foreach (var rf in rangos)
                 {
                     if(newRango.Producto != null) // Si esto es distinto de null significa q estoy trabajando con una temporada de hoteles

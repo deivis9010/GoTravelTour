@@ -51,17 +51,24 @@ namespace GoTravelTour.Controllers
                         .Include(d => d.LugarActividad)
                         .Include(d => d.LugarRecogida)
                         .Include(d => d.LugarRetorno)
+                         .Include(d => d.Sobreprecio)
                         .First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaAlojamientoOrden != null && ord.ListaAlojamientoOrden.Any())
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.PrecioAlojamiento)
-                        .Include(d => d.Alojamiento).ThenInclude(l=>l.ListaDistribuidoresProducto)
+                         .Include(d => d.Sobreprecio)
+                        .Include(d => d.Alojamiento).ThenInclude(l=>l.ListaDistribuidoresProducto)                        
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaVehiculosOrden != null && ord.ListaVehiculosOrden.Any())
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.PrecioRentaAutos)
+                         .Include(d => d.Sobreprecio)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
+                        
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                     if (ord.ListaTrasladoOrden != null && ord.ListaTrasladoOrden.Any())
                         ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(ex => ex.PrecioTraslado)
+                        .Include(d => d.PuntoDestino)
+                        .Include(d => d.PuntoOrigen)
+                        .Include(d => d.Sobreprecio)
                         .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                 }

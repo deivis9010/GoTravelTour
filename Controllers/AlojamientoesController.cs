@@ -663,11 +663,12 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
 
             Alojamiento a = _context.Alojamientos.Where(x => x.ProductoId == al.ProductoId).Single();
             if (al.IsActivo)
-                if (!_context.PrecioActividad.Any(x => x.ProductoId == a.ProductoId) ||
-                    !_context.RestriccionesPrecios.Any(x => x.ProductoId == a.ProductoId))
+                if (!_context.PrecioAlojamiento.Any(x => x.ProductoId == a.ProductoId) ||
+                    !_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == a.ProductoId))
                 {
 
                     return CreatedAtAction("ActivarAlojamiento", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
@@ -735,7 +736,7 @@ namespace GoTravelTour.Controllers
 
             if (buscador.TipoAlojamiento != null && alojamientos != null && alojamientos.Any())
             {
-                alojamientos = alojamientos.Where(x => x.TipoAlojamiento.TipoAlojamientoId == buscador.TipoAlojamiento.TipoAlojamientoId).ToList();
+                alojamientos = alojamientos.Where(x => x.TipoAlojamientoId == buscador.TipoAlojamiento.TipoAlojamientoId).ToList();
             }
 
 
@@ -746,6 +747,8 @@ namespace GoTravelTour.Controllers
                 //Se buscan los precios correspondientes 
                 List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada)
                 .Include(x => x.Temporada.Contrato.Distribuidor)
+                .Include(x => x.Habitacion)
+                .Include(x => x.TipoHabitacion)
                 .Where(x => x.ProductoId == a.ProductoId ).ToList();
                 //Se filtra si se pasaron los tipos o nombre de la habitacion
                 if (!string.IsNullOrEmpty(buscador.NombreHabitacion) && precios.Any())
@@ -755,7 +758,7 @@ namespace GoTravelTour.Controllers
 
                 if (buscador.TipoHabitacion != null && precios.Any())
                 {
-                    precios = precios.Where(x => x.Habitacion.ListaTiposHabitaciones.Any(d => d.TipoHabitacionId == buscador.TipoHabitacion.TipoHabitacionId)).ToList();
+                    precios = precios.Where(x => x.TipoHabitacion.TipoHabitacionId == buscador.TipoHabitacion.TipoHabitacionId).ToList();
                 }
 
 
