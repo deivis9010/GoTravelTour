@@ -393,7 +393,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(orden);
         }
 
         // POST: api/Ordens
@@ -438,7 +438,8 @@ namespace GoTravelTour.Controllers
                         vo.LugarRecogida = _context.PuntosInteres
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == vo.LugarRecogida.PuntoInteresId);
-                    vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
+                    if (vo.Sobreprecio != null)
+                        vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
 
                 }
             }
@@ -467,7 +468,8 @@ namespace GoTravelTour.Controllers
                                              .Include(x => x.Region)
                                              .Single(x => x.PuntoInteresId == to.PuntoDestino.PuntoInteresId);
 
-                    to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
+                    if (to.Sobreprecio != null)
+                        to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
 
                 }
             }
@@ -501,7 +503,8 @@ namespace GoTravelTour.Controllers
                                           .Include(x => x.Region)
                                                 .Single(x => x.PuntoInteresId == oac.LugarRetorno.PuntoInteresId);
 
-                    oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
+                    if (oac.Sobreprecio != null)
+                        oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
                 }
             }
 
@@ -526,7 +529,8 @@ namespace GoTravelTour.Controllers
 
                     oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
 
-                    oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
+                    if (oal.Sobreprecio != null)
+                        oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
                 }
             }
 
