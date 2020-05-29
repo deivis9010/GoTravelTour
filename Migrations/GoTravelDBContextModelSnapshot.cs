@@ -684,6 +684,8 @@ namespace GoTravelTour.Migrations
                     b.Property<decimal>("PrecioOrden")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<int?>("PrecioPlanesAlimenticiosId");
+
                     b.Property<bool>("PremiteCopia");
 
                     b.Property<int?>("SobreprecioId");
@@ -711,6 +713,8 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("PlanesAlimenticiosId");
 
                     b.HasIndex("PrecioAlojamientoId");
+
+                    b.HasIndex("PrecioPlanesAlimenticiosId");
 
                     b.HasIndex("SobreprecioId");
 
@@ -1949,6 +1953,10 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.PrecioAlojamiento", "PrecioAlojamiento")
                         .WithMany()
                         .HasForeignKey("PrecioAlojamientoId");
+
+                    b.HasOne("GoTravelTour.Models.PrecioPlanesAlimenticios", "PrecioPlanesAlimenticios")
+                        .WithMany()
+                        .HasForeignKey("PrecioPlanesAlimenticiosId");
 
                     b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
                         .WithMany()

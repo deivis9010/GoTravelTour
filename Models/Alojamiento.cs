@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,7 +32,8 @@ namespace GoTravelTour.Models
         public int TipoAlojamientoId { get; set; }
         public TipoAlojamiento TipoAlojamiento { get; set; }         
         public CategoriaHoteles CategoriaHoteles { get; set; }
-
+        [NotMapped]
+        public decimal PrecioInicial { get; set; }
 
 
     }

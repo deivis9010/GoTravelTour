@@ -8,16 +8,12 @@ namespace GoTravelTour.Utiles
 {
     public class BuscadorAlojamiento
     {
-        public Cliente Cliente { get; set; }
+       
         public string NombreHotel { get; set; }
         public TipoAlojamiento TipoAlojamiento { get; set; }
-        public TipoHabitacion TipoHabitacion { get; set; }
-        public string NombreHabitacion { get; set; }
-        public PuntoInteres Lugar { get; set; }
-        public int CantidadAdultos { get; set; }
-        public int CantidadMenores { get; set; }
-        public int CantidadInfantes { get; set; }
-        public int CantidadHabitaciones { get; set; }
+        public Region Region { get; set; }
+       // public string NombreHabitacion { get; set; }       
+        public bool OrdenarAsc { get; set; }
         public int CantidadEstrellas { get; set; }
         public bool IsPasaDia { get; set; }
         public int CantidadNoches { get; set; }

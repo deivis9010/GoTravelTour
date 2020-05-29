@@ -106,6 +106,8 @@
     <Compile Remove="Migrations\20200501143211_comprobando.Designer.cs" />
     <Compile Remove="Migrations\20200501143528_comprobando.cs" />
     <Compile Remove="Migrations\20200501143528_comprobando.Designer.cs" />
+    <Compile Remove="Migrations\20200529013242_agregandoPrecioPlanAlimetiocAOrden.cs" />
+    <Compile Remove="Migrations\20200529013242_agregandoPrecioPlanAlimetiocAOrden.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
