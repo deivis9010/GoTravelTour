@@ -13,13 +13,14 @@ namespace GoTravelTour.Utiles
     {
         public Cliente Cliente { get; set; }
         public PlanesAlimenticios PlanAlimenticio { get; set; }
+        public Alojamiento Alojamiento { get; set; }
 
         public TipoHabitacion TipoHabitacion { get; set; }
         public int CantidadAdultos { get; set; }
         public int CantidadMenores { get; set; }
         public int CantidadInfantes { get; set; }
         public int CantidadHabitaciones { get; set; }
-        public int CantidadNoches { get; set; }
+      
         public DateTime Entrada { get; set; }
         public DateTime Salida { get; set; }
     }
