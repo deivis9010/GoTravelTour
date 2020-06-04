@@ -183,5 +183,39 @@ namespace GoTravelTour.Models
         {
             return _context.OrdenTraslado.Any(e => e.OrdenTrasladoId == id);
         }
+
+        // Post: api/OrdenTrasladoes/UpdateSobreprecio
+        [HttpPost]
+        [Route("UpdateSobreprecio")]
+        public async Task<IActionResult> PostActualizarSobreprecioAplicado([FromBody] OrdenTraslado oa)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            OrdenTraslado a = _context.OrdenTraslado.Single(x => x.OrdenTrasladoId == oa.OrdenTrasladoId);
+
+            a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
+
+
+
+            _context.Entry(a).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrdenTraslado", new { id = a.OrdenTrasladoId }, a);
+        }
+
     }
 }

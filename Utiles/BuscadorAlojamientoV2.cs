@@ -20,7 +20,8 @@ namespace GoTravelTour.Utiles
         public int CantidadMenores { get; set; }
         public int CantidadInfantes { get; set; }
         public int CantidadHabitaciones { get; set; }
-      
+        public string NombreHabitacion { get; set; }        
+
         public DateTime Entrada { get; set; }
         public DateTime Salida { get; set; }
     }

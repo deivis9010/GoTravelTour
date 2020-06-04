@@ -667,7 +667,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
 
             Alojamiento a = _context.Alojamientos.Where(x => x.ProductoId == al.ProductoId).Single();
             if (al.IsActivo)
@@ -712,7 +712,7 @@ namespace GoTravelTour.Controllers
 
 
             //Se buscan todos los alojamientos segun los parametros
-            List<Alojamiento> alojamientos = _context.Alojamientos.Include(x=>x.PuntoInteres).Where(x => x.IsActivo && x.PuntoInteres.RegionId == buscador.Region.RegionId).ToList();
+            List<Alojamiento> alojamientos = _context.Alojamientos.Include(x => x.PuntoInteres).Where(x => x.IsActivo && x.PuntoInteres.RegionId == buscador.Region.RegionId).ToList();
 
             //Se filtra segun los parametros pasados
             if (!string.IsNullOrEmpty(buscador.NombreHotel))
@@ -720,7 +720,7 @@ namespace GoTravelTour.Controllers
                 alojamientos = alojamientos.Where(x => x.Nombre.Contains(buscador.NombreHotel, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-           
+
 
             if (buscador.CantidadEstrellas > 0 && alojamientos != null && alojamientos.Any())
             {
@@ -738,33 +738,31 @@ namespace GoTravelTour.Controllers
 
 
                 //Se buscan los precios correspondientes 
-                List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada)               
-               
-                .Where(x => x.ProductoId == a.ProductoId).ToList();
+                List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada)
+
+                .Where(x => x.ProductoId == a.ProductoId && x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) ||
+                   ((xx.FechaInicio <= buscador.Salida && buscador.Salida <= xx.FechaFin)))).ToList();
                 a.PrecioInicial = 0;
                 var i = 0;
                 foreach (var p in precios)
                 {
-                    
-                    if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
-                    ((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
+
+                    //   if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
+                    //   ((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
+                    //  {
+                    if (i == 0)
                     {
-                        if (i == 0)
-                        {
-                            i = 1;
-                            a.PrecioInicial = p.Precio;
-                            continue;
-                        }
-                       
-                            if (a.PrecioInicial >  p.Precio)
-                            {
-                                a.PrecioInicial = p.Precio;
-                            }
-                        
-
-                                             
-
+                        i = 1;
+                        a.PrecioInicial = p.Precio;
+                        continue;
                     }
+
+                    if (a.PrecioInicial > p.Precio)
+                    {
+                        a.PrecioInicial = p.Precio;
+                    }
+                    
+                    //     }
 
                 }
 
@@ -796,82 +794,88 @@ namespace GoTravelTour.Controllers
             //Se buscan todos los alojamientos segun los parametros
             Alojamiento alojamiento = _context.Alojamientos.First(x => x.ProductoId == buscador.Alojamiento.ProductoId);
 
-          
-
-                //Se buscan los precios correspondientes 
-                List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada)
-                .Include(x => x.Temporada.Contrato.Distribuidor)
-                .Include(x => x.Habitacion)
-                .Include(x => x.TipoHabitacion)
-                .Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
-                
-
-                if (buscador.TipoHabitacion != null && precios.Any())
-                {
-                    precios = precios.Where(x => x.TipoHabitacion.TipoHabitacionId == buscador.TipoHabitacion.TipoHabitacionId).ToList();
-                }
 
 
-                foreach (var p in precios)
-                {
-                    OrdenAlojamiento ov = new OrdenAlojamiento();
-                    if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
-                    ((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
+            //Se buscan los precios correspondientes 
+            List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada)
+            .Include(x => x.Temporada.Contrato.Distribuidor)
+            .Include(x => x.Habitacion)
+            .Include(x => x.TipoHabitacion)
+            .Where(x => x.ProductoId == alojamiento.ProductoId && x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) ||
+                ((xx.FechaInicio <= buscador.Salida && buscador.Salida <= xx.FechaFin)))).ToList();
+
+
+            if (buscador.TipoHabitacion != null && precios.Any())
+            {
+                precios = precios.Where(x => x.TipoHabitacion.TipoHabitacionId == buscador.TipoHabitacion.TipoHabitacionId).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(buscador.NombreHabitacion) && precios.Any())
+            {
+                precios = precios.Where(x => x.Habitacion.Nombre.Contains(buscador.NombreHabitacion, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+
+            foreach (var p in precios)
+            {
+                OrdenAlojamiento ov = new OrdenAlojamiento();
+                //if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
+                //((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
+                //{
+                    Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+
+                    ov.PrecioAlojamiento = p;
+                    ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                    ov.Alojamiento = alojamiento;
+                    ov.Checkin = buscador.Entrada;
+                    ov.Checkout = buscador.Salida;
+                    ov.FechaInicio = buscador.Entrada;
+                    ov.FechaFin = buscador.Salida;
+                    int cantDiasGenenarl = (buscador.Salida - buscador.Entrada).Days; //Cant. de dias a reservar
+                    int cantDias = 0; // auxilar para rangos
+
+                    //Variables para ir viendo que 
+                    int cantAdultosAux = buscador.CantidadAdultos;
+                    int cantNinoAux = buscador.CantidadMenores;
+                    int cantInfanteAux = buscador.CantidadInfantes;
+
+                    //Se buscan los modficadores de precio para el alojamineto
+                    List<Modificador> modificadores = GetModificadores(alojamiento, p);
+
+                    bool agregarOrden = true;
+                    try
                     {
-                        Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
 
-                        ov.PrecioAlojamiento = p;
-                        ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
-                        ov.Alojamiento = alojamiento;
-                        ov.Checkin = buscador.Entrada;
-                        ov.Checkout = buscador.Salida;
-                        ov.FechaInicio = buscador.Entrada;
-                        ov.FechaFin = buscador.Salida;
-                        int cantDiasGenenarl = (buscador.Salida - buscador.Entrada).Days; //Cant. de dias a reservar
-                        int cantDias = 0; // auxilar para rangos
-
-                        //Variables para ir viendo que 
-                        int cantAdultosAux = buscador.CantidadAdultos;
-                        int cantNinoAux = buscador.CantidadMenores;
-                        int cantInfanteAux = buscador.CantidadInfantes;
-
-                        //Se buscan los modficadores de precio para el alojamineto
-                        List<Modificador> modificadores = GetModificadores(alojamiento, p);
-
-                        bool agregarOrden = true;
-                        try
+                        switch (p.Temporada.Contrato.FormaCobro)// 2-por dia 1- PrimeraTemp 3-UltimaTemp                           
                         {
+                            case 2:
+                                {
+                                    Met_CalcularPrecioAlojamientoPorDia(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento);
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    Met_CalcularPrecioAlojamientoPrimeraTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento);
 
-                            switch (p.Temporada.Contrato.FormaCobro)// 1-por dia 2- PrimeraTemp 3-UltimaTemp                           
-                            {
-                                case 1:
-                                    {
-                                        Met_CalcularPrecioAlojamientoPorDia(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento);
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        Met_CalcularPrecioAlojamientoPrimeraTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento);
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    Met_CalcularPrecioAlojamientoPorSegundaTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento);
 
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        Met_CalcularPrecioAlojamientoPorSegundaTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento);
-
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        break;
-                                    }
-                            }
-
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
                         }
-                        catch(Exception e)
-                        {
-                            agregarOrden = false;
-                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        agregarOrden = false;
+                    }
 
 
                     List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == alojamiento.ProductoId &&
@@ -882,56 +886,56 @@ namespace GoTravelTour.Controllers
 
                     //Se aplica la ganancia correspondiente
                     List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.TRANSPORTATION).ToList();
-                        foreach (var s in sobreprecios)
+                    foreach (var s in sobreprecios)
+                    {
+                        if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
                         {
-                            if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
+                            ov.Sobreprecio = s;
+                            decimal valorAplicado = 0;
+                            if (s.PagoPorDia)
                             {
-                                ov.Sobreprecio = s;
-                                decimal valorAplicado = 0;
-                                if (s.PagoPorDia)
+                                if (s.ValorDinero != null)
                                 {
-                                    if (s.ValorDinero != null)
-                                    {
-                                        valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
-                                        ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
-                                    }
-                                    else
-                                    {
-                                        valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                        ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
-                                    }
-
+                                    valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
+                                    ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
                                 }
                                 else
                                 {
-
-                                    if (s.ValorDinero != null)
-                                    {
-                                        valorAplicado = (decimal)s.ValorDinero;
-                                        ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
-                                    }
-                                    else
-                                    {
-                                        valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                        ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
-                                    }
-
+                                    valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                    ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
                                 }
-                                ov.ValorSobreprecioAplicado = valorAplicado;
-                                break;
+
                             }
+                            else
+                            {
 
+                                if (s.ValorDinero != null)
+                                {
+                                    valorAplicado = (decimal)s.ValorDinero;
+                                    ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                }
+                                else
+                                {
+                                    valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                    ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                }
+
+                            }
+                            ov.ValorSobreprecioAplicado = valorAplicado;
+                            break;
                         }
-
-                       
-                        if(agregarOrden)
-                        lista.Add(ov);
 
                     }
 
-                }
 
-            
+                    if (agregarOrden)
+                        lista.Add(ov);
+
+               // }
+
+            }
+
+
             return lista.OrderByDescending(x => x.PrecioOrden).ToList();
 
         }
@@ -940,7 +944,7 @@ namespace GoTravelTour.Controllers
         {
             int i = 0;
 
-            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x=>x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
             //Recorro todas los rangos de fecha para ir calculando precio total
             while (i < listaRangos.Count)
             {
@@ -965,7 +969,7 @@ namespace GoTravelTour.Controllers
         {
             int i = 0;
 
-            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x=>x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
             //Recorro todas los rangos de fecha para ir calculando precio total
             while (i < listaRangos.Count)
             {
@@ -991,15 +995,15 @@ namespace GoTravelTour.Controllers
         {
             int i = 0;
 
-            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x=> x.Producto != null && x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto != null && x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
             decimal precioBase = p.Precio; // Precio base de la habitacion
             //Recorro todas los rangos de fecha para ir calculando precio total
             while (i < listaRangos.Count && cantDiasGenenarl > 0)
             {
                 RangoFechas rf = listaRangos[i];
                 Modificador md = new Modificador();// Se usara para saber si aplica la modificacion
-                
-                
+
+
                 if (rf.FechaInicio <= buscador.Entrada && buscador.Entrada <= rf.FechaFin &&
                   rf.FechaFin >= buscador.Salida && buscador.Salida >= rf.FechaInicio)
                 {
@@ -1015,7 +1019,7 @@ namespace GoTravelTour.Controllers
                     if (buscador.Entrada < rf.FechaInicio && rf.FechaFin < buscador.Salida)
                     {
                         //Si el rango esta incluido en el rango de entrada y salida la cantidad de dias sera la diferencia del rango de fecha
-                        cantDias = (rf.FechaFin - rf.FechaInicio).Days+ 1; 
+                        cantDias = (rf.FechaFin - rf.FechaInicio).Days + 1;
                         GetPrecioAlojamientoSegunModificadores(buscador, ov, cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         cantDiasGenenarl -= cantDias;
 
@@ -1179,7 +1183,7 @@ namespace GoTravelTour.Controllers
 
                     }
 
-                   
+
                     break;
                 }
             }
@@ -1193,10 +1197,10 @@ namespace GoTravelTour.Controllers
         {
             List<Modificador> res = new List<Modificador>();
             res = _context.Modificadores.Include(x => x.ListaReglas)
-                        .Where(x =>x.IsActivo && x.ListaHoteles.Any(e => e.ProductoId == a.ProductoId) &&
+                        .Where(x => x.IsActivo && x.ListaHoteles.Any(e => e.ProductoId == a.ProductoId) &&
                         x.ListaTemporadasAfectadas.Any(e => e.TemporadaId == p.Temporada.TemporadaId)).ToList();
 
-           
+
             return res;
         }
 
@@ -1206,7 +1210,7 @@ namespace GoTravelTour.Controllers
             List<Reglas> lista = new List<Reglas>();
             lista = mod.ListaReglas.Where(x => x.TipoHabitacionId == buscador.TipoHabitacion.TipoHabitacionId).ToList();
 
-            if(lista.Where(x=>x.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_ADULTO)).Count() == buscador.CantidadAdultos
+            if (lista.Where(x => x.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_ADULTO)).Count() == buscador.CantidadAdultos
               && lista.Where(x => x.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_NINO)).Count() == buscador.CantidadMenores
               && lista.Where(x => x.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_INFANTE)).Count() == buscador.CantidadInfantes)
             {
@@ -1217,6 +1221,6 @@ namespace GoTravelTour.Controllers
         }
 
 
-       
+
     }
 }
