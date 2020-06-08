@@ -27,7 +27,7 @@ namespace GoTravelTour.Models
         public DateTime Checkout { get; set; }
         public ConfiguracionVoucher ConfiguracionVoucher { set; get; }
         //Congiguracion elegida
-        public PrecioAlojamiento PrecioAlojamiento { get; set; }
+        public List<OrdenAlojamientoPrecioAlojamiento> ListaPrecioAlojamientos { get; set; }
        
         public Habitacion Habitacion { get; set; }
         public TipoHabitacion TipoHabitacion { get; set; }

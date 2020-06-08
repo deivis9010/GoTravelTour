@@ -196,7 +196,7 @@ namespace GoTravelTour.Models
             OrdenVehiculo a = _context.OrdenVehiculo.Single(x => x.OrdenVehiculoId == oa.OrdenVehiculoId);
 
             a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
-
+            a.PrecioOrden = oa.PrecioOrden;
 
 
             _context.Entry(a).State = EntityState.Modified;

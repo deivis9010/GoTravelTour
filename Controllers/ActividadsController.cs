@@ -780,7 +780,7 @@ namespace GoTravelTour.Controllers
 
             
             //Se buscan todos los alojamientos segun los parametros
-            List<Actividad> actividades = _context.Actividadess.Where(x => x.IsActivo && x.Region.RegionId == buscador.RegionActividad.RegionId
+            List<Actividad> actividades = _context.Actividadess.Include(d=>d.ListaDistribuidoresProducto).Where(x => x.IsActivo && x.Region.RegionId == buscador.RegionActividad.RegionId
             && x.CantidadPersonas >= (buscador.CantidadAdultos + buscador.CantidadMenores)).ToList();
 
 
@@ -801,35 +801,75 @@ namespace GoTravelTour.Controllers
             foreach (var ac in actividades)
              {
                 Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
-                //Se buscan los precios correspondientes de las actividades
-                List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
-                        .Include(x => x.Temporada.Contrato.Distribuidor)
-                        .Where(x => x.ProductoId == ac.ProductoId ).ToList();
-                     foreach (var p in precios)
-                     {
-                         OrdenActividad oac = new OrdenActividad();
-                         if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Fecha && buscador.Fecha <= x.FechaFin))) // si la fecha buscada esta en el rango de precios
-                         {
-                            
-                             oac.PrecioActividad = p;
-                             oac.Distribuidor = p.Temporada.Contrato.Distribuidor;
-                             oac.Actividad = ac;
-                             oac.CantAdulto = buscador.CantidadAdultos;
-                             oac.CantNino = buscador.CantidadMenores;
-                             oac.FechaActividad = buscador.Fecha;                             
-                             oac.PrecioOrden += p.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (p.PrecioNino);
+                OrdenActividad oac = new OrdenActividad();
+                oac.Actividad = ac;
+                oac.CantAdulto = buscador.CantidadAdultos;
+                oac.CantNino = buscador.CantidadMenores;
+                oac.FechaActividad = buscador.Fecha;
+
+                foreach (var dist in ac.ListaDistribuidoresProducto)
+                {
+                    //Se buscan los precios correspondientes de las actividades
+                    List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
+                            .Include(x => x.Temporada.Contrato.Distribuidor)
+                            .Where(x => x.ProductoId == ac.ProductoId && x.Temporada.Contrato.DistribuidorId== dist.DistribuidorId).ToList();
+                    foreach (var p in precios)
+                    {
+                        //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                        List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderByDescending(x => x.Maximo).ToList();
+                       
+                        if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Fecha && buscador.Fecha <= x.FechaFin))) // si la fecha buscada esta en el rango de precios
+                        {
+
+                            oac.PrecioActividad = p;
+                            oac.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                          
+                            oac.PrecioOrden += p.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (p.PrecioNino);
 
                             //busco si la actividad tiene servicios asociados
                             ac.ServiciosAdicionados = _context.Servicio.Where(x => x.ProductoId == ac.ProductoId).ToList();
                             foreach (var serv in ac.ServiciosAdicionados)
                             {
-                              PrecioServicio ps = _context.PrecioServicio.Single(x => x.ServicioId == serv.ServicioId 
-                              && x.Temporada.TemporadaId == p.Temporada.TemporadaId
-                              && x.Servicio.ProductoId == ac.ProductoId);
-                              oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino);
+                                PrecioServicio ps = _context.PrecioServicio.First(x => x.ServicioId == serv.ServicioId
+                                && x.Temporada.TemporadaId == p.Temporada.TemporadaId
+                                && x.Servicio.ProductoId == ac.ProductoId);
+                                oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino);
+
+                                RestriccionesPrecio rp = _context.RestriccionesPrecios.Include(r => r.Restricciones).First(x => x.ServicioId == serv.ServicioId &&
+                                x.Restricciones.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= x.Restricciones.Maximo);
+
+                                if (rp != null)
+                                {
+                                    oac.PrecioOrden += rp.Precio * buscador.CantidadAdultos;
+
+                                }
                             }
 
-                        
+
+
+                            Restricciones rt = new Restricciones();
+                            bool encontroRangoValido = false;
+                            foreach (var item in restricciones) // se evalua por restricciones el valor de la cantidad de dias
+                            {
+                                rt = item;
+                                if (item.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
+                                {
+                                    oac.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * buscador.CantidadAdultos;
+
+                                    encontroRangoValido = true;
+                                    break;
+                                }
+                            }
+                            if (!encontroRangoValido && rt.RestriccionesId > 0)
+                            {
+
+                                oac.PrecioOrden += buscador.CantidadAdultos * _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                            }
+                        }
+                    
+                
+
+
 
                         //Se aplica la ganancia correspondiente
                         List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY).ToList();

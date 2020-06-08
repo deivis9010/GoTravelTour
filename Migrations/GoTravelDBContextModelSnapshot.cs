@@ -679,8 +679,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("PlanesAlimenticiosId");
 
-                    b.Property<int?>("PrecioAlojamientoId");
-
                     b.Property<decimal>("PrecioOrden")
                         .HasColumnType("decimal(18,4)");
 
@@ -712,8 +710,6 @@ namespace GoTravelTour.Migrations
 
                     b.HasIndex("PlanesAlimenticiosId");
 
-                    b.HasIndex("PrecioAlojamientoId");
-
                     b.HasIndex("PrecioPlanesAlimenticiosId");
 
                     b.HasIndex("SobreprecioId");
@@ -721,6 +717,25 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("TipoHabitacionId");
 
                     b.ToTable("OrdenAlojamiento");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenAlojamientoPrecioAlojamiento", b =>
+                {
+                    b.Property<int>("OrdenAlojamientoPrecioAlojamientoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrdenAlojamientoId");
+
+                    b.Property<int?>("PrecioAlojamientoId");
+
+                    b.HasKey("OrdenAlojamientoPrecioAlojamientoId");
+
+                    b.HasIndex("OrdenAlojamientoId");
+
+                    b.HasIndex("PrecioAlojamientoId");
+
+                    b.ToTable("OrdenAlojamientoPrecioAlojamiento");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>
@@ -828,8 +843,6 @@ namespace GoTravelTour.Migrations
                     b.Property<decimal>("PrecioOrden")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("PrecioRentaAutosId");
-
                     b.Property<bool>("PremiteCopia");
 
                     b.Property<int?>("SobreprecioId");
@@ -848,13 +861,30 @@ namespace GoTravelTour.Migrations
 
                     b.HasIndex("OrdenId");
 
-                    b.HasIndex("PrecioRentaAutosId");
-
                     b.HasIndex("SobreprecioId");
 
                     b.HasIndex("VehiculoId");
 
                     b.ToTable("OrdenVehiculo");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenVehiculoPrecioRentaAuto", b =>
+                {
+                    b.Property<int>("OrdenVehiculoPrecioRentaAutoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrdenVehiculoId");
+
+                    b.Property<int?>("PrecioRentaAutosId");
+
+                    b.HasKey("OrdenVehiculoPrecioRentaAutoId");
+
+                    b.HasIndex("OrdenVehiculoId");
+
+                    b.HasIndex("PrecioRentaAutosId");
+
+                    b.ToTable("OrdenVehiculoPrecioRentaAuto");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Paquete", b =>
@@ -1950,10 +1980,6 @@ namespace GoTravelTour.Migrations
                         .HasForeignKey("PlanesAlimenticiosId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GoTravelTour.Models.PrecioAlojamiento", "PrecioAlojamiento")
-                        .WithMany()
-                        .HasForeignKey("PrecioAlojamientoId");
-
                     b.HasOne("GoTravelTour.Models.PrecioPlanesAlimenticios", "PrecioPlanesAlimenticios")
                         .WithMany()
                         .HasForeignKey("PrecioPlanesAlimenticiosId");
@@ -1965,6 +1991,17 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.TipoHabitacion", "TipoHabitacion")
                         .WithMany()
                         .HasForeignKey("TipoHabitacionId");
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenAlojamientoPrecioAlojamiento", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.OrdenAlojamiento", "OrdenAlojamiento")
+                        .WithMany("ListaPrecioAlojamientos")
+                        .HasForeignKey("OrdenAlojamientoId");
+
+                    b.HasOne("GoTravelTour.Models.PrecioAlojamiento", "PrecioAlojamiento")
+                        .WithMany()
+                        .HasForeignKey("PrecioAlojamientoId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>
@@ -2024,10 +2061,6 @@ namespace GoTravelTour.Migrations
                         .HasForeignKey("OrdenId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GoTravelTour.Models.PrecioRentaAutos", "PrecioRentaAutos")
-                        .WithMany()
-                        .HasForeignKey("PrecioRentaAutosId");
-
                     b.HasOne("GoTravelTour.Models.Sobreprecio", "Sobreprecio")
                         .WithMany()
                         .HasForeignKey("SobreprecioId");
@@ -2036,6 +2069,17 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("VehiculoId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GoTravelTour.Models.OrdenVehiculoPrecioRentaAuto", b =>
+                {
+                    b.HasOne("GoTravelTour.Models.OrdenVehiculo", "OrdenVehiculo")
+                        .WithMany("ListaPreciosRentaAutos")
+                        .HasForeignKey("OrdenVehiculoId");
+
+                    b.HasOne("GoTravelTour.Models.PrecioRentaAutos", "PrecioRentaAutos")
+                        .WithMany()
+                        .HasForeignKey("PrecioRentaAutosId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.PosibleCombinacion", b =>

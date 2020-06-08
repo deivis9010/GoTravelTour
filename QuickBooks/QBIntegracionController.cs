@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using QuickBooks.Helper;
+using QuickBooks.Models;
 
 namespace GoTravelTour.QuickBooks
 {
@@ -38,32 +40,28 @@ namespace GoTravelTour.QuickBooks
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-            //return Ok(authorizeUrl);
-            return Redirect("http://localhost:59649/api/QBIntegracion/Responses"+authorizeUrl );
-        }
-
-       /* private async Task GetAuthTokensAsync(string code, string realmId)
-        {
-            oAuth2Client = new OAuth2Client(OAuth2Keys.ClientId, OAuth2Keys.ClientSecret, OAuth2Keys.RedirectUrl, OAuth2Keys.Environment);
-            var tokenResponse = await oAuth2Client.GetBearerTokenAsync(code);
-            OAuth2Keys.RealmId = realmId;
-            Token token = _tokens.Token.FirstOrDefault(t => t.RealmId == realmId);
-            if (token == null)
-            {
-                _tokens.Add(new Token { RealmId = realmId, AccessToken = tokenResponse.AccessToken, RefreshToken = tokenResponse.RefreshToken });
-                await _tokens.SaveChangesAsync();
-            }
-        }*/
+            return Ok(authorizeUrl);
+            //return Redirect("http://localhost:59649/api/QBIntegracion/Responses?code=AB11591303021AJsCwlhzsEKJUzT8YBRUnp8iYa4XSxVJGUJbK&state=e21c508b4b82468f538739ed076ab51c7efcb31bcf07c063fcd4412f1250a15c&realmId=4620816365037572030" );
+        }        
+      
 
         [HttpGet]
         [Route("Responses")]
-        public ActionResult ApiCallService(/*string realmId, string code*/)
+        public async System.Threading.Tasks.Task<ActionResult> ApiCallService(string realmId, string code)
         {
+
+            var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
+
+            var access_token = tokenResponse.AccessToken;
+            var access_token_expires_at = tokenResponse.AccessTokenExpiresIn;
+
+            var refresh_token = tokenResponse.RefreshToken;
+            var refresh_token_expires_at = tokenResponse.RefreshTokenExpiresIn;
+
            
-            //string token = auth2Client.GetBearerTokenAsync(code).Result.AccessToken;
-            string realmId = "";// Session["realmId"].ToString();
-            var principal = User as ClaimsPrincipal;
-            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(principal.FindFirst("access_token").Value);
+
+           // var principal = User as ClaimsPrincipal;
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(/*principal.FindFirst("access_token").Value*/access_token);
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
@@ -79,13 +77,19 @@ namespace GoTravelTour.QuickBooks
             return Ok( "ApiCallService" + " QBO API call Successful!! Response: " );
         }
 
-       /* public async Task<ActionResult> IndexCallback()
+        private async System.Threading.Tasks.Task GetAuthTokensAsync(string code, string realmId)
         {
-            string code = Request.QueryString["code"] ?? "none";
-            string realmId = Request.QueryString["realmId"] ?? "none";
-            await GetAuthTokensAsync(code, realmId);
+
+            var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
+
+            var access_token = tokenResponse.AccessToken;
+            var access_token_expires_at = tokenResponse.AccessTokenExpiresIn;
+
+            var refresh_token = tokenResponse.RefreshToken;
+            var refresh_token_expires_at = tokenResponse.RefreshTokenExpiresIn;
         }
-        */
+
+
 
         // GET: api/QBIntegracion
         [HttpGet]

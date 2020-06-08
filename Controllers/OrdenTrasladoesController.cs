@@ -197,6 +197,7 @@ namespace GoTravelTour.Models
             OrdenTraslado a = _context.OrdenTraslado.Single(x => x.OrdenTrasladoId == oa.OrdenTrasladoId);
 
             a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
+            a.PrecioOrden = oa.PrecioOrden;
 
 
 

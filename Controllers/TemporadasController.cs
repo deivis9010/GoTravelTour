@@ -227,7 +227,12 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x=>x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor && x.Producto.TipoProducto.Nombre== ValoresAuxiliares.ACCOMMODATION).ToList();
+
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
+
+
 
                     }
                 return lista;
@@ -253,6 +258,8 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x => x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -277,6 +284,8 @@ namespace GoTravelTour.Controllers
                         {
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                .Include(x=>x.Producto).Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -303,6 +312,8 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x => x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -328,6 +339,8 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x => x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId == idDistribuidor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -353,6 +366,8 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x => x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -378,6 +393,8 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x => x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.DistribuidorId==idDistribuidor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -403,6 +420,8 @@ namespace GoTravelTour.Controllers
                             temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                                 .Include(x => x.Producto)
                                 .Where(x => x.Producto.ProveedorId == idProveedor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                            temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                         }
                     }
                 return lista;
@@ -425,6 +444,8 @@ namespace GoTravelTour.Controllers
                         temp.Contrato.Distribuidor.ListaProductosDistribuidos = _context.ProductoDistribuidores
                             .Include(x => x.Producto)
                             .Where(x => x.Producto.ProveedorId == idProveedor && x.Producto.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
+                        temp.ListaFechasTemporada.ForEach(x => x = _context.RangoFechas.Include(r => r.Producto).First(r => r.RangoFechasId == x.RangoFechasId));
+
                     }
                 }
             return lista;

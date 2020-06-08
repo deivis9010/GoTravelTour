@@ -123,10 +123,11 @@ namespace GoTravelTour.Controllers
                 return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
             }
 
-            _context.Entry(restricciones).State = EntityState.Modified;
-
+           
+                _context.Entry(restricciones).State = EntityState.Modified;
             try
             {
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -140,6 +141,7 @@ namespace GoTravelTour.Controllers
                     throw;
                 }
             }
+         
 
             return NoContent();
         }
@@ -205,11 +207,12 @@ namespace GoTravelTour.Controllers
                 return false;
             }
             
-            List<Restricciones> rangos = _context.Restricciones.Where(x => x.Temporada.TemporadaId == newRango.Temporada.TemporadaId).ToList();
+            List<Restricciones> rangos = _context.Restricciones.Where(x => x.Temporada.TemporadaId == newRango.Temporada.TemporadaId).AsNoTracking().ToList();
             foreach (var r in rangos)
             {
-                if (r.Minimo <= newRango.Minimo && newRango.Minimo <= r.Maximo ||
-                    r.Minimo <= newRango.Maximo && newRango.Maximo <= r.Maximo)
+                if ((r.Minimo <= newRango.Minimo && newRango.Minimo <= r.Maximo ||
+                    r.Minimo <= newRango.Maximo && newRango.Maximo <= r.Maximo) && 
+                    r.RestriccionesId != newRango.RestriccionesId)
                 {
                     return false;
                 }

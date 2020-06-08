@@ -199,7 +199,7 @@ namespace GoTravelTour.Controllers
             OrdenAlojamiento a = _context.OrdenAlojamiento.Single(x => x.OrdenAlojamientoId == oa.OrdenAlojamientoId);
            
             a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
-
+            a.PrecioOrden = oa.PrecioOrden;
 
 
             _context.Entry(a).State = EntityState.Modified;
