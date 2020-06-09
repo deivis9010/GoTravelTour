@@ -13,6 +13,7 @@ namespace GoTravelTour.Utiles
         public Region RegionActividad { get; set; }
         public int CantidadAdultos { get; set; }
         public int CantidadMenores { get; set; }
+        public int CantidadInfantes { get; set; }
         public DateTime Fecha { get; set; }
     }
 }

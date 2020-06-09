@@ -736,7 +736,7 @@ namespace GoTravelTour.Controllers
 
             List<OrdenActividad> lista = new List<OrdenActividad>(); //Lista  a devolver (candidatos)
             string diaSemana = buscador.Fecha.DayOfWeek.ToString();
-
+            
             switch (diaSemana)
             {
                 case "Sunday":
@@ -824,47 +824,78 @@ namespace GoTravelTour.Controllers
                             oac.PrecioActividad = p;
                             oac.Distribuidor = p.Temporada.Contrato.Distribuidor;
                           
-                            oac.PrecioOrden += p.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (p.PrecioNino);
+                            if(ac.Modalidad.Equals(ValoresAuxiliares.GROUP_MODE_COLECTIVA))//Es colecctiva
+                            {
+                                oac.PrecioOrden += p.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (p.PrecioNino) + buscador.CantidadInfantes *  p.PrecioInfante;
+                            }                            
+                            else
+                            {
+                                Restricciones rt = new Restricciones();
+                                bool encontroRangoValido = false;
+                                foreach (var item in restricciones) // se evalua por restricciones el valor de la cantidad de dias
+                                {
+                                    rt = item;
+                                    if (item.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
+                                    {
+                                        oac.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio; //* buscador.CantidadAdultos;
+
+                                        encontroRangoValido = true;
+                                        break;
+                                    }
+                                }
+                                if (!encontroRangoValido && rt.RestriccionesId > 0)
+                                {
+
+                                    oac.PrecioOrden +=  _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;//buscador.CantidadAdultos *
+                                }
+                                oac.PrecioOrden +=  buscador.CantidadMenores * (p.PrecioNino) + buscador.CantidadInfantes * p.PrecioInfante;
+                            }
+
 
                             //busco si la actividad tiene servicios asociados
-                            ac.ServiciosAdicionados = _context.Servicio.Where(x => x.ProductoId == ac.ProductoId).ToList();
+                            ac.ServiciosAdicionados = _context.Servicio.Where(x => x.ProductoId == ac.ProductoId).ToList();                          
+
                             foreach (var serv in ac.ServiciosAdicionados)
                             {
+
                                 PrecioServicio ps = _context.PrecioServicio.First(x => x.ServicioId == serv.ServicioId
                                 && x.Temporada.TemporadaId == p.Temporada.TemporadaId
                                 && x.Servicio.ProductoId == ac.ProductoId);
-                                oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino);
+                              
+                               
 
-                                RestriccionesPrecio rp = _context.RestriccionesPrecios.Include(r => r.Restricciones).First(x => x.ServicioId == serv.ServicioId &&
-                                x.Restricciones.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= x.Restricciones.Maximo);
+                                    if (!serv.Categoria.Equals(ValoresAuxiliares.GROUP_MODE_COLECTIVA)) //Es Exclusivsa el servicio o sea se paga por restricciones
+                                    {
+                                        try
+                                        {
+                                            RestriccionesPrecio rp = _context.RestriccionesPrecios.Include(r => r.Restricciones).First(x => x.ServicioId == serv.ServicioId &&
+                                            x.Restricciones.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= x.Restricciones.Maximo);
+                                            if (rp != null)
+                                            {
+                                                oac.PrecioOrden += rp.Precio;
+                                            }
 
-                                if (rp != null)
-                                {
-                                    oac.PrecioOrden += rp.Precio * buscador.CantidadAdultos;
+                                        }
+                                        catch
+                                        {
+                                            RestriccionesPrecio rp = _context.RestriccionesPrecios.Include(r => r.Restricciones).Where(x => x.ServicioId == serv.ServicioId).OrderByDescending(x => x.Restricciones.Maximo).First();
+                                            oac.PrecioOrden += rp.Precio;
+                                        }
+                                        oac.PrecioOrden += buscador.CantidadMenores * (decimal)(ps.PrecioNino) + buscador.CantidadInfantes * (decimal)(ps.PrecioInfante);
 
-                                }
+                                    }
+                                    else
+                                    oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino) + buscador.CantidadInfantes * (decimal)(ps.PrecioInfante);
+                                    
+
+                               
+
+                               
                             }
 
 
 
-                            Restricciones rt = new Restricciones();
-                            bool encontroRangoValido = false;
-                            foreach (var item in restricciones) // se evalua por restricciones el valor de la cantidad de dias
-                            {
-                                rt = item;
-                                if (item.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
-                                {
-                                    oac.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * buscador.CantidadAdultos;
-
-                                    encontroRangoValido = true;
-                                    break;
-                                }
-                            }
-                            if (!encontroRangoValido && rt.RestriccionesId > 0)
-                            {
-
-                                oac.PrecioOrden += buscador.CantidadAdultos * _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                            }
+                            
                         }
                     
                 
