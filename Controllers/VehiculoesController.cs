@@ -720,15 +720,15 @@ namespace GoTravelTour.Controllers
                         continue;
                     foreach (var p in precios)
                     {
-                        ultimoPrecio = p;
+                      
                         ov.ListaPreciosRentaAutos = new List<OrdenVehiculoPrecioRentaAuto>();
                         if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
                          (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
                         {
-                            
-                           
+                            ultimoPrecio = p;
+
                             //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
-                            List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderBy(x => x.Maximo).ToList();
+                            List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderBy(x => x.Minimo).ToList();
                             OrdenVehiculoPrecioRentaAuto ovpra = new OrdenVehiculoPrecioRentaAuto();
                             
                             ovpra.PrecioRentaAutos = p;
@@ -777,6 +777,7 @@ namespace GoTravelTour.Controllers
                     if (!agregarOrden)
                         continue;
                     ov.PrecioOrden += (DiasRestantes * ultimoPrecio.DiasExtra); //+ (cantDiasGenenarl * ultimoPrecio.Seguro);
+                    ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro); 
 
 
 
@@ -859,20 +860,35 @@ namespace GoTravelTour.Controllers
                     cantDias = cantDiasGenenarl;
                     foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                     {
-                        rt = item;
+                        
                         if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
                         {
+                            rt = item;
                             ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                             encontroRangoValido = true;
                             break;
                         }
                     }
-                    if (!encontroRangoValido && rt.RestriccionesId > 0)
+                    if (!encontroRangoValido && restricciones.Any())
                     {
-                        cantDias = rt.Maximo;
-                        DiasRestantes -= cantDias;
+                        var rtMax = restricciones.Last();
+                        var rtMin = restricciones.First();
+                        if (cantDias < rtMin.Minimo)
+                        {
+                            //cantDias = rtMin.Minimo;
+                            DiasRestantes -= cantDias;
+                            rt = rtMin;
+                        }
+                        else if (cantDias > rtMax.Maximo)
+                        {
+                            cantDias = rtMax.Maximo;
+                            DiasRestantes -= cantDias;
+                            rt = rtMax;
+                        }
+
                         ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                        ov.PrecioOrden += cantDias * p.Seguro;
                     }
                 }
                 i++;
@@ -895,20 +911,36 @@ namespace GoTravelTour.Controllers
                     cantDias = cantDiasGenenarl;
                     foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                     {
-                        rt = item;
+                        
                         if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
                         {
+                            rt = item;
                             ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                             encontroRangoValido = true;
+
                             break;
                         }
                     }
-                    if (!encontroRangoValido && rt.RestriccionesId > 0)
+                    if (!encontroRangoValido && restricciones.Any())
                     {
-                        cantDias = rt.Maximo;
-                        DiasRestantes -= cantDias;
+                        var rtMax = restricciones.Last();
+                        var rtMin = restricciones.First();
+                        if (cantDias < rtMin.Minimo)
+                        {
+                            //cantDias = rtMin.Minimo;
+                            DiasRestantes -= cantDias;
+                            rt = rtMin;
+                        }
+                        else if (cantDias > rtMax.Maximo)
+                        {
+                            cantDias = rtMax.Maximo;
+                            DiasRestantes -= cantDias;
+                            rt = rtMax;
+                        }
+
                         ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
+                        ov.PrecioOrden += cantDias * p.Seguro;
                     }
                 }
                 i++;
@@ -946,9 +978,10 @@ namespace GoTravelTour.Controllers
 
                     foreach (var item in restricciones) // se evalua por restricciones el valor de la cantidad de dias
                     {
-                        rt = item;
+                        
                         if (item.Minimo <= cantDias && cantDias <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
                         {
+                            rt = item;
                             ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                             ov.PrecioOrden += cantDias * p.Seguro;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
@@ -956,10 +989,23 @@ namespace GoTravelTour.Controllers
                             break;
                         }
                     }
-                    if (!encontroRangoValido && rt.RestriccionesId > 0)
+                    if (!encontroRangoValido && restricciones.Any())
                     {
-                        cantDias = rt.Maximo;
-                        DiasRestantes -= cantDias;
+                        var rtMax = restricciones.Last();
+                        var rtMin = restricciones.First();
+                        if(cantDias < rtMin.Minimo)
+                        {
+                            //cantDias = rtMin.Minimo;
+                            DiasRestantes -= cantDias;
+                            rt = rtMin;
+                        }
+                        else if(cantDias > rtMax.Maximo)
+                        {
+                            cantDias = rtMax.Maximo;
+                            DiasRestantes -= cantDias;
+                            rt = rtMax;
+                        }                     
+                        
                         ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
                         ov.PrecioOrden += cantDias * p.Seguro;
                     }
@@ -973,19 +1019,34 @@ namespace GoTravelTour.Controllers
                         cantDias = (rf.FechaFin - rf.FechaInicio).Days + 1;
                         foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                         {
+                            
                             if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
                             {
                                 rt = item;
                                 ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                                 DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
+                                ov.PrecioOrden += cantDias * p.Seguro;
                                 encontroRangoValido = true;
                                 break;
                             }
                         }
-                        if (!encontroRangoValido && rt.RestriccionesId > 0)
+                        if (!encontroRangoValido && restricciones.Any())
                         {
-                            cantDias = rt.Maximo;
-                            DiasRestantes -= cantDias;
+                            var rtMax = restricciones.Last();
+                            var rtMin = restricciones.First();
+                            if (cantDias < rtMin.Minimo)
+                            {
+                                //cantDias = rtMin.Minimo;
+                                DiasRestantes -= cantDias;
+                                rt = rtMin;
+                            }
+                            else if (cantDias > rtMax.Maximo)
+                            {
+                                cantDias = rtMax.Maximo;
+                                DiasRestantes -= cantDias;
+                                rt = rtMax;
+                            }
+
                             ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
                             ov.PrecioOrden += cantDias * p.Seguro;
                         }
@@ -1008,10 +1069,23 @@ namespace GoTravelTour.Controllers
                                 break;
                             }
                         }
-                        if (!encontroRangoValido && rt.RestriccionesId > 0)
+                        if (!encontroRangoValido && restricciones.Any())
                         {
-                            cantDias = rt.Maximo;
-                            DiasRestantes -= cantDias;
+                            var rtMax = restricciones.Last();
+                            var rtMin = restricciones.First();
+                            if (cantDias < rtMin.Minimo)
+                            {
+                                //cantDias = rtMin.Minimo;
+                                DiasRestantes -= cantDias;
+                                rt = rtMin;
+                            }
+                            else if (cantDias > rtMax.Maximo)
+                            {
+                                cantDias = rtMax.Maximo;
+                                DiasRestantes -= cantDias;
+                                rt = rtMax;
+                            }
+
                             ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
                             ov.PrecioOrden += cantDias * p.Seguro;
                         }
@@ -1023,9 +1097,10 @@ namespace GoTravelTour.Controllers
                         cantDias = (buscador.FechaEntrega - rf.FechaInicio).Days + 1;
                         foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                         {
-                            rt = item;
+                            
                             if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
                             {
+                                rt = item;
                                 ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                                 ov.PrecioOrden += cantDias * p.Seguro;
                                 DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
@@ -1033,10 +1108,23 @@ namespace GoTravelTour.Controllers
                                 break;
                             }
                         }
-                        if (!encontroRangoValido && rt.RestriccionesId > 0)
+                        if (!encontroRangoValido && restricciones.Any())
                         {
-                            cantDias = rt.Maximo;
-                            DiasRestantes -= cantDias;
+                            var rtMax = restricciones.Last();
+                            var rtMin = restricciones.First();
+                            if (cantDias < rtMin.Minimo)
+                            {
+                                //cantDias = rtMin.Minimo;
+                                DiasRestantes -= cantDias;
+                                rt = rtMin;
+                            }
+                            else if (cantDias > rtMax.Maximo)
+                            {
+                                cantDias = rtMax.Maximo;
+                                DiasRestantes -= cantDias;
+                                rt = rtMax;
+                            }
+
                             ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
                             ov.PrecioOrden += cantDias * p.Seguro;
                         }

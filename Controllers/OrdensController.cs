@@ -80,6 +80,7 @@ namespace GoTravelTour.Controllers
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                         foreach (var item in ord.ListaVehiculosOrden)
                         {
+                            if (item.ListaPreciosRentaAutos != null)
                             foreach ( var pra in item.ListaPreciosRentaAutos)
                             {
                                 pra.PrecioRentaAutos = _context.PrecioRentaAutos.Include(x => x.Temporada).Single(x=>x.PrecioRentaAutosId==pra.PrecioRentaAutos.PrecioRentaAutosId);
