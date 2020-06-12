@@ -265,9 +265,15 @@ namespace GoTravelTour.Controllers
             {
                 foreach (var vo in orden.ListaVehiculosOrden)
                 {
-                  /* vo.ListaPreciosRentaAutos = _context.OrdenVehiculoPrecioRentaAuto
-                        
-                        .Where(x => x.PrecioRentaAutosId == vo.PrecioRentaAutos.PrecioRentaAutosId);*/
+                    if (vo.ListaPreciosRentaAutos != null)
+                        foreach (var pra in vo.ListaPreciosRentaAutos)
+                        {
+                            pra.PrecioRentaAutos = _context.PrecioRentaAutos
+                               .Include(x => x.Temporada)
+                               .Include(x => x.Auto)
+                               .Single(x => x.PrecioRentaAutosId == pra.PrecioRentaAutos.PrecioRentaAutosId);
+
+                        }
                     vo.Vehiculo = _context.Vehiculos
                         .Include(x => x.Marca)
                         .Include(x => x.Modelo)
@@ -384,12 +390,16 @@ namespace GoTravelTour.Controllers
             {
                 foreach (var oal in orden.ListaAlojamientoOrden)
                 {
-                   /* oal.PrecioAlojamiento = _context.PrecioAlojamiento
+                    if (oal.ListaPrecioAlojamientos != null)
+                        foreach (var pa in oal.ListaPrecioAlojamientos)
+                        {
+                            pa.PrecioAlojamiento = _context.PrecioAlojamiento
                         .Include(x => x.Temporada)
                         .Include(x => x.Contrato)
                         .Include(x => x.Habitacion)
                          .Include(x => x.TipoHabitacion)
-                        .Single(x => x.PrecioAlojamientoId == oal.PrecioAlojamiento.Precio);*/
+                        .Single(x => x.PrecioAlojamientoId == pa.PrecioAlojamiento.PrecioAlojamientoId);
+                        }
                     oal.Alojamiento = _context.Alojamientos
                         .Include(x => x.Proveedor)
                         .Include(x => x.PuntoInteres)
@@ -448,10 +458,16 @@ namespace GoTravelTour.Controllers
             {
                 foreach (var vo in orden.ListaVehiculosOrden)
                 {
-                  /*  vo.PrecioRentaAutos = _context.PrecioRentaAutos
-                        .Include(x=>x.Temporada)
-                        .Include(x => x.Auto)
-                        .Single(x => x.PrecioRentaAutosId == vo.PrecioRentaAutos.PrecioRentaAutosId);*/
+                  if(vo.ListaPreciosRentaAutos != null)
+                  foreach( var pra in vo.ListaPreciosRentaAutos)
+                  {
+                            pra.PrecioRentaAutos = _context.PrecioRentaAutos
+                               .Include(x => x.Temporada)
+                               .Include(x => x.Auto)
+                               .Single(x => x.PrecioRentaAutosId == pra.PrecioRentaAutos.PrecioRentaAutosId);
+
+                  }
+                       
                     vo.Vehiculo = _context.Vehiculos
                         .Include(x => x.Marca)
                         .Include(x => x.Modelo)
@@ -544,12 +560,16 @@ namespace GoTravelTour.Controllers
             {
                 foreach (var oal in orden.ListaAlojamientoOrden)
                 {
-                    /*oal.PrecioAlojamiento = _context.PrecioAlojamiento
+                    if (oal.ListaPrecioAlojamientos != null)
+                        foreach (var pa in oal.ListaPrecioAlojamientos)
+                        {
+                            pa.PrecioAlojamiento = _context.PrecioAlojamiento
                         .Include(x => x.Temporada)
-                        .Include(x=>x.Contrato)
+                        .Include(x => x.Contrato)
                         .Include(x => x.Habitacion)
                          .Include(x => x.TipoHabitacion)
-                        .Single(x => x.PrecioAlojamientoId == oal.PrecioAlojamiento.Precio);*/
+                        .Single(x => x.PrecioAlojamientoId == pa.PrecioAlojamiento.PrecioAlojamientoId);
+                        }
                     oal.Alojamiento = _context.Alojamientos
                         .Include(x => x.Proveedor)
                         .Include(x => x.PuntoInteres)
