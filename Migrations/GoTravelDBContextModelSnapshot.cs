@@ -608,6 +608,8 @@ namespace GoTravelTour.Migrations
 
                     b.Property<bool>("PremiteCopia");
 
+                    b.Property<string>("ServiciosExcluidos");
+
                     b.Property<int?>("SobreprecioId");
 
                     b.Property<string>("TelefonoReferencia");

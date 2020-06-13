@@ -122,7 +122,17 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(ordenActividad).State = EntityState.Modified;
+            OrdenActividad oa = _context.OrdenActividad.Single(x => x.OrdenActividadId == id);
+            Orden orden = _context.Orden.Single(x => x.OrdenId == ordenActividad.OrdenId);
+
+            orden.PrecioGeneralOrden -= oa.PrecioOrden;
+            orden.PrecioGeneralOrden += ordenActividad.PrecioOrden;
+            oa.PrecioOrden = ordenActividad.PrecioOrden;
+            oa.ServiciosExcluidos = ordenActividad.ServiciosExcluidos;
+            
+
+            _context.Entry(oa).State = EntityState.Modified;
+            _context.Entry(orden).State = EntityState.Modified;
 
             try
             {

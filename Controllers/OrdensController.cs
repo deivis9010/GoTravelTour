@@ -69,6 +69,19 @@ namespace GoTravelTour.Controllers
                          .Include(d => d.Sobreprecio)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        foreach (var item in ord.ListaAlojamientoOrden)
+                        {
+                            if (item.ListaPrecioAlojamientos != null)
+                                foreach (var pra in item.ListaPrecioAlojamientos)
+                                {
+                                    var ordenAloPrecio = _context.OrdenAlojamientoPrecioAlojamiento.Include(x => x.PrecioAlojamiento).ThenInclude(x => x.Temporada).Include(x => x.OrdenAlojamiento).Single(x => x.OrdenAlojamientoPrecioAlojamientoId == pra.OrdenAlojamientoPrecioAlojamientoId);
+
+                                    if (ordenAloPrecio.PrecioAlojamiento != null && ordenAloPrecio.PrecioAlojamiento.Temporada != null)
+                                        pra.PrecioAlojamiento.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == ordenAloPrecio.PrecioAlojamiento.Temporada.TemporadaId).ToList();
+                                }
+
+
+                        }
                     }
                         
 
@@ -83,10 +96,10 @@ namespace GoTravelTour.Controllers
                             if (item.ListaPreciosRentaAutos != null)
                             foreach ( var pra in item.ListaPreciosRentaAutos)
                             {
-                                pra.PrecioRentaAutos = _context.PrecioRentaAutos.Include(x => x.Temporada).Single(x=>x.PrecioRentaAutosId==pra.PrecioRentaAutos.PrecioRentaAutosId);
+                                var ordenVehiculoPrecio = _context.OrdenVehiculoPrecioRentaAuto.Include(x => x.PrecioRentaAutos).ThenInclude(x=>x.Temporada).Include(x => x.OrdenVehiculo).Single(x=>x.OrdenVehiculoPrecioRentaAutoId==pra.OrdenVehiculoPrecioRentaAutoId);
 
-                                if (pra.PrecioRentaAutos != null && pra.PrecioRentaAutos.Temporada != null)
-                                    pra.PrecioRentaAutos.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == pra.PrecioRentaAutos.Temporada.TemporadaId).ToList();
+                                if (ordenVehiculoPrecio.PrecioRentaAutos != null && ordenVehiculoPrecio.PrecioRentaAutos.Temporada != null)
+                                    pra.PrecioRentaAutos.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == ordenVehiculoPrecio.PrecioRentaAutos.Temporada.TemporadaId).ToList();
                             }
                            
 
