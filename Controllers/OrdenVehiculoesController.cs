@@ -194,12 +194,17 @@ namespace GoTravelTour.Models
             }
 
             OrdenVehiculo a = _context.OrdenVehiculo.Single(x => x.OrdenVehiculoId == oa.OrdenVehiculoId);
+            Orden orden = _context.Orden.First(x => x.OrdenId == oa.OrdenId);
+            orden.PrecioGeneralOrden -= a.PrecioOrden;
+            orden.PrecioGeneralOrden += oa.PrecioOrden;
 
             a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
             a.PrecioOrden = oa.PrecioOrden;
 
 
             _context.Entry(a).State = EntityState.Modified;
+            _context.Entry(orden).State = EntityState.Modified;
+
 
             try
             {
@@ -207,7 +212,7 @@ namespace GoTravelTour.Models
             }
             catch (DbUpdateConcurrencyException)
             {
-
+                
                 {
                     throw;
                 }

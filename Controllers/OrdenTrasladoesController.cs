@@ -195,6 +195,9 @@ namespace GoTravelTour.Models
             }
 
             OrdenTraslado a = _context.OrdenTraslado.Single(x => x.OrdenTrasladoId == oa.OrdenTrasladoId);
+            Orden orden = _context.Orden.First(x => x.OrdenId == oa.OrdenId);
+            orden.PrecioGeneralOrden -= a.PrecioOrden;
+            orden.PrecioGeneralOrden += oa.PrecioOrden;
 
             a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
             a.PrecioOrden = oa.PrecioOrden;
@@ -202,6 +205,7 @@ namespace GoTravelTour.Models
 
 
             _context.Entry(a).State = EntityState.Modified;
+            _context.Entry(orden).State = EntityState.Modified;
 
             try
             {

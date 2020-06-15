@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoTravelTour.Models;
 using PagedList;
+using GoTravelTour.Utiles;
 
 namespace GoTravelTour.Controllers
 {
@@ -129,7 +130,34 @@ namespace GoTravelTour.Controllers
             orden.PrecioGeneralOrden += ordenActividad.PrecioOrden;
             oa.PrecioOrden = ordenActividad.PrecioOrden;
             oa.ServiciosExcluidos = ordenActividad.ServiciosExcluidos;
-            
+
+            Cliente c = _context.Clientes.First(x => x.ClienteId == orden.ClienteId);
+
+            //Se aplica la ganancia correspondiente
+            List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY).ToList();
+
+            foreach (Sobreprecio s in sobreprecios)
+            {
+                if (s.PrecioDesde <= oa.PrecioOrden && oa.PrecioOrden <= s.PrecioHasta)
+                {
+                    oa.Sobreprecio = s;
+                    decimal valorAplica = 0;
+                    if (s.ValorDinero != null)
+                    {
+                        valorAplica = (decimal)s.ValorDinero;
+                        oa.PrecioOrden += valorAplica + ((decimal)s.ValorDinero * c.Descuento / 100);
+                    }
+                    else
+                    {
+                        valorAplica = oa.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                        oa.PrecioOrden += valorAplica + (oa.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                    }
+
+                    oa.ValorSobreprecioAplicado = valorAplica;
+                    break;
+                }
+
+            }
 
             _context.Entry(oa).State = EntityState.Modified;
             _context.Entry(orden).State = EntityState.Modified;
@@ -150,7 +178,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(oa);
         }
 
         // POST: api/OrdenActividads
@@ -206,12 +234,17 @@ namespace GoTravelTour.Controllers
             }
 
             OrdenActividad a = _context.OrdenActividad.Single(x => x.OrdenActividadId == oa.OrdenActividadId);
+            Orden orden = _context.Orden.First(x => x.OrdenId == oa.OrdenId);
+            orden.PrecioGeneralOrden -= a.PrecioOrden;
+            orden.PrecioGeneralOrden += oa.PrecioOrden;
 
             a.ValorSobreprecioAplicado = oa.ValorSobreprecioAplicado;
             a.PrecioOrden = oa.PrecioOrden;
 
 
+
             _context.Entry(a).State = EntityState.Modified;
+            _context.Entry(orden).State = EntityState.Modified;
 
             try
             {
