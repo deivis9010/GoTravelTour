@@ -718,10 +718,11 @@ namespace GoTravelTour.Controllers
                     PrecioRentaAutos ultimoPrecio = new PrecioRentaAutos();
                     if(!precios.Any())
                         continue;
+                    ov.ListaPreciosRentaAutos = new List<OrdenVehiculoPrecioRentaAuto>();
                     foreach (var p in precios)
                     {
                       
-                        ov.ListaPreciosRentaAutos = new List<OrdenVehiculoPrecioRentaAuto>();
+                        
                         if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
                          (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
                         {
