@@ -965,7 +965,8 @@ namespace GoTravelTour.Controllers
                         }
 
                     }
-
+                    if(buscador.CantidadHabitaciones > 0 )
+                    ov.PrecioOrden = buscador.CantidadHabitaciones * ov.PrecioOrden;
 
                     if (agregarOrden)
                         lista.Add(ov);
@@ -1067,17 +1068,17 @@ namespace GoTravelTour.Controllers
                     if (buscador.Entrada < rf.FechaInicio && rf.FechaFin < buscador.Salida)
                     {
                         //Si el rango esta incluido en el rango de entrada y salida la cantidad de dias sera la diferencia del rango de fecha
-                        cantDias = (rf.FechaFin - rf.FechaInicio).Days + 1;
+                        cantDias = (rf.FechaFin - rf.FechaInicio).Days;
                         GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         cantDiasGenenarl -= cantDias;
                         DiasRestantes -= cantDias;
 
                     }
                     else
-                   if (rf.FechaInicio <= buscador.Entrada && buscador.Entrada < rf.FechaFin)
+                   if (rf.FechaInicio < buscador.Entrada && buscador.Entrada <= rf.FechaFin)
                     {
                         //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                        cantDias = (rf.FechaFin - buscador.Entrada).Days;
+                        cantDias = (rf.FechaFin - buscador.Entrada).Days + 1;
                         GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         cantDiasGenenarl -= cantDias;
                         DiasRestantes -= cantDias;
@@ -1087,7 +1088,7 @@ namespace GoTravelTour.Controllers
                    if (rf.FechaFin >= buscador.Salida && buscador.Salida >= rf.FechaInicio)
                     {
                         //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                        cantDias = (buscador.Salida - rf.FechaInicio).Days + 1;
+                        cantDias = (buscador.Salida - rf.FechaInicio).Days;
                         GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
 
                         cantDiasGenenarl -= cantDias;

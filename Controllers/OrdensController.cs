@@ -271,6 +271,7 @@ namespace GoTravelTour.Controllers
             List<OrdenVehiculo> veAborrar = _context.OrdenVehiculo.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach(var vo in veAborrar)
             {
+                orden.PrecioGeneralOrden -= vo.PrecioOrden;
                 _context.OrdenVehiculo.Remove(vo);
             }
            
@@ -279,6 +280,13 @@ namespace GoTravelTour.Controllers
                 foreach (var vo in orden.ListaVehiculosOrden)
                 {
                     if (vo.ListaPreciosRentaAutos != null)
+                    {
+                        
+                         List<OrdenVehiculoPrecioRentaAuto> veoAborrar = _context.OrdenVehiculoPrecioRentaAuto.Where(x => x.OrdenVehiculo.OrdenVehiculoId == vo.OrdenVehiculoId).ToList();
+                        foreach (var vop in veoAborrar)
+                        {
+                            _context.OrdenVehiculoPrecioRentaAuto.Remove(vop);
+                        }
                         foreach (var pra in vo.ListaPreciosRentaAutos)
                         {
                             pra.PrecioRentaAutos = _context.PrecioRentaAutos
@@ -287,6 +295,8 @@ namespace GoTravelTour.Controllers
                                .Single(x => x.PrecioRentaAutosId == pra.PrecioRentaAutos.PrecioRentaAutosId);
 
                         }
+
+                    }
                     vo.Vehiculo = _context.Vehiculos
                         .Include(x => x.Marca)
                         .Include(x => x.Modelo)
@@ -309,6 +319,8 @@ namespace GoTravelTour.Controllers
 
                     if (vo.Sobreprecio != null)
                         vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
+
+                    orden.PrecioGeneralOrden += vo.PrecioOrden;
                     _context.OrdenVehiculo.Add(vo);
 
                 }
@@ -316,6 +328,7 @@ namespace GoTravelTour.Controllers
             List<OrdenTraslado> trAborrar = _context.OrdenTraslado.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach (var to in trAborrar)
             {
+                orden.PrecioGeneralOrden -= to.PrecioOrden;
                 _context.OrdenTraslado.Remove(to);
             }
             if (orden.ListaTrasladoOrden != null)
@@ -345,6 +358,7 @@ namespace GoTravelTour.Controllers
                     if (to.Sobreprecio != null)
                         to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
 
+                    orden.PrecioGeneralOrden += to.PrecioOrden;
                     _context.OrdenTraslado.Add(to);
 
                 }
@@ -353,6 +367,7 @@ namespace GoTravelTour.Controllers
             List<OrdenActividad> acAborrar = _context.OrdenActividad.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach (var aco in acAborrar)
             {
+                orden.PrecioGeneralOrden -= aco.PrecioOrden;
                 _context.OrdenActividad.Remove(aco);
             }
 
@@ -388,6 +403,7 @@ namespace GoTravelTour.Controllers
                     if (oac.Sobreprecio != null)
                         oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
 
+                    orden.PrecioGeneralOrden += oac.PrecioOrden;
                     _context.OrdenActividad.Add(oac);
                 }
                
@@ -396,6 +412,7 @@ namespace GoTravelTour.Controllers
             List<OrdenAlojamiento> alAborrar = _context.OrdenAlojamiento.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach (var alo in alAborrar)
             {
+                orden.PrecioGeneralOrden -= alo.PrecioOrden;
                 _context.OrdenAlojamiento.Remove(alo);
             }
 
@@ -404,15 +421,31 @@ namespace GoTravelTour.Controllers
                 foreach (var oal in orden.ListaAlojamientoOrden)
                 {
                     if (oal.ListaPrecioAlojamientos != null)
-                        foreach (var pa in oal.ListaPrecioAlojamientos)
+                    {
+                        if (oal.ListaPrecioAlojamientos != null)
                         {
-                            pa.PrecioAlojamiento = _context.PrecioAlojamiento
-                        .Include(x => x.Temporada)
-                        .Include(x => x.Contrato)
-                        .Include(x => x.Habitacion)
-                         .Include(x => x.TipoHabitacion)
-                        .Single(x => x.PrecioAlojamientoId == pa.PrecioAlojamiento.PrecioAlojamientoId);
+
+                            List<OrdenAlojamientoPrecioAlojamiento> veoAborrar = _context.OrdenAlojamientoPrecioAlojamiento.Where(x => x.OrdenAlojamiento.OrdenAlojamientoId == oal.OrdenAlojamientoId).ToList();
+                            foreach (var vop in veoAborrar)
+                            {
+                                _context.OrdenAlojamientoPrecioAlojamiento.Remove(vop);
+                            }
+                            foreach (var pa in oal.ListaPrecioAlojamientos)
+                            {
+                                pa.PrecioAlojamiento = _context.PrecioAlojamiento
+                            .Include(x => x.Temporada)
+                            .Include(x => x.Contrato)
+                            .Include(x => x.Habitacion)
+                             .Include(x => x.TipoHabitacion)
+                            .Single(x => x.PrecioAlojamientoId == pa.PrecioAlojamiento.PrecioAlojamientoId);
+                            }
+
                         }
+                    }
+
+
+
+                       
                     oal.Alojamiento = _context.Alojamientos
                         .Include(x => x.Proveedor)
                         .Include(x => x.PuntoInteres)
@@ -426,17 +459,19 @@ namespace GoTravelTour.Controllers
 
                     if (oal.Sobreprecio != null)
                         oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
+
+                    orden.PrecioGeneralOrden += oal.PrecioOrden;
                     _context.OrdenAlojamiento.Add(oal);
                 }
             }
-
-            _context.Entry(orden).State = EntityState.Modified;
-
             try
             {
+                _context.Entry(orden).State = EntityState.Modified;
+
+           
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 if (!OrdenExists(id))
                 {

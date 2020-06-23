@@ -166,14 +166,22 @@ namespace GoTravelTour.Models
                 return BadRequest(ModelState);
             }
 
-            var ordenVehiculo = await _context.OrdenVehiculo.FindAsync(id);
+            var ordenVehiculo =  _context.OrdenVehiculo.Include(x => x.ListaPreciosRentaAutos).First(x=>x.OrdenVehiculoId==id);
+
             if (ordenVehiculo == null)
             {
                 return NotFound();
             }
 
             _context.OrdenVehiculo.Remove(ordenVehiculo);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }catch(Exception es)
+            {
+                var a = es.Message;
+            }
+           
 
             return Ok(ordenVehiculo);
         }

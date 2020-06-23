@@ -1017,7 +1017,7 @@ namespace GoTravelTour.Controllers
                     if (buscador.FechaRecogida < rf.FechaInicio && rf.FechaFin < buscador.FechaEntrega)
                     {
                         //Si el rango esta incluido en el rango de recogida y entrega la cantidad de dias sera la diferencia del rango de fecha
-                        cantDias = (rf.FechaFin - rf.FechaInicio).Days + 1;
+                        cantDias = (rf.FechaFin - rf.FechaInicio).Days;
                         foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                         {
                             
@@ -1054,10 +1054,10 @@ namespace GoTravelTour.Controllers
 
                     }
                     else
-                   if (rf.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida < rf.FechaFin)
+                   if (rf.FechaInicio < buscador.FechaRecogida && buscador.FechaRecogida <= rf.FechaFin)
                     {
                         //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                        cantDias = (rf.FechaFin - buscador.FechaRecogida).Days;
+                        cantDias = (rf.FechaFin - buscador.FechaRecogida).Days + 1;
                         foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                         {
                             if (item.Minimo <= cantDias && cantDias <= item.Maximo)// si coincide la cantidad de dias con el rango de una restriccion se calcula
@@ -1095,7 +1095,7 @@ namespace GoTravelTour.Controllers
                    if (rf.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= rf.FechaInicio)
                     {
                         //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                        cantDias = (buscador.FechaEntrega - rf.FechaInicio).Days + 1;
+                        cantDias = (buscador.FechaEntrega - rf.FechaInicio).Days;
                         foreach (var item in restricciones)// se evalua por restricciones el valor de la cantidad de dias
                         {
                             
