@@ -22,12 +22,12 @@ namespace GoTravelTour.Controllers
         {
             _context = context;
         }
-
+        //crear objeto filtros
         // GET: api/Ordens
         [HttpGet]
-        public IEnumerable<Orden> GetOrden(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 10, int idProveedor = 0)
+        public IEnumerable<Orden> GetOrden( [FromBody] BuscadorOrden buscador, string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 10, int idProveedor = 0)
         {
-            IEnumerable<Orden> lista;
+            IEnumerable<Orden> lista = new List<Orden>();
             if (col == "-1")
             {
                 lista = _context.Orden
@@ -121,42 +121,6 @@ namespace GoTravelTour.Controllers
 
                 return lista.ToPagedList(pageIndex, pageSize).ToList();
             }
-            if (!string.IsNullOrEmpty(filter))
-            {
-                lista = _context.Orden
-                    .Include(x => x.Cliente)
-                    .Include(x => x.Creador)
-                    .Include(x => x.ListaActividadOrden)
-                    .Include(x => x.ListaAlojamientoOrden)
-                    .Include(x => x.ListaTrasladoOrden)
-                    .Include(x => x.ListaVehiculosOrden)
-                    .OrderBy(a => a.NombreOrden)
-                    .Where(p => (p.NombreOrden.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
-                foreach (var ord in lista)
-                {
-                    if (ord.ListaActividadOrden != null && ord.ListaActividadOrden.Any())
-                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(ex => ex.PrecioActividad)
-                        .Include(d => d.Actividad).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor)
-                        .Include(d => d.LugarActividad)
-                        .Include(d => d.LugarRecogida)
-                        .Include(d => d.LugarRetorno)
-                        .First(r => r.OrdenId == x.OrdenId));
-                    if (ord.ListaAlojamientoOrden != null && ord.ListaAlojamientoOrden.Any())
-                        ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
-                        .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
-                    if (ord.ListaVehiculosOrden != null && ord.ListaVehiculosOrden.Any())
-                        ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
-                        .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
-                    if (ord.ListaTrasladoOrden != null && ord.ListaTrasladoOrden.Any())
-                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(ex => ex.PrecioTraslado)
-                        .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
-                }
-
-            }
             else
             {
                 lista = _context.Orden
@@ -166,58 +130,128 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.ListaAlojamientoOrden)
                     .Include(x => x.ListaTrasladoOrden)
                     .Include(x => x.ListaVehiculosOrden)
+
+
                     .OrderBy(a => a.NombreOrden)
-                    .ToPagedList(pageIndex, pageSize).ToList();
+                    .ToList();
+
+                if(!string.IsNullOrEmpty(buscador.Nombre))
+                {
+                    lista = lista.Where(x => x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
+                }
+                if (!string.IsNullOrEmpty(buscador.NumeroOrden))
+                {
+                    lista = lista.Where(x => x.NumeroOrden.Contains(buscador.NumeroOrden, StringComparison.CurrentCultureIgnoreCase));
+                }
+
+                if (buscador.ProveedorId != 0)
+                {
+                    lista = lista.Where(x => x.ListaActividadOrden.Any(lo=>lo.Actividad.ProveedorId == buscador.ProveedorId)
+                    || x.ListaAlojamientoOrden.Any(lo => lo.Alojamiento.ProveedorId == buscador.ProveedorId) 
+                    || x.ListaTrasladoOrden.Any(lo => lo.Traslado.ProveedorId == buscador.ProveedorId)
+                    || x.ListaVehiculosOrden.Any(lo => lo.Vehiculo.ProveedorId == buscador.ProveedorId));
+                }
+
+                if (buscador.Estados != null && buscador.Estados.Any())
+                {
+                    lista = lista.Where(x => buscador.Estados.Any(d=>d==x.Estado));
+                }
+                if (buscador.FechaI != null && buscador.FechaF != null)
+                {
+                    lista = lista.Where(x => buscador.FechaI <= x.FechaCreacion && x.FechaCreacion <= buscador.FechaF);
+                }
+
+                if (buscador.FechaI != null && buscador.FechaF == null)
+                {
+                    lista = lista.Where(x => buscador.FechaI <= x.FechaCreacion);
+                }
+
+                if (buscador.FechaI == null && buscador.FechaF != null)
+                {
+                    lista = lista.Where(x =>  x.FechaCreacion <= buscador.FechaF);
+                }
+
+                if (lista != null && lista.Any())
+                    lista = lista.ToPagedList(pageIndex, pageSize);
+
                 foreach (var ord in lista)
                 {
                     if (ord.ListaActividadOrden != null && ord.ListaActividadOrden.Any())
-                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(ex => ex.PrecioActividad)
-                        .Include(d => d.Actividad).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor)
-                        .Include(d => d.LugarActividad)
-                        .Include(d => d.LugarRecogida)
-                        .Include(d => d.LugarRetorno)
-                        .First(r => r.OrdenId == x.OrdenId));
+                    {
+                        ord.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(ex => ex.PrecioActividad).ThenInclude(t => t.Temporada)
+                       .Include(d => d.Actividad).ThenInclude(l => l.ListaDistribuidoresProducto)
+                       .ThenInclude(l => l.Distribuidor)
+                       .Include(d => d.LugarActividad)
+                       .Include(d => d.LugarRecogida)
+                       .Include(d => d.LugarRetorno)
+                        .Include(d => d.Sobreprecio)
+                       .First(r => r.OrdenId == x.OrdenId));
+                        foreach (var item in ord.ListaActividadOrden)
+                        {
+                            if (item.PrecioActividad != null && item.PrecioActividad.Temporada != null)
+                                item.PrecioActividad.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == item.PrecioActividad.Temporada.TemporadaId).ToList();
+
+                        }
+                    }
+
+
                     if (ord.ListaAlojamientoOrden != null && ord.ListaAlojamientoOrden.Any())
+                    {
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
+                         .Include(d => d.Sobreprecio)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        foreach (var item in ord.ListaAlojamientoOrden)
+                        {
+                            if (item.ListaPrecioAlojamientos != null)
+                                foreach (var pra in item.ListaPrecioAlojamientos)
+                                {
+                                    var ordenAloPrecio = _context.OrdenAlojamientoPrecioAlojamiento.Include(x => x.PrecioAlojamiento).ThenInclude(x => x.Temporada).Include(x => x.OrdenAlojamiento).Single(x => x.OrdenAlojamientoPrecioAlojamientoId == pra.OrdenAlojamientoPrecioAlojamientoId);
+
+                                    if (ordenAloPrecio.PrecioAlojamiento != null && ordenAloPrecio.PrecioAlojamiento.Temporada != null)
+                                        pra.PrecioAlojamiento.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == ordenAloPrecio.PrecioAlojamiento.Temporada.TemporadaId).ToList();
+                                }
+
+
+                        }
+                    }
+
+
                     if (ord.ListaVehiculosOrden != null && ord.ListaVehiculosOrden.Any())
+                    {
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
+                         .Include(d => d.Sobreprecio)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        foreach (var item in ord.ListaVehiculosOrden)
+                        {
+                            if (item.ListaPreciosRentaAutos != null)
+                                foreach (var pra in item.ListaPreciosRentaAutos)
+                                {
+                                    var ordenVehiculoPrecio = _context.OrdenVehiculoPrecioRentaAuto.Include(x => x.PrecioRentaAutos).ThenInclude(x => x.Temporada).Include(x => x.OrdenVehiculo).Single(x => x.OrdenVehiculoPrecioRentaAutoId == pra.OrdenVehiculoPrecioRentaAutoId);
+
+                                    if (ordenVehiculoPrecio.PrecioRentaAutos != null && ordenVehiculoPrecio.PrecioRentaAutos.Temporada != null)
+                                        pra.PrecioRentaAutos.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == ordenVehiculoPrecio.PrecioRentaAutos.Temporada.TemporadaId).ToList();
+                                }
+
+
+                        }
+                    }
+
+
                     if (ord.ListaTrasladoOrden != null && ord.ListaTrasladoOrden.Any())
-                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(ex => ex.PrecioTraslado)
+                    {
+                        ord.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(ex => ex.PrecioTraslado).ThenInclude(t => t.Temporada)
+                        .Include(d => d.PuntoDestino)
+                        .Include(d => d.PuntoOrigen)
+                        .Include(d => d.Sobreprecio)
                         .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                    }
+
                 }
-
             }
-
-            switch (sortDirection)
-            {
-                case "desc":
-                    {
-                        if ("Nombre".Equals(col))
-                        {
-                            lista = lista.OrderByDescending(l => l.NombreOrden);
-
-                        }
-
-                        break;
-                    }
-
-                default:
-                    {
-                        if ("Nombre".Equals(col))
-                        {
-                            lista = lista.OrderBy(l => l.NombreOrden);
-
-                        }
-                    }
-
-                    break;
-            }
+            
            
 
             return lista;
@@ -225,9 +259,66 @@ namespace GoTravelTour.Controllers
         // GET: api/Ordens/Count
         [Route("Count")]
         [HttpGet]
-        public int GetOrdensCount()
+        public int GetOrdensCount([FromBody] BuscadorOrden buscador, string col="-1")
         {
-            return _context.Orden.Count();
+            IEnumerable<Orden> lista = new List<Orden>();
+            if (col == "-1") { 
+                return _context.Orden.Count();
+            }
+            else
+            {
+                lista = _context.Orden
+                 .Include(x => x.Cliente)
+                 .Include(x => x.Creador)
+                 .Include(x => x.ListaActividadOrden)
+                 .Include(x => x.ListaAlojamientoOrden)
+                 .Include(x => x.ListaTrasladoOrden)
+                 .Include(x => x.ListaVehiculosOrden)
+
+
+                 .OrderBy(a => a.NombreOrden)
+                 .ToList();
+
+                if (!string.IsNullOrEmpty(buscador.Nombre))
+                {
+                    lista = lista.Where(x => x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
+                }
+                if (!string.IsNullOrEmpty(buscador.NumeroOrden))
+                {
+                    lista = lista.Where(x => x.NumeroOrden.Contains(buscador.NumeroOrden, StringComparison.CurrentCultureIgnoreCase));
+                }
+
+                if (buscador.ProveedorId != 0)
+                {
+                    lista = lista.Where(x => x.ListaActividadOrden.Any(lo => lo.Actividad.ProveedorId == buscador.ProveedorId)
+                    || x.ListaAlojamientoOrden.Any(lo => lo.Alojamiento.ProveedorId == buscador.ProveedorId)
+                    || x.ListaTrasladoOrden.Any(lo => lo.Traslado.ProveedorId == buscador.ProveedorId)
+                    || x.ListaVehiculosOrden.Any(lo => lo.Vehiculo.ProveedorId == buscador.ProveedorId));
+                }
+
+                if (buscador.Estados != null && buscador.Estados.Any())
+                {
+                    lista = lista.Where(x => buscador.Estados.Any(d => d == x.Estado));
+                }
+                if (buscador.FechaI != null && buscador.FechaF != null)
+                {
+                    lista = lista.Where(x => buscador.FechaI <= x.FechaCreacion && x.FechaCreacion <= buscador.FechaF);
+                }
+
+                if (buscador.FechaI != null && buscador.FechaF == null)
+                {
+                    lista = lista.Where(x => buscador.FechaI <= x.FechaCreacion);
+                }
+
+                if (buscador.FechaI == null && buscador.FechaF != null)
+                {
+                    lista = lista.Where(x => x.FechaCreacion <= buscador.FechaF);
+                }
+                return lista.Count();
+            }
+
+           
+
         }
 
         // GET: api/Ordens/5
