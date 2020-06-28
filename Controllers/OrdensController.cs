@@ -22,9 +22,9 @@ namespace GoTravelTour.Controllers
         {
             _context = context;
         }
-        //crear objeto filtros
-        // GET: api/Ordens
-        [HttpGet]
+        
+        // Post: api/Ordens
+        [HttpPost]
         public IEnumerable<Orden> GetOrden( [FromBody] BuscadorOrden buscador, string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 10, int idProveedor = 0)
         {
             IEnumerable<Orden> lista = new List<Orden>();
