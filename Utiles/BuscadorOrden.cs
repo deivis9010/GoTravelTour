@@ -13,5 +13,13 @@ namespace GoTravelTour.Utiles
         public List<string> Estados { get; set; }
         public DateTime? FechaI { get; set; }
         public DateTime? FechaF { get; set; }
+
+        public string col { get; set; }
+        public string filter { get; set; }
+        public string sortDirection { get; set; }
+        public int pageIndex { get; set; }
+        public int pageSize { get; set; }
+        public int idProveedor { get; set; }
+        
     }
 }

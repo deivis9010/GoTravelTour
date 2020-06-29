@@ -25,10 +25,10 @@ namespace GoTravelTour.Controllers
         
         // Post: api/Ordens
         [HttpPost]
-        public IEnumerable<Orden> GetOrden( [FromBody] BuscadorOrden buscador, string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 10, int idProveedor = 0)
+        public IEnumerable<Orden> GetOrdenNuevo( [FromBody] BuscadorOrden buscador)
         {
             IEnumerable<Orden> lista = new List<Orden>();
-            if (col == "-1")
+            if (buscador.col == "-1")
             {
                 lista = _context.Orden
                     .Include(x=>x.Cliente)
@@ -119,7 +119,7 @@ namespace GoTravelTour.Controllers
                         
                 }
 
-                return lista.ToPagedList(pageIndex, pageSize).ToList();
+                return lista.ToPagedList(buscador.pageIndex, buscador.pageSize).ToList();
             }
             else
             {
@@ -172,7 +172,7 @@ namespace GoTravelTour.Controllers
                 }
 
                 if (lista != null && lista.Any())
-                    lista = lista.ToPagedList(pageIndex, pageSize);
+                    lista = lista.ToPagedList(buscador.pageIndex, buscador.pageSize);
 
                 foreach (var ord in lista)
                 {
@@ -258,11 +258,11 @@ namespace GoTravelTour.Controllers
         }
         // GET: api/Ordens/Count
         [Route("Count")]
-        [HttpGet]
-        public int GetOrdensCount([FromBody] BuscadorOrden buscador, string col="-1")
+        [HttpPost]
+        public int GetOrdensCount([FromBody] BuscadorOrden buscador)
         {
             IEnumerable<Orden> lista = new List<Orden>();
-            if (col == "-1") { 
+            if (buscador.col == "-1") { 
                 return _context.Orden.Count();
             }
             else

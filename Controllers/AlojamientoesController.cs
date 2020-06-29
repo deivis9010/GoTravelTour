@@ -707,11 +707,12 @@ namespace GoTravelTour.Controllers
         // POST: api/Alojamientoes/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<Alojamiento> GetBuscarAlojamientosByFiltros([FromBody] BuscadorAlojamiento buscador)
+        public List<OrdenAlojamiento> GetBuscarAlojamientosByFiltros([FromBody] BuscadorAlojamiento buscador)
         {
 
 
             //Se buscan todos los alojamientos segun los parametros
+            List<OrdenAlojamiento> resultados = new List<OrdenAlojamiento>();
             List<Alojamiento> alojamientos = _context.Alojamientos.Include(x => x.PuntoInteres).Where(x => x.IsActivo && x.PuntoInteres.RegionId == buscador.Region.RegionId).ToList();
 
             //Se filtra segun los parametros pasados
@@ -736,9 +737,10 @@ namespace GoTravelTour.Controllers
             foreach (var a in alojamientos)
             {
 
-
+                OrdenAlojamiento ord = new OrdenAlojamiento();
+               
                 //Se buscan los precios correspondientes 
-                List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada)
+                List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada).Include(x=>x.Habitacion)
 
                 .Where(x => x.ProductoId == a.ProductoId && x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) ||
                    ((xx.FechaInicio <= buscador.Salida && buscador.Salida <= xx.FechaFin)))).ToList();
@@ -754,27 +756,34 @@ namespace GoTravelTour.Controllers
                     {
                         i = 1;
                         a.PrecioInicial = p.Precio;
+                        ord.Habitacion = p.Habitacion;
                         continue;
                     }
 
                     if (a.PrecioInicial > p.Precio)
                     {
                         a.PrecioInicial = p.Precio;
+                        ord.Habitacion = p.Habitacion;
                     }
 
                     //     }
 
                 }
 
+                ord.Alojamiento = a;
+               
+
             }
             if (buscador.OrdenarAsc)
             {
-                return alojamientos.OrderBy(x => x.PrecioInicial).ToList();
+                return resultados.OrderBy(x => x.Alojamiento.PrecioInicial).ToList();
             }
             else
             {
-                return alojamientos.OrderByDescending(x => x.PrecioInicial).ToList();
+                return resultados.OrderByDescending(x => x.Alojamiento.PrecioInicial).ToList();
             }
+
+            
 
         }
 
@@ -820,7 +829,7 @@ namespace GoTravelTour.Controllers
 
                 //Se buscan las habitaciones que tiene el hotel para buscar luego los precios disponibles para ese tipo y poder iterar sobre esos precios
                 //y obtener un posible precio de varias temporadas para una a=habitacion
-                List<Habitacion> habitacionesEnHotel = _context.Habitaciones.Where(x => x.ProductoId == alojamiento.ProductoId).ToList();
+                List<Habitacion> habitacionesEnHotel = _context.Habitaciones.Where(x => x.ProductoId == alojamiento.ProductoId && x.HabitacionId==buscador.Habitacion.HabitacionId).ToList();
 
                 foreach (var hab in habitacionesEnHotel)
                 {
