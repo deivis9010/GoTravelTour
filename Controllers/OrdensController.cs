@@ -24,7 +24,9 @@ namespace GoTravelTour.Controllers
         }
         
         // Post: api/Ordens
+        
         [HttpPost]
+        [Route("Buscar")]
         public IEnumerable<Orden> GetOrdenNuevo( [FromBody] BuscadorOrden buscador)
         {
             IEnumerable<Orden> lista = new List<Orden>();
@@ -137,11 +139,11 @@ namespace GoTravelTour.Controllers
 
                 if(!string.IsNullOrEmpty(buscador.Nombre))
                 {
-                    lista = lista.Where(x => x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
+                    lista = lista.Where(x => x.NombreOrden !=null && x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
                 }
                 if (!string.IsNullOrEmpty(buscador.NumeroOrden))
                 {
-                    lista = lista.Where(x => x.NumeroOrden.Contains(buscador.NumeroOrden, StringComparison.CurrentCultureIgnoreCase));
+                    lista = lista.Where(x => x.NumeroOrden != null && x.NumeroOrden.Contains(buscador.NumeroOrden, StringComparison.CurrentCultureIgnoreCase));
                 }
 
                 if (buscador.ProveedorId != 0)
@@ -154,7 +156,7 @@ namespace GoTravelTour.Controllers
 
                 if (buscador.Estados != null && buscador.Estados.Any())
                 {
-                    lista = lista.Where(x => buscador.Estados.Any(d=>d==x.Estado));
+                    lista = lista.Where(x => x.Estado != null && buscador.Estados.Any(d=>d==x.Estado));
                 }
                 if (buscador.FechaI != null && buscador.FechaF != null)
                 {
@@ -281,11 +283,11 @@ namespace GoTravelTour.Controllers
 
                 if (!string.IsNullOrEmpty(buscador.Nombre))
                 {
-                    lista = lista.Where(x => x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
+                    lista = lista.Where(x => x.NombreOrden != null && x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
                 }
                 if (!string.IsNullOrEmpty(buscador.NumeroOrden))
                 {
-                    lista = lista.Where(x => x.NumeroOrden.Contains(buscador.NumeroOrden, StringComparison.CurrentCultureIgnoreCase));
+                    lista = lista.Where(x => x.NumeroOrden != null && x.NumeroOrden.Contains(buscador.NumeroOrden, StringComparison.CurrentCultureIgnoreCase));
                 }
 
                 if (buscador.ProveedorId != 0)
@@ -298,7 +300,7 @@ namespace GoTravelTour.Controllers
 
                 if (buscador.Estados != null && buscador.Estados.Any())
                 {
-                    lista = lista.Where(x => buscador.Estados.Any(d => d == x.Estado));
+                    lista = lista.Where(x => x.Estado != null && buscador.Estados.Any(d => d == x.Estado));
                 }
                 if (buscador.FechaI != null && buscador.FechaF != null)
                 {

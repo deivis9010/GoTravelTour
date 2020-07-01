@@ -19,7 +19,7 @@ namespace GoTravelTour.Utiles
         public string sortDirection { get; set; }
         public int pageIndex { get; set; }
         public int pageSize { get; set; }
-        public int idProveedor { get; set; }
+      
         
     }
 }

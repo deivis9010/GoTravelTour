@@ -771,8 +771,8 @@ namespace GoTravelTour.Controllers
                 }
 
                 ord.Alojamiento = a;
-               
 
+                resultados.Add(ord);
             }
             if (buscador.OrdenarAsc)
             {
