@@ -9,6 +9,8 @@ using GoTravelTour.Models;
 using PagedList;
 using GoTravelTour.Utiles;
 using Microsoft.AspNetCore.Authorization;
+using MimeKit;
+using MimeKit.Text;
 
 namespace GoTravelTour.Controllers
 {
@@ -995,6 +997,8 @@ namespace GoTravelTour.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+
+                EnviarCorreo(new Usuario());
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -1009,6 +1013,54 @@ namespace GoTravelTour.Controllers
             }
 
             return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
+
+
+
+
+        public bool EnviarCorreo(Usuario usuario)
+        {
+            try
+            {
+                var message = new MimeMessage();
+
+                message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
+                message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
+                message.Subject = "Usuario nuevo en el sistema";
+                //We will say we are sending HTML. But there are options for plaintext etc. 
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = "Gracias por registarse con nosotros " + "<br>"
+                 + "Por favor haga click en el " + "<br>"
+                + "siguiente enlace para <a href='http://camina.co/mailconfirm'" + usuario.Correo + "> registrarse</a>"
+                };
+
+
+                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    //The last parameter here is to use SSL (Which you should!)
+                    emailClient.Connect("smtp.gmail.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+
+                    //Remove any OAuth functionality as we won't be using it. 
+                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    emailClient.Authenticate("zuleidyrg@gmail.com", "M@luma123");
+
+                    emailClient.Send(message);
+
+                    emailClient.Disconnect(true);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+
+            }
+
         }
 
     }

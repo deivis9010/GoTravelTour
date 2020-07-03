@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using QuickBooks.Helper;
 using QuickBooks.Models;
+using RestSharp;
 
 namespace GoTravelTour.QuickBooks
 {
@@ -40,8 +41,9 @@ namespace GoTravelTour.QuickBooks
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-            //return Ok(authorizeUrl);
-            return Redirect("http://localhost:59649/api/QBIntegracion/Responses?code=AB11591303021AJsCwlhzsEKJUzT8YBRUnp8iYa4XSxVJGUJbK&state=e21c508b4b82468f538739ed076ab51c7efcb31bcf07c063fcd4412f1250a15c&realmId=4620816365037572030" );
+
+            return Redirect(authorizeUrl);
+            //return Redirect("http://localhost:59649/api/QBIntegracion/Responses?code=AB11591303021AJsCwlhzsEKJUzT8YBRUnp8iYa4XSxVJGUJbK&state=e21c508b4b82468f538739ed076ab51c7efcb31bcf07c063fcd4412f1250a15c&realmId=4620816365037572030" );
         }        
       
 
@@ -51,6 +53,16 @@ namespace GoTravelTour.QuickBooks
         {
             var principal = User as ClaimsPrincipal;
 
+            var client = new RestClient("https://appcenter.intuit.com/app/connect/oauth2/v1/tokens/bearer");
+            var request = new RestRequest(Method.POST);
+            request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id=" + clientid + "&client_secret=" + clientsecret + "&code=" + code + "&redirect_uri=" + redirectUrl, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+             client = new RestClient("https://rest.tsheets.com/api/v1/grant");
+             request = new RestRequest(Method.POST);
+            request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id="+ clientid + "&client_secret="+ clientsecret + "&code="+ code + "&redirect_uri="+ redirectUrl, ParameterType.RequestBody);
+             response = client.Execute(request);
+            auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
             var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
 
             var access_token = tokenResponse.AccessToken;
