@@ -22,6 +22,7 @@ namespace GoTravelTour.Controllers
 
         public OrdensController(GoTravelDBContext context)
         {
+           
             _context = context;
         }
         
@@ -998,7 +999,10 @@ namespace GoTravelTour.Controllers
             {
                 await _context.SaveChangesAsync();
 
-                EnviarCorreo(new Usuario());
+                if(v.Estado=="Accepted")
+                EnviarCorreoAceptada(v);
+                if (v.Estado == "Confirmed")
+                    EnviarCorreoConfirmada(v);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -1018,21 +1022,53 @@ namespace GoTravelTour.Controllers
 
 
 
-        public bool EnviarCorreo(Usuario usuario)
+        public bool EnviarCorreoAceptada(Orden orden)
         {
             try
             {
                 var message = new MimeMessage();
 
-                message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.Subject = "Usuario nuevo en el sistema";
+                message.To.Add(new MailboxAddress(orden.Cliente.Correo));
+                message.From.Add(new MailboxAddress("sales@gotravelandtours.com"));
+                message.Subject = "Orden: "+orden.NumeroOrden+ "ha sido acceptada";
                 //We will say we are sending HTML. But there are options for plaintext etc. 
+                string productos = "";
+                if(orden.ListaTrasladoOrden != null)
+                foreach(var it in orden.ListaTrasladoOrden)
+                {
+                        productos += "- Traslado " + it.Traslado.Nombre + " el día " + it.FechaInicio.ToString("dd/MM/yyyy") + "<br>";
+                }
+                if (orden.ListaVehiculosOrden != null)
+                foreach (var it in orden.ListaVehiculosOrden)
+                {
+                        productos += "- Auto " + it.Vehiculo.Nombre + " desde " + it.FechaInicio.ToString("dd/MM/yyyy") +" hasta "+ it.FechaFin.ToString("dd/MM/yyyy") + "<br>";
+                }
+                if (orden.ListaActividadOrden != null)
+                foreach (var it in orden.ListaActividadOrden)
+                {
+                        productos += "- Auto " + it.Actividad.Nombre + " el día " + it.FechaInicio.ToString("dd/MM/yyyy") + "<br>";
+                }
+                if (orden.ListaAlojamientoOrden != null)
+                foreach (var it in orden.ListaAlojamientoOrden)
+                {
+                        productos += "- Auto " + it.Alojamiento.Nombre + " desde " + it.FechaInicio.ToString("dd/MM/yyyy") + " hasta " + it.FechaFin.ToString("dd/MM/yyyy") + "<br>";
+                }
                 message.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = "Gracias por registarse con nosotros " + "<br>"
-                 + "Por favor haga click en el " + "<br>"
-                + "siguiente enlace para <a href='http://camina.co/mailconfirm'" + usuario.Correo + "> registrarse</a>"
+
+                    Text = "Usted ha aceptado los productos de la orden: "+orden.NumeroOrden + "<br>"
+                 + "En breve pasaremos a solicitar y confirmar cada uno de los producto solicitados." + "<br/> <br> <br>"
+                  + "<div style='font-weight:bold'>Productos solicitados:</div> <br>"
+                 + "<div >"+productos+"</div> <br>"
+                + "Puede escribirnos a sales@gotravelandtours.com o llamar al 786-315-8244" + "<br>"
+
+                + "<br><br><br><br><br><br><br>"
+                + "<img src=''/> <br>"
+                + "<div style='font-weight:bold'>Equipo Go Travel and Tours</div> <br>"
+                + "<div style=''>17118 sw 144th ct., Miamin FL 33177 </div> <br>"
+                 + "<div style=''>B2B Cuban Wholesale: gotravelandtours.com </div> <br>"
+                 + "<div style=''>Skype: elilor0202 </div> <br>"
+                 + "<div style=''>Whatsapp: 786-315-8244 </div> <br>"
                 };
 
 
@@ -1041,12 +1077,94 @@ namespace GoTravelTour.Controllers
                 {
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("smtp.gmail.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+                    emailClient.Connect("mail.gotravelandtours.com", 25, MailKit.Security.SecureSocketOptions.Auto);
+                    //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("zuleidyrg@gmail.com", "M@luma123");
+                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+
+                    emailClient.Send(message);
+
+                    emailClient.Disconnect(true);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+
+            }
+
+        }
+
+
+        public bool EnviarCorreoConfirmada( Orden orden)
+        {
+            try
+            {
+                var message = new MimeMessage();
+
+                message.To.Add(new MailboxAddress(orden.Cliente.Correo));
+                message.From.Add(new MailboxAddress("sales@gotravelandtours.com"));
+                message.Subject = "Orden: " + orden.NumeroOrden + "ha sido confirmada";
+                //We will say we are sending HTML. But there are options for plaintext etc. 
+                string productos = "";
+                if (orden.ListaTrasladoOrden != null)
+                    foreach (var it in orden.ListaTrasladoOrden)
+                    {
+                        productos += "- Traslado " + it.Traslado.Nombre + " el día " + it.FechaInicio.ToString("dd/MM/yyyy") + "<br>";
+                    }
+                if (orden.ListaVehiculosOrden != null)
+                    foreach (var it in orden.ListaVehiculosOrden)
+                    {
+                        productos += "- Auto " + it.Vehiculo.Nombre + " desde " + it.FechaInicio.ToString("dd/MM/yyyy") + " hasta " + it.FechaFin.ToString("dd/MM/yyyy") + "<br>";
+                    }
+                if (orden.ListaActividadOrden != null)
+                    foreach (var it in orden.ListaActividadOrden)
+                    {
+                        productos += "- Auto " + it.Actividad.Nombre + " el día " + it.FechaInicio.ToString("dd/MM/yyyy") + "<br>";
+                    }
+                if (orden.ListaAlojamientoOrden != null)
+                    foreach (var it in orden.ListaAlojamientoOrden)
+                    {
+                        productos += "- Auto " + it.Alojamiento.Nombre + " desde " + it.FechaInicio.ToString("dd/MM/yyyy") + " hasta " + it.FechaFin.ToString("dd/MM/yyyy") + "<br>";
+                    }
+                message.Body = new TextPart(TextFormat.Html)
+                {
+
+                    Text = "Hemos confirmado los productos de la orden: " + orden.NumeroOrden + "<br>"
+                 + "Cada servicio está garantizado. Le recomendamos realizar el pago correspondiente a esta factura cuanto antes." +" < br /> < br /> br />"
+                 
+                  + "<div style='font-weight:bold'>Productos confirmados:</div> <br>"
+                 + "<div >" + productos + "</div> <br><br>"
+                 + "Por favor, lea nuestra polítia de cancelación <a href='gotravelandtours.com/politica.pdf'>aquí.</a>" + "<br/>"
+                + "Puede escribirnos a sales@gotravelandtours.com o llamar al 786-315-8244" + "<br>"
+
+                + "<br><br><br><br><br><br><br>"
+                + "<img src=''/> <br>"
+                + "<div style='font-weight:bold'>Equipo Go Travel and Tours</div> <br>"
+                + "<div style=''>17118 sw 144th ct., Miamin FL 33177 </div> <br>"
+                 + "<div style=''>B2B Cuban Wholesale: gotravelandtours.com </div> <br>"
+                 + "<div style=''>Skype: elilor0202 </div> <br>"
+                 + "<div style=''>Whatsapp: 786-315-8244 </div> <br>"
+                };
+
+
+                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    //The last parameter here is to use SSL (Which you should!)
+                    emailClient.Connect("mail.gotravelandtours.com", 25, MailKit.Security.SecureSocketOptions.Auto);
+                    //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+
+                    //Remove any OAuth functionality as we won't be using it. 
+                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
 
                     emailClient.Send(message);
 

@@ -34,5 +34,6 @@ namespace GoTravelTour.Models
         [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioGeneralOrden { get; set; }
         public bool IsActive { get; set; }
+        
     }
 }

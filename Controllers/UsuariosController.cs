@@ -230,15 +230,26 @@ namespace GoTravelTour.Controllers
             {
                 var message = new MimeMessage();
 
-                message.To.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.From.Add(new MailboxAddress("deivis9010@gmail.com"));
-                message.Subject = "Usuario nuevo en el sistema";
+                message.To.Add(new MailboxAddress(usuario.Correo));
+                message.From.Add(new MailboxAddress("sales@gotravelandtours.com"));
+                message.Subject = "Bienvenido a Go Travel and Tours!!!";
                 //We will say we are sending HTML. But there are options for plaintext etc. 
                 message.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = "Gracias por registarse con nosotros " + "<br>"
-                 + "Por favor haga click en el " + "<br>"
-                + "siguiente enlace para <a href='http://camina.co/mailconfirm'" + usuario.Correo + "> registrarse</a>"
+                    Text = "Gracias por registarse con nosotros: " + "<br>"
+                 + "Go Travel and Tours le proporciona, mediante nuestro sistema, la manera más fácil de vender el destino Cuba " + "<br/>"
+                 + "Ponemos a su disposición diferentes productos de primera mano. Cada oferta, producto y precio no son públicos, " + "<br>"
+                  + "sólo son para agencias de viaje y turoperadores. Visite nuestro sistema entrando a: " + "<br>"
+                + "<a href='http://gotravelandtours.com'>www.gotravelandtours.com </a>"
+                + "Puede escribirnos a sales@gotravelandtours.com o llamar al 786-315-8244"  + "<br>"
+
+                + "<br><br><br><br><br><br><br>"
+                + "<img src=''/> <br>"
+                + "<div style='font-weight:bold'>Equipo Go Travel and Tours</div> <br>"
+                + "<div style=''>17118 sw 144th ct., Miamin FL 33177 </div> <br>"
+                 + "<div style=''>B2B Cuban Wholesale: gotravelandtours.com </div> <br>"
+                 + "<div style=''>Skype: elilor0202 </div> <br>"
+                 + "<div style=''>Whatsapp: 786-315-8244 </div> <br>"
                 };
 
 
@@ -247,12 +258,13 @@ namespace GoTravelTour.Controllers
                 {
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("smtp.gmail.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+                    emailClient.Connect("mail.gotravelandtours.com", 25, MailKit.Security.SecureSocketOptions.Auto);
+                    //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("zuleidyrg@gmail.com", "M@luma123");
+                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
 
                     emailClient.Send(message);
 
@@ -303,5 +315,66 @@ namespace GoTravelTour.Controllers
             return Ok(usuario);
             
         }
+
+
+        [Route("C")]
+        [HttpGet]
+        public bool EnviarCorreoTest()
+        {
+            try
+            {
+                var message = new MimeMessage();
+                //Gott2019conga@#$ mail.gotravel
+                message.To.Add(new MailboxAddress("deivis9010@gmail.com" /*usuario.Correo*/));
+                message.From.Add(new MailboxAddress("sales@gotravelandtours.com"));
+                message.Subject = "Bienvenido a Go Travel and Tours!!!";
+                //We will say we are sending HTML. But there are options for plaintext etc. 
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = "Gracias por registarse con nosotros: " + "<br>"
+                 + "Go Travel and Tours le proporciona, mediante nuestro sistema, la manera más fácil de vender el destino Cuba " + "<br/>"
+                 + "Ponemos a su disposición diferentes productos de primera mano. Cada oferta, producto y precio no son públicos, " + "<br>"
+                  + "sólo son para agencias de viaje y turoperadores. Visite nuestro sistema entrando a: " + "<br>"
+                + "<a href='http://gotravelandtours.com'>www.gotravelandtours.com </a>"
+                + "Puede escribirnos a sales@gotravelandtours.com o llamar al 786-315-8244" + "<br>"
+
+                + "<br><br><br><br><br><br><br>"
+                + "<img src=''/> <br>"
+                + "<div style='font-weight:bold'>Equipo Go Travel and Tours</div> <br>"
+                + "<div style=''>17118 sw 144th ct., Miamin FL 33177 </div> <br>"
+                 + "<div style=''>B2B Cuban Wholesale: gotravelandtours.com </div> <br>"
+                 + "<div style=''>Skype: elilor0202 </div> <br>"
+                 + "<div style=''>Whatsapp: 786-315-8244 </div> <br>"
+                };
+
+
+                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    //The last parameter here is to use SSL (Which you should!)
+                    emailClient.Connect("mail.gotravelandtours.com", 25, MailKit.Security.SecureSocketOptions.Auto);
+                    //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+
+                    //Remove any OAuth functionality as we won't be using it. 
+                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+
+                    emailClient.Send(message);
+
+                    emailClient.Disconnect(true);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+
+            }
+
+        }
+
     }
 }
