@@ -738,7 +738,7 @@ namespace GoTravelTour.Controllers
             {
 
                 OrdenAlojamiento ord = new OrdenAlojamiento();
-               
+                bool add = false;
                 //Se buscan los precios correspondientes 
                 List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada).Include(x=>x.Habitacion)
 
@@ -748,7 +748,7 @@ namespace GoTravelTour.Controllers
                 var i = 0;
                 foreach (var p in precios)
                 {
-
+                    add = true;
                     //   if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
                     //   ((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
                     //  {
@@ -770,9 +770,11 @@ namespace GoTravelTour.Controllers
 
                 }
 
+                if (add) { 
                 ord.Alojamiento = a;
 
                 resultados.Add(ord);
+                }
             }
             if (buscador.OrdenarAsc)
             {
@@ -930,7 +932,7 @@ namespace GoTravelTour.Controllers
                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId).ToList();
 
                     if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any())
-                        ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio)*(buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes);
+                        ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio)*(buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes)*cantDiasGenenarl;
 
                     //Se aplica la ganancia correspondiente
                     List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.TRANSPORTATION).ToList();
@@ -1177,6 +1179,7 @@ namespace GoTravelTour.Controllers
                     }
                     if (encontroMod)
                     {
+                        ov.ModificadorAplicado = md;
                         List<Reglas> reglas = md.ListaReglas;
                         foreach (var r in reglas)
                         {

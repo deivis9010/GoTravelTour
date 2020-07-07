@@ -38,6 +38,7 @@ namespace GoTravelTour.Models
         public PrecioPlanesAlimenticios PrecioPlanesAlimenticios { get; set; }
         public int AlojamientoId { get; set; }
         public Alojamiento Alojamiento { set; get; }
+        public Modificador ModificadorAplicado { set; get; }
         //FIN----------------
         public bool PremiteCopia { get; set; }
         [Column(TypeName = "decimal(18,4)")]
