@@ -997,7 +997,7 @@ namespace GoTravelTour.Controllers
 
             int i = 0;
             bool seCalcValor = false; //para saber si se calculo el valor
-            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto !=null && x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
             //Recorro todas los rangos de fecha para ir calculando precio total
             while (i < listaRangos.Count)
             {
@@ -1026,7 +1026,7 @@ namespace GoTravelTour.Controllers
 
             int i = 0;
             bool seCalcValor = false; //para saber si se calculo el valor
-            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
+            List<RangoFechas> listaRangos = p.Temporada.ListaFechasTemporada.Where(x => x.Producto != null && x.Producto.ProductoId == a.ProductoId).OrderBy(x => x.FechaInicio).ToList();
             //Recorro todas los rangos de fecha para ir calculando precio total
             while (i < listaRangos.Count)
             {
@@ -1137,9 +1137,9 @@ namespace GoTravelTour.Controllers
             {
                 md = item;
                 if (md.CantAdult == buscador.CantidadAdultos && md.CantNino == buscador.CantidadMenores
-                    && md.CantNino == buscador.CantidadInfantes) // si coincide la cantidad de dias con el rango de una restriccion se calcula
+                    && md.CantInfantes == buscador.CantidadInfantes) // si coincide la cantidad de dias con el rango de una restriccion se calcula
                 {
-
+                    encontroMod = true;
                     if (md.FechaI != null && md.FechaF != null)
                     {
                         if (buscador.Entrada <= md.FechaI && md.FechaI <= buscador.Salida &&
@@ -1148,7 +1148,7 @@ namespace GoTravelTour.Controllers
                             //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
                             cantDias = ((TimeSpan)(md.FechaF - md.FechaI)).Days;
                             cantTotaldiasResta -= cantDias;
-                            encontroMod = true;
+                            //encontroMod = true;
                         }
                         else
                         {
@@ -1157,7 +1157,7 @@ namespace GoTravelTour.Controllers
                                 //Si el rango esta incluido en el rango de entrada y salida la cantidad de dias sera la diferencia del rango de fecha
                                 cantDias = ((TimeSpan)(md.FechaF - md.FechaI)).Days + 1;
                                 cantTotaldiasResta -= cantDias;
-                                encontroMod = true;
+                                //encontroMod = true;
                             }
                             else
                             if (md.FechaI <= buscador.Entrada && buscador.Entrada < md.FechaF)
@@ -1165,7 +1165,7 @@ namespace GoTravelTour.Controllers
                                 //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
                                 cantDias = ((DateTime)md.FechaF - buscador.Entrada).Days;
                                 cantTotaldiasResta -= cantDias;
-                                encontroMod = true;
+                                //encontroMod = true;
                             }
                             else
                             if (md.FechaF >= buscador.Salida && buscador.Salida >= md.FechaI)
@@ -1173,7 +1173,7 @@ namespace GoTravelTour.Controllers
                                 //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
                                 cantDias = (buscador.Salida - (DateTime)md.FechaI).Days;
                                 cantTotaldiasResta -= cantDias;
-                                encontroMod = true;
+                               // encontroMod = true;
                             }
                         }
                     }

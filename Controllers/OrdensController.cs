@@ -206,6 +206,8 @@ namespace GoTravelTour.Controllers
                     {
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                          .Include(d => d.Sobreprecio)
+                          .Include(d => d.Habitacion)
+                         .Include(d => d.ModificadorAplicado)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                         foreach (var item in ord.ListaAlojamientoOrden)
