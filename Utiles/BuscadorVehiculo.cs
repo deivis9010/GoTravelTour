@@ -19,6 +19,9 @@ namespace GoTravelTour.Utiles
         public DateTime FechaRecogida { get; set; }
         public DateTime FechaEntrega { get; set; }
 
+        public int ProductoId { get; set; }
+        public int DistribuidorId { get; set; }
+
 
     }
 }

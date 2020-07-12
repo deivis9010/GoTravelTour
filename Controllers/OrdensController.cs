@@ -73,7 +73,7 @@ namespace GoTravelTour.Controllers
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                          .Include(d => d.Sobreprecio)
                          .Include(d => d.Habitacion)
-                         .Include(d=>d.ModificadorAplicado)
+                         .Include(d=>d.ModificadorAplicado.ListaReglas)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                         foreach (var item in ord.ListaAlojamientoOrden)
@@ -207,7 +207,7 @@ namespace GoTravelTour.Controllers
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                          .Include(d => d.Sobreprecio)
                           .Include(d => d.Habitacion)
-                         .Include(d => d.ModificadorAplicado)
+                         .Include(d => d.ModificadorAplicado.ListaReglas)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
                         foreach (var item in ord.ListaAlojamientoOrden)
@@ -559,6 +559,8 @@ namespace GoTravelTour.Controllers
 
                     if (oal.Sobreprecio != null)
                         oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
+                    if (oal.ModificadorAplicado != null)
+                        oal.ModificadorAplicado = _context.Modificadores.Include(x=>x.ListaReglas).First(x => x.ModificadorId == oal.ModificadorAplicado.ModificadorId);
 
                     orden.PrecioGeneralOrden += oal.PrecioOrden;
                     _context.OrdenAlojamiento.Add(oal);
@@ -731,6 +733,8 @@ namespace GoTravelTour.Controllers
 
                     if (oal.Sobreprecio != null)
                         oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
+                    if (oal.ModificadorAplicado != null)
+                        oal.ModificadorAplicado = _context.Modificadores.Include(x=>x.ListaReglas).First(x => x.ModificadorId == oal.ModificadorAplicado.ModificadorId);
                 }
             }
 

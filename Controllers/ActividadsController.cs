@@ -950,5 +950,227 @@ namespace GoTravelTour.Controllers
         }
 
 
+
+        // POST: api/Actividads/BuscarOrden
+        [HttpPost]
+        [Route("CambiarPrecio")]
+        public OrdenActividad GetOrdenActividadesEspecifico([FromBody] BuscadorActividad buscador, int pageIndex = 1, int pageSize = 10)
+        {
+
+
+            List<OrdenActividad> lista = new List<OrdenActividad>(); //Lista  a devolver (candidatos)
+            string diaSemana = buscador.Fecha.DayOfWeek.ToString();
+
+            switch (diaSemana)
+            {
+                case "Sunday":
+                    {
+                        diaSemana = "7";
+                        break;
+                    }
+                case "Monday":
+                    {
+                        diaSemana = "1";
+                        break;
+                    }
+                case "Tuesday":
+                    {
+                        diaSemana = "2";
+                        break;
+                    }
+                case "Wednesday":
+                    {
+                        diaSemana = "3";
+                        break;
+                    }
+
+                case "Thursday":
+                    {
+                        diaSemana = "4";
+                        break;
+                    }
+
+                case "Friday":
+                    {
+                        diaSemana = "5";
+                        break;
+                    }
+                case "Saturday":
+                    {
+                        diaSemana = "6";
+                        break;
+                    }
+            }
+
+            Actividad act = _context.Actividadess.Include(d => d.ListaDistribuidoresProducto).First(x => x.ProductoId == buscador.ProductoId);
+
+            //Se buscan todos los alojamientos segun los parametros
+            List<Actividad> actividades = new List<Actividad>();
+
+
+            if (!string.IsNullOrEmpty(buscador.NombreActividad))
+            {
+                actividades = actividades.Where(x => x.Nombre.Contains(buscador.NombreActividad, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (buscador.CantidadMenores > 0 && actividades != null && actividades.Any())
+            {
+                actividades = actividades.Where(x => x.PermiteNino).ToList();
+            }
+
+
+            if (actividades != null && actividades.Any())
+                actividades = actividades.Where(x => !string.IsNullOrEmpty(x.Schedule) && x.Schedule.Split(" ").Any(d => d == diaSemana)).ToList();
+
+            foreach (var ac in actividades)
+            {
+                Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                OrdenActividad oac = new OrdenActividad();
+                oac.Actividad = ac;
+                oac.CantAdulto = buscador.CantidadAdultos;
+                oac.CantNino = buscador.CantidadMenores;
+                oac.FechaActividad = buscador.Fecha;
+
+                foreach (var dist in ac.ListaDistribuidoresProducto)
+                {
+                    //Se buscan los precios correspondientes de las actividades
+                    List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
+                            .Include(x => x.Temporada.Contrato.Distribuidor)
+                            .Where(x => x.ProductoId == ac.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId).ToList();
+                    foreach (var p in precios)
+                    {
+                        //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                        List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderBy(x => x.Minimo).ToList();
+
+                        if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Fecha && buscador.Fecha <= x.FechaFin))) // si la fecha buscada esta en el rango de precios
+                        {
+
+                            oac.PrecioActividad = p;
+                            oac.Distribuidor = p.Temporada.Contrato.Distribuidor;
+
+                            if (ac.Modalidad.Equals(ValoresAuxiliares.GROUP_MODE_COLECTIVA))//Es colecctiva
+                            {
+                                oac.PrecioOrden += p.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (p.PrecioNino) + buscador.CantidadInfantes * p.PrecioInfante;
+                            }
+                            else
+                            {
+                                Restricciones rt = new Restricciones();
+                                bool encontroRangoValido = false;
+                                foreach (var item in restricciones) // se evalua por restricciones el valor de la cantidad de dias
+                                {
+                                    rt = item;
+                                    if (item.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= item.Maximo) // si coincide la cantidad de dias con el rango de una restriccion se calcula
+                                    {
+                                        oac.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio; //* buscador.CantidadAdultos;
+
+                                        encontroRangoValido = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!encontroRangoValido && restricciones.Any())
+                                {
+                                    var rtMax = restricciones.Last();
+                                    oac.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == ac.ProductoId && x.RestriccionesId == rtMax.RestriccionesId).Precio;//buscador.CantidadAdultos *
+
+                                }
+                                oac.PrecioOrden += buscador.CantidadMenores * (p.PrecioNino) + buscador.CantidadInfantes * p.PrecioInfante;
+                            }
+
+
+                            //busco si la actividad tiene servicios asociados
+                            ac.ServiciosAdicionados = _context.Servicio.Where(x => x.ProductoId == ac.ProductoId).ToList();
+
+                            foreach (var serv in ac.ServiciosAdicionados)
+                            {
+
+                                PrecioServicio ps = _context.PrecioServicio.First(x => x.ServicioId == serv.ServicioId
+                                && x.Temporada.TemporadaId == p.Temporada.TemporadaId
+                                && x.Servicio.ProductoId == ac.ProductoId);
+
+
+
+                                if (serv.Categoria.Equals(ValoresAuxiliares.GROUP_MODE_COLECTIVA)) //Es Exclusivsa el servicio o sea se paga por restricciones
+                                {
+                                    try
+                                    {
+                                        RestriccionesPrecio rp = _context.RestriccionesPrecios.Include(r => r.Restricciones).First(x => x.ServicioId == serv.ServicioId &&
+                                        x.Restricciones.Minimo <= buscador.CantidadAdultos && buscador.CantidadAdultos <= x.Restricciones.Maximo);
+                                        if (rp != null)
+                                        {
+                                            oac.PrecioOrden += rp.Precio;
+                                        }
+
+                                    }
+                                    catch
+                                    {
+                                        RestriccionesPrecio rp = _context.RestriccionesPrecios.Include(r => r.Restricciones).Where(x => x.ServicioId == serv.ServicioId).OrderByDescending(x => x.Restricciones.Maximo).First();
+                                        oac.PrecioOrden += rp.Precio;
+                                    }
+                                    oac.PrecioOrden += buscador.CantidadMenores * (decimal)(ps.PrecioNino) + buscador.CantidadInfantes * (decimal)(ps.PrecioInfante);
+
+                                }
+                                else
+                                    oac.PrecioOrden += (decimal)ps.PrecioAdulto * buscador.CantidadAdultos + buscador.CantidadMenores * (decimal)(ps.PrecioNino) + buscador.CantidadInfantes * (decimal)(ps.PrecioInfante);
+
+
+
+
+
+                            }
+
+
+
+
+                        }
+
+
+
+
+
+                        //Se aplica la ganancia correspondiente
+                        List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.ACTIVITY).ToList();
+
+                        foreach (Sobreprecio s in sobreprecios)
+                        {
+                            if (s.PrecioDesde <= oac.PrecioOrden && oac.PrecioOrden <= s.PrecioHasta)
+                            {
+                                oac.Sobreprecio = s;
+                                decimal valorAplica = 0;
+                                if (s.ValorDinero != null)
+                                {
+                                    valorAplica = (decimal)s.ValorDinero;
+                                    oac.PrecioOrden += valorAplica + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                }
+                                else
+                                {
+                                    valorAplica = oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                    oac.PrecioOrden += valorAplica + (oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                }
+
+                                oac.ValorSobreprecioAplicado = valorAplica;
+                                break;
+                            }
+
+                        }
+
+                        lista.Add(oac);
+                    }
+
+                }
+
+
+
+
+            }
+
+
+
+
+            return lista.OrderByDescending(x => x.PrecioOrden).ToList()[0];
+
+
+        }
+
     }
 }

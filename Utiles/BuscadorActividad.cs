@@ -15,5 +15,8 @@ namespace GoTravelTour.Utiles
         public int CantidadMenores { get; set; }
         public int CantidadInfantes { get; set; }
         public DateTime Fecha { get; set; }
+
+        public int ProductoId { get; set; }
+        public int DistribuidorId { get; set; }
     }
 }
