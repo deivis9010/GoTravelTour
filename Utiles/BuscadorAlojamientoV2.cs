@@ -25,5 +25,7 @@ namespace GoTravelTour.Utiles
 
         public DateTime Entrada { get; set; }
         public DateTime Salida { get; set; }
+
+        public int DistribuidorId { get; set; }
     }
 }

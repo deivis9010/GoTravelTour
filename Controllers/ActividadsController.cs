@@ -1007,7 +1007,7 @@ namespace GoTravelTour.Controllers
             //Se buscan todos los alojamientos segun los parametros
             List<Actividad> actividades = new List<Actividad>();
 
-
+            actividades.Add(act);
             if (!string.IsNullOrEmpty(buscador.NombreActividad))
             {
                 actividades = actividades.Where(x => x.Nombre.Contains(buscador.NombreActividad, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -1166,8 +1166,10 @@ namespace GoTravelTour.Controllers
 
 
 
-
-            return lista.OrderByDescending(x => x.PrecioOrden).ToList()[0];
+            if (lista.Any())
+                return lista.OrderByDescending(x => x.PrecioOrden).ToList()[0];
+            else
+                return new OrdenActividad();
 
 
         }

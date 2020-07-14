@@ -756,6 +756,7 @@ namespace GoTravelTour.Controllers
                     {
                         i = 1;
                         a.PrecioInicial = p.Precio;
+                       
                         ord.Habitacion = p.Habitacion;
                         continue;
                     }
@@ -804,6 +805,8 @@ namespace GoTravelTour.Controllers
 
             //Se buscan todos los alojamientos segun los parametros
             Alojamiento alojamiento = _context.Alojamientos.Include(x => x.ListaDistribuidoresProducto).First(x => x.ProductoId == buscador.Alojamiento.ProductoId);
+            if (buscador.DistribuidorId > 0 && alojamiento.ListaDistribuidoresProducto != null && alojamiento.ListaDistribuidoresProducto.Any())
+                alojamiento.ListaDistribuidoresProducto = alojamiento.ListaDistribuidoresProducto.Where(x => x.DistribuidorId == buscador.DistribuidorId).ToList();
 
             foreach (var dist in alojamiento.ListaDistribuidoresProducto)
             {
@@ -992,7 +995,7 @@ namespace GoTravelTour.Controllers
 
         }
 
-        private static void Met_CalcularPrecioAlojamientoPrimeraTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
+        private void Met_CalcularPrecioAlojamientoPrimeraTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
         {
 
             int i = 0;
@@ -1021,7 +1024,7 @@ namespace GoTravelTour.Controllers
             if (!seCalcValor) throw new Exception();
         }
 
-        private static void Met_CalcularPrecioAlojamientoPorSegundaTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
+        private  void Met_CalcularPrecioAlojamientoPorSegundaTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
         {
 
             int i = 0;
@@ -1050,7 +1053,7 @@ namespace GoTravelTour.Controllers
         }
 
 
-        private static void Met_CalcularPrecioAlojamientoPorDia(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
+        private  void Met_CalcularPrecioAlojamientoPorDia(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
         {
             int i = 0;
 
@@ -1117,6 +1120,7 @@ namespace GoTravelTour.Controllers
                 i++;
             }
 
+           
             ov.Habitacion = p.Habitacion;
             ov.TipoHabitacion = p.TipoHabitacion;
 
@@ -1128,7 +1132,7 @@ namespace GoTravelTour.Controllers
 
         }
 
-        private static void GetPrecioAlojamientoSegunModificadores(BuscadorAlojamientoV2 buscador, OrdenAlojamiento ov, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, ref Modificador md, decimal precioBase, RangoFechas rf)
+        private  void GetPrecioAlojamientoSegunModificadores(BuscadorAlojamientoV2 buscador, OrdenAlojamiento ov, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, ref Modificador md, decimal precioBase, RangoFechas rf)
         {
             bool encontroMod = false;
             int cantTotaldiasResta = cantDias; //esta variable es para llevar la cantidad de dias que ya se han calculado
@@ -1181,8 +1185,15 @@ namespace GoTravelTour.Controllers
                     {
                         ov.ModificadorAplicado = md;
                         List<Reglas> reglas = md.ListaReglas;
+                        var contratoid = md.Contrato.ContratoId;
+
+
                         foreach (var r in reglas)
                         {
+                            precioBase = _context.PrecioAlojamiento.Where(x => x.ProductoId == ov.Alojamiento.ProductoId && x.Contrato.ContratoId == contratoid 
+                            && x.TipoHabitacion.TipoHabitacionId == r.TipoHabitacionId && x.Habitacion.HabitacionId == buscador.Habitacion.HabitacionId
+                            && x.Temporada.TemporadaId == rf.TemporadaId).First().Precio;
+
                             if (r.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_ADULTO) && cantAdultosAux > 0)
                             {
                                 cantAdultosAux--;
@@ -1267,6 +1278,7 @@ namespace GoTravelTour.Controllers
         {
             List<Modificador> res = new List<Modificador>();
             res = _context.Modificadores.Include(x => x.ListaReglas)
+                        .Include(x => x.Contrato)
                         .Where(x => x.IsActivo && x.ListaHoteles.Any(e => e.ProductoId == a.ProductoId) &&
                         x.ListaTemporadasAfectadas.Any(e => e.TemporadaId == p.Temporada.TemporadaId)).ToList();
 

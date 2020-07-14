@@ -850,8 +850,12 @@ namespace GoTravelTour.Controllers
 
             }
 
-
+            if(lista != null && lista.Any())
             return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex, pageSize).ToList()[0];
+            else
+            {
+                return new OrdenTraslado();
+            }
 
 
         }

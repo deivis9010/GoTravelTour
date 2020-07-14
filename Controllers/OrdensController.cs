@@ -58,7 +58,7 @@ namespace GoTravelTour.Controllers
                        .Include(d => d.LugarRecogida)
                        .Include(d => d.LugarRetorno)
                         .Include(d => d.Sobreprecio)
-                       .First(r => r.OrdenId == x.OrdenId));
+                       .First(r => r.OrdenActividadId == x.OrdenActividadId));
                         foreach (var item in ord.ListaActividadOrden)
                         {
                             if (item.PrecioActividad != null && item.PrecioActividad.Temporada != null)
@@ -75,7 +75,7 @@ namespace GoTravelTour.Controllers
                          .Include(d => d.Habitacion)
                          .Include(d=>d.ModificadorAplicado.ListaReglas)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
                         foreach (var item in ord.ListaAlojamientoOrden)
                         {
                             if (item.ListaPrecioAlojamientos != null)
@@ -97,7 +97,7 @@ namespace GoTravelTour.Controllers
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
                          .Include(d => d.Sobreprecio)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                         foreach (var item in ord.ListaVehiculosOrden)
                         {
                             if (item.ListaPreciosRentaAutos != null)
@@ -121,7 +121,7 @@ namespace GoTravelTour.Controllers
                         .Include(d => d.PuntoOrigen)
                         .Include(d => d.Sobreprecio)
                         .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
                     }
                         
                 }
@@ -192,7 +192,7 @@ namespace GoTravelTour.Controllers
                        .Include(d => d.LugarRecogida)
                        .Include(d => d.LugarRetorno)
                         .Include(d => d.Sobreprecio)
-                       .First(r => r.OrdenId == x.OrdenId));
+                       .First(r => r.OrdenActividadId == x.OrdenActividadId));
                         foreach (var item in ord.ListaActividadOrden)
                         {
                             if (item.PrecioActividad != null && item.PrecioActividad.Temporada != null)
@@ -209,7 +209,7 @@ namespace GoTravelTour.Controllers
                           .Include(d => d.Habitacion)
                          .Include(d => d.ModificadorAplicado.ListaReglas)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
                         foreach (var item in ord.ListaAlojamientoOrden)
                         {
                             if (item.ListaPrecioAlojamientos != null)
@@ -231,7 +231,7 @@ namespace GoTravelTour.Controllers
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
                          .Include(d => d.Sobreprecio)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                         foreach (var item in ord.ListaVehiculosOrden)
                         {
                             if (item.ListaPreciosRentaAutos != null)
@@ -255,7 +255,7 @@ namespace GoTravelTour.Controllers
                         .Include(d => d.PuntoOrigen)
                         .Include(d => d.Sobreprecio)
                         .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
-                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenId == x.OrdenId));
+                        .ThenInclude(l => l.Distribuidor).First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
                     }
 
                 }
@@ -553,7 +553,11 @@ namespace GoTravelTour.Controllers
                         .Single(x => x.ProductoId == oal.Alojamiento.ProductoId);
                     oal.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == oal.DistribuidorId);
-                    oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+
+                    if(oal.Habitacion != null )
+                        oal.Habitacion= _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+                      
+                   
 
                     oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
 
@@ -727,7 +731,9 @@ namespace GoTravelTour.Controllers
                         .Single(x => x.ProductoId == oal.Alojamiento.ProductoId);
                     oal.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == oal.DistribuidorId);
-                    oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+
+                    if (oal.Habitacion != null)
+                        oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
 
                     oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
 
