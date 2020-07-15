@@ -58,6 +58,7 @@ namespace GoTravelTour.Controllers
                        .Include(d => d.LugarRecogida)
                        .Include(d => d.LugarRetorno)
                         .Include(d => d.Sobreprecio)
+                        .Include(d => d.Voucher)
                        .First(r => r.OrdenActividadId == x.OrdenActividadId));
                         foreach (var item in ord.ListaActividadOrden)
                         {
@@ -192,6 +193,7 @@ namespace GoTravelTour.Controllers
                        .Include(d => d.LugarRecogida)
                        .Include(d => d.LugarRetorno)
                         .Include(d => d.Sobreprecio)
+                         .Include(d => d.Voucher)
                        .First(r => r.OrdenActividadId == x.OrdenActividadId));
                         foreach (var item in ord.ListaActividadOrden)
                         {
@@ -503,6 +505,11 @@ namespace GoTravelTour.Controllers
                     if (oac.Sobreprecio != null)
                         oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
 
+                    if (oac.Voucher != null)
+                        oac.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == oac.Voucher.ConfiguracionVoucherId);
+
+                   
+
                     orden.PrecioGeneralOrden += oac.PrecioOrden;
                     _context.OrdenActividad.Add(oac);
                 }
@@ -707,6 +714,10 @@ namespace GoTravelTour.Controllers
 
                     if (oac.Sobreprecio != null)
                         oac.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oac.Sobreprecio.SobreprecioId);
+
+                    if (oac.Voucher != null)
+                        oac.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == oac.Voucher.ConfiguracionVoucherId);
+
                 }
             }
 

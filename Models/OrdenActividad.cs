@@ -25,6 +25,7 @@ namespace GoTravelTour.Models
         public string ServiciosExcluidos { get; set; } //iran los id de los servicios q no son opcionales y no se incluirarn en la orden ejemplo (2525-3030-)
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
+        public ConfiguracionVoucher Voucher { get; set; }
         public int DistribuidorId { get; set; }
         public Distribuidor Distribuidor { get; set; }
         public int ActividadId { get; set; }

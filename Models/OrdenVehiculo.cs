@@ -20,7 +20,9 @@ namespace GoTravelTour.Models
         public Orden Orden { get; set; }
         public PuntoInteres LugarRecogida { get; set; }
         public PuntoInteres LugarEntrega { get; set; }
-        public int DistribuidorId { get; set; }      
+        public int DistribuidorId { get; set; }
+        public string TelefonoReferencia { get; set; }
+        public string DireccionReferencia { get; set; }
 
         public List<OrdenVehiculoPrecioRentaAuto> ListaPreciosRentaAutos { get; set; }
         public Distribuidor Distribuidor { get; set; }
