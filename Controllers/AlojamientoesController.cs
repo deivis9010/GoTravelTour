@@ -112,9 +112,37 @@ namespace GoTravelTour.Controllers
         // GET: api/Alojamientoes/Count
         [Route("Count")]
         [HttpGet]
-        public int GetAlojamientoesCount()
+        public int GetAlojamientoesCount(string col = "", string filter = "", string sortDirection = "asc", int idProveedor = 0)
         {
-            return _context.Alojamientos.Count();
+
+            IEnumerable<Alojamiento> lista;
+            if (col == "-1")
+            {
+                lista = _context.Alojamientos
+                   
+                    .ToList();
+
+
+
+                return lista.Count();
+            }
+           
+            if (!string.IsNullOrEmpty(filter))
+            {
+                lista = _context.Alojamientos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower())))
+                    .ToList(); ;
+
+            }
+            else
+            {
+                lista = _context.Alojamientos
+                    .ToList();
+
+            }
+
+            if (idProveedor != 0)
+                lista = lista.Where(x => x.ProveedorId == idProveedor);
+            return lista.Count();
         }
 
         // GET: api/Alojamientoes/5
