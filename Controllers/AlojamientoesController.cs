@@ -25,7 +25,7 @@ namespace GoTravelTour.Controllers
 
         // GET: api/Alojamientoes
         [HttpGet]
-        public IEnumerable<Alojamiento> GetAlojamientos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor = 0)
+        public IEnumerable<Alojamiento> GetAlojamientos(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1, int idProveedor = 1)
         {
             IEnumerable<Alojamiento> lista;
             if (col == "-1")
@@ -57,10 +57,7 @@ namespace GoTravelTour.Controllers
                     // .Include(a => a.TipoProducto)
                     .Include(a => a.TipoAlojamiento)
                     .Include(a => a.PuntoInteres)
-                    // .Include(a => a.PuntoInteres)
-                    //.Include(a => a.CategoriaHoteles)
-                    // .Include(a => a.ListaPlanesAlimenticios)
-                    .OrderBy(a => a.Nombre)
+                    .Where(x => x.ProveedorId == idProveedor).OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
 
             }
@@ -76,6 +73,7 @@ namespace GoTravelTour.Controllers
                     //.Include(a => a.PuntoInteres)
                     //.Include(a => a.CategoriaHoteles)
                     // .Include(a => a.ListaPlanesAlimenticios)
+                    .Where(x => x.ProveedorId == idProveedor)
                     .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
 
@@ -118,8 +116,8 @@ namespace GoTravelTour.Controllers
             IEnumerable<Alojamiento> lista;
             if (col == "-1")
             {
-                lista = _context.Alojamientos
-                   
+                lista = _context.Alojamientos.Where(x => x.ProveedorId == idProveedor)
+
                     .ToList();
 
 
@@ -130,7 +128,7 @@ namespace GoTravelTour.Controllers
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.Alojamientos.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower())))
-                    .ToList(); ;
+                    .ToList(); 
 
             }
             else
