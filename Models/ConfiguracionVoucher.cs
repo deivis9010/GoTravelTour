@@ -18,7 +18,7 @@ namespace GoTravelTour.Models
         public string ImageCompania { get; set; }
         public string TipoImagen { get; set; }
         public bool IsActivo { get; set; }
-        public bool NombreCompania { get; set; }
+        public string NombreCompania { get; set; }
 
     }
 }
