@@ -23,6 +23,7 @@ namespace GoTravelTour.Models
         public bool IsIdaVuelta { get; set; }
         public string TelefonoReferencia { get; set; }
         public string DireccionReferencia { get; set; }
+        public string TipoTrasladoOrden { get; set; }
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
 

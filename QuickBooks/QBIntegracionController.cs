@@ -17,6 +17,10 @@ using QuickBooks.Helper;
 using QuickBooks.Models;
 using RestSharp;
 
+using Intuit.Ipp.DataService;
+
+
+
 namespace GoTravelTour.QuickBooks
 {
     [Route("api/[controller]")]
@@ -27,7 +31,7 @@ namespace GoTravelTour.QuickBooks
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
-        public static string redirectUrl = " http://localhost:59649/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
        
         public static string environment ="sandbox";
 
@@ -53,7 +57,7 @@ namespace GoTravelTour.QuickBooks
         {
             var principal = User as ClaimsPrincipal;
 
-            var client = new RestClient("https://appcenter.intuit.com/app/connect/oauth2/v1/tokens/bearer");
+           /*var client = new RestClient("https://appcenter.intuit.com/app/connect/oauth2/v1/tokens/bearer");
             var request = new RestRequest(Method.POST);
             request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id=" + clientid + "&client_secret=" + clientsecret + "&code=" + code + "&redirect_uri=" + redirectUrl, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
@@ -61,8 +65,8 @@ namespace GoTravelTour.QuickBooks
              client = new RestClient("https://rest.tsheets.com/api/v1/grant");
              request = new RestRequest(Method.POST);
             request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id="+ clientid + "&client_secret="+ clientsecret + "&code="+ code + "&redirect_uri="+ redirectUrl, ParameterType.RequestBody);
-             response = client.Execute(request);
-            auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
+             response = client.Execute(request);*/
+            //auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
             var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
 
             var access_token = tokenResponse.AccessToken;
@@ -78,15 +82,26 @@ namespace GoTravelTour.QuickBooks
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = "https://sandbox-quickbooks.api.intuit.com/";
 
             // Create a QuickBooks QueryService using ServiceContext
             QueryService<CompanyInfo> querySvc = new QueryService<CompanyInfo>(serviceContext);
-            CompanyInfo companyInfo = querySvc.ExecuteIdsQuery("SELECT * FROM CompanyInfo").FirstOrDefault();
+            try
+            {
+                CompanyInfo companyInfo = querySvc.ExecuteIdsQuery("SELECT * FROM CompanyInfo").FirstOrDefault();
+           
+            
 
             string output = JsonConvert.SerializeObject(companyInfo, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
             return Ok( "ApiCallService" + " QBO API call Successful!! Response: " );
         }
 

@@ -369,11 +369,11 @@ namespace GoTravelTour.Controllers
             orden.Cliente = _context.Clientes.Single(x => x.ClienteId == orden.ClienteId);
             orden.Creador = _context.Usuarios.Single(x => x.UsuarioId == orden.Creador.UsuarioId);
             orden.FechaActualizacion = DateTime.Now;
-
+            orden.PrecioGeneralOrden = 0;
             List<OrdenVehiculo> veAborrar = _context.OrdenVehiculo.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach(var vo in veAborrar)
             {
-                orden.PrecioGeneralOrden -= vo.PrecioOrden;
+                //orden.PrecioGeneralOrden -= vo.PrecioOrden;
                 _context.OrdenVehiculo.Remove(vo);
             }
            
@@ -430,7 +430,7 @@ namespace GoTravelTour.Controllers
             List<OrdenTraslado> trAborrar = _context.OrdenTraslado.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach (var to in trAborrar)
             {
-                orden.PrecioGeneralOrden -= to.PrecioOrden;
+                //orden.PrecioGeneralOrden -= to.PrecioOrden;
                 _context.OrdenTraslado.Remove(to);
             }
             if (orden.ListaTrasladoOrden != null)
@@ -469,7 +469,7 @@ namespace GoTravelTour.Controllers
             List<OrdenActividad> acAborrar = _context.OrdenActividad.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach (var aco in acAborrar)
             {
-                orden.PrecioGeneralOrden -= aco.PrecioOrden;
+                //orden.PrecioGeneralOrden -= aco.PrecioOrden;
                 _context.OrdenActividad.Remove(aco);
             }
 
@@ -519,7 +519,7 @@ namespace GoTravelTour.Controllers
             List<OrdenAlojamiento> alAborrar = _context.OrdenAlojamiento.Where(x => x.OrdenId == orden.OrdenId).ToList();
             foreach (var alo in alAborrar)
             {
-                orden.PrecioGeneralOrden -= alo.PrecioOrden;
+                //orden.PrecioGeneralOrden -= alo.PrecioOrden;
                 _context.OrdenAlojamiento.Remove(alo);
             }
 
