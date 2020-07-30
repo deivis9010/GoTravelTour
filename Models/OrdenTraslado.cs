@@ -26,9 +26,10 @@ namespace GoTravelTour.Models
         public string TipoTrasladoOrden { get; set; }
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
+        public ConfiguracionVoucher Voucher { get; set; }
 
         public PrecioTraslado PrecioTraslado { get; set; }  
-        public ConfiguracionVoucher ConfiguracionVoucher { set; get; }
+        
         public string TipoTraslado { get; set; } //duda que cosa es y como se gestiona
         public int DistribuidorId { get; set; }
         public Distribuidor Distribuidor { get; set; }       

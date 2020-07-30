@@ -42,6 +42,8 @@ namespace GoTravelTour.Controllers
                     .Include(x=>x.ListaAlojamientoOrden)
                     .Include(x => x.ListaTrasladoOrden)
                     .Include(x => x.ListaVehiculosOrden)
+
+                    
                     
 
                     .OrderBy(a => a.NombreOrden)
@@ -74,6 +76,7 @@ namespace GoTravelTour.Controllers
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                          .Include(d => d.Sobreprecio)
                          .Include(d => d.Habitacion)
+                         .Include(d => d.Voucher)
                          .Include(d=>d.ModificadorAplicado.ListaReglas)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
@@ -97,6 +100,7 @@ namespace GoTravelTour.Controllers
                     {
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
                          .Include(d => d.Sobreprecio)
+                         .Include(d => d.Voucher)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                         foreach (var item in ord.ListaVehiculosOrden)
@@ -121,6 +125,7 @@ namespace GoTravelTour.Controllers
                         .Include(d => d.PuntoDestino)
                         .Include(d => d.PuntoOrigen)
                         .Include(d => d.Sobreprecio)
+                        .Include(d => d.Voucher)
                         .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
                     }
@@ -210,6 +215,7 @@ namespace GoTravelTour.Controllers
                          .Include(d => d.Sobreprecio)
                           .Include(d => d.Habitacion)
                          .Include(d => d.ModificadorAplicado.ListaReglas)
+                         .Include(d => d.Voucher)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
                         foreach (var item in ord.ListaAlojamientoOrden)
@@ -232,6 +238,7 @@ namespace GoTravelTour.Controllers
                     {
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
                          .Include(d => d.Sobreprecio)
+                         .Include(d => d.Voucher)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                         foreach (var item in ord.ListaVehiculosOrden)
@@ -256,6 +263,7 @@ namespace GoTravelTour.Controllers
                         .Include(d => d.PuntoDestino)
                         .Include(d => d.PuntoOrigen)
                         .Include(d => d.Sobreprecio)
+                        .Include(d => d.Voucher)
                         .Include(d => d.Traslado).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
                     }
@@ -422,6 +430,9 @@ namespace GoTravelTour.Controllers
                     if (vo.Sobreprecio != null)
                         vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
 
+                    if (vo.Voucher != null)
+                        vo.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == vo.Voucher.ConfiguracionVoucherId);
+
                     orden.PrecioGeneralOrden += vo.PrecioOrden;
                     _context.OrdenVehiculo.Add(vo);
 
@@ -459,6 +470,9 @@ namespace GoTravelTour.Controllers
 
                     if (to.Sobreprecio != null)
                         to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
+
+                    if (to.Voucher != null)
+                        to.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == to.Voucher.ConfiguracionVoucherId);
 
                     orden.PrecioGeneralOrden += to.PrecioOrden;
                     _context.OrdenTraslado.Add(to);
@@ -573,6 +587,9 @@ namespace GoTravelTour.Controllers
                     if (oal.ModificadorAplicado != null)
                         oal.ModificadorAplicado = _context.Modificadores.Include(x=>x.ListaReglas).First(x => x.ModificadorId == oal.ModificadorAplicado.ModificadorId);
 
+                    if (oal.Voucher != null)
+                        oal.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == oal.Voucher.ConfiguracionVoucherId);
+
                     orden.PrecioGeneralOrden += oal.PrecioOrden;
                     _context.OrdenAlojamiento.Add(oal);
                 }
@@ -650,6 +667,9 @@ namespace GoTravelTour.Controllers
                     if (vo.Sobreprecio != null)
                         vo.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == vo.Sobreprecio.SobreprecioId);
 
+                    if (vo.Voucher != null)
+                        vo.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == vo.Voucher.ConfiguracionVoucherId);
+
                 }
             }
 
@@ -679,6 +699,9 @@ namespace GoTravelTour.Controllers
 
                     if (to.Sobreprecio != null)
                         to.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == to.Sobreprecio.SobreprecioId);
+
+                    if (to.Voucher != null)
+                        to.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == to.Voucher.ConfiguracionVoucherId);
 
                 }
             }
@@ -752,6 +775,9 @@ namespace GoTravelTour.Controllers
                         oal.Sobreprecio = _context.Sobreprecio.First(x => x.SobreprecioId == oal.Sobreprecio.SobreprecioId);
                     if (oal.ModificadorAplicado != null)
                         oal.ModificadorAplicado = _context.Modificadores.Include(x=>x.ListaReglas).First(x => x.ModificadorId == oal.ModificadorAplicado.ModificadorId);
+
+                    if (oal.Voucher != null)
+                        oal.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == oal.Voucher.ConfiguracionVoucherId);
                 }
             }
 
@@ -771,11 +797,39 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var orden = await _context.Orden.FindAsync(id);
+            var orden =  _context.Orden.Include(x=>x.ListaAlojamientoOrden)
+                .Include(x => x.ListaVehiculosOrden).First(x=>x.OrdenId==id);
+
+            List<OrdenAlojamiento> oal = orden.ListaAlojamientoOrden;
+            List<OrdenVehiculo> ove = orden.ListaVehiculosOrden;
+
+            foreach(var item in oal)
+            {
+                OrdenAlojamiento oa = _context.OrdenAlojamiento.Include(x=>x.ListaPrecioAlojamientos).First(x=>x.OrdenAlojamientoId==item.OrdenAlojamientoId);
+                foreach (var item2 in oa.ListaPrecioAlojamientos)
+                {
+                    _context.OrdenAlojamientoPrecioAlojamiento.Remove(item2);
+                }
+                
+            }
+
+            foreach (var item in ove)
+            {
+                OrdenVehiculo ov = _context.OrdenVehiculo.Include(x => x.ListaPreciosRentaAutos).First(x => x.OrdenVehiculoId == item.OrdenVehiculoId);
+                foreach (var item2 in ov.ListaPreciosRentaAutos)
+                {
+                    _context.OrdenVehiculoPrecioRentaAuto.Remove(item2);
+                }
+
+            }
+
+
+
             if (orden == null)
             {
                 return NotFound();
             }
+
 
             _context.Orden.Remove(orden);
             await _context.SaveChangesAsync();

@@ -167,7 +167,12 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var ordenAlojamiento = await _context.OrdenAlojamiento.FindAsync(id);
+            var ordenAlojamiento =  _context.OrdenAlojamiento.Include(x=>x.ListaPrecioAlojamientos).First(x=>x.OrdenAlojamientoId==id);
+
+            foreach(var item in ordenAlojamiento.ListaPrecioAlojamientos)
+            {
+                _context.OrdenAlojamientoPrecioAlojamiento.Remove(item);
+            }
             if (ordenAlojamiento == null)
             {
                 return NotFound();

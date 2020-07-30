@@ -89,20 +89,27 @@ namespace GoTravelTour.QuickBooks
             try
             {
                 CompanyInfo companyInfo = querySvc.ExecuteIdsQuery("SELECT * FROM CompanyInfo").FirstOrDefault();
-           
-            
+                Bill b = new Bill();
+                Invoice inv= new Invoice(); //Factura
+                Intuit.Ipp.Data.Item it = new Item();// Esto son los productos
+                
+
+
+
+
 
             string output = JsonConvert.SerializeObject(companyInfo, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
+            
+            return Ok( "ApiCallService" + " QBO API call Successful!! Response: "+ JsonConvert.SerializeObject(companyInfo) );
             }
             catch (Exception e)
             {
 
                 throw;
             }
-            return Ok( "ApiCallService" + " QBO API call Successful!! Response: " );
         }
 
         private async System.Threading.Tasks.Task GetAuthTokensAsync(string code, string realmId)

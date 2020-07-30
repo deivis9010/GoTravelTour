@@ -112,6 +112,10 @@
     <Compile Remove="Migrations\20200607223900_addTabla con lista precios que afectan la orden del vehiculo.Designer.cs" />
     <Compile Remove="Migrations\20200607224412_addTabla con lista precios que afectan la orden del vehiculo.cs" />
     <Compile Remove="Migrations\20200607224412_addTabla con lista precios que afectan la orden del vehiculo.Designer.cs" />
+    <Compile Remove="Migrations\20200730020530_agregando voucher.cs" />
+    <Compile Remove="Migrations\20200730020530_agregando voucher.Designer.cs" />
+    <Compile Remove="Migrations\20200730033640_agregando vouche.cs" />
+    <Compile Remove="Migrations\20200730033640_agregando vouche.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

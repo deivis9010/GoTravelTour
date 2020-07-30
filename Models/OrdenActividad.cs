@@ -38,7 +38,6 @@ namespace GoTravelTour.Models
         public Region LugarActividad { get; set; }
         public PuntoInteres LugarRecogida { get; set; }
         public PuntoInteres LugarRetorno { get; set; }
-
         public Sobreprecio Sobreprecio { get; set; }
         public decimal ValorSobreprecioAplicado { get; set; }
 

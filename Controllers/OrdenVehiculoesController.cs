@@ -28,6 +28,8 @@ namespace GoTravelTour.Models
             if (col == "-1")
             {
                 lista = _context.OrdenVehiculo
+                    .Include(x=>x.LugarEntrega)
+                    .Include(x=>x.LugarRecogida)
 
                     .OrderBy(a => a.NombreCliente)
                     .ToList();
@@ -38,6 +40,8 @@ namespace GoTravelTour.Models
             if (!string.IsNullOrEmpty(filter))
             {
                 lista = _context.OrdenVehiculo
+                    .Include(x => x.LugarEntrega)
+                    .Include(x => x.LugarRecogida)
 
                     .OrderBy(a => a.NombreCliente)
                     .Where(p => (p.NombreCliente.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
@@ -46,6 +50,8 @@ namespace GoTravelTour.Models
             else
             {
                 lista = _context.OrdenVehiculo
+                    .Include(x => x.LugarEntrega)
+                    .Include(x => x.LugarRecogida)
 
                     .OrderBy(a => a.NombreCliente)
                     .ToPagedList(pageIndex, pageSize).ToList();
@@ -167,6 +173,7 @@ namespace GoTravelTour.Models
             }
 
             var ordenVehiculo =  _context.OrdenVehiculo.Include(x => x.ListaPreciosRentaAutos).First(x=>x.OrdenVehiculoId==id);
+
 
             if (ordenVehiculo == null)
             {
