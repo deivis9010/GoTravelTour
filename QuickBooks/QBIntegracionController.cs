@@ -86,19 +86,87 @@ namespace GoTravelTour.QuickBooks
 
             // Create a QuickBooks QueryService using ServiceContext
             QueryService<CompanyInfo> querySvc = new QueryService<CompanyInfo>(serviceContext);
+           
             try
             {
                 CompanyInfo companyInfo = querySvc.ExecuteIdsQuery("SELECT * FROM CompanyInfo").FirstOrDefault();
                 Bill b = new Bill();
                 Invoice inv= new Invoice(); //Factura
-                Intuit.Ipp.Data.Item it = new Item();// Esto son los productos
-                
+                Item it = new Item();// Esto son los productos
+
+              
 
 
+                Item ObjItem = new Item();
+                ObjItem.Name = "Vision Keyboard";
+                ObjItem.TypeSpecified = true;
+                ObjItem.Type = ItemTypeEnum.Service;
+                ObjItem.TrackQtyOnHand = false;
+                ObjItem.TrackQtyOnHandSpecified = false;
+                ObjItem.QtyOnHandSpecified = false;
+                ObjItem.QtyOnHand = 10;
+                ObjItem.InvStartDateSpecified = true;
+                ObjItem.InvStartDate = DateTime.Now;
+                ObjItem.Description = "This Keyboard is made by vision infotech";
+                ObjItem.UnitPriceSpecified = true;
+                ObjItem.UnitPrice = 100;
+                ObjItem.PurchaseDesc = "This Keyboard is purchase from Vision";
+                ObjItem.PurchaseCostSpecified = true;
+                ObjItem.PurchaseCost = 50;
+                // Create a QuickBooks QueryService using ServiceContext for getting list of all accounts from Quickbooks
+                QueryService<Account> querySvcAc = new QueryService<Account>(serviceContext);
+                var AccountList = querySvcAc.ExecuteIdsQuery("SELECT * FROM Account").ToList();
+               
+                //Get Account of type "OtherCurrentAsset" and named "Inventory Asset" for Asset Account Reference
+                var AssetAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Ventas del Sitio").FirstOrDefault();
 
 
+               
+                if (AssetAccountRef != null)
+                {
+                    ObjItem.AssetAccountRef = new ReferenceType();
+                    ObjItem.AssetAccountRef.Value = AssetAccountRef.Id;
+                }
+                else
+                {
+                   
+                   
+                    return Ok("Account of Type OtherCurrentAsset Does not found in QBO, We must have at least one Account which is Type of OtherCurrentAsset for Refrence");
+                }
+                //Get Account of type "Income" and named "Sales of Product Income" for Income Account Reference
+                var IncomeAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Sales of Product Income").FirstOrDefault();
+                if (IncomeAccountRef != null)
+                {
+                    ObjItem.IncomeAccountRef = new ReferenceType();
+                    ObjItem.IncomeAccountRef.Value = IncomeAccountRef.Id;
+                }
+                else
+                {
+                 
+                    return Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
+                }
+                //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
+                var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Cost of Goods Sold").FirstOrDefault();
+                if (ExpenseAccountRef != null)
+                {
+                    ObjItem.ExpenseAccountRef = new ReferenceType();
+                    ObjItem.ExpenseAccountRef.Value = ExpenseAccountRef.Id;
+                }
+                else
+                {
+                  
+                    return Ok("Account of Type CostofGoodsSold Does not found in QBO, We must have at least one Account Name as 'Cost of Goods Sold' which is Type of CostofGoodsSold for Refrence");
+                }
+                DataService dataService = new DataService(serviceContext);
+                Item ItemAdd = dataService.Add(ObjItem);
+                if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
+                {
+                    //you can write Database code here
+                   
+                }
 
-            string output = JsonConvert.SerializeObject(companyInfo, new JsonSerializerSettings
+
+                string output = JsonConvert.SerializeObject(companyInfo, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });

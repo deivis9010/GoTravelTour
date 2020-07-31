@@ -77,6 +77,7 @@ namespace GoTravelTour.Controllers
                          .Include(d => d.Sobreprecio)
                          .Include(d => d.Habitacion)
                          .Include(d => d.Voucher)
+                         .Include(d => d.TipoHabitacion)
                          .Include(d=>d.ModificadorAplicado.ListaReglas)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
