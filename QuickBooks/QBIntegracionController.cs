@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using QuickBooks.Helper;
-using QuickBooks.Models;
+
 using RestSharp;
 
 using Intuit.Ipp.DataService;
@@ -36,6 +36,9 @@ namespace GoTravelTour.QuickBooks
         public static string environment ="sandbox";
 
         public static OAuth2Client auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
+
+        /*Este diccionario es para almacenar los token y solamente solicitarlos una vez*/
+        public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         [HttpGet]
         [Route("Connect")]
@@ -75,9 +78,19 @@ namespace GoTravelTour.QuickBooks
             var refresh_token = tokenResponse.RefreshToken;
             var refresh_token_expires_at = tokenResponse.RefreshTokenExpiresIn;
 
-           
+            if (!dictionary.ContainsKey("accessToken"))
+                dictionary.Add("accessToken", access_token);
+            else
+                dictionary["accessToken"] = access_token;
 
-           // var principal = User as ClaimsPrincipal;
+            if (!dictionary.ContainsKey("refreshToken"))
+                dictionary.Add("refreshToken", refresh_token);
+            else
+                dictionary["refreshToken"] = refresh_token;
+
+
+
+            // var principal = User as ClaimsPrincipal;
             OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(/*principal.FindFirst("access_token").Value*/access_token);
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
@@ -180,50 +193,10 @@ namespace GoTravelTour.QuickBooks
             }
         }
 
-        private async System.Threading.Tasks.Task GetAuthTokensAsync(string code, string realmId)
-        {
-
-            var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
-
-            var access_token = tokenResponse.AccessToken;
-            var access_token_expires_at = tokenResponse.AccessTokenExpiresIn;
-
-            var refresh_token = tokenResponse.RefreshToken;
-            var refresh_token_expires_at = tokenResponse.RefreshTokenExpiresIn;
-        }
+      
 
 
 
-        // GET: api/QBIntegracion
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/QBIntegracion/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/QBIntegracion
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/QBIntegracion/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }

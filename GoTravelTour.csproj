@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="QuickBooks\Models\**" />
+    <Content Remove="QuickBooks\Models\**" />
+    <EmbeddedResource Remove="QuickBooks\Models\**" />
+    <None Remove="QuickBooks\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20191126025226_rutasregionpuntointeres.cs" />
     <Compile Remove="Migrations\20191126025226_rutasregionpuntointeres.Designer.cs" />
     <Compile Remove="Migrations\20191207231645_addTablas.cs" />
@@ -116,6 +123,7 @@
     <Compile Remove="Migrations\20200730020530_agregando voucher.Designer.cs" />
     <Compile Remove="Migrations\20200730033640_agregando vouche.cs" />
     <Compile Remove="Migrations\20200730033640_agregando vouche.Designer.cs" />
+    <Compile Remove="QuickBooks\Helper\Services.cs" />
   </ItemGroup>
 
   <ItemGroup>

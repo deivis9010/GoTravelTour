@@ -102,6 +102,8 @@ namespace GoTravelTour.Controllers
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
                          .Include(d => d.Sobreprecio)
                          .Include(d => d.Voucher)
+                         .Include(d => d.LugarEntrega)
+                         .Include(d => d.LugarRecogida)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                         foreach (var item in ord.ListaVehiculosOrden)
@@ -215,6 +217,7 @@ namespace GoTravelTour.Controllers
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                          .Include(d => d.Sobreprecio)
                           .Include(d => d.Habitacion)
+                          .Include(d => d.TipoHabitacion)
                          .Include(d => d.ModificadorAplicado.ListaReglas)
                          .Include(d => d.Voucher)
                         .Include(d => d.Alojamiento).ThenInclude(l => l.ListaDistribuidoresProducto)
@@ -240,6 +243,8 @@ namespace GoTravelTour.Controllers
                         ord.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
                          .Include(d => d.Sobreprecio)
                          .Include(d => d.Voucher)
+                         .Include(d => d.LugarEntrega)
+                         .Include(d => d.LugarRecogida)
                         .Include(v => v.Vehiculo).ThenInclude(l => l.ListaDistribuidoresProducto)
                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                         foreach (var item in ord.ListaVehiculosOrden)

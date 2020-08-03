@@ -61,7 +61,7 @@ namespace GoTravelTour
                     };
                 });
             //Configuracion QuickBooks
-            services.AddTransient<IServices, Services>();
+           // services.AddTransient<IServices, Services>();
             services.Configure<OAuth2Keys>(Configuration.GetSection("OAuth2Keys"));
 
             services.AddCors(c =>

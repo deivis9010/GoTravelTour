@@ -805,11 +805,11 @@ namespace GoTravelTour.Controllers
             }
             if (buscador.OrdenarAsc)
             {
-                return resultados.OrderBy(x => x.Alojamiento.PrecioInicial).ToList();
+                return resultados.Where(x=>x.PrecioOrden >0).OrderBy(x => x.Alojamiento.PrecioInicial).ToList();
             }
             else
             {
-                return resultados.OrderByDescending(x => x.Alojamiento.PrecioInicial).ToList();
+                return resultados.Where(x => x.PrecioOrden > 0).OrderByDescending(x => x.Alojamiento.PrecioInicial).ToList();
             }
 
             

@@ -692,7 +692,11 @@ namespace GoTravelTour.Controllers
             // List<VehiculoCategoriaAuto> cats = _context.VehiculoCategoriaAuto.Where(x => x.CategoriaAuto.CategoriaAutoId == buscador.CategoriaAuto.CategoriaAutoId).ToList();
 
             //Se buscan todos los auto con la transmision pasada por parametros
-            List<Vehiculo> vehiculos = _context.Vehiculos.Include(x=>x.ListaDistribuidoresProducto).Where(x => x.IsActivo && x.TipoTransmision == buscador.TipoTransmision && x.MarcaId == buscador.Marca.MarcaId).ToList();
+            List<Vehiculo> vehiculos;
+            if (buscador.Marca != null && buscador.Marca.MarcaId > 0)
+               vehiculos = _context.Vehiculos.Include(x=>x.ListaDistribuidoresProducto).Where(x => x.IsActivo && x.TipoTransmision == buscador.TipoTransmision && x.MarcaId == buscador.Marca.MarcaId).ToList();
+            else
+                 vehiculos = _context.Vehiculos.Include(x => x.ListaDistribuidoresProducto).Where(x => x.IsActivo && x.TipoTransmision == buscador.TipoTransmision ).ToList();
 
 
             foreach (var v in vehiculos) //Se recorren los vehiculos que coinciden con el tipo de transmision
