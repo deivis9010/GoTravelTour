@@ -26,6 +26,8 @@ namespace GoTravelTour.Models
         public ConfiguracionVoucher Voucher { get; set; }
         public string InformacionLlegada { get; set; }
         public string InformacionSalida { get; set; }
+        public string HoraInicio { get; set; }
+        public string HoraFin { get; set; }
         public List<OrdenVehiculoPrecioRentaAuto> ListaPreciosRentaAutos { get; set; }
         public Distribuidor Distribuidor { get; set; }
         public int VehiculoId { get; set; }

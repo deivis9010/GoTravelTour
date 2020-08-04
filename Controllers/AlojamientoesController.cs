@@ -907,23 +907,23 @@ namespace GoTravelTour.Controllers
                         precioBase = p.Precio;
                         try
                         {
-
+                            bool sePagaPorHabitacion = p.Temporada.Contrato.PrecioAlojamientoPorHabitacion;
                             switch (p.Temporada.Contrato.FormaCobro)// 2-por dia 1- PrimeraTemp 3-UltimaTemp                           
                             {
                                 case 2:
                                     {
-                                        Met_CalcularPrecioAlojamientoPorDia(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento, ref DiasRestantes);
+                                        Met_CalcularPrecioAlojamientoPorDia(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento, ref DiasRestantes, sePagaPorHabitacion);
                                         break;
                                     }
                                 case 1:
                                     {
-                                        Met_CalcularPrecioAlojamientoPrimeraTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento, ref DiasRestantes);
+                                        Met_CalcularPrecioAlojamientoPrimeraTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento, ref DiasRestantes, sePagaPorHabitacion);
 
                                         break;
                                     }
                                 case 3:
                                     {
-                                        Met_CalcularPrecioAlojamientoPorSegundaTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento, ref DiasRestantes);
+                                        Met_CalcularPrecioAlojamientoPorSegundaTemporada(buscador, p, ov, cantDiasGenenarl, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, alojamiento, ref DiasRestantes, sePagaPorHabitacion);
 
                                         break;
                                     }
@@ -1021,7 +1021,7 @@ namespace GoTravelTour.Controllers
 
         }
 
-        private void Met_CalcularPrecioAlojamientoPrimeraTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
+        private void Met_CalcularPrecioAlojamientoPrimeraTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes, bool sePagaPorHabitacion)
         {
 
             int i = 0;
@@ -1038,7 +1038,12 @@ namespace GoTravelTour.Controllers
                     //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
                     cantDias = cantDiasGenenarl;
                     DiasRestantes -= cantDias;
-                    GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
+                    if (sePagaPorHabitacion)
+                    {
+                        ov.PrecioOrden += cantDias * precioBase;
+                    }
+                    else
+                        GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                     seCalcValor = true;
                 }
 
@@ -1050,7 +1055,7 @@ namespace GoTravelTour.Controllers
             if (!seCalcValor) throw new Exception();
         }
 
-        private  void Met_CalcularPrecioAlojamientoPorSegundaTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
+        private  void Met_CalcularPrecioAlojamientoPorSegundaTemporada(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes, bool sePagaPorHabitacion)
         {
 
             int i = 0;
@@ -1067,7 +1072,12 @@ namespace GoTravelTour.Controllers
                     //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
                     cantDias = cantDiasGenenarl;
                     DiasRestantes -= cantDias;
-                    GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
+                    if (sePagaPorHabitacion)
+                    {
+                        ov.PrecioOrden += cantDias * precioBase;
+                    }
+                    else
+                        GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                     seCalcValor = true;
                 }
 
@@ -1079,7 +1089,7 @@ namespace GoTravelTour.Controllers
         }
 
 
-        private  void Met_CalcularPrecioAlojamientoPorDia(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes)
+        private  void Met_CalcularPrecioAlojamientoPorDia(BuscadorAlojamientoV2 buscador, PrecioAlojamiento p, OrdenAlojamiento ov, int cantDiasGenenarl, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, Alojamiento a, ref int DiasRestantes, bool sePagaPorHabitacion)
         {
             int i = 0;
 
@@ -1098,6 +1108,10 @@ namespace GoTravelTour.Controllers
                     //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
                     cantDias = cantDiasGenenarl;
                     DiasRestantes -= cantDias;
+                    if(sePagaPorHabitacion)
+                    {
+                        ov.PrecioOrden += cantDias * precioBase;
+                    }else                        
                     GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                     cantDiasGenenarl = 0;
                     break;
@@ -1109,7 +1123,12 @@ namespace GoTravelTour.Controllers
                     {
                         //Si el rango esta incluido en el rango de entrada y salida la cantidad de dias sera la diferencia del rango de fecha
                         cantDias = (rf.FechaFin - rf.FechaInicio).Days;
-                        GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
+                        if (sePagaPorHabitacion)
+                        {
+                            ov.PrecioOrden += cantDias * precioBase;
+                        }
+                        else
+                            GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         cantDiasGenenarl -= cantDias;
                         DiasRestantes -= cantDias;
 
@@ -1119,7 +1138,12 @@ namespace GoTravelTour.Controllers
                     {
                         //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
                         cantDias = (rf.FechaFin - buscador.Entrada).Days + 1;
-                        GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
+                        if (sePagaPorHabitacion)
+                        {
+                            ov.PrecioOrden += cantDias * precioBase;
+                        }
+                        else
+                            GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         cantDiasGenenarl -= cantDias;
                         DiasRestantes -= cantDias;
 
@@ -1129,7 +1153,12 @@ namespace GoTravelTour.Controllers
                     {
                         //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
                         cantDias = (buscador.Salida - rf.FechaInicio).Days;
-                        GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
+                        if (sePagaPorHabitacion)
+                        {
+                            ov.PrecioOrden += cantDias * precioBase;
+                        }
+                        else
+                            GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
 
                         cantDiasGenenarl -= cantDias;
                         DiasRestantes -= cantDias;

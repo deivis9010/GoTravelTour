@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200804012001_add hora orden")]
+    partial class addhoraorden
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,8 +284,6 @@ namespace GoTravelTour.Migrations
                     b.Property<bool>("OfertaEspecial");
 
                     b.Property<bool>("PermiteHacerCopia");
-
-                    b.Property<bool>("PrecioAlojamientoPorHabitacion");
 
                     b.Property<int>("TipoProductoId");
 

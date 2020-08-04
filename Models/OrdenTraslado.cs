@@ -24,6 +24,8 @@ namespace GoTravelTour.Models
         public string TelefonoReferencia { get; set; }
         public string DireccionReferencia { get; set; }
         public string TipoTrasladoOrden { get; set; }
+        public string HoraInicio { get; set; }
+        public string HoraFin { get; set; }
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
         public ConfiguracionVoucher Voucher { get; set; }

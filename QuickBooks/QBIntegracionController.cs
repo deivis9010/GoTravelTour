@@ -18,8 +18,7 @@ using QuickBooks.Helper;
 using RestSharp;
 
 using Intuit.Ipp.DataService;
-
-
+using GoTravelTour.Models;
 
 namespace GoTravelTour.QuickBooks
 {
@@ -88,10 +87,34 @@ namespace GoTravelTour.QuickBooks
             else
                 dictionary["refreshToken"] = refresh_token;
 
+            if (!dictionary.ContainsKey("realmId"))            
+                dictionary.Add("realmId", realmId);
+            else
+                dictionary["realmId"] = realmId;
 
 
-            // var principal = User as ClaimsPrincipal;
-            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(/*principal.FindFirst("access_token").Value*/access_token);
+
+            return Ok( "ApiCallService" + " QBO API call Successful!! Response: " );
+           
+        }
+
+        [HttpGet]
+        [Route("addProduct")]
+        public async  void AddProducto([FromBody] Producto producto)
+        {
+            
+
+            TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+            if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+            {
+                dictionary["accessToken"] = tokenResp.AccessToken;
+                dictionary["refreshToken"] = tokenResp.RefreshToken;
+              
+            }
+            var access_token = dictionary["accessToken"];
+            var realmId = dictionary["realmId"];
+
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
@@ -99,15 +122,15 @@ namespace GoTravelTour.QuickBooks
 
             // Create a QuickBooks QueryService using ServiceContext
             QueryService<CompanyInfo> querySvc = new QueryService<CompanyInfo>(serviceContext);
-           
+
             try
             {
                 CompanyInfo companyInfo = querySvc.ExecuteIdsQuery("SELECT * FROM CompanyInfo").FirstOrDefault();
                 Bill b = new Bill();
-                Invoice inv= new Invoice(); //Factura
+                Invoice inv = new Invoice(); //Factura
                 Item it = new Item();// Esto son los productos
 
-              
+
 
 
                 Item ObjItem = new Item();
@@ -129,12 +152,12 @@ namespace GoTravelTour.QuickBooks
                 // Create a QuickBooks QueryService using ServiceContext for getting list of all accounts from Quickbooks
                 QueryService<Account> querySvcAc = new QueryService<Account>(serviceContext);
                 var AccountList = querySvcAc.ExecuteIdsQuery("SELECT * FROM Account").ToList();
-               
+
                 //Get Account of type "OtherCurrentAsset" and named "Inventory Asset" for Asset Account Reference
                 var AssetAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Ventas del Sitio").FirstOrDefault();
 
 
-               
+
                 if (AssetAccountRef != null)
                 {
                     ObjItem.AssetAccountRef = new ReferenceType();
@@ -142,9 +165,9 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                   
-                   
-                    return Ok("Account of Type OtherCurrentAsset Does not found in QBO, We must have at least one Account which is Type of OtherCurrentAsset for Refrence");
+
+
+                     Ok("Account of Type OtherCurrentAsset Does not found in QBO, We must have at least one Account which is Type of OtherCurrentAsset for Refrence");
                 }
                 //Get Account of type "Income" and named "Sales of Product Income" for Income Account Reference
                 var IncomeAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Sales of Product Income").FirstOrDefault();
@@ -155,8 +178,8 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                 
-                    return Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
+
+                     Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
                 }
                 //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
                 var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Cost of Goods Sold").FirstOrDefault();
@@ -167,36 +190,35 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                  
-                    return Ok("Account of Type CostofGoodsSold Does not found in QBO, We must have at least one Account Name as 'Cost of Goods Sold' which is Type of CostofGoodsSold for Refrence");
+
+                     Ok("Account of Type CostofGoodsSold Does not found in QBO, We must have at least one Account Name as 'Cost of Goods Sold' which is Type of CostofGoodsSold for Refrence");
                 }
                 DataService dataService = new DataService(serviceContext);
                 Item ItemAdd = dataService.Add(ObjItem);
                 if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
                 {
                     //you can write Database code here
-                   
+
                 }
 
 
                 string output = JsonConvert.SerializeObject(companyInfo, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            });
-            
-            return Ok( "ApiCallService" + " QBO API call Successful!! Response: "+ JsonConvert.SerializeObject(companyInfo) );
-            }
-            catch (Exception e)
-            {
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
 
-                throw;
+
             }
+            catch
+            {
+                 Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
+            }
+             Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
         }
 
-      
 
 
 
-        
+
     }
 }

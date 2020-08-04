@@ -22,6 +22,8 @@ namespace GoTravelTour.Models
         public string NumeroConfirmacion { get; set; }
         public string DescripcionServicio { get; set; }
         public string NotasAdicionales { get; set; }
+        public string HoraInicio { get; set; }
+        public string HoraFin { get; set; }
         public string ServiciosExcluidos { get; set; } //iran los id de los servicios q no son opcionales y no se incluirarn en la orden ejemplo (2525-3030-)
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }

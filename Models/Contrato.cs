@@ -19,6 +19,8 @@ namespace GoTravelTour.Models
         public DateTime? FechaInicioBooking { get; set; }
         public DateTime? FechaFinBooking { get; set; }
         public bool PermiteHacerCopia { get; set; }
+        public bool PrecioAlojamientoPorHabitacion { get; set; }
+
         public int TipoProductoId { get; set; }
         public int DistribuidorId { get; set; }
         public Distribuidor Distribuidor { get; set; }
