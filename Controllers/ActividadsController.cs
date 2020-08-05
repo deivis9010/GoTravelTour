@@ -731,7 +731,7 @@ namespace GoTravelTour.Controllers
         // POST: api/Actividads/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenActividad> GetOrdenActividades([FromBody] BuscadorActividad buscador, int pageIndex = 1, int pageSize = 10)
+        public List<OrdenActividad> GetOrdenActividades([FromBody] BuscadorActividad buscador, int pageIndex = 1, int pageSize = 1000)
         {
 
 

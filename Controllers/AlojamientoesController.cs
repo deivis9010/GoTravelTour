@@ -774,12 +774,13 @@ namespace GoTravelTour.Controllers
                 var i = 0;
                 foreach (var p in precios)
                 {
-                    add = true;
+                   
                     //   if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
                     //   ((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
                     //  {
-                    if (i == 0)
+                    if (i == 0 && p.Precio > 0)
                     {
+                        add = true;
                         i = 1;
                         a.PrecioInicial = p.Precio;
                        
@@ -787,8 +788,9 @@ namespace GoTravelTour.Controllers
                         continue;
                     }
 
-                    if (a.PrecioInicial > p.Precio)
+                    if (a.PrecioInicial > p.Precio && p.Precio > 0)
                     {
+                        add = true;
                         a.PrecioInicial = p.Precio;
                         ord.Habitacion = p.Habitacion;
                     }
@@ -805,11 +807,11 @@ namespace GoTravelTour.Controllers
             }
             if (buscador.OrdenarAsc)
             {
-                return resultados.Where(x=>x.PrecioOrden >0).OrderBy(x => x.Alojamiento.PrecioInicial).ToList();
+                return resultados.Where(x=>x.Alojamiento.PrecioInicial > 0).OrderBy(x => x.Alojamiento.PrecioInicial).ToList();
             }
             else
             {
-                return resultados.Where(x => x.PrecioOrden > 0).OrderByDescending(x => x.Alojamiento.PrecioInicial).ToList();
+                return resultados.Where(x => x.Alojamiento.PrecioInicial > 0).OrderByDescending(x => x.Alojamiento.PrecioInicial).ToList();
             }
 
             

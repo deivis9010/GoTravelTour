@@ -620,7 +620,7 @@ namespace GoTravelTour.Controllers
         // GET: api/Trasladoes/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenTraslado> GetOrdenTraslados([FromBody] BuscadorTraslado buscador, int pageIndex = 1, int pageSize = 10)
+        public List<OrdenTraslado> GetOrdenTraslados([FromBody] BuscadorTraslado buscador, int pageIndex = 1, int pageSize = 1000)
         {
 
 

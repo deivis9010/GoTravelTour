@@ -680,7 +680,7 @@ namespace GoTravelTour.Controllers
         // GET: api/Vehiculoes/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador, int pageIndex = 1, int pageSize = 1)
+        public List<OrdenVehiculo> GetOrdenVehiculos([FromBody] BuscadorVehiculo buscador, int pageIndex = 1, int pageSize = 1000)
         {
             // TODO agregar el calculo de la orden teniendo en  cuenta
 
@@ -840,7 +840,7 @@ namespace GoTravelTour.Controllers
             }
 
 
-            return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex,pageSize).ToList();
+            return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex,10).ToList();
 
         }
 
