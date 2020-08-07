@@ -677,12 +677,12 @@ namespace GoTravelTour.Controllers
                                         if (s.ValorDinero != null)
                                         {
                                             valorAplicado = (decimal)s.ValorDinero;
-                                            ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                            ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
                                         }
                                         else
                                         {
                                             valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                            ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                            ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
                                         }
 
                                         ov.ValorSobreprecioAplicado = valorAplicado;

@@ -883,7 +883,7 @@ namespace GoTravelTour.Controllers
 
                     List<PrecioAlojamiento> precios = new List<PrecioAlojamiento>();
                     precios = preciosTemp.Where(x => x.Habitacion.HabitacionId == hab.HabitacionId).ToList();
-
+                    bool sePagaPorHabitacion = false;
 
                     if (!precios.Any())
                         continue;
@@ -907,9 +907,10 @@ namespace GoTravelTour.Controllers
                         List<Modificador> modificadores = GetModificadores(alojamiento, p);
 
                         precioBase = p.Precio;
+                        sePagaPorHabitacion = p.Temporada.Contrato.PrecioAlojamientoPorHabitacion;
                         try
                         {
-                            bool sePagaPorHabitacion = p.Temporada.Contrato.PrecioAlojamientoPorHabitacion;
+                           
                             switch (p.Temporada.Contrato.FormaCobro)// 2-por dia 1- PrimeraTemp 3-UltimaTemp                           
                             {
                                 case 2:
@@ -953,7 +954,12 @@ namespace GoTravelTour.Controllers
 
                     if (DiasRestantes > 0)
                     {
-                        ov.PrecioOrden += DiasRestantes * precioBase * (buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes);
+                        if (sePagaPorHabitacion)
+                        {
+                            ov.PrecioOrden += DiasRestantes * precioBase;
+                        }
+                        else
+                            ov.PrecioOrden += DiasRestantes * precioBase * (buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes);
 
                     }
 
@@ -978,12 +984,12 @@ namespace GoTravelTour.Controllers
                                 if (s.ValorDinero != null)
                                 {
                                     valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
-                                    ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                    ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
                                 }
                                 else
                                 {
                                     valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                    ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                    ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
                                 }
 
                             }
@@ -993,12 +999,12 @@ namespace GoTravelTour.Controllers
                                 if (s.ValorDinero != null)
                                 {
                                     valorAplicado = (decimal)s.ValorDinero;
-                                    ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                    ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
                                 }
                                 else
                                 {
                                     valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                    ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                    ov.PrecioOrden += valorAplicado + ((valorAplicado / 100) * c.Descuento / 100);
                                 }
 
                             }

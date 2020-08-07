@@ -1140,12 +1140,12 @@ namespace GoTravelTour.Controllers
                                 if (s.ValorDinero != null)
                                 {
                                     valorAplica = (decimal)s.ValorDinero;
-                                    oac.PrecioOrden += valorAplica + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                    oac.PrecioOrden += valorAplica + (valorAplica * c.Descuento / 100);
                                 }
                                 else
                                 {
                                     valorAplica = oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                    oac.PrecioOrden += valorAplica + (oac.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                    oac.PrecioOrden += valorAplica + (valorAplica) * c.Descuento / 100;
                                 }
 
                                 oac.ValorSobreprecioAplicado = valorAplica;

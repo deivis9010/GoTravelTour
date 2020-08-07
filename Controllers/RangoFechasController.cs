@@ -227,7 +227,8 @@ namespace GoTravelTour.Controllers
                     if(newRango.Producto != null) // Si esto es distinto de null significa q estoy trabajando con una temporada de hoteles
                     {
                         if ((rf.FechaInicio <= newRango.FechaInicio && newRango.FechaInicio <= rf.FechaFin ||
-                      rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin) && rf.Producto.ProductoId == newRango.Producto.ProductoId)
+                      rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin) && rf.Producto.ProductoId == newRango.Producto.ProductoId &&
+                      newRango.RangoFechasId != rf.RangoFechasId)
                         {
                             return false;
                         }
@@ -235,7 +236,8 @@ namespace GoTravelTour.Controllers
                     else
                     {
                         if ((rf.FechaInicio <= newRango.FechaInicio && newRango.FechaInicio <= rf.FechaFin ||
-                       rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin) )
+                       rf.FechaInicio <= newRango.FechaFin && newRango.FechaFin <= rf.FechaFin) &&
+                      newRango.RangoFechasId != rf.RangoFechasId)
                         {
                             return false;
                         }
