@@ -880,6 +880,7 @@ namespace GoTravelTour.Controllers
                     int cantDias = 0; // auxilar para rangos
                     bool agregarOrden = true;
                     decimal precioBase = 0;
+                    decimal ContratoBase = 0;
 
                     List<PrecioAlojamiento> precios = new List<PrecioAlojamiento>();
                     precios = preciosTemp.Where(x => x.Habitacion.HabitacionId == hab.HabitacionId).ToList();
@@ -907,6 +908,7 @@ namespace GoTravelTour.Controllers
                         List<Modificador> modificadores = GetModificadores(alojamiento, p);
 
                         precioBase = p.Precio;
+                        ContratoBase = p.Contrato.ContratoId;
                         sePagaPorHabitacion = p.Temporada.Contrato.PrecioAlojamientoPorHabitacion;
                         try
                         {
@@ -966,7 +968,7 @@ namespace GoTravelTour.Controllers
 
 
                     List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == alojamiento.ProductoId &&
-                        x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId).ToList();
+                        x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId== ContratoBase).ToList();
 
                     if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any())
                         ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio)*(buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes)*cantDiasGenenarl;

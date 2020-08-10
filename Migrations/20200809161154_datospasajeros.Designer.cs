@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200809161154_datospasajeros")]
+    partial class datospasajeros
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,15 +330,11 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("NumeroPasaporte");
 
-                    b.Property<int?>("OrdenId");
-
                     b.Property<string>("Pais");
 
                     b.Property<string>("Telefono");
 
                     b.HasKey("DatosPasajeroPrimarioId");
-
-                    b.HasIndex("OrdenId");
 
                     b.ToTable("DatosPasajeroPrimario");
                 });
@@ -1972,13 +1970,6 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("TipoProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.DatosPasajeroPrimario", b =>
-                {
-                    b.HasOne("GoTravelTour.Models.Orden", "Orden")
-                        .WithMany()
-                        .HasForeignKey("OrdenId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.DatosPasajeroSecundario", b =>

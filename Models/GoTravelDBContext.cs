@@ -80,6 +80,9 @@ namespace GoTravelTour.Models
         public DbSet<GoTravelTour.Models.OrdenVehiculo> OrdenVehiculo { get; set; }
         public DbSet<GoTravelTour.Models.OrdenVehiculoPrecioRentaAuto> OrdenVehiculoPrecioRentaAuto { get; set; }
         public DbSet<GoTravelTour.Models.OrdenAlojamientoPrecioAlojamiento> OrdenAlojamientoPrecioAlojamiento { get; set; }
+        public DbSet<GoTravelTour.Models.LicenciasOFAC> LicenciasOFAC { get; set; }
+        public DbSet<GoTravelTour.Models.DatosPasajeroPrimario> DatosPasajeroPrimario { get; set; }
+        public DbSet<GoTravelTour.Models.DatosPasajeroSecundario> DatosPasajeroSecundario { get; set; }
        
     
 

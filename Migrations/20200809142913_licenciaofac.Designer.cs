@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200809142913_licenciaofac")]
+    partial class licenciaofac
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,96 +296,6 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("TipoProductoId");
 
                     b.ToTable("Contratos");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.DatosPasajeroPrimario", b =>
-                {
-                    b.Property<int>("DatosPasajeroPrimarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AffiDavitRequired");
-
-                    b.Property<string>("Apellidos");
-
-                    b.Property<string>("Calle");
-
-                    b.Property<string>("Ciudad");
-
-                    b.Property<string>("CiudadSalida");
-
-                    b.Property<string>("CodigoPostal");
-
-                    b.Property<string>("Correo");
-
-                    b.Property<string>("Direccion");
-
-                    b.Property<string>("Estado");
-
-                    b.Property<DateTime>("FechaNacimiento");
-
-                    b.Property<string>("Nacionalidad");
-
-                    b.Property<string>("Nombre");
-
-                    b.Property<string>("NumeroPasaporte");
-
-                    b.Property<int?>("OrdenId");
-
-                    b.Property<string>("Pais");
-
-                    b.Property<string>("Telefono");
-
-                    b.HasKey("DatosPasajeroPrimarioId");
-
-                    b.HasIndex("OrdenId");
-
-                    b.ToTable("DatosPasajeroPrimario");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.DatosPasajeroSecundario", b =>
-                {
-                    b.Property<int>("DatosPasajeroSecundarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AffiDavitRequired");
-
-                    b.Property<string>("Apellidos");
-
-                    b.Property<string>("Calle");
-
-                    b.Property<string>("Ciudad");
-
-                    b.Property<string>("CiudadSalida");
-
-                    b.Property<string>("CodigoPostal");
-
-                    b.Property<string>("Correo");
-
-                    b.Property<int?>("DatosPasajeroPrimarioId");
-
-                    b.Property<string>("Direccion");
-
-                    b.Property<string>("Estado");
-
-                    b.Property<DateTime>("FechaNacimiento");
-
-                    b.Property<string>("Nacionalidad");
-
-                    b.Property<string>("Nombre");
-
-                    b.Property<string>("NumeroPasaporte");
-
-                    b.Property<string>("Pais");
-
-                    b.Property<string>("Telefono");
-
-                    b.HasKey("DatosPasajeroSecundarioId");
-
-                    b.HasIndex("DatosPasajeroPrimarioId");
-
-                    b.ToTable("DatosPasajeroSecundario");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Distribuidor", b =>
@@ -1972,20 +1884,6 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("TipoProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.DatosPasajeroPrimario", b =>
-                {
-                    b.HasOne("GoTravelTour.Models.Orden", "Orden")
-                        .WithMany()
-                        .HasForeignKey("OrdenId");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.DatosPasajeroSecundario", b =>
-                {
-                    b.HasOne("GoTravelTour.Models.DatosPasajeroPrimario", "DatosPasajeroPrimario")
-                        .WithMany("ListaPasajerosSecundarios")
-                        .HasForeignKey("DatosPasajeroPrimarioId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Habitacion", b =>

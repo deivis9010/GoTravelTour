@@ -221,7 +221,7 @@ namespace GoTravelTour.Controllers
                 return false;
             }
 
-            List<Sobreprecio> rangos = _context.Sobreprecio.Where(x => x.TipoProductoId == newRango.TipoProductoId).ToList();
+            List<Sobreprecio> rangos = _context.Sobreprecio.AsNoTracking().Where(x => x.TipoProductoId == newRango.TipoProductoId).ToList();
             foreach (var r in rangos)
             {
                 if ((r.PrecioDesde <= newRango.PrecioDesde && newRango.PrecioDesde <= r.PrecioHasta ||
