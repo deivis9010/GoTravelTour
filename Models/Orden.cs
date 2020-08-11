@@ -16,6 +16,7 @@ namespace GoTravelTour.Models
         public int ClienteId { get; set; }
         public bool OFACrequired { get; set; }
         public bool HasVoucher { get; set; }
+        public bool ConfirmacionOrden { get; set; }
         public string Notas { get; set; }
         public string NumeroAsistencia { get; set; }
         public string IntercomConferceNumber { get; set; }

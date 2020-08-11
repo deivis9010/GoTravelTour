@@ -974,7 +974,7 @@ namespace GoTravelTour.Controllers
                         ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio)*(buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes)*cantDiasGenenarl;
 
                     //Se aplica la ganancia correspondiente
-                    List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.TRANSPORTATION).ToList();
+                    List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
                     foreach (var s in sobreprecios)
                     {
                         if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)

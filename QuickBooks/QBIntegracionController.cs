@@ -38,6 +38,15 @@ namespace GoTravelTour.QuickBooks
 
         /*Este diccionario es para almacenar los token y solamente solicitarlos una vez*/
         public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
+        
+
+        private void agregarunRefreshtoken()
+        {
+            if (dictionary.Count == 0 || string.IsNullOrEmpty(dictionary["refreshToken"]))
+            {
+                dictionary["refreshToken"] = "AB11605875643sh3RdXUWzb5CWR1kmnN9ylsUFm2sBglmmCFzZ";
+            }
+        }
 
         [HttpGet]
         [Route("Connect")]
@@ -100,17 +109,31 @@ namespace GoTravelTour.QuickBooks
 
         [HttpGet]
         [Route("addProduct")]
-        public async  void AddProducto([FromBody] Producto producto)
+        public async  void AddProducto([FromBody] Traslado producto)
         {
-            
 
-            TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
-            if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+            try
             {
-                dictionary["accessToken"] = tokenResp.AccessToken;
-                dictionary["refreshToken"] = tokenResp.RefreshToken;
-              
+                agregarunRefreshtoken();
+                TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+
+                if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+                {
+                    dictionary["accessToken"] = tokenResp.AccessToken;
+                    dictionary["refreshToken"] = tokenResp.RefreshToken;
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
+            catch( Exception ex)
+            {
+                InitiateAuth("Connect");
+                AddProducto(producto);
+            }
+           
             var access_token = dictionary["accessToken"];
             var realmId = dictionary["realmId"];
 

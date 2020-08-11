@@ -223,6 +223,8 @@ namespace GoTravelTour.Controllers
             _context.Traslados.Add(traslado);
             await _context.SaveChangesAsync();
 
+            RedirectToAction("addProduct", "QBIntegracion");
+
             return CreatedAtAction("GetTraslado", new { id = traslado.ProductoId }, traslado);
         }
 

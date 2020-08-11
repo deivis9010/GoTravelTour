@@ -23,6 +23,9 @@ namespace GoTravelTour.Models
         public string CodigoPostal { get; set; }
         public string Pais { get; set; }
         public bool AffiDavitRequired { get; set; }
+        public string NombreImagen { get; set; }       
+        public string ImageContent { get; set; }
+        public LicenciasOFAC LicenciasOFAC { get; set; }
         public Orden Orden { get; set; }
         public List<DatosPasajeroSecundario> ListaPasajerosSecundarios { get; set; }
     }
