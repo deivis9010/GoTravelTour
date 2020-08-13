@@ -1006,7 +1006,7 @@ namespace GoTravelTour.Controllers
                                 else
                                 {
                                     valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                    ov.PrecioOrden += valorAplicado + ((valorAplicado / 100) * c.Descuento / 100);
+                                    ov.PrecioOrden += valorAplicado + ((valorAplicado) * c.Descuento / 100);
                                 }
 
                             }

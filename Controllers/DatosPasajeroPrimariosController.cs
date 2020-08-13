@@ -250,6 +250,26 @@ namespace GoTravelTour.Controllers
         }
 
 
+        // GET: api/DatosPasajeroPrimarios/Orden5
+        [HttpGet("Orden/{id}")]
+        public async Task<IActionResult> GetDatosPasajeroPrimarioByOrden([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var datosPasajeroPrimario = await _context.DatosPasajeroPrimario.Include(x => x.ListaPasajerosSecundarios).FirstAsync(x => x.Orden.OrdenId == id);
+
+            if (datosPasajeroPrimario == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(datosPasajeroPrimario);
+        }
+
+
 
     }
 }
