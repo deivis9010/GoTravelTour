@@ -62,6 +62,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+            if (datosPasajeroPrimario.Orden != null && datosPasajeroPrimario.Orden.OrdenId > 0)
+                datosPasajeroPrimario.Orden = _context.Orden.First(x => x.OrdenId == datosPasajeroPrimario.Orden.OrdenId);
 
             _context.Entry(datosPasajeroPrimario).State = EntityState.Modified;
 
@@ -92,6 +94,8 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if (datosPasajeroPrimario.Orden != null && datosPasajeroPrimario.Orden.OrdenId > 0)
+                datosPasajeroPrimario.Orden = _context.Orden.First(x => x.OrdenId == datosPasajeroPrimario.Orden.OrdenId);
 
             _context.DatosPasajeroPrimario.Add(datosPasajeroPrimario);
             await _context.SaveChangesAsync();

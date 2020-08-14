@@ -830,7 +830,8 @@ namespace GoTravelTour.Controllers
 
             List<OrdenAlojamiento> lista = new List<OrdenAlojamiento>(); //Lista  a devolver (candidatos)
 
-
+            buscador.Entrada = buscador.Entrada.Date;
+            buscador.Salida = buscador.Salida.Date;
             //Se buscan todos los alojamientos segun los parametros
             Alojamiento alojamiento = _context.Alojamientos.Include(x => x.ListaDistribuidoresProducto).First(x => x.ProductoId == buscador.Alojamiento.ProductoId);
             if (buscador.DistribuidorId > 0 && alojamiento.ListaDistribuidoresProducto != null && alojamiento.ListaDistribuidoresProducto.Any())
@@ -961,7 +962,7 @@ namespace GoTravelTour.Controllers
                             ov.PrecioOrden += DiasRestantes * precioBase;
                         }
                         else
-                            ov.PrecioOrden += DiasRestantes * precioBase * (buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes);
+                            ov.PrecioOrden += DiasRestantes * precioBase * (buscador.CantidadAdultos + buscador.CantidadMenores /*+ buscador.CantidadInfantes*/);
 
                     }
 
@@ -971,7 +972,7 @@ namespace GoTravelTour.Controllers
                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId== ContratoBase).ToList();
 
                     if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any())
-                        ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio)*(buscador.CantidadAdultos + buscador.CantidadMenores + buscador.CantidadInfantes)*cantDiasGenenarl;
+                        ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio)*(buscador.CantidadAdultos + buscador.CantidadMenores /*+ buscador.CantidadInfantes*/)*cantDiasGenenarl;
 
                     //Se aplica la ganancia correspondiente
                     List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.ACCOMMODATION).ToList();
@@ -1212,7 +1213,7 @@ namespace GoTravelTour.Controllers
                     if (md.FechaI != null && md.FechaF != null)
                     {
                         if (buscador.Entrada <= md.FechaI && md.FechaI <= buscador.Salida &&
-                                              buscador.Salida >= md.FechaF && md.FechaF >= buscador.Entrada)
+                            buscador.Salida >= md.FechaF && md.FechaF >= buscador.Entrada)
                         {
                             //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
                             cantDias = ((TimeSpan)(md.FechaF - md.FechaI)).Days;
@@ -1221,26 +1222,30 @@ namespace GoTravelTour.Controllers
                         }
                         else
                         {
-                            if (buscador.Entrada < md.FechaI && md.FechaF < buscador.Salida)
+                             
+                            if (md.FechaI  <= buscador.Entrada && buscador.Entrada <= md.FechaF &&
+                               md.FechaI <= buscador.Salida && buscador.Salida <= md.FechaF)
                             {
                                 //Si el rango esta incluido en el rango de entrada y salida la cantidad de dias sera la diferencia del rango de fecha
-                                cantDias = ((TimeSpan)(md.FechaF - md.FechaI)).Days + 1;
+                                cantDias = ((TimeSpan)(buscador.Salida -  buscador.Entrada)).Days;
                                 cantTotaldiasResta -= cantDias;
                                 //encontroMod = true;
                             }
                             else
-                            if (md.FechaI <= buscador.Entrada && buscador.Entrada < md.FechaF)
+                            if ( buscador.Entrada < md.FechaI &&  md.FechaI < buscador.Salida &&
+                                 md.FechaI < buscador.Salida && buscador.Salida < md.FechaF)
                             {
                                 //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                                cantDias = ((DateTime)md.FechaF - buscador.Entrada).Days;
+                                cantDias = (buscador.Salida - (DateTime)md.FechaI).Days;
                                 cantTotaldiasResta -= cantDias;
                                 //encontroMod = true;
                             }
                             else
-                            if (md.FechaF >= buscador.Salida && buscador.Salida >= md.FechaI)
+                            if (md.FechaI < buscador.Entrada && buscador.Entrada < md.FechaF &&
+                                buscador.Entrada < md.FechaF && md.FechaF < buscador.Salida)
                             {
                                 //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
-                                cantDias = (buscador.Salida - (DateTime)md.FechaI).Days;
+                                cantDias = ((DateTime)md.FechaF - buscador.Entrada).Days;
                                 cantTotaldiasResta -= cantDias;
                                // encontroMod = true;
                             }
@@ -1334,7 +1339,7 @@ namespace GoTravelTour.Controllers
                 }
             }
             if (!encontroMod)
-                ov.PrecioOrden += cantTotaldiasResta * precioBase * (cantNinoAux + cantInfanteAux + cantAdultosAux);
+                ov.PrecioOrden += cantTotaldiasResta * precioBase * (cantNinoAux /*+ cantInfanteAux*/ + cantAdultosAux);
 
 
         }
