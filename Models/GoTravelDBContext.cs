@@ -83,6 +83,7 @@ namespace GoTravelTour.Models
         public DbSet<GoTravelTour.Models.LicenciasOFAC> LicenciasOFAC { get; set; }
         public DbSet<GoTravelTour.Models.DatosPasajeroPrimario> DatosPasajeroPrimario { get; set; }
         public DbSet<GoTravelTour.Models.DatosPasajeroSecundario> DatosPasajeroSecundario { get; set; }
+        public DbSet<GoTravelTour.Models.TokenQB> TokenQB { get; set; }
        
     
 

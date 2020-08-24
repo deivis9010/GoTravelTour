@@ -147,10 +147,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            //if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre && traslado.TrasladoId != id))
-            //{
-            //    return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            //}
+            if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre && traslado.TrasladoId != id))
+            {
+                return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
 
             List<ComodidadesProductos> comodidades = _context.ComodidadesProductos.Where(x => x.ProductoId == traslado.ProductoId).ToList();
             foreach (var item in comodidades)
@@ -198,6 +198,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
+          
             return CreatedAtAction("GetTraslado", new { id = traslado.ProductoId }, traslado); ;
         }
 
@@ -210,10 +211,10 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre))
-            //{
-            //    return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
-            //}
+            if (_context.Traslados.Any(c => c.Nombre == traslado.Nombre))
+            {
+                return CreatedAtAction("GetTraslado", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             traslado.SKU = u.GetSKUCodigo();
             traslado.Proveedor = _context.Proveedores.First(x => x.ProveedorId == traslado.ProveedorId);
@@ -223,7 +224,7 @@ namespace GoTravelTour.Controllers
             _context.Traslados.Add(traslado);
             await _context.SaveChangesAsync();
 
-            RedirectToAction("addProduct", "QBIntegracion");
+           
 
             return CreatedAtAction("GetTraslado", new { id = traslado.ProductoId }, traslado);
         }

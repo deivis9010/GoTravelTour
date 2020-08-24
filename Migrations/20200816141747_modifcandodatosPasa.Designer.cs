@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200816141747_modifcandodatosPasa")]
+    partial class modifcandodatosPasa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1726,21 +1728,6 @@ namespace GoTravelTour.Migrations
                     b.HasKey("TipoTransporteId");
 
                     b.ToTable("TipoTransportes");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.TokenQB", b =>
-                {
-                    b.Property<int>("TokenQBId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("RealmId");
-
-                    b.Property<string>("RefreshToken");
-
-                    b.HasKey("TokenQBId");
-
-                    b.ToTable("TokenQB");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Usuario", b =>

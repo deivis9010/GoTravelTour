@@ -216,7 +216,7 @@ namespace GoTravelTour.Controllers
                     {
                         ord.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                          .Include(d => d.Sobreprecio)
-                          .Include(d => d.Habitacion)
+                          .Include(d => d.Habitacion).ThenInclude(xv=>xv.ListaCombinacionesDisponibles)
                           .Include(d => d.TipoHabitacion)
                          .Include(d => d.ModificadorAplicado.ListaReglas)
                          .Include(d => d.Voucher)
@@ -582,7 +582,7 @@ namespace GoTravelTour.Controllers
                                              .Single(x => x.DistribuidorId == oal.DistribuidorId);
 
                     if(oal.Habitacion != null )
-                        oal.Habitacion= _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+                        oal.Habitacion= _context.Habitaciones.Include(xx=>xx.ListaCombinacionesDisponibles).Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
                       
                    
 
@@ -773,7 +773,7 @@ namespace GoTravelTour.Controllers
                                              .Single(x => x.DistribuidorId == oal.DistribuidorId);
 
                     if (oal.Habitacion != null)
-                        oal.Habitacion = _context.Habitaciones.Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
+                        oal.Habitacion = _context.Habitaciones.Include(xx => xx.ListaCombinacionesDisponibles).Single(x => x.HabitacionId == oal.Habitacion.HabitacionId);
 
                     oal.PlanAlimenticio = _context.PlanesAlimenticios.Single(x => x.PlanesAlimenticiosId == oal.PlanesAlimenticiosId);
 

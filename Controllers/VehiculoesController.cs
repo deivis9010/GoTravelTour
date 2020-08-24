@@ -161,6 +161,11 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
+
+            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre && vehiculo.ProductoId != id))
+            {
+                return CreatedAtAction("GetVehiculos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
             List<VehiculoCategoriaAuto> ListaCategorias = _context.VehiculoCategoriaAuto.Where(x => x.ProductoId == id).ToList();
             int i = 0;
             while (i < ListaCategorias.Count())
@@ -268,6 +273,10 @@ namespace GoTravelTour.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre ))
+            {
+                return CreatedAtAction("GetVehiculos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             vehiculo.SKU = u.GetSKUCodigo();

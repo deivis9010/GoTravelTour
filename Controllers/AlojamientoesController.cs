@@ -1213,7 +1213,7 @@ namespace GoTravelTour.Controllers
                     if (md.FechaI != null && md.FechaF != null)
                     {
                         if (buscador.Entrada <= md.FechaI && md.FechaI <= buscador.Salida &&
-                            buscador.Salida >= md.FechaF && md.FechaF >= buscador.Entrada)
+                            buscador.Entrada <= md.FechaF && md.FechaF <= buscador.Salida)
                         {
                             //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
                             cantDias = ((TimeSpan)(md.FechaF - md.FechaI)).Days;

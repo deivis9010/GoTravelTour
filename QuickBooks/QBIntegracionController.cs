@@ -19,6 +19,7 @@ using RestSharp;
 
 using Intuit.Ipp.DataService;
 using GoTravelTour.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoTravelTour.QuickBooks
 {
@@ -26,7 +27,15 @@ namespace GoTravelTour.QuickBooks
     [ApiController]
     public class QBIntegracionController : ControllerBase
     {
-       
+
+        private readonly GoTravelDBContext _context;
+
+        public QBIntegracionController(GoTravelDBContext context)
+        {
+            _context = context;
+        }
+
+
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
@@ -40,13 +49,53 @@ namespace GoTravelTour.QuickBooks
         public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
         
 
-        private void agregarunRefreshtoken()
+        private void CargarRefreshtoken()
         {
-            if (dictionary.Count == 0 || string.IsNullOrEmpty(dictionary["refreshToken"]))
+            if (dictionary.Count == 0 || !dictionary.ContainsKey("refreshToken"))
             {
-                dictionary["refreshToken"] = "AB11605875643sh3RdXUWzb5CWR1kmnN9ylsUFm2sBglmmCFzZ";
+                dictionary["refreshToken"] = _context.TokenQB.First().RefreshToken;
+                dictionary["realmId"] = _context.TokenQB.First().RealmId;
             }
         }
+
+        private void ActualizarRefreshtoken(string token, string realmId)
+        {
+
+
+            if (_context.TokenQB.Count()>0)
+            {
+                TokenQB tok = _context.TokenQB.First();
+                tok.RefreshToken = token;
+                tok.RealmId = realmId;
+
+                _context.Entry(tok).State = EntityState.Modified;
+
+                try
+                {
+                    _context.SaveChangesAsync();
+                    dictionary["refreshToken"] = tok.RefreshToken;
+                    dictionary["realmId"] = realmId;
+                    return;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+
+                }
+            }
+            else
+            {
+                TokenQB tok = new TokenQB();
+                tok.RefreshToken = token;
+                tok.RealmId = realmId;
+                _context.TokenQB.Add(tok);
+                _context.SaveChangesAsync();
+                dictionary["refreshToken"] = tok.RefreshToken;
+                dictionary["realmId"] = realmId;
+            }
+        }
+          
+
 
         [HttpGet]
         [Route("Connect")]
@@ -76,8 +125,8 @@ namespace GoTravelTour.QuickBooks
              client = new RestClient("https://rest.tsheets.com/api/v1/grant");
              request = new RestRequest(Method.POST);
             request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id="+ clientid + "&client_secret="+ clientsecret + "&code="+ code + "&redirect_uri="+ redirectUrl, ParameterType.RequestBody);
-             response = client.Execute(request);*/
-            //auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
+             response = client.Execute(request);
+            //auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);*/
             var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
 
             var access_token = tokenResponse.AccessToken;
@@ -101,41 +150,147 @@ namespace GoTravelTour.QuickBooks
             else
                 dictionary["realmId"] = realmId;
 
+            ActualizarRefreshtoken(refresh_token,realmId);
 
-
-            return Ok( "ApiCallService" + " QBO API call Successful!! Response: " );
+            return Redirect("http://gotravelandtours.com");
+           
            
         }
 
         [HttpGet]
-        [Route("addProduct")]
-        public async  void AddProducto([FromBody] Traslado producto)
+        [Route("createCustomer")]
+        public async System.Threading.Tasks.Task<ActionResult> CreateCustomer([FromBody] Cliente cliente)
         {
+            var access_token = "";
+            var realmId = "";
 
             try
             {
-                agregarunRefreshtoken();
+                CargarRefreshtoken();
                 TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
 
                 if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
                 {
                     dictionary["accessToken"] = tokenResp.AccessToken;
                     dictionary["refreshToken"] = tokenResp.RefreshToken;
+                    ActualizarRefreshtoken(tokenResp.RefreshToken, dictionary["realmId"]);
 
                 }
                 else
                 {
                     throw new Exception();
                 }
+
+
+
+
+
+                access_token = dictionary["accessToken"];
+                realmId = dictionary["realmId"];
+            }
+            catch (Exception ex)
+            {
+
+
+                return InitiateAuth("Connect");
+            }
+
+
+
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
+            // Create a ServiceContext with Auth tokens and realmId
+            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = "https://sandbox-quickbooks.api.intuit.com/";
+
+            // Create a QuickBooks QueryService using ServiceContext
+            QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
+
+            try
+            {
+               // CompanyInfo companyInfo = querySvc.ExecuteIdsQuery("SELECT * FROM CompanyInfo").FirstOrDefault();
+                Bill b = new Bill();
+                Invoice inv = new Invoice(); //Factura
+                Item it = new Item();// Esto son los productos
+                Estimate est = new Estimate();
+                Customer c = new Customer();
+
+
+
+                Customer ObjItem = new Customer();
+                ObjItem.DisplayName = cliente.Nombre;
+                ObjItem.FamilyName = cliente.Nombre;
+                ObjItem.GivenName = cliente.Nombre;
+                ObjItem.ContactName= cliente.Nombre;
+                ObjItem.Title = cliente.Nombre;
+                ObjItem.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
+                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType="LandLine", FreeFormNumber= cliente.Telefono } ;
+                ObjItem.Mobile= new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
+
+
+                              
+                DataService dataService = new DataService(serviceContext);
+                Customer customer = dataService.Add(ObjItem);
+                if (customer != null && !string.IsNullOrEmpty(customer.Id))
+                {
+                    return Ok("Se inserto el cliente");
+
+                }
+                else
+                {
+                    return Ok("No se insertó el cliente");
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok("Exception : " + ex.Message);
+            }
+            
+        } 
+
+        [HttpGet]
+        [Route("addProduct")]
+        public async System.Threading.Tasks.Task<ActionResult> AddProducto([FromBody] Traslado producto)
+        {
+            var access_token = "";
+            var realmId = "";
+         
+            try
+            {
+                CargarRefreshtoken();
+                TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+
+                if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+                {
+                    dictionary["accessToken"] = tokenResp.AccessToken;
+                    dictionary["refreshToken"] = tokenResp.RefreshToken;
+                    ActualizarRefreshtoken(tokenResp.RefreshToken, dictionary["realmId"] );
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+
+
+
+
+                 access_token = dictionary["accessToken"];
+                 realmId = dictionary["realmId"];
             }
             catch( Exception ex)
             {
-                InitiateAuth("Connect");
-                AddProducto(producto);
+
+
+                return InitiateAuth("Connect");
             }
            
-            var access_token = dictionary["accessToken"];
-            var realmId = dictionary["realmId"];
+           
 
             OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
             // Create a ServiceContext with Auth tokens and realmId
@@ -152,15 +307,17 @@ namespace GoTravelTour.QuickBooks
                 Bill b = new Bill();
                 Invoice inv = new Invoice(); //Factura
                 Item it = new Item();// Esto son los productos
-
+                Estimate est = new Estimate();
+                Customer c = new Customer();
 
 
 
                 Item ObjItem = new Item();
-                ObjItem.Name = "Vision Keyboard";
+                ObjItem.Name = producto.Nombre; 
                 ObjItem.TypeSpecified = true;
                 ObjItem.Type = ItemTypeEnum.Service;
-                ObjItem.TrackQtyOnHand = false;
+                
+             /*   ObjItem.TrackQtyOnHand = false;
                 ObjItem.TrackQtyOnHandSpecified = false;
                 ObjItem.QtyOnHandSpecified = false;
                 ObjItem.QtyOnHand = 10;
@@ -171,7 +328,7 @@ namespace GoTravelTour.QuickBooks
                 ObjItem.UnitPrice = 100;
                 ObjItem.PurchaseDesc = "This Keyboard is purchase from Vision";
                 ObjItem.PurchaseCostSpecified = true;
-                ObjItem.PurchaseCost = 50;
+                ObjItem.PurchaseCost = 50;*/
                 // Create a QuickBooks QueryService using ServiceContext for getting list of all accounts from Quickbooks
                 QueryService<Account> querySvcAc = new QueryService<Account>(serviceContext);
                 var AccountList = querySvcAc.ExecuteIdsQuery("SELECT * FROM Account").ToList();
@@ -190,7 +347,7 @@ namespace GoTravelTour.QuickBooks
                 {
 
 
-                     Ok("Account of Type OtherCurrentAsset Does not found in QBO, We must have at least one Account which is Type of OtherCurrentAsset for Refrence");
+                    return Ok("Account of Type OtherCurrentAsset Does not found in QBO, We must have at least one Account which is Type of OtherCurrentAsset for Refrence");
                 }
                 //Get Account of type "Income" and named "Sales of Product Income" for Income Account Reference
                 var IncomeAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Sales of Product Income").FirstOrDefault();
@@ -202,7 +359,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                     Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
+                    return Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
                 }
                 //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
                 var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Cost of Goods Sold").FirstOrDefault();
@@ -214,7 +371,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                     Ok("Account of Type CostofGoodsSold Does not found in QBO, We must have at least one Account Name as 'Cost of Goods Sold' which is Type of CostofGoodsSold for Refrence");
+                    return Ok("Account of Type CostofGoodsSold Does not found in QBO, We must have at least one Account Name as 'Cost of Goods Sold' which is Type of CostofGoodsSold for Refrence");
                 }
                 DataService dataService = new DataService(serviceContext);
                 Item ItemAdd = dataService.Add(ObjItem);
@@ -232,11 +389,11 @@ namespace GoTravelTour.QuickBooks
 
 
             }
-            catch
+            catch(Exception ex)
             {
-                 Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
+                return Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
             }
-             Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
+            return Ok("Account of Type Income Does not found in QBO, We must have at least one Account Name as 'Sales of Product Income' which is Type of Income for Refrence");
         }
 
 

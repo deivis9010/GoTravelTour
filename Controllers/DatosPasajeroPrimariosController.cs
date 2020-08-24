@@ -39,7 +39,8 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var datosPasajeroPrimario = await _context.DatosPasajeroPrimario.FindAsync(id);
+            var datosPasajeroPrimario = await _context.DatosPasajeroPrimario.Include(x=>x.LicenciasOFAC)
+                .Include(x => x.Orden).FirstAsync(x=>x.DatosPasajeroPrimarioId==id);
 
             if (datosPasajeroPrimario == null)
             {
@@ -64,6 +65,24 @@ namespace GoTravelTour.Controllers
             }
             if (datosPasajeroPrimario.Orden != null && datosPasajeroPrimario.Orden.OrdenId > 0)
                 datosPasajeroPrimario.Orden = _context.Orden.First(x => x.OrdenId == datosPasajeroPrimario.Orden.OrdenId);
+            if (datosPasajeroPrimario.LicenciasOFAC != null && datosPasajeroPrimario.LicenciasOFAC.LicenciasOFACId > 0)
+                datosPasajeroPrimario.LicenciasOFAC = _context.LicenciasOFAC.First(x => x.LicenciasOFACId == datosPasajeroPrimario.LicenciasOFAC.LicenciasOFACId);
+
+
+
+                List<DatosPasajeroSecundario> trAborrar = _context.DatosPasajeroSecundario.Where(x => x.DatosPasajeroPrimario.DatosPasajeroPrimarioId == datosPasajeroPrimario.DatosPasajeroPrimarioId).ToList();
+                foreach (var to in trAborrar)
+                {
+                    //orden.PrecioGeneralOrden -= to.PrecioOrden;
+                    _context.DatosPasajeroSecundario.Remove(to);
+                }
+
+            if (datosPasajeroPrimario.ListaPasajerosSecundarios != null && datosPasajeroPrimario.ListaPasajerosSecundarios.Count > 0)
+            {
+                _context.DatosPasajeroSecundario.AddRange(datosPasajeroPrimario.ListaPasajerosSecundarios);
+            }
+               
+
 
             _context.Entry(datosPasajeroPrimario).State = EntityState.Modified;
 
@@ -96,6 +115,8 @@ namespace GoTravelTour.Controllers
             }
             if (datosPasajeroPrimario.Orden != null && datosPasajeroPrimario.Orden.OrdenId > 0)
                 datosPasajeroPrimario.Orden = _context.Orden.First(x => x.OrdenId == datosPasajeroPrimario.Orden.OrdenId);
+            if (datosPasajeroPrimario.LicenciasOFAC != null && datosPasajeroPrimario.LicenciasOFAC.LicenciasOFACId > 0)
+                datosPasajeroPrimario.LicenciasOFAC = _context.LicenciasOFAC.First(x => x.LicenciasOFACId == datosPasajeroPrimario.LicenciasOFAC.LicenciasOFACId);
 
             _context.DatosPasajeroPrimario.Add(datosPasajeroPrimario);
             await _context.SaveChangesAsync();
@@ -263,7 +284,8 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var datosPasajeroPrimario = await _context.DatosPasajeroPrimario.Include(x => x.ListaPasajerosSecundarios).FirstAsync(x => x.Orden.OrdenId == id);
+            var datosPasajeroPrimario = await _context.DatosPasajeroPrimario.Include(x => x.ListaPasajerosSecundarios).Include(x => x.LicenciasOFAC)
+                .Include(x => x.Orden).FirstAsync(x => x.Orden.OrdenId == id);
 
             if (datosPasajeroPrimario == null)
             {

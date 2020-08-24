@@ -63,6 +63,12 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
+            if (datosPasajeroSecundario.DatosPasajeroPrimario != null && datosPasajeroSecundario.DatosPasajeroPrimario.DatosPasajeroPrimarioId > 0)
+                datosPasajeroSecundario.DatosPasajeroPrimario = _context.DatosPasajeroPrimario.First(x => x.DatosPasajeroPrimarioId == datosPasajeroSecundario.DatosPasajeroPrimario.DatosPasajeroPrimarioId);
+            if (datosPasajeroSecundario.LicenciasOFAC != null && datosPasajeroSecundario.LicenciasOFAC.LicenciasOFACId > 0)
+                datosPasajeroSecundario.LicenciasOFAC = _context.LicenciasOFAC.First(x => x.LicenciasOFACId == datosPasajeroSecundario.LicenciasOFAC.LicenciasOFACId);
+
+
             _context.Entry(datosPasajeroSecundario).State = EntityState.Modified;
 
             try

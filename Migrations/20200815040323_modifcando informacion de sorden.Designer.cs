@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200815040323_modifcando informacion de sorden")]
+    partial class modifcandoinformaciondesorden
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,8 +304,6 @@ namespace GoTravelTour.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AffiDavitOk");
-
                     b.Property<bool>("AffiDavitRequired");
 
                     b.Property<string>("Apellidos");
@@ -356,8 +356,6 @@ namespace GoTravelTour.Migrations
                     b.Property<int>("DatosPasajeroSecundarioId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AffiDavitOk");
 
                     b.Property<bool>("AffiDavitRequired");
 
@@ -1726,21 +1724,6 @@ namespace GoTravelTour.Migrations
                     b.HasKey("TipoTransporteId");
 
                     b.ToTable("TipoTransportes");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.TokenQB", b =>
-                {
-                    b.Property<int>("TokenQBId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("RealmId");
-
-                    b.Property<string>("RefreshToken");
-
-                    b.HasKey("TokenQBId");
-
-                    b.ToTable("TokenQB");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Usuario", b =>
