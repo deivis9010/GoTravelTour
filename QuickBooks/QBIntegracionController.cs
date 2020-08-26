@@ -47,7 +47,8 @@ namespace GoTravelTour.QuickBooks
 
         /*Este diccionario es para almacenar los token y solamente solicitarlos una vez*/
         public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
-        
+
+        public static string QboBaseUrl = "https://sandbox-quickbooks.api.intuit.com/";
 
         private void CargarRefreshtoken()
         {
@@ -201,7 +202,7 @@ namespace GoTravelTour.QuickBooks
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
-            serviceContext.IppConfiguration.BaseUrl.Qbo = "https://sandbox-quickbooks.api.intuit.com/";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             // Create a QuickBooks QueryService using ServiceContext
             QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
@@ -253,7 +254,7 @@ namespace GoTravelTour.QuickBooks
         } 
 
         [HttpGet]
-        [Route("addProduct")]
+        [Route("addProductTraslado")]
         public async System.Threading.Tasks.Task<ActionResult> AddProducto([FromBody] Traslado producto)
         {
             var access_token = "";
@@ -296,7 +297,7 @@ namespace GoTravelTour.QuickBooks
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
-            serviceContext.IppConfiguration.BaseUrl.Qbo = "https://sandbox-quickbooks.api.intuit.com/";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             // Create a QuickBooks QueryService using ServiceContext
             QueryService<CompanyInfo> querySvc = new QueryService<CompanyInfo>(serviceContext);
@@ -310,25 +311,39 @@ namespace GoTravelTour.QuickBooks
                 Estimate est = new Estimate();
                 Customer c = new Customer();
 
-
+                // Create a QuickBooks QueryService using ServiceContext
+                QueryService<Item> querySvcI = new QueryService<Item>(serviceContext);
+                List<Item> categ = querySvcI.ExecuteIdsQuery("SELECT * from Item ").Where(x=> x.Name == "Activity" && x.Type == ItemTypeEnum.Category).ToList();
+                Item a = new Item();
+                a = categ.First();
+                /*foreach(var itt in categ)
+                {
+                    if(itt.Name == "Activity")
+                    a = itt;
+                }*/
 
                 Item ObjItem = new Item();
-                ObjItem.Name = producto.Nombre; 
+                ObjItem.Name = producto.Nombre;
+                ObjItem.ParentRef = new ReferenceType { Value= a.Id, type=ItemTypeEnum.Category.GetStringValue(),name=a.Name };
                 ObjItem.TypeSpecified = true;
+                ObjItem.Sku = producto.SKU;
                 ObjItem.Type = ItemTypeEnum.Service;
-                
-             /*   ObjItem.TrackQtyOnHand = false;
-                ObjItem.TrackQtyOnHandSpecified = false;
-                ObjItem.QtyOnHandSpecified = false;
-                ObjItem.QtyOnHand = 10;
-                ObjItem.InvStartDateSpecified = true;
-                ObjItem.InvStartDate = DateTime.Now;
-                ObjItem.Description = "This Keyboard is made by vision infotech";
-                ObjItem.UnitPriceSpecified = true;
-                ObjItem.UnitPrice = 100;
-                ObjItem.PurchaseDesc = "This Keyboard is purchase from Vision";
-                ObjItem.PurchaseCostSpecified = true;
-                ObjItem.PurchaseCost = 50;*/
+                ObjItem.SubItem = true;
+                ObjItem.SubItemSpecified = true;
+
+
+                /*   ObjItem.TrackQtyOnHand = false;
+                   ObjItem.TrackQtyOnHandSpecified = false;
+                   ObjItem.QtyOnHandSpecified = false;
+                   ObjItem.QtyOnHand = 10;
+                   ObjItem.InvStartDateSpecified = true;
+                   ObjItem.InvStartDate = DateTime.Now;
+                   ObjItem.Description = "This Keyboard is made by vision infotech";
+                   ObjItem.UnitPriceSpecified = true;
+                   ObjItem.UnitPrice = 100;
+                   ObjItem.PurchaseDesc = "This Keyboard is purchase from Vision";
+                   ObjItem.PurchaseCostSpecified = true;
+                   ObjItem.PurchaseCost = 50;*/
                 // Create a QuickBooks QueryService using ServiceContext for getting list of all accounts from Quickbooks
                 QueryService<Account> querySvcAc = new QueryService<Account>(serviceContext);
                 var AccountList = querySvcAc.ExecuteIdsQuery("SELECT * FROM Account").ToList();
@@ -398,6 +413,71 @@ namespace GoTravelTour.QuickBooks
 
 
 
+
+
+        [HttpGet]
+        [Route("createCategory")]
+        public async System.Threading.Tasks.Task<ActionResult> CreateCategory(/*[FromBody] string nombre/*, [FromBody] string tipoProducto*/)
+        {
+            var access_token = "";
+            var realmId = "";
+
+            try
+            {
+                CargarRefreshtoken();
+                TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+
+                if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+                {
+                    dictionary["accessToken"] = tokenResp.AccessToken;
+                    dictionary["refreshToken"] = tokenResp.RefreshToken;
+                    ActualizarRefreshtoken(tokenResp.RefreshToken, dictionary["realmId"]);
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+
+
+
+
+                access_token = dictionary["accessToken"];
+                realmId = dictionary["realmId"];
+            }
+            catch (Exception ex)
+            {
+
+
+                return InitiateAuth("Connect");
+            }
+
+
+
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
+            // Create a ServiceContext with Auth tokens and realmId
+            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
+            Item ObjCategoryItem = new Item();
+            ObjCategoryItem.Name = "Activity";
+            ObjCategoryItem.TypeSpecified = true;
+            ObjCategoryItem.Type = ItemTypeEnum.Category;
+            DataService dataService = new DataService(serviceContext);
+            Item CategoryItemAdd = dataService.Add(ObjCategoryItem);
+            if (CategoryItemAdd != null && !string.IsNullOrEmpty(CategoryItemAdd.Id))
+            {
+                return Ok("Se creo la categoria");
+            }
+            else
+            {
+                return Ok("No se creo la categoria");
+            }
+        }
+            
+        
+      
 
 
     }
