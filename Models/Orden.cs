@@ -27,6 +27,9 @@ namespace GoTravelTour.Models
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaPeticion { get; set; }
         public DateTime? FechaActualizacion { get; set; }
+        public int CantidadAdulto { get; set; }
+        public int CantidadNino { get; set; }
+        public int CantidadInfante { get; set; }
         //public Sobreprecio Sobreprecio { get; set; }
         public List<OrdenVehiculo> ListaVehiculosOrden { get; set; }
         public List<OrdenTraslado> ListaTrasladoOrden { get; set; }
