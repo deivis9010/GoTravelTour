@@ -438,14 +438,16 @@ namespace GoTravelTour.Controllers
                             while (i < contrato.Temporadas.Count())
                             {
 
-                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
-                                    .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
-                                    .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = new List<PrecioAlojamiento>();
                                 contrato.Temporadas[i].ListaPrecioPlanes = new List<PrecioPlanesAlimenticios>();
                                 if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
                                     foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
                                     {
+                                        contrato.Temporadas[i].ListaPrecioAlojamientos.AddRange( _context.PrecioAlojamiento
+                                       .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
+                                       .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId && x.ProductoId == item.ProductoId).ToList());
+                                        ;
+
                                         if (_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
                                         {
                                             List<PrecioPlanesAlimenticios> temp = new List<PrecioPlanesAlimenticios>();
@@ -456,7 +458,7 @@ namespace GoTravelTour.Controllers
 
 
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 i++;
@@ -488,14 +490,16 @@ namespace GoTravelTour.Controllers
                             int i = 0;
                             while (i < contrato.Temporadas.Count())
                             {
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = new List<PrecioAlojamiento>();
                                 contrato.Temporadas[i].ListaPrecioPlanes = new List<PrecioPlanesAlimenticios>();
-                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
-                                    .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
-                                           .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                               
                                 if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
                                     foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
                                     {
+                                        contrato.Temporadas[i].ListaPrecioAlojamientos.AddRange( _context.PrecioAlojamiento
+                                        .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
+                                          .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId && x.ProductoId==item.ProductoId).ToList());
+                                        ;
                                         if (_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
                                         {
                                             List<PrecioPlanesAlimenticios> temp = new List<PrecioPlanesAlimenticios>();
@@ -504,7 +508,7 @@ namespace GoTravelTour.Controllers
                                         }
                                     }
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 
@@ -537,14 +541,15 @@ namespace GoTravelTour.Controllers
                             int i = 0;
                             while (i < contrato.Temporadas.Count())
                             {
-                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
-                                    .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
-                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = new List<PrecioAlojamiento>();
                                 contrato.Temporadas[i].ListaPrecioPlanes = new List<PrecioPlanesAlimenticios>();
                                 if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
                                     foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
                                     {
+                                        contrato.Temporadas[i].ListaPrecioAlojamientos.AddRange( _context.PrecioAlojamiento
+                                        .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
+                                       .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId && x.ProductoId == item.ProductoId).ToList());
+                                        ;
                                         if (_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
                                         {
                                             List<PrecioPlanesAlimenticios> temp = new List<PrecioPlanesAlimenticios>();
@@ -553,7 +558,7 @@ namespace GoTravelTour.Controllers
                                         }
                                     }
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 
@@ -586,14 +591,15 @@ namespace GoTravelTour.Controllers
                             int i = 0;
                             while (i < contrato.Temporadas.Count())
                             {
-                                contrato.Temporadas[i].ListaPrecioAlojamientos = _context.PrecioAlojamiento
-                                    .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
-                                   .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
-                                ;
+                                contrato.Temporadas[i].ListaPrecioAlojamientos = new List<PrecioAlojamiento>();
                                 contrato.Temporadas[i].ListaPrecioPlanes = new List<PrecioPlanesAlimenticios>();
                                 if (contrato.Distribuidor.ListaProductosDistribuidos != null && contrato.Distribuidor.ListaProductosDistribuidos.Count() > 0)
                                     foreach (var item in contrato.Distribuidor.ListaProductosDistribuidos)
                                     {
+                                        contrato.Temporadas[i].ListaPrecioAlojamientos.AddRange( _context.PrecioAlojamiento
+                                           .Include(x => x.Habitacion).Include(x => x.TipoHabitacion)
+                                          .Where(x => x.Temporada.TemporadaId == contrato.Temporadas[i].TemporadaId && x.ProductoId == item.ProductoId).ToList());
+                                        ;
                                         if (_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == item.ProductoId))
                                         {
                                             List<PrecioPlanesAlimenticios> temp = new List<PrecioPlanesAlimenticios>();
@@ -604,7 +610,7 @@ namespace GoTravelTour.Controllers
 
                                     }
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 
