@@ -458,7 +458,7 @@ namespace GoTravelTour.Controllers
 
 
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
                                 i++;
@@ -508,7 +508,7 @@ namespace GoTravelTour.Controllers
                                         }
                                     }
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 
@@ -558,7 +558,7 @@ namespace GoTravelTour.Controllers
                                         }
                                     }
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 
@@ -610,7 +610,7 @@ namespace GoTravelTour.Controllers
 
                                     }
 
-                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas/*.Include(x => x.Producto)*/
+                                contrato.Temporadas[i].ListaFechasTemporada = _context.RangoFechas.Include(x => x.Producto)
                                  .Where(x => x.TemporadaId == contrato.Temporadas[i].TemporadaId).ToList();
                                 ;
 

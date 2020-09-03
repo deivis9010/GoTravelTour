@@ -220,6 +220,7 @@ namespace GoTravelTour.QuickBooks
                 ObjItem.Type = ItemTypeEnum.Category;
                 ObjItem.SubItem = true;
                 ObjItem.SubItemSpecified = true;
+               
 
                 DataService dataService = new DataService(serviceContext);
                 Item ItemAdd = dataService.Add(ObjItem);
@@ -570,6 +571,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -759,6 +762,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -968,6 +973,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -1154,6 +1161,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -1359,6 +1368,7 @@ namespace GoTravelTour.QuickBooks
 
                 // Create a QuickBooks QueryService using ServiceContext
                 QueryService<Item> querySvcI = new QueryService<Item>(serviceContext);
+
                 List<Item> tiposProductos = querySvcI.ExecuteIdsQuery("SELECT * from Item ").Where(x => x.Name == "Vehicle Rental" && x.Type == ItemTypeEnum.Category).ToList();
 
                 Item tipoProd = new Item();
@@ -1369,6 +1379,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                   Vendor ven= agregarVendorProveedor( proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -1552,6 +1564,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -1767,6 +1781,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -1979,6 +1995,8 @@ namespace GoTravelTour.QuickBooks
                 if (proveedores == null || proveedores.Count() == 0)
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
+                    Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
+                    if (ven == null) return Ok("Error insertando el Vendor");
                     if (prov == null) return Ok("Error insertando el proveedor");
                 }
                 else
@@ -2947,7 +2965,7 @@ namespace GoTravelTour.QuickBooks
             if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
             {
                 orden.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(ex => ex.PrecioActividad)/*.ThenInclude(t => t.Temporada)*/
-               .Include(d => d.Actividad)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+               .Include(d => d.Actividad).ThenInclude(xx=>xx.Proveedor)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
                    .ThenInclude(l => l.Distribuidor)
                    .Include(d => d.LugarActividad)
                    .Include(d => d.LugarRecogida)
@@ -2972,7 +2990,7 @@ namespace GoTravelTour.QuickBooks
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
-                    .Include(d => d.Alojamiento)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                    .Include(d => d.Alojamiento).ThenInclude(xx => xx.Proveedor)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
                     .ThenInclude(l => l.Distribuidor)*/.First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
                 foreach (var item in orden.ListaAlojamientoOrden)
                 {
@@ -2997,7 +3015,7 @@ namespace GoTravelTour.QuickBooks
                      .Include(d => d.Voucher)
                      .Include(d => d.LugarEntrega)
                      .Include(d => d.LugarRecogida)*/
-                    .Include(v => v.Vehiculo)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                    .Include(v => v.Vehiculo).ThenInclude(xx => xx.Proveedor)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
                     .ThenInclude(l => l.Distribuidor)*/.First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
                 foreach (var item in orden.ListaVehiculosOrden)
                 {
@@ -3022,7 +3040,7 @@ namespace GoTravelTour.QuickBooks
                                                                                                                  .Include(d => d.PuntoOrigen)
                                                                                                                  .Include(d => d.Sobreprecio)
                                                                                                                  .Include(d => d.Voucher)*/
-                .Include(d => d.Traslado)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                .Include(d => d.Traslado).ThenInclude(xx => xx.Proveedor)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
                     .ThenInclude(l => l.Distribuidor)*/.First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
             }
 
@@ -3068,20 +3086,36 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
-            Bill ObjBill = new Bill();
-            ObjBill.VendorRef = new ReferenceType();
-            ObjBill.VendorRef.Value = "60";//Quickbooks online Vendor Id
+           
 
             List<Line> LineList = new List<Line>();
             if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
+            {
+               
                 foreach (var item in orden.ListaActividadOrden)
                 {
+                    Bill ObjBill = new Bill();
+                    QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
+
+                    List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.ContactName == item.Actividad.Proveedor.Nombre).ToList();
+                    Vendor VendorRef = null;
+                    if (proveedores != null && proveedores.Any())
+                    {
+
+                        VendorRef = proveedores.First();
+                    }
+                    else
+                    {
+                        VendorRef = agregarVendorProveedor(item.Actividad.Proveedor, serviceContext);
+                    }
+                    ObjBill.VendorRef = new ReferenceType();
+                    ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
 
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
-                    objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento/100) ;
+                    objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                     ItemLineDetail.AccountRef = new ReferenceType();
@@ -3090,13 +3124,45 @@ namespace GoTravelTour.QuickBooks
                                                             //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                     objLine.AnyIntuitObject = ItemLineDetail;
                     LineList.Add(objLine);
-                   
-                    
 
+
+                    ObjBill.Line = LineList.ToArray();
+                    DataService dataService = new DataService(serviceContext);
+                    Bill BillAdd = dataService.Add(ObjBill);
+                    if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
+                    {
+
+                        //you can write Database code here
+                        Ok("Se creo el bill");
+                    }
+                    else
+                    {
+
+                        return Ok("No se encontro el producto ");
+                    }
                 }
+               
+            }
             if (orden.ListaTrasladoOrden != null && orden.ListaTrasladoOrden.Any())
+            {
                 foreach (var item in orden.ListaTrasladoOrden)
                 {
+                    Bill ObjBill = new Bill();
+                    QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
+
+                    List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.ContactName == item.Traslado.Proveedor.Nombre).ToList();
+                    Vendor VendorRef = null;
+                    if (proveedores != null && proveedores.Any())
+                    {
+
+                        VendorRef = proveedores.First();
+                    }
+                    else
+                    {
+                        VendorRef = agregarVendorProveedor(item.Traslado.Proveedor, serviceContext);
+                    }
+                    ObjBill.VendorRef = new ReferenceType();
+                    ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3115,12 +3181,45 @@ namespace GoTravelTour.QuickBooks
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
 
+                    ObjBill.Line = LineList.ToArray();
+                    DataService dataService = new DataService(serviceContext);
+                    Bill BillAdd = dataService.Add(ObjBill);
+                    if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
+                    {
 
+                        //you can write Database code here
+                        Ok("Se creo el bill");
+                    }
+                    else
+                    {
+
+                        return Ok("No se encontro el producto ");
+                    }
                 }
+               
+            }
 
             if (orden.ListaVehiculosOrden != null && orden.ListaVehiculosOrden.Any())
+            {
                 foreach (var item in orden.ListaVehiculosOrden)
                 {
+                    Bill ObjBill = new Bill();
+                    QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
+
+                    List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.ContactName == item.Vehiculo.Proveedor.Nombre).ToList();
+                    Vendor VendorRef = null;
+                    if (proveedores != null && proveedores.Any())
+                    {
+
+                        VendorRef = proveedores.First();
+                    }
+                    else
+                    {
+                        VendorRef = agregarVendorProveedor(item.Vehiculo.Proveedor, serviceContext);
+                    }
+                    ObjBill.VendorRef = new ReferenceType();
+                    ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
+
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3139,12 +3238,47 @@ namespace GoTravelTour.QuickBooks
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
 
+                    ObjBill.Line = LineList.ToArray();
+                    DataService dataService = new DataService(serviceContext);
+                    Bill BillAdd = dataService.Add(ObjBill);
+                    if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
+                    {
+
+                        //you can write Database code here
+                        Ok("Se creo el bill");
+                    }
+                    else
+                    {
+
+                        return Ok("No se encontro el producto ");
+                    }
 
                 }
+               
+            }
+               
 
             if (orden.ListaAlojamientoOrden != null && orden.ListaAlojamientoOrden.Any())
+            {
                 foreach (var item in orden.ListaAlojamientoOrden)
                 {
+                    Bill ObjBill = new Bill();
+                    QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
+
+                    List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.ContactName == item.Alojamiento.Proveedor.Nombre).ToList();
+                    Vendor VendorRef = null;
+                    if (proveedores != null && proveedores.Any())
+                    {
+
+                        VendorRef = proveedores.First();
+                    }
+                    else
+                    {
+                        VendorRef = agregarVendorProveedor(item.Alojamiento.Proveedor, serviceContext);
+                    }
+                    ObjBill.VendorRef = new ReferenceType();
+                    ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
+
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3163,18 +3297,27 @@ namespace GoTravelTour.QuickBooks
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
 
+                    ObjBill.Line = LineList.ToArray();
+                    DataService dataService = new DataService(serviceContext);
+                    Bill BillAdd = dataService.Add(ObjBill);
+                    if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
+                    {
+
+                        //you can write Database code here
+                        Ok("Se creo el bill");
+                    }
+                    else
+                    {
+
+                        return Ok("No se encontro el producto ");
+                    }
 
                 }
-           
-            ObjBill.Line = LineList.ToArray();
-            DataService dataService = new DataService(serviceContext);
-            Bill BillAdd = dataService.Add(ObjBill);
-            if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
-            {
-             
-                //you can write Database code here
-                return Ok("Se creo el bill");
+                
             }
+                
+           
+            
 
 
             return Ok("No se encontro el producto ");
@@ -3234,6 +3377,51 @@ namespace GoTravelTour.QuickBooks
             return null;
 
         }
+
+
+        private Vendor agregarVendorProveedor(Proveedor prov, ServiceContext serviceContext)
+        {
+
+            QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
+
+         
+
+            List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.ContactName == prov.Nombre ).ToList();
+
+            if(proveedores != null && proveedores.Any())
+            {
+                return proveedores.First();
+
+            }
+
+            Vendor ObjVendor = new Vendor();
+            ObjVendor.GivenName = prov.Nombre;
+            ObjVendor.FamilyName = prov.Nombre;
+            ObjVendor.ContactName = prov.Nombre; 
+            ObjVendor.CompanyName = prov.Nombre;
+            EmailAddress ObjEmail = new EmailAddress();
+            ObjEmail.Address = prov.Correo; 
+            ObjVendor.PrimaryEmailAddr = ObjEmail;
+           /* PhysicalAddress ObjAddress = new PhysicalAddress();
+            ObjAddress.PostalCode = "11379";
+            ObjAddress.Country = "USA";
+            ObjAddress.Line1 = "51 Front Dr";
+            ObjAddress.City = "New York";
+            ObjVendor.BillAddr = ObjAddress;*/
+            TelephoneNumber ObjTelephoneNumber = new TelephoneNumber();
+            ObjTelephoneNumber.FreeFormNumber = prov.Telefono;
+            ObjVendor.PrimaryPhone = ObjTelephoneNumber;
+            DataService dataService = new DataService(serviceContext);
+            Vendor VendorAdd = dataService.Add(ObjVendor);
+            if (VendorAdd != null && !string.IsNullOrEmpty(VendorAdd.Id))
+            {
+                return VendorAdd;
+            }
+            return null;
+
+        }
+
+
 
 
 

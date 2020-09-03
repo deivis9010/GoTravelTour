@@ -189,5 +189,22 @@ namespace GoTravelTour.Controllers
 
 
 
+        // GET: api/Distribuidors/Producto/5
+        [HttpGet]
+        [Route("Producto/{id}")]
+        public async Task<IActionResult> GetListaDistribuidores([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var distribuidoresDelProducto =  _context.ProductoDistribuidores.Include(x=>x.Distribuidor).Where(x=>x.ProductoId==id).ToList();
+
+           
+
+            return Ok(distribuidoresDelProducto);
+        }
+
     }
 }
