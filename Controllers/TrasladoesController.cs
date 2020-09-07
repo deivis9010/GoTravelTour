@@ -696,6 +696,7 @@ namespace GoTravelTour.Controllers
                                 ov.IsIdaVuelta = buscador.IsIdaVuelta;
 
                                 if (ov.IsIdaVuelta) ov.PrecioOrden = 2 * ov.PrecioOrden;
+                                if(ov.PrecioOrden > 0)
                                 lista.Add(ov);
                             }
 
@@ -730,7 +731,7 @@ namespace GoTravelTour.Controllers
 
             Traslado t = _context.Traslados.Single(x => x.ProductoId == tl.ProductoId);
             if (tl.IsActivo)
-                if (!_context.PrecioTraslados.Any(x => x.ProductoId == t.ProductoId))
+                if (!_context.PrecioTraslados.Any(x => x.ProductoId == t.ProductoId && x.Precio > 0))
                 {
                     return CreatedAtAction("ActivarTraslado", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
                 }

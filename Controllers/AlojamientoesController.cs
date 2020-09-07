@@ -703,7 +703,7 @@ namespace GoTravelTour.Controllers
 
             Alojamiento a = _context.Alojamientos.Where(x => x.ProductoId == al.ProductoId).Single();
             if (al.IsActivo)
-                if (!_context.PrecioAlojamiento.Any(x => x.ProductoId == a.ProductoId) ||
+                if (!_context.PrecioAlojamiento.Any(x => x.ProductoId == a.ProductoId && x.Precio > 0) ||
                     !_context.PrecioPlanesAlimenticios.Any(x => x.ProductoId == a.ProductoId))
                 {
 
@@ -1025,7 +1025,7 @@ namespace GoTravelTour.Controllers
                     if(buscador.CantidadHabitaciones > 0 )
                     ov.PrecioOrden = buscador.CantidadHabitaciones * ov.PrecioOrden;
 
-                    if (agregarOrden)
+                    if (agregarOrden && ov.PrecioOrden > 0)
                         lista.Add(ov);
                 }
 

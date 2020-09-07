@@ -838,7 +838,7 @@ namespace GoTravelTour.Controllers
 
                     }
 
-                    if (agregarOrden)
+                    if (agregarOrden && ov.PrecioOrden > 0)
                         lista.Add(ov);
 
 
@@ -1171,7 +1171,7 @@ namespace GoTravelTour.Controllers
             Vehiculo v = _context.Vehiculos.Single(x=>x.ProductoId==ve.ProductoId);
            if (ve.IsActivo)
             if(!_context.PrecioRentaAutos.Any(x=>x.ProductoId==v.ProductoId) ||
-               !_context.RestriccionesPrecios.Any(x => x.ProductoId == v.ProductoId)){
+               !_context.RestriccionesPrecios.Any(x => x.ProductoId == v.ProductoId && x.Precio > 0)){
 
                 return CreatedAtAction("ActivarVehiculo", new { id = -1, error = "Este producto no está listo para activar. Revise los precios" }, new { id = -1, error = "Este producto no está listo para activar. Revise los precios" });
             }
@@ -1372,6 +1372,56 @@ namespace GoTravelTour.Controllers
 
         }
 
+
+
+        // GET: api/Vehiculoes/RangosRestricciones
+        [HttpPost]
+        [Route("RangosRestricciones")]
+        public Restricciones GetRangosRestricciones(DateTime fecha)
+        {
+            Restricciones result = null;
+            var nombreTipoProduto=ValoresAuxiliares.VEHICLE;
+            
+            List<RangoFechas> rangosContienenFecha = _context.RangoFechas
+                .Where(x =>  x.FechaInicio <= fecha && fecha <= x.FechaFin).ToList();
+
+            foreach(var rangos in rangosContienenFecha)
+            {
+                Restricciones temporal = new Restricciones();
+                List<Restricciones> restricciones = _context.Restricciones.Where(x =>x.Temporada.Contrato.TipoProducto.Nombre==nombreTipoProduto && x.Temporada.TemporadaId == rangos.TemporadaId).ToList();
+                if (restricciones != null && restricciones.Any())
+                {
+                    temporal.Minimo = restricciones.OrderBy(x => x.Minimo).First().Minimo;
+                    temporal.Maximo = restricciones.OrderBy(x => x.Maximo).Last().Maximo;
+                }
+                else
+                {
+                    continue;
+                }
+               
+                if(result == null)
+                {
+                    result = temporal;
+                }
+                else
+                {
+                    if(temporal.Minimo < result.Minimo)
+                    {
+                        result.Minimo = temporal.Minimo;
+                    }
+                    if (temporal.Maximo > result.Maximo)
+                    {
+                        result.Maximo = temporal.Maximo;
+                    }
+                }
+                
+
+
+            }
+
+                       
+            return result;
+        }
 
 
 
