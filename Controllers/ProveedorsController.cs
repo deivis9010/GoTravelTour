@@ -35,12 +35,12 @@ namespace GoTravelTour.Controllers
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.Proveedores.Include(r => r.Productos)
+                lista = _context.Proveedores/*.Include(r => r.Productos)*/
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.Proveedores.Include(r => r.Productos).ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.Proveedores/*.Include(r => r.Productos)*/.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)

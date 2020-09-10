@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using QuickBooks.Helper;
+using GoTravelTour.Utiles;
 
 using RestSharp;
 
@@ -114,7 +115,9 @@ namespace GoTravelTour.QuickBooks
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-
+            Utiles.Utiles u = new Utiles.Utiles(_context);
+            u.CrearExcel();
+            return Ok();
             return Redirect(authorizeUrl);
             //return Redirect("http://localhost:59649/api/QBIntegracion/Responses?code=AB11591303021AJsCwlhzsEKJUzT8YBRUnp8iYa4XSxVJGUJbK&state=e21c508b4b82468f538739ed076ab51c7efcb31bcf07c063fcd4412f1250a15c&realmId=4620816365037572030" );
         }

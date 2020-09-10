@@ -1025,7 +1025,7 @@ namespace GoTravelTour.Controllers
                     if(buscador.CantidadHabitaciones > 0 )
                     ov.PrecioOrden = buscador.CantidadHabitaciones * ov.PrecioOrden;
 
-                    if (agregarOrden && ov.PrecioOrden > 0)
+                    if (agregarOrden && ov.PrecioOrden > 0 && precioBase > 0)
                         lista.Add(ov);
                 }
 
