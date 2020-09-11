@@ -1,4 +1,6 @@
 ﻿using GoTravelTour.Models;
+using OfficeOpenXml;
+using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -148,66 +150,25 @@ namespace GoTravelTour.Utiles
 
         public void CrearExcel()
         {
-            // Unos valores de muestra para rellenar
-            string[,] sArray;
-            sArray = new string[5, 3];
-            sArray[0, 0] = "Celda 0-0";
-            sArray[0, 1] = "Celda 0-1";
-            sArray[0, 2] = "Celda 0-2";
-            sArray[1, 0] = "Celda 1-0";
-            sArray[1, 1] = "Celda 1-1";
-            sArray[1, 2] = "Celda 1-2";
-            sArray[2, 0] = "Celda 2-0";
-            sArray[2, 1] = "Celda 2-1";
-            sArray[2, 2] = "Celda 2-2";
-            sArray[3, 0] = "Celda 3-0";
-            sArray[3, 1] = "Celda 3-1";
-            sArray[3, 2] = "Celda 3-2";
-            sArray[4, 0] = "Celda 4-0";
-            sArray[4, 1] = "Celda 4-1";
-            sArray[4, 2] = "Celda 4-2";
-            // Crear los objetos necesarios para trabajar con Exce.
-            Microsoft.Office.Interop.Excel.Application obj_Excel;
-            Microsoft.Office.Interop.Excel.Workbook libroexcel;
-            Microsoft.Office.Interop.Excel.Worksheet hojaexcel;
-            object misValue = System.Reflection.Missing.Value;
-            obj_Excel = new Microsoft.Office.Interop.Excel.Application();
-            libroexcel = obj_Excel.Workbooks.Add(misValue);
-            hojaexcel = (Microsoft.Office.Interop.Excel.Worksheet)libroexcel.Worksheets.get_Item(1);
-
-            obj_Excel.Visible = true; // Permite ver o no la hoja en pantalla mientras el programa trabaja con ella.
-
-            for (int f = 1; f < 6; f++)
+            string excelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            var productos = _context.Productos.ToList();
+            using (var libro = new ExcelPackage())
             {
-                for (int n = 1; n < 4; n++)
+                var worksheet = libro.Workbook.Worksheets.Add("Productos");
+               /* worksheet.Cells["A1"].LoadFromCollection(productos, PrintHeaders: true);
+               /* for (var col = 1; col < productos.Count + 1; col++)
                 {
-                    hojaexcel.Cells[f, n] = sArray[f - 1, n - 1];
-                }
+                    worksheet.Column(col).AutoFit();
+                }*/
+
+                // Agregar formato de tabla
+                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: productos.Count + 1, toColumn: 5), "Productos");
+                tabla.ShowHeader = true;
+                tabla.TableStyle = TableStyles.Light6;
+                tabla.ShowTotal = true;
+
+                // File(libro.GetAsByteArray(), excelContentType, "Productos.xlsx");
             }
-
-            libroexcel.Worksheets.get_Item(1);
-            string path = "../sources/excel/";
-           
-            Directory.CreateDirectory(Path.Combine(path));
-            DirectoryInfo directory = new DirectoryInfo(path);
-            if (Directory.Exists(path))
-            {
-
-               
-                foreach (FileInfo file in directory.GetFiles("*.*"))
-                {
-
-                    
-                        file.Delete();
-
-                }
-
-
-                //Directory.Delete(path);
-            }
-            libroexcel.SaveAs(Path.Combine(directory.FullName, "Libroexcel"), Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal); 
-            libroexcel.Close();
-
         }
 
     }

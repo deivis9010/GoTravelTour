@@ -945,6 +945,15 @@ namespace GoTravelTour.Controllers
                                     }
                             }
 
+                            if(cantNinoAux > 0)
+                            {
+                                ov = new OrdenAlojamiento();
+                                ov.OrdenAlojamientoId = -1;
+                                lista.Clear();
+                                lista.Add(ov);
+                                return lista;
+                            }
+
                         }
                         catch (Exception e)
                         {
@@ -966,6 +975,7 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += DiasRestantes * precioBase;
+
                         }
                         else
                             ov.PrecioOrden += DiasRestantes * precioBase * (buscador.CantidadAdultos + buscador.CantidadMenores /*+ buscador.CantidadInfantes*/);
@@ -1058,6 +1068,7 @@ namespace GoTravelTour.Controllers
                     if (sePagaPorHabitacion)
                     {
                         ov.PrecioOrden += cantDias * precioBase;
+                        ov.PrecioOrden += GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                     }
                     else
                         GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
@@ -1128,7 +1139,9 @@ namespace GoTravelTour.Controllers
                     if(sePagaPorHabitacion)
                     {
                         ov.PrecioOrden += cantDias * precioBase;
-                    }else                        
+                        ov.PrecioOrden= GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
+                    }
+                    else                        
                     GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                     cantDiasGenenarl = 0;
                     break;
@@ -1143,6 +1156,7 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += cantDias * precioBase;
+                            ov.PrecioOrden = GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         }
                         else
                             GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
@@ -1158,6 +1172,7 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += cantDias * precioBase;
+                            ov.PrecioOrden = GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         }
                         else
                             GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
@@ -1173,6 +1188,7 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += cantDias * precioBase;
+                            ov.PrecioOrden = GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
                         }
                         else
                             GetPrecioAlojamientoSegunModificadores(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf);
@@ -1362,8 +1378,161 @@ namespace GoTravelTour.Controllers
             return res;
         }
 
-       
 
+
+
+        private decimal GetPrecioAlojamientoSegunModificadoresByHabitacion(BuscadorAlojamientoV2 buscador, OrdenAlojamiento ov, ref int cantDias, ref int cantAdultosAux, ref int cantNinoAux, ref int cantInfanteAux, List<Modificador> modificadores, ref Modificador md, decimal precioBase, RangoFechas rf)
+        {
+            decimal precioResultado = 0;
+            bool encontroMod = false;
+            int cantTotaldiasResta = cantDias; //esta variable es para llevar la cantidad de dias que ya se han calculado
+            //Por ej si el mod solo aplica a 2 dias dentro del rango se calculan 2 dias y con esta var el resto
+            foreach (var item in modificadores) // se evalua por modificadores
+            {
+                md = item;
+                if (md.CantAdult == buscador.CantidadAdultos && md.CantNino == buscador.CantidadMenores
+                    && md.CantInfantes == buscador.CantidadInfantes) // si coincide la cantidad de dias con el rango de una restriccion se calcula
+                {
+                    encontroMod = true;
+                    if (md.FechaI != null && md.FechaF != null)
+                    {
+                        if (buscador.Entrada <= md.FechaI && md.FechaI <= buscador.Salida &&
+                            buscador.Entrada <= md.FechaF && md.FechaF <= buscador.Salida)
+                        {
+                            //Si el el rago de la reserva cae completamente en un rango con la cantidad de dias general se calcula el precio
+                            cantDias = ((TimeSpan)(md.FechaF - md.FechaI)).Days;
+                            cantTotaldiasResta -= cantDias;
+                            //encontroMod = true;
+                        }
+                        else
+                        {
+
+                            if (md.FechaI <= buscador.Entrada && buscador.Entrada <= md.FechaF &&
+                               md.FechaI <= buscador.Salida && buscador.Salida <= md.FechaF)
+                            {
+                                //Si el rango esta incluido en el rango de entrada y salida la cantidad de dias sera la diferencia del rango de fecha
+                                cantDias = ((TimeSpan)(buscador.Salida - buscador.Entrada)).Days;
+                                cantTotaldiasResta -= cantDias;
+                                //encontroMod = true;
+                            }
+                            else
+                            if (buscador.Entrada < md.FechaI && md.FechaI < buscador.Salida &&
+                                 md.FechaI < buscador.Salida && buscador.Salida < md.FechaF)
+                            {
+                                //Si solo la fecha de recogida cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
+                                cantDias = (buscador.Salida - (DateTime)md.FechaI).Days;
+                                cantTotaldiasResta -= cantDias;
+                                //encontroMod = true;
+                            }
+                            else
+                            if (md.FechaI < buscador.Entrada && buscador.Entrada < md.FechaF &&
+                                buscador.Entrada < md.FechaF && md.FechaF < buscador.Salida)
+                            {
+                                //Si solo la fecha de Entrega cae en rango la cantidad de dias sera la diferencia respecto al fin del rango
+                                cantDias = ((DateTime)md.FechaF - buscador.Entrada).Days;
+                                cantTotaldiasResta -= cantDias;
+                                // encontroMod = true;
+                            }
+                        }
+                    }
+                    if (encontroMod)
+                    {
+                        ov.ModificadorAplicado = md;
+                        List<Reglas> reglas = md.ListaReglas;
+                        var contratoid = md.Contrato.ContratoId;
+
+
+                        foreach (var r in reglas)
+                        {
+                            precioBase = _context.PrecioAlojamiento.Where(x => x.ProductoId == ov.Alojamiento.ProductoId && x.Contrato.ContratoId == contratoid
+                            && x.TipoHabitacion.TipoHabitacionId == r.TipoHabitacionId && x.Habitacion.HabitacionId == buscador.Habitacion.HabitacionId
+                            && x.Temporada.TemporadaId == rf.TemporadaId).First().Precio;
+
+                            if (r.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_ADULTO) && cantAdultosAux > 0)
+                            {
+                                cantAdultosAux--;
+                                if (r.IsActivo)
+                                {
+                                    if (r.PrecioPorCiento != 0)
+                                    {
+
+                                        //ov.PrecioOrden += cantDias * precioBase * r.PrecioPorCiento / 100;
+                                        precioResultado += cantDias * precioBase * r.PrecioPorCiento / 100;
+                                    }
+                                    else
+                                    {
+                                        //ov.PrecioOrden += cantDias * r.PrecioFijo;
+                                        precioResultado += cantDias * r.PrecioFijo;
+                                    }
+
+                                }
+                                /*else
+                                {
+                                    ov.PrecioOrden += cantDias * precioBase;
+                                }*/
+                                continue;
+                            }
+
+                            if (r.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_NINO) && cantNinoAux > 0)
+                            {
+                                cantNinoAux--;
+                                if (r.IsActivo)
+                                {
+                                    if (r.PrecioPorCiento != 0)
+                                    {
+                                        //ov.PrecioOrden += cantDias * precioBase * r.PrecioPorCiento / 100;
+                                        precioResultado += cantDias * precioBase * r.PrecioPorCiento / 100;
+                                    }
+                                    else
+                                    {
+                                        //ov.PrecioOrden += cantDias * r.PrecioFijo;
+                                        precioResultado += cantDias * r.PrecioFijo;
+                                    }
+
+                                }
+                               /* else
+                                {
+                                    ov.PrecioOrden += cantDias * precioBase;
+                                }*/
+                                continue;
+                            }
+
+                            if (r.TipoPersona.Equals(ValoresAuxiliares.MODFICADOR_TIPOPERSONA_INFANTE) && cantInfanteAux > 0)
+                            {
+                                cantInfanteAux--;
+                                if (r.IsActivo)
+                                {
+                                    if (r.PrecioPorCiento != 0)
+                                    {
+                                        //ov.PrecioOrden += cantDias * precioBase * r.PrecioPorCiento / 100;
+                                        precioResultado += cantDias * precioBase * r.PrecioPorCiento / 100;
+                                    }
+                                    else
+                                    {
+                                        //ov.PrecioOrden += cantDias * r.PrecioFijo;
+                                        precioResultado += cantDias * r.PrecioFijo;
+                                    }
+
+                                }
+                                /*else
+                                {
+                                    ov.PrecioOrden += cantDias * precioBase;
+                                }*/
+                                continue;
+                            }
+
+                        }
+                    }
+
+
+                    break;
+                }
+            }
+            /*if (!encontroMod)
+                ov.PrecioOrden += cantTotaldiasResta * precioBase * (cantNinoAux /*+ cantInfanteAux*//* + cantAdultosAux);*/
+            return precioResultado;
+
+        }
 
 
     }
