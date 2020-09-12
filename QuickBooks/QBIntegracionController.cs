@@ -23,6 +23,7 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
+using System.IO;
 
 namespace GoTravelTour.QuickBooks
 {
@@ -3436,7 +3437,9 @@ namespace GoTravelTour.QuickBooks
             using (var libro = new ExcelPackage())
             {
                 var worksheet = libro.Workbook.Worksheets.Add("Productos");
-                worksheet.Cells["A1"].LoadFromCollection(productos, PrintHeaders: true);
+                List<string> encabezado = new List<string>();
+                encabezado.Add("NombreProducto");
+                worksheet.Cells["A1"].LoadFromCollection(encabezado, PrintHeaders: true);
                 for (var col = 1; col < productos.Count + 1; col++)
                 {
                     worksheet.Column(col).AutoFit();
@@ -3447,9 +3450,11 @@ namespace GoTravelTour.QuickBooks
                 tabla.ShowHeader = true;
                 tabla.TableStyle = TableStyles.Light6;
                 tabla.ShowTotal = true;
+               
 
                 return File(libro.GetAsByteArray(), excelContentType, "Productos.xlsx");
             }
+            
         }
 
 
