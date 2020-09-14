@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
 using System.IO;
+using System.Data;
 
 namespace GoTravelTour.QuickBooks
 {
@@ -118,11 +119,9 @@ namespace GoTravelTour.QuickBooks
             List<OidcScopes> scopes = new List<OidcScopes>();
             scopes.Add(OidcScopes.Accounting);
             string authorizeUrl = auth2Client.GetAuthorizationURL(scopes);
-            Utiles.Utiles u = new Utiles.Utiles(_context);
-            u.CrearExcel();
-            return Ok();
+          
             return Redirect(authorizeUrl);
-            //return Redirect("http://localhost:59649/api/QBIntegracion/Responses?code=AB11591303021AJsCwlhzsEKJUzT8YBRUnp8iYa4XSxVJGUJbK&state=e21c508b4b82468f538739ed076ab51c7efcb31bcf07c063fcd4412f1250a15c&realmId=4620816365037572030" );
+           
         }
 
 
@@ -132,16 +131,7 @@ namespace GoTravelTour.QuickBooks
         {
             var principal = User as ClaimsPrincipal;
 
-            /*var client = new RestClient("https://appcenter.intuit.com/app/connect/oauth2/v1/tokens/bearer");
-             var request = new RestRequest(Method.POST);
-             request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id=" + clientid + "&client_secret=" + clientsecret + "&code=" + code + "&redirect_uri=" + redirectUrl, ParameterType.RequestBody);
-             IRestResponse response = client.Execute(request);
-
-              client = new RestClient("https://rest.tsheets.com/api/v1/grant");
-              request = new RestRequest(Method.POST);
-             request.AddParameter("application/x-www-form-urlencoded", "grant_type=authorization_code&client_id="+ clientid + "&client_secret="+ clientsecret + "&code="+ code + "&redirect_uri="+ redirectUrl, ParameterType.RequestBody);
-              response = client.Execute(request);
-             //auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);*/
+           
             var tokenResponse = await auth2Client.GetBearerTokenAsync(code);
 
             var access_token = tokenResponse.AccessToken;
@@ -173,7 +163,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateCategory")]        
         public async System.Threading.Tasks.Task<ActionResult> updateCategory(string old_nombre, string new_nombre)
         {
@@ -248,7 +238,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("createCustomer")]
         public async System.Threading.Tasks.Task<ActionResult> CreateCustomer([FromBody] Cliente cliente)
         {
@@ -311,7 +301,7 @@ namespace GoTravelTour.QuickBooks
                 ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
                 ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
 
-
+                
 
                 DataService dataService = new DataService(serviceContext);
                 Customer customer = dataService.Add(ObjItem);
@@ -336,7 +326,7 @@ namespace GoTravelTour.QuickBooks
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("deleteCustomer")]
         public async System.Threading.Tasks.Task<ActionResult> DeleteCustomer([FromBody] Cliente cliente)
         {
@@ -421,7 +411,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateCustomer")]
         public async System.Threading.Tasks.Task<ActionResult> UpdateCustomer([FromBody] Cliente cliente)
         {
@@ -508,7 +498,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("addProductTraslado")]
         public async System.Threading.Tasks.Task<ActionResult> AddProductoTraslado([FromBody] Traslado producto)
         {
@@ -699,7 +689,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateProductTraslado")]
         public async System.Threading.Tasks.Task<ActionResult> UpdateProductoTraslado([FromBody] Traslado producto_new)
         {
@@ -824,7 +814,7 @@ namespace GoTravelTour.QuickBooks
             return Ok("Se insertó correctamente el producto");
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("deleteProductTraslado")]
         public async System.Threading.Tasks.Task<ActionResult> DeleteProductTraslado([FromBody] Traslado traslado)
         {
@@ -910,7 +900,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("addProductActividad")]
         public async System.Threading.Tasks.Task<ActionResult> AddProductoActividad([FromBody] Actividad producto)
         {
@@ -1097,7 +1087,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateProductActividad")]
         public async System.Threading.Tasks.Task<ActionResult> UpdateProductoActividad([FromBody] Actividad producto_new)
         {
@@ -1224,7 +1214,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("deleteProductActividad")]
         public async System.Threading.Tasks.Task<ActionResult> DeleteProductActividad([FromBody] Actividad producto)
         {
@@ -1310,7 +1300,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("addProductVehiculo")]
         public async System.Threading.Tasks.Task<ActionResult> AddProductoVehiculo([FromBody] Vehiculo producto)
         {
@@ -1500,7 +1490,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateProductVehiculo")]
         public async System.Threading.Tasks.Task<ActionResult> UpdateProductoVehiculo([FromBody] Vehiculo producto_new)
         {
@@ -1627,7 +1617,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("deleteProductVehiculo")]
         public async System.Threading.Tasks.Task<ActionResult> DeleteProductVehiculo([FromBody] Vehiculo producto)
         {
@@ -1712,7 +1702,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("addProductAlojamiento")]
         public async System.Threading.Tasks.Task<ActionResult> AddProductoAlojamiento([FromBody] Alojamiento producto)
         {
@@ -1926,7 +1916,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateProductAlojamiento")]
         public async System.Threading.Tasks.Task<ActionResult> UpdateProductoAlojamiento([FromBody] Alojamiento producto)
         {
@@ -2060,7 +2050,7 @@ namespace GoTravelTour.QuickBooks
             return Ok("Se insertó correctamente el producto");
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("deleteProductAlojamiento")]
         public async System.Threading.Tasks.Task<ActionResult> DeleteProductAlojamiento([FromBody] Alojamiento producto)
         {
@@ -2146,7 +2136,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("createEstimated")]
         public async System.Threading.Tasks.Task<ActionResult> CreateEstimated([FromBody] Orden orden)
         {
@@ -2413,7 +2403,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("updateEstimated")]
         public async System.Threading.Tasks.Task<ActionResult> UpdateEstimated([FromBody] Orden orden)
         {
@@ -2690,7 +2680,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("createInvoice")]
         public async System.Threading.Tasks.Task<ActionResult> CreateInvoice([FromBody] Orden orden)
         {
@@ -2953,7 +2943,7 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("createBill")]
         public async System.Threading.Tasks.Task<ActionResult> CreateBill([FromBody] Orden orden)
         {
@@ -3429,34 +3419,126 @@ namespace GoTravelTour.QuickBooks
 
 
         [HttpGet]
-        [Route("excel")]
-        public IActionResult ExportarExcel()
+        [Route("excelCliente")]
+        public IActionResult ExportarExcelClientes()
         {
             string excelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            var productos = _context.Productos.AsNoTracking().ToList();
+            var clientes = _context.Clientes.AsNoTracking().ToList();
             using (var libro = new ExcelPackage())
             {
-                var worksheet = libro.Workbook.Worksheets.Add("Productos");
-                List<string> encabezado = new List<string>();
-                encabezado.Add("NombreProducto");
-                worksheet.Cells["A1"].LoadFromCollection(encabezado, PrintHeaders: true);
-                for (var col = 1; col < productos.Count + 1; col++)
+                var worksheet = libro.Workbook.Worksheets.Add("Customer");
+
+
+                
+               /* worksheet.Cells["A1"].Value = "Nombre";
+                worksheet.Cells["B1"].Value = "Correo";
+                worksheet.Cells["C1"].Value = "Teléfono";
+                worksheet.Cells["D1"].Value = "Calle";
+                worksheet.Cells["A1"].Value = "Ciudad";
+                worksheet.Cells["A1"].Value = "ZIP";
+                worksheet.Cells["A1"].Value = "Pais";*/
+
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("Nombre", typeof(string));
+                dataTable.Columns.Add("Correo", typeof(string));
+                dataTable.Columns.Add("Telefono", typeof(string));
+                dataTable.Columns.Add("Calle", typeof(string));
+                dataTable.Columns.Add("Ciudad", typeof(string));
+                dataTable.Columns.Add("ZIP", typeof(string));
+                dataTable.Columns.Add("Pais", typeof(string));
+                
+
+
+                foreach (var item in clientes)
+                {
+                    DataRow fila = dataTable.NewRow();
+                    fila["Nombre"] = item.Nombre;
+                    fila["Correo"] = item.Correo;
+                    fila["Telefono"] = item.Telefono;
+                    fila["Calle"] = item.Calle;
+                    fila["Ciudad"] = item.Ciudad;
+                    fila["ZIP"] = item.ZipCode;
+                    fila["Pais"] = item.Pais;
+                  
+
+
+
+                    dataTable.Rows.Add(fila);
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                for (var col = 1; col < clientes.Count + 1; col++)
                 {
                     worksheet.Column(col).AutoFit();
                 }
 
                 // Agregar formato de tabla
-                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: productos.Count + 1, toColumn: 5), "Productos");
+                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: clientes.Count + 1, toColumn: 7), "Customer");
                 tabla.ShowHeader = true;
                 tabla.TableStyle = TableStyles.Light6;
                 tabla.ShowTotal = true;
                
 
-                return File(libro.GetAsByteArray(), excelContentType, "Productos.xlsx");
+                return File(libro.GetAsByteArray(), excelContentType, "Customer.xlsx");
             }
             
         }
 
+
+        [HttpGet]
+        [Route("excel")]
+        public IActionResult ExportarExcel()
+        {
+            string excelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            var proveedores = _context.Proveedores.AsNoTracking().ToList();
+            using (var libro = new ExcelPackage())
+            {
+                var worksheet = libro.Workbook.Worksheets.Add("Vendor");
+
+
+
+                
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("Nombre", typeof(string));
+                dataTable.Columns.Add("Correo", typeof(string));
+                dataTable.Columns.Add("Telefono", typeof(string));
+             
+
+
+
+                foreach (var item in proveedores)
+                {
+                    DataRow fila = dataTable.NewRow();
+                    fila["Nombre"] = item.Nombre;
+                    fila["Correo"] = item.Correo;
+                    fila["Telefono"] = item.Telefono;
+                   
+
+
+
+
+                    dataTable.Rows.Add(fila);
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                for (var col = 1; col < proveedores.Count + 1; col++)
+                {
+                    worksheet.Column(col).AutoFit();
+                }
+
+                // Agregar formato de tabla
+                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: proveedores.Count + 1, toColumn: 3), "Vendor");
+                tabla.ShowHeader = true;
+                tabla.TableStyle = TableStyles.Light6;
+                tabla.ShowTotal = true;
+
+
+                return File(libro.GetAsByteArray(), excelContentType, "Vendors.xlsx");
+            }
+
+        }
 
 
 
