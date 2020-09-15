@@ -1393,6 +1393,14 @@ namespace GoTravelTour.Controllers
                                 else
                                 {
                                     ov.PrecioOrden += cantDias * precioBase;
+                                    List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                       x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
+
+                                    if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any())
+                                    {
+                                        var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
+                                        ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias;
+                                    }
                                 }
                                 continue;
                             }
@@ -1425,6 +1433,14 @@ namespace GoTravelTour.Controllers
                                 else
                                 {
                                     ov.PrecioOrden += cantDias * precioBase;
+                                    List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                       x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
+
+                                    if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any())
+                                    {
+                                        var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
+                                        ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias;
+                                    }
                                 }
                                 continue;
                             }
