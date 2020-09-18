@@ -44,7 +44,8 @@ namespace GoTravelTour.QuickBooks
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
-        public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
 
@@ -2930,6 +2931,9 @@ namespace GoTravelTour.QuickBooks
             Invoice InvoiceAdd = dataService.Add(ObjInvoice);
             if (InvoiceAdd != null && !string.IsNullOrEmpty(InvoiceAdd.Id))
             {
+                orden.IdInvoiceQB = int.Parse(InvoiceAdd.Id);
+                _context.Entry(orden).State = EntityState.Modified;
+                _context.SaveChanges();
                 //you can write Database code here
                 return Ok("Se creo el InvoiceAdd");
             }
@@ -2942,6 +2946,282 @@ namespace GoTravelTour.QuickBooks
 
         }
 
+
+        [HttpPost]
+        [Route("updateInvoice")]
+        public async System.Threading.Tasks.Task<ActionResult> UpdateInvoice([FromBody] Orden orden)
+        {
+            var access_token = "";
+            var realmId = "";
+            orden = _context.Orden.Include(x => x.ListaActividadOrden)
+                .Include(x => x.ListaAlojamientoOrden)
+                .Include(x => x.ListaTrasladoOrden)
+                .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.Cliente)
+                .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
+
+
+
+            if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
+            {
+                orden.ListaActividadOrden.ForEach(x => x = _context.OrdenActividad.Include(ex => ex.PrecioActividad)/*.ThenInclude(t => t.Temporada)*/
+               .Include(d => d.Actividad)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                   .ThenInclude(l => l.Distribuidor)
+                   .Include(d => d.LugarActividad)
+                   .Include(d => d.LugarRecogida)
+                   .Include(d => d.LugarRetorno)
+                    .Include(d => d.Sobreprecio)
+                     .Include(d => d.Voucher)*/
+               .First(r => r.OrdenActividadId == x.OrdenActividadId));
+                foreach (var item in orden.ListaActividadOrden)
+                {
+                    if (item.PrecioActividad != null && item.PrecioActividad.Temporada != null)
+                        item.PrecioActividad.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == item.PrecioActividad.Temporada.TemporadaId).ToList();
+
+                }
+            }
+
+
+            if (orden.ListaAlojamientoOrden != null && orden.ListaAlojamientoOrden.Any())
+            {
+                orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
+                      /* .Include(d => d.Sobreprecio)*/
+                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.TipoHabitacion)
+                     .Include(d => d.ModificadorAplicado.ListaReglas)
+                     .Include(d => d.Voucher)*/
+                    .Include(d => d.Alojamiento)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                    .ThenInclude(l => l.Distribuidor)*/.First(r => r.OrdenAlojamientoId == x.OrdenAlojamientoId));
+                foreach (var item in orden.ListaAlojamientoOrden)
+                {
+                    if (item.ListaPrecioAlojamientos != null)
+                        foreach (var pra in item.ListaPrecioAlojamientos)
+                        {
+                            var ordenAloPrecio = _context.OrdenAlojamientoPrecioAlojamiento.Include(x => x.PrecioAlojamiento).ThenInclude(x => x.Temporada).Include(x => x.OrdenAlojamiento).Single(x => x.OrdenAlojamientoPrecioAlojamientoId == pra.OrdenAlojamientoPrecioAlojamientoId);
+
+                            if (ordenAloPrecio.PrecioAlojamiento != null && ordenAloPrecio.PrecioAlojamiento.Temporada != null)
+                                pra.PrecioAlojamiento.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == ordenAloPrecio.PrecioAlojamiento.Temporada.TemporadaId).ToList();
+                        }
+
+
+                }
+            }
+
+
+            if (orden.ListaVehiculosOrden != null && orden.ListaVehiculosOrden.Any())
+            {
+                orden.ListaVehiculosOrden.ForEach(x => x = _context.OrdenVehiculo.Include(ex => ex.ListaPreciosRentaAutos)
+                    /* .Include(d => d.Sobreprecio)
+                     .Include(d => d.Voucher)
+                     .Include(d => d.LugarEntrega)
+                     .Include(d => d.LugarRecogida)*/
+                    .Include(v => v.Vehiculo)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                    .ThenInclude(l => l.Distribuidor)*/.First(r => r.OrdenVehiculoId == x.OrdenVehiculoId));
+                foreach (var item in orden.ListaVehiculosOrden)
+                {
+                    if (item.ListaPreciosRentaAutos != null)
+                        foreach (var pra in item.ListaPreciosRentaAutos)
+                        {
+                            var ordenVehiculoPrecio = _context.OrdenVehiculoPrecioRentaAuto.Include(x => x.PrecioRentaAutos).ThenInclude(x => x.Temporada).Include(x => x.OrdenVehiculo).Single(x => x.OrdenVehiculoPrecioRentaAutoId == pra.OrdenVehiculoPrecioRentaAutoId);
+
+                            if (ordenVehiculoPrecio.PrecioRentaAutos != null && ordenVehiculoPrecio.PrecioRentaAutos.Temporada != null)
+                                pra.PrecioRentaAutos.Temporada.ListaRestricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == ordenVehiculoPrecio.PrecioRentaAutos.Temporada.TemporadaId).ToList();
+                        }
+
+
+                }
+            }
+
+
+            if (orden.ListaTrasladoOrden != null && orden.ListaTrasladoOrden.Any())
+            {
+                orden.ListaTrasladoOrden.ForEach(x => x = _context.OrdenTraslado.Include(ex => ex.PrecioTraslado)/*.ThenInclude(t => t.Temporada)*/
+                                                                                                                 /*.Include(d => d.PuntoDestino)
+                                                                                                                 .Include(d => d.PuntoOrigen)
+                                                                                                                 .Include(d => d.Sobreprecio)
+                                                                                                                 .Include(d => d.Voucher)*/
+                .Include(d => d.Traslado)/*.ThenInclude(l => l.ListaDistribuidoresProducto)
+                    .ThenInclude(l => l.Distribuidor)*/.First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
+            }
+
+
+
+
+            try
+            {
+                CargarRefreshtoken();
+                TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+
+                if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+                {
+                    dictionary["accessToken"] = tokenResp.AccessToken;
+                    dictionary["refreshToken"] = tokenResp.RefreshToken;
+                    ActualizarRefreshtoken(tokenResp.RefreshToken, dictionary["realmId"]);
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+
+
+
+
+                access_token = dictionary["accessToken"];
+                realmId = dictionary["realmId"];
+            }
+            catch (Exception ex)
+            {
+
+
+                return InitiateAuth("Connect");
+            }
+
+
+
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
+            // Create a ServiceContext with Auth tokens and realmId
+            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
+
+            string EXISTING_INVOICE_QUERYBYID = string.Format("select * from Invoice where id = '{0}'", orden.IdInvoiceQB);
+            var queryService = new QueryService<Invoice>(serviceContext);
+            Invoice objInvoiceFound = queryService.ExecuteIdsQuery(EXISTING_INVOICE_QUERYBYID).FirstOrDefault<Invoice>();
+            //If Invoice found on Quickbooks online
+            if (objInvoiceFound != null)
+            {
+
+                QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where Name = '{0}' ", orden.Cliente.Nombre);
+                Customer objCustomerFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Customer>();
+
+                Invoice ObjInvoice = new Invoice();
+                ObjInvoice.Id = objInvoiceFound.Id;
+                ObjInvoice.CustomerRef = new ReferenceType();
+                ObjInvoice.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
+
+                List<Line> LineList = new List<Line>();
+                if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
+                    foreach (var item in orden.ListaActividadOrden)
+                    {
+                        Line objLine = new Line();
+                        objLine.DetailTypeSpecified = true;
+                        objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+                        objLine.AmountSpecified = true;
+                        objLine.Amount = item.PrecioOrden;
+                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+                        salesItemLineDetail.QtySpecified = true;
+                        salesItemLineDetail.Qty = 1;
+                        salesItemLineDetail.ItemRef = new ReferenceType();
+
+                        QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Actividad.Nombre);
+                        Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
+                        salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
+                        objLine.AnyIntuitObject = salesItemLineDetail;
+                        LineList.Add(objLine);
+
+
+                    }
+                if (orden.ListaTrasladoOrden != null && orden.ListaTrasladoOrden.Any())
+                    foreach (var item in orden.ListaTrasladoOrden)
+                    {
+                        Line objLine = new Line();
+                        objLine.DetailTypeSpecified = true;
+                        objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+                        objLine.AmountSpecified = true;
+                        objLine.Amount = item.PrecioOrden;
+                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+                        salesItemLineDetail.QtySpecified = true;
+                        salesItemLineDetail.Qty = 1;
+                        salesItemLineDetail.ItemRef = new ReferenceType();
+
+                        QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Traslado.Nombre);
+                        Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
+                        salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
+                        objLine.AnyIntuitObject = salesItemLineDetail;
+                        LineList.Add(objLine);
+
+
+                    }
+
+                if (orden.ListaVehiculosOrden != null && orden.ListaVehiculosOrden.Any())
+                    foreach (var item in orden.ListaVehiculosOrden)
+                    {
+                        Line objLine = new Line();
+                        objLine.DetailTypeSpecified = true;
+                        objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+                        objLine.AmountSpecified = true;
+                        objLine.Amount = item.PrecioOrden;
+                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+                        salesItemLineDetail.QtySpecified = true;
+                        salesItemLineDetail.Qty = 1;
+                        salesItemLineDetail.ItemRef = new ReferenceType();
+
+                        QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Vehiculo.Nombre);
+                        Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
+                        salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
+                        objLine.AnyIntuitObject = salesItemLineDetail;
+                        LineList.Add(objLine);
+
+
+                    }
+
+                if (orden.ListaAlojamientoOrden != null && orden.ListaAlojamientoOrden.Any())
+                    foreach (var item in orden.ListaAlojamientoOrden)
+                    {
+                        Line objLine = new Line();
+                        objLine.DetailTypeSpecified = true;
+                        objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+                        objLine.AmountSpecified = true;
+                        objLine.Amount = item.PrecioOrden;
+                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+                        salesItemLineDetail.QtySpecified = true;
+                        salesItemLineDetail.Qty = 1;
+                        salesItemLineDetail.ItemRef = new ReferenceType();
+
+                        QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Habitacion.Nombre);
+                        Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
+                        salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
+                        objLine.AnyIntuitObject = salesItemLineDetail;
+                        LineList.Add(objLine);
+
+
+                    }
+
+
+
+
+                ObjInvoice.Line = LineList.ToArray();
+                DataService dataService = new DataService(serviceContext);
+                Invoice UpdateEntity = dataService.Update<Invoice>(ObjInvoice);
+                if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
+                {
+
+                    //you can write Database code here
+                    return Ok("Se actualizo el invoice");
+                }
+
+            }
+
+
+
+
+            return Ok("No se encontro el producto ");
+
+
+
+
+        }
 
         [HttpPost]
         [Route("createBill")]

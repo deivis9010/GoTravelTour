@@ -1362,5 +1362,163 @@ namespace GoTravelTour.Controllers
 
         }
 
+
+        // Post: api/Ordens/UpdInvoice
+        [HttpPost]
+        [Route("UpdInvoice")]
+        public async Task<IActionResult> PostUpdInvoiceOrden([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+
+            //TODO Validaciones
+            v.InvoiceCreated = ve.InvoiceCreated;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+               
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
+
+
+        // Post: api/Ordens/UpdBill
+        [HttpPost]
+        [Route("UpdBill")]
+        public async Task<IActionResult> PostUpdBillOrden([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+
+            //TODO Validaciones
+            v.BillCreated = ve.BillCreated;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
+
+
+        // Post: api/Ordens/UpdEstimated
+        [HttpPost]
+        [Route("UpdEstimated")]
+        public async Task<IActionResult> PostUpdEstimatedOrden([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+
+            //TODO Validaciones
+            v.EstimatedCreated = ve.EstimatedCreated;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+               
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
+
+        // Post: api/Ordens/UpdConfirmar
+        [HttpPost]
+        [Route("UpdConfirmar")]
+        public async Task<IActionResult> PostUpdConfirmarOrden([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+
+            //TODO Validaciones
+            v.ConfirmacionOrden = ve.ConfirmacionOrden;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+               
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
     }
 }

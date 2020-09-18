@@ -31,6 +31,8 @@ namespace GoTravelTour.Models
         public int CantidadNino { get; set; }
         public int CantidadInfante { get; set; }
         public int IdEstimadoQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
+        public int IdInvoiceQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
+       
         //public Sobreprecio Sobreprecio { get; set; }
         public List<OrdenVehiculo> ListaVehiculosOrden { get; set; }
         public List<OrdenTraslado> ListaTrasladoOrden { get; set; }
@@ -39,6 +41,9 @@ namespace GoTravelTour.Models
         [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioGeneralOrden { get; set; }
         public bool IsActive { get; set; }
-        
+
+        public bool InvoiceCreated { get; set; }
+        public bool EstimatedCreated { get; set; }
+        public bool BillCreated { get; set; }
     }
 }
