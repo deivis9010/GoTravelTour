@@ -25,6 +25,7 @@ namespace GoTravelTour.Models
         public string HoraInicio { get; set; }
         public string HoraFin { get; set; }
         public string ServiciosExcluidos { get; set; } //iran los id de los servicios q no son opcionales y no se incluirarn en la orden ejemplo (2525-3030-)
+        public int IdBillQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
         public ConfiguracionVoucher Voucher { get; set; }

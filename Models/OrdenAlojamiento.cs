@@ -23,6 +23,7 @@ namespace GoTravelTour.Models
         public string NotasAdicionales { get; set; }
         public string HoraInicio { get; set; }
         public string HoraFin { get; set; }
+        public int IdBillQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
         public DateTime Checkin { get; set; }

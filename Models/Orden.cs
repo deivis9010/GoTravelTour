@@ -31,7 +31,7 @@ namespace GoTravelTour.Models
         public int CantidadNino { get; set; }
         public int CantidadInfante { get; set; }
         public int IdEstimadoQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
-        public int IdInvoiceQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
+        public int IdInvoiceQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el invoice
        
         //public Sobreprecio Sobreprecio { get; set; }
         public List<OrdenVehiculo> ListaVehiculosOrden { get; set; }

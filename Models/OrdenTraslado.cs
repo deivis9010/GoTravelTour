@@ -29,7 +29,7 @@ namespace GoTravelTour.Models
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
         public ConfiguracionVoucher Voucher { get; set; }
-
+        public int IdBillQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
         public PrecioTraslado PrecioTraslado { get; set; }  
         
         public string TipoTraslado { get; set; } //duda que cosa es y como se gestiona

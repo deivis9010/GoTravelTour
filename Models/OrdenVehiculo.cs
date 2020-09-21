@@ -30,6 +30,7 @@ namespace GoTravelTour.Models
         public string HoraFin { get; set; }
         public List<OrdenVehiculoPrecioRentaAuto> ListaPreciosRentaAutos { get; set; }
         public Distribuidor Distribuidor { get; set; }
+        public int IdBillQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
         public int VehiculoId { get; set; }
         public Vehiculo Vehiculo { get; set; }
         public bool PremiteCopia { get; set; }

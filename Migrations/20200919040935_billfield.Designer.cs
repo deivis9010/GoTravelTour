@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200919040935_billfield")]
+    partial class billfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
