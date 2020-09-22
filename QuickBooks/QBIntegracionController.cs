@@ -593,6 +593,10 @@ namespace GoTravelTour.QuickBooks
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
+                            producto.IdQB = int.Parse(UpdateEntity.Id);
+                            _context.Entry(producto).State = EntityState.Modified;
+                            _context.SaveChanges();
+
                             //you can write Database code here
                             return Ok("Ya estaba en QB y se activo");
                         }
@@ -670,6 +674,9 @@ namespace GoTravelTour.QuickBooks
                 Item ItemAdd = dataService.Add(ObjItem);
                 if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
                 {
+                    producto.IdQB = int.Parse(ItemAdd.Id);
+                    _context.Entry(producto).State = EntityState.Modified;
+                    _context.SaveChanges();
                     //you can write Database code here
 
                 }
@@ -771,7 +778,7 @@ namespace GoTravelTour.QuickBooks
 
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -786,14 +793,19 @@ namespace GoTravelTour.QuickBooks
                     ObjItem.Type = ItemTypeEnum.Service;
                     ObjItem.SubItem = true;
                     ObjItem.SubItemSpecified = true;
-
+                    ObjItem.Active = true;
                    
                         DataService dataService1 = new DataService(serviceContext);
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
-                            //you can write Database code here
-                            return Ok("Se actualizo el producto");
+                            producto.IdQB = int.Parse(UpdateEntity.Id);
+                            _context.Entry(producto).State = EntityState.Modified;
+                            _context.SaveChanges();
+
+
+                        //you can write Database code here
+                        return Ok("Se actualizo el producto");
                         }
                         else
                         {
@@ -862,7 +874,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Item> querySvc = new QueryService<Item>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", traslado.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", traslado.IdQB);
             Item objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -994,6 +1006,10 @@ namespace GoTravelTour.QuickBooks
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
+                            producto.IdQB = int.Parse(UpdateEntity.Id);
+                            _context.Entry(producto).State = EntityState.Modified;
+                            _context.SaveChanges();
+
                             //you can write Database code here
                             return Ok("Ya estaba en QB y se activo");
                         }
@@ -1070,6 +1086,9 @@ namespace GoTravelTour.QuickBooks
                 Item ItemAdd = dataService.Add(ObjItem);
                 if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
                 {
+                    producto.IdQB = int.Parse(ItemAdd.Id);
+                    _context.Entry(producto).State = EntityState.Modified;
+                    _context.SaveChanges();
                     //you can write Database code here
 
                 }
@@ -1170,7 +1189,7 @@ namespace GoTravelTour.QuickBooks
 
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -1185,12 +1204,16 @@ namespace GoTravelTour.QuickBooks
                     ObjItem.Type = ItemTypeEnum.Service;
                     ObjItem.SubItem = true;
                     ObjItem.SubItemSpecified = true;
-
+                    ObjItem.Active = true;
 
                     DataService dataService1 = new DataService(serviceContext);
                     Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
+                        producto.IdQB = int.Parse(UpdateEntity.Id);
+                        _context.Entry(producto).State = EntityState.Modified;
+                        _context.SaveChanges();
+
                         //you can write Database code here
                         return Ok("Se actualizo el producto");
                     }
@@ -1262,7 +1285,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Item> querySvc = new QueryService<Item>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
             Item objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -1278,6 +1301,7 @@ namespace GoTravelTour.QuickBooks
                     Item UpdateEntity = dataService.Update<Item>(objItemFound);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
+
                         //you can write Database code here
                         return Ok("Se desactivo el producto");
                     }
@@ -1399,6 +1423,9 @@ namespace GoTravelTour.QuickBooks
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
+                            producto.IdQB = int.Parse(UpdateEntity.Id);
+                            _context.Entry(producto).State = EntityState.Modified;
+                            _context.SaveChanges();
                             //you can write Database code here
                             return Ok("Ya estaba en QB y se activo");
                         }
@@ -1474,6 +1501,9 @@ namespace GoTravelTour.QuickBooks
                 Item ItemAdd = dataService.Add(ObjItem);
                 if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
                 {
+                    producto.IdQB = int.Parse(ItemAdd.Id);
+                    _context.Entry(producto).State = EntityState.Modified;
+                    _context.SaveChanges();
                     //you can write Database code here
 
                 }
@@ -1573,7 +1603,7 @@ namespace GoTravelTour.QuickBooks
 
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -1588,12 +1618,16 @@ namespace GoTravelTour.QuickBooks
                     ObjItem.Type = ItemTypeEnum.Service;
                     ObjItem.SubItem = true;
                     ObjItem.SubItemSpecified = true;
+                    ObjItem.Active = true;
 
 
                     DataService dataService1 = new DataService(serviceContext);
                     Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
+                        producto.IdQB = int.Parse(UpdateEntity.Id);
+                        _context.Entry(producto).State = EntityState.Modified;
+                        _context.SaveChanges();
                         //you can write Database code here
                         return Ok("Se actualizo el producto");
                     }
@@ -1665,7 +1699,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Item> querySvc = new QueryService<Item>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
             Item objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -1790,14 +1824,17 @@ namespace GoTravelTour.QuickBooks
 
                 List<Item> hoteles = querySvcI.ExecuteIdsQuery("SELECT * from Item ").Where(x => x.Name == producto.Nombre && x.Type == ItemTypeEnum.Category).ToList();
                 Item hotel = new Item();
-                if (hoteles == null || hoteles.Count() > 0)
+                if (hoteles == null || hoteles.Count() == 0)
                 {
                     hotel = agregarCategoriaHotel(prov, producto, serviceContext);
-                    if (hotel == null) return Ok("Error insertando el proveedor");
+                    if (hotel == null) return Ok("Error insertando el hotel");
+                    producto.IdQB = int.Parse(hotel.Id);
+                    _context.Entry(producto).State = EntityState.Modified;
+                    _context.SaveChanges();
                 }
                 else
                 {
-                    hotel = proveedores.First();
+                    hotel = hoteles.First();
                 }
 
                 foreach (Habitacion hab in habitaciones)
@@ -1818,6 +1855,9 @@ namespace GoTravelTour.QuickBooks
                             Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                             if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                             {
+                                hab.IdQB = int.Parse(objItemFound.Id);
+                                _context.Entry(hab).State = EntityState.Modified;
+                                _context.SaveChanges();
                                 //you can write Database code here
                                 return Ok("Ya estaba en QB y se activo");
                             }
@@ -1896,6 +1936,9 @@ namespace GoTravelTour.QuickBooks
                     Item ItemAdd = dataService.Add(ObjItem);
                     if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
                     {
+                         hab.IdQB = int.Parse(ItemAdd.Id);
+                        _context.Entry(hab).State = EntityState.Modified;
+                        _context.SaveChanges();
                         //you can write Database code here
 
                     }
@@ -2004,14 +2047,18 @@ namespace GoTravelTour.QuickBooks
 
                 List<Item> hoteles = querySvcI.ExecuteIdsQuery("SELECT * from Item ").Where(x => x.Name == producto.Nombre && x.Type == ItemTypeEnum.Category).ToList();
                 Item hotel = new Item();
-                if (hoteles == null || hoteles.Count() > 0)
+                if (hoteles == null || hoteles.Count() == 0)
                 {
                     hotel = agregarCategoriaHotel(prov, producto, serviceContext);
-                    if (hotel == null) return Ok("Error insertando el proveedor");
+                    if (hotel == null) return Ok("Error insertando el Hotel");
+                    producto.IdQB = int.Parse(hotel.Id);
+                    _context.Entry(producto).State = EntityState.Modified;
+                    _context.SaveChanges();
+
                 }
                 else
                 {
-                    hotel = proveedores.First();
+                    hotel = hoteles.First();
                 }
 
                 foreach (Habitacion hab in habitaciones)
@@ -2019,7 +2066,7 @@ namespace GoTravelTour.QuickBooks
 
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", hab.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", hab.IdQB);
                     Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -2036,6 +2083,7 @@ namespace GoTravelTour.QuickBooks
                         ObjItem.SubItemSpecified = true;
                         DataService dataService1 = new DataService(serviceContext);
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
+                        ObjItem.Active = true;
                         
 
                     }
@@ -2058,6 +2106,7 @@ namespace GoTravelTour.QuickBooks
             var access_token = "";
             var realmId = "";
             producto = _context.Alojamientos.Find(producto.ProductoId);
+            List<Habitacion> habitaciones = _context.Habitaciones.Where(x => x.ProductoId == producto.ProductoId).ToList();
             try
             {
                 CargarRefreshtoken();
@@ -2089,44 +2138,87 @@ namespace GoTravelTour.QuickBooks
                 return Ok("Error connectandose a QB");
             }
 
-
-
             OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
             // Create a ServiceContext with Auth tokens and realmId
             ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
-            QueryService<Item> querySvc = new QueryService<Item>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
-            Item objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
+
+            QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
+            string EXISTING_ITEM_QUERYBYNAME1 = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
+            Item objItemFound1 = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME1).FirstOrDefault<Item>();
 
 
 
             //If Item found on Quickbooks online
-            if (objItemFound != null)
+            if (objItemFound1 != null)
             {
                 //if Item is active
-                if (objItemFound.Active == true)
+                if (objItemFound1.Active == true)
                 {
-                    objItemFound.Active = false;
+                    objItemFound1.Active = false;
                     DataService dataService = new DataService(serviceContext);
-                    Item UpdateEntity = dataService.Update<Item>(objItemFound);
+                    Item UpdateEntity = dataService.Update<Item>(objItemFound1);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
                         //you can write Database code here
-                        return Ok("Se desactivo el producto");
+                        Ok("Se desactivo el producto");
                     }
                     else
                     {
-                        return Ok("No se desactivo el producto");
+                        Ok("No se desactivo el producto");
                     }
                 }
                 else
                 {
-                    return Ok("No se desactivo el producto pues ya estaba desactivado");
+                    Ok("No se desactivo el producto pues ya estaba desactivado");
                 }
             }
+
+
+
+
+          
+            foreach (Habitacion hab in habitaciones)
+            {
+
+
+                QueryService<Item> querySvc = new QueryService<Item>(serviceContext);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", hab.IdQB);
+                Item objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
+
+
+
+                //If Item found on Quickbooks online
+                if (objItemFound != null)
+                {
+                    //if Item is active
+                    if (objItemFound.Active == true)
+                    {
+                        objItemFound.Active = false;
+                        DataService dataService = new DataService(serviceContext);
+                        Item UpdateEntity = dataService.Update<Item>(objItemFound);
+                        if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
+                        {
+                            //you can write Database code here
+                             Ok("Se desactivo el hab");
+                        }
+                        else
+                        {
+                             Ok("No se desactivo el hab");
+                        }
+                    }
+                    else
+                    {
+                         Ok("No se desactivo el producto pues ya estaba desactivado");
+                    }
+                }
+
+
+
+            }
+           
 
             return Ok("No se encontro el producto ");
 
