@@ -25,7 +25,7 @@ namespace GoTravelTour.Models
         public int? EdadAdultoMin { get; set; }
         public int? EdadNinoMin { get; set; }
         public int? EdadInfanteMin { get; set; }
-        public int IdQB { get; set; }
+        public int? IdQB { get; set; }
         public bool? PermiteMascota { get; set; }
         public bool? PermiteAdult { get; set; }
         public bool? PermiteInfante { get; set; }

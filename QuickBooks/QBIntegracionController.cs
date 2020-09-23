@@ -44,8 +44,8 @@ namespace GoTravelTour.QuickBooks
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
-        public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
 
@@ -2081,11 +2081,28 @@ namespace GoTravelTour.QuickBooks
                         ObjItem.Type = ItemTypeEnum.Service;
                         ObjItem.SubItem = true;
                         ObjItem.SubItemSpecified = true;
+                        ObjItem.Active = true;
                         DataService dataService1 = new DataService(serviceContext);
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
-                        ObjItem.Active = true;
-                        
+                       
 
+
+                    }
+                    else
+                    {
+                        Item ObjItem = new Item();
+                        //ObjItem.Id = objItemFound.Id;
+                        ObjItem.Name = hab.Nombre;
+                        ObjItem.ParentRef = new ReferenceType { Value = hotel.Id, type = ItemTypeEnum.Category.GetStringValue(), name = hotel.Name };
+                        ObjItem.TypeSpecified = true;
+                        ObjItem.Sku = hab.SKU;
+                        ObjItem.Type = ItemTypeEnum.Service;
+                        ObjItem.SubItem = true;
+                        ObjItem.SubItemSpecified = true;
+                        ObjItem.Active = true;
+                        DataService dataService1 = new DataService(serviceContext);
+                        Item UpdateEntity = dataService1.Add<Item>(objItemFound);
+                       
                     }
 
                 }
