@@ -224,6 +224,10 @@ namespace GoTravelTour.Controllers
             if (alojamiento.ListaComodidades != null)
                 foreach (var item in alojamiento.ListaComodidades)
                 {
+                    if (item.ComodidadesId != 0)
+                    {
+                        item.Comodidades = _context.Comodidades.Find(item.ComodidadesId);
+                    }
                     item.ProductoId = alojamiento.ProductoId;
                     _context.ComodidadesProductos.Add(item);
 
@@ -231,6 +235,10 @@ namespace GoTravelTour.Controllers
             if (alojamiento.ListaPlanesAlimenticios != null)
                 foreach (var item in alojamiento.ListaPlanesAlimenticios)
                 {
+                    if (item.PlanesAlimenticiosId != 0)
+                    {
+                        item.PlanesAlimenticios = _context.PlanesAlimenticios.Find(item.PlanesAlimenticiosId);
+                    }
                     item.ProductoId = alojamiento.ProductoId;
                     _context.AlojamientosPlanesAlimenticios.Add(item);
 
@@ -257,6 +265,10 @@ namespace GoTravelTour.Controllers
                 {
                     throw;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
 
             return Ok(alojamiento);

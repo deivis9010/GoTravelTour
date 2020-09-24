@@ -44,8 +44,8 @@ namespace GoTravelTour.QuickBooks
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
-        //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
+       // public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
 
@@ -184,7 +184,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
                 access_token = dictionary["accessToken"];
@@ -192,7 +192,7 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -260,7 +260,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -274,7 +274,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -308,12 +308,12 @@ namespace GoTravelTour.QuickBooks
                 Customer customer = dataService.Add(ObjItem);
                 if (customer != null && !string.IsNullOrEmpty(customer.Id))
                 {
-                    return Ok("Se inserto el cliente");
+                    return Ok(new { token = "Se inserto el cliente" });
 
                 }
                 else
                 {
-                    return Ok("No se insertó el cliente");
+                    Ok(new { token = "No se inserto el cliente" });
 
                 }
 
@@ -322,8 +322,10 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Exception : " + ex.Message);
+                return Ok(new { token = "Exception : " + ex.Message });
             }
+
+            return Ok(new { token = "Se inserto el cliente" });
 
         }
 
@@ -348,7 +350,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -362,7 +364,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -391,20 +393,20 @@ namespace GoTravelTour.QuickBooks
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
                         //you can write Database code here
-                        return Ok("Se desactivo el cliente");
+                        return Ok(new { token = "Se desactivo el cliente" });
                     }
                     else
                     {
-                        return Ok("No se desactivo el cliente");
+                        return Ok(new { token = "No se desactivo el cliente" });
                     }
                 }
                 else
                 {
-                    return Ok("No se desactivo el cliente pues ya estaba desactivado");
+                    return Ok(new { token = "No se desactivo el cliente pues ya estaba desactivado" });
                 }
             }
 
-            return Ok("No se encontro el cliente ");
+            return Ok(new { token = "No se encontro el cliente " });
 
 
 
@@ -433,7 +435,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -447,7 +449,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -481,17 +483,17 @@ namespace GoTravelTour.QuickBooks
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                 {
                     //you can write Database code here
-                    return Ok("Se actualizo el cliente");
+                    return Ok(new { token = "Se actualizo el cliente " });
                 }
                 else
                 {
-                    return Ok("No se actualizo el cliente");
+                    return Ok(new { token = "No se actualizo el cliente " });
                 }
 
 
             }
 
-            return Ok("No se encontro el cliente ");
+            return Ok(new { token = "No se encontro el cliente " });
 
 
 
@@ -520,7 +522,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -534,7 +536,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -569,8 +571,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -598,16 +600,16 @@ namespace GoTravelTour.QuickBooks
                             _context.SaveChanges();
 
                             //you can write Database code here
-                            return Ok("Ya estaba en QB y se activo");
+                            return Ok(new { token = "Ya estaba en QB y se activo" });
                         }
                         else
                         {
-                            return Ok("Ya estaba en QB pero no se activo");
+                            return Ok(new { token = "Ya estaba en QB pero no se activo" });
                         }
                     }
                     else
                     {
-                        return Ok("Ya hay un producto en QB con ese nombre");
+                        return Ok(new { token = "Ya hay un producto en QB con ese nombre" });
                     }
                    
 
@@ -656,7 +658,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                    return Ok("Error obteniendo la cuenta Income");
+                    return Ok(new { token = "Error obteniendo la cuenta Income" });
                 }
                 //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
                 var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Ground Transportation Booking").FirstOrDefault();
@@ -668,7 +670,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                    return Ok("Error obteniendo la cuenta Expense");
+                    return Ok(new { token = "Error obteniendo la cuenta Expense" });
                 }
                 DataService dataService = new DataService(serviceContext);
                 Item ItemAdd = dataService.Add(ObjItem);
@@ -691,9 +693,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
 
@@ -718,7 +720,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -732,7 +734,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -767,8 +769,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -805,11 +807,11 @@ namespace GoTravelTour.QuickBooks
 
 
                         //you can write Database code here
-                        return Ok("Se actualizo el producto");
+                        return Ok(new { token = "Se actualizo el producto" });
                         }
                         else
                         {
-                            return Ok("No se actualizo el producto");
+                            return Ok(new { token = "No se actualizo el producto" });
                         }
                   
 
@@ -822,9 +824,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
         [HttpPost]
@@ -848,7 +850,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -862,7 +864,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -891,20 +893,20 @@ namespace GoTravelTour.QuickBooks
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
                         //you can write Database code here
-                        return Ok("Se desactivo el producto");
+                        return Ok(new { token = "Se desactivo el producto" });
                     }
                     else
                     {
-                        return Ok("No se desactivo el producto");
+                        return Ok(new { token = "No se desactivo el producto" });
                     }
                 }
                 else
                 {
-                    return Ok("No se desactivo el producto pues ya estaba desactivado");
+                    return Ok(new { token = "No se desactivo el producto pues ya estaba desactivado" });
                 }
             }
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "No se encontro el producto" });
 
 
 
@@ -934,7 +936,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -948,7 +950,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -983,8 +985,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -1011,16 +1013,16 @@ namespace GoTravelTour.QuickBooks
                             _context.SaveChanges();
 
                             //you can write Database code here
-                            return Ok("Ya estaba en QB y se activo");
+                            return Ok(new { token = "Ya estaba en QB y se activo" });
                         }
                         else
                         {
-                            return Ok("Ya estaba en QB pero no se activo");
+                            return Ok(new { token = "Ya estaba en QB pero no se activo" });
                         }
                     }
                     else
                     {
-                        return Ok("Ya hay un producto en QB con ese nombre");
+                        return Ok(new { token = "Ya hay un producto en QB con ese nombre" });
                     }
                    
 
@@ -1068,7 +1070,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                    return Ok("Error obteniendo la cuenta Income");
+                    return Ok(new { token = "Error obteniendo la cuenta Income" });
                 }
                 //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
                 var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Activity Booking").FirstOrDefault();
@@ -1080,7 +1082,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                    return Ok("Error obteniendo la cuenta Expense");
+                    return Ok(new { token = "Error obteniendo la cuenta Expense" });
                 }
                 DataService dataService = new DataService(serviceContext);
                 Item ItemAdd = dataService.Add(ObjItem);
@@ -1100,9 +1102,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
 
@@ -1129,7 +1131,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -1143,7 +1145,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -1178,8 +1180,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -1215,11 +1217,11 @@ namespace GoTravelTour.QuickBooks
                         _context.SaveChanges();
 
                         //you can write Database code here
-                        return Ok("Se actualizo el producto");
+                        return Ok(new { token = "Se actualizo el producto" });
                     }
                     else
                     {
-                        return Ok("No se actualizo el producto");
+                        return Ok(new { token = "No se actualizo el producto" });
                     }
 
 
@@ -1232,9 +1234,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
 
@@ -1259,7 +1261,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -1273,7 +1275,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -1303,20 +1305,20 @@ namespace GoTravelTour.QuickBooks
                     {
 
                         //you can write Database code here
-                        return Ok("Se desactivo el producto");
+                        return Ok(new { token = "Se desactivo el producto" });
                     }
                     else
                     {
-                        return Ok("No se desactivo el producto");
+                        return Ok(new { token = "No se desactivo el producto" });
                     }
                 }
                 else
                 {
-                    return Ok("No se desactivo el producto pues ya estaba desactivado");
+                    return Ok(new { token = "No se desactivo el producto pues ya estaba desactivado" });
                 }
             }
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "No se encontro el producto" });
 
 
 
@@ -1346,7 +1348,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -1360,7 +1362,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -1401,8 +1403,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                    Vendor ven= agregarVendorProveedor( proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -1427,16 +1429,16 @@ namespace GoTravelTour.QuickBooks
                             _context.Entry(producto).State = EntityState.Modified;
                             _context.SaveChanges();
                             //you can write Database code here
-                            return Ok("Ya estaba en QB y se activo");
+                            return Ok(new { token = "Ya estaba en QB y se activo" });
                         }
                         else
                         {
-                            return Ok("Ya estaba en QB pero no se activo");
+                            return Ok(new { token = "Ya estaba en QB pero no se activo" });
                         }
                     }
                     else
                     {
-                        return Ok("Ya hay un producto en QB con ese nombre");
+                        return Ok(new { token = "Ya hay un producto en QB con ese nombre" });
                     }
 
 
@@ -1483,7 +1485,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                    return Ok("Error obteniendo la cuenta Income");
+                    return Ok(new { token = "Error obteniendo la cuenta Income" });
                 }
                 //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
                 var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Vehicle Rental Booking").FirstOrDefault();
@@ -1495,7 +1497,7 @@ namespace GoTravelTour.QuickBooks
                 else
                 {
 
-                    return Ok("Error obteniendo la cuenta Expense");
+                    return Ok(new { token = "Error obteniendo la cuenta Expense" });
                 }
                 DataService dataService = new DataService(serviceContext);
                 Item ItemAdd = dataService.Add(ObjItem);
@@ -1515,9 +1517,10 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+           // return Ok(new { token = "Se insertó correctamente el producto" });
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
 
@@ -1543,7 +1546,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -1557,7 +1560,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -1592,8 +1595,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -1629,11 +1632,11 @@ namespace GoTravelTour.QuickBooks
                         _context.Entry(producto).State = EntityState.Modified;
                         _context.SaveChanges();
                         //you can write Database code here
-                        return Ok("Se actualizo el producto");
+                        return Ok(new { token = "Se actualizo el producto" });
                     }
                     else
                     {
-                        return Ok("No se actualizo el producto");
+                        return Ok(new { token = "No se actualizo el producto" });
                     }
 
 
@@ -1646,9 +1649,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
 
@@ -1673,7 +1676,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -1687,7 +1690,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -1716,20 +1719,20 @@ namespace GoTravelTour.QuickBooks
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
                         //you can write Database code here
-                        return Ok("Se desactivo el producto");
+                        return Ok(new { token = "Se desactivo el producto" });
                     }
                     else
                     {
-                        return Ok("No se desactivo el producto");
+                        return Ok(new { token = "No se desactivo el producto" });
                     }
                 }
                 else
                 {
-                    return Ok("No se desactivo el producto pues ya estaba desactivado");
+                    return Ok(new { token = "No se desactivo el producto pues ya estaba desactivado" });
                 }
             }
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "No se encontro el producto" });
 
 
 
@@ -1748,7 +1751,7 @@ namespace GoTravelTour.QuickBooks
 
             if (habitaciones == null || !habitaciones.Any())
             {
-                return Ok("No hay habitacione para poner en el Hotel");
+                return Ok(new { token = "No hay habitaciones para poner en el Hotel" });
             }
 
             try
@@ -1765,7 +1768,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -1779,7 +1782,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -1813,8 +1816,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -1827,7 +1830,7 @@ namespace GoTravelTour.QuickBooks
                 if (hoteles == null || hoteles.Count() == 0)
                 {
                     hotel = agregarCategoriaHotel(prov, producto, serviceContext);
-                    if (hotel == null) return Ok("Error insertando el hotel");
+                    if (hotel == null) return Ok(new { token = "Error insertando el hotel" });
                     producto.IdQB = int.Parse(hotel.Id);
                     _context.Entry(producto).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -1859,16 +1862,16 @@ namespace GoTravelTour.QuickBooks
                                 _context.Entry(hab).State = EntityState.Modified;
                                 _context.SaveChanges();
                                 //you can write Database code here
-                                return Ok("Ya estaba en QB y se activo");
+                                return Ok(new { token = "Ya estaba en QB y se activo" });
                             }
                             else
                             {
-                                return Ok("Ya estaba en QB pero no se activo");
+                                return Ok(new { token = "Ya estaba en QB pero no se activo" });
                             }
                         }
                         else
                         {
-                            return Ok("Ya hay un producto en QB con ese nombre");
+                            return Ok(new { token = "Ya hay un producto en QB con ese nombre" });
                         }
 
 
@@ -1918,7 +1921,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("Error obteniendo la cuenta Income");
+                        return Ok(new { token = "Error obteniendo la cuenta Income" });
                     }
                     //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
                     var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Accommodation Booking").FirstOrDefault();
@@ -1930,7 +1933,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("Error obteniendo la cuenta Expense");
+                        return Ok(new { token = "Error obteniendo la cuenta Expense" });
                     }
                     DataService dataService = new DataService(serviceContext);
                     Item ItemAdd = dataService.Add(ObjItem);
@@ -1954,9 +1957,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
 
@@ -1969,9 +1972,9 @@ namespace GoTravelTour.QuickBooks
             producto = _context.Alojamientos.Include(x => x.Proveedor).First(x => x.ProductoId == producto.ProductoId);
             List<Habitacion> habitaciones = _context.Habitaciones.Where(x => x.ProductoId == producto.ProductoId).ToList();
 
-            if (habitaciones == null || habitaciones.Any())
+            if (habitaciones == null || !habitaciones.Any())
             {
-                return Ok("No hay habitacione para poner en el Hotel");
+                return Ok(new { token = "No hay habitaciones para poner en el Hotel" });
             }
 
             try
@@ -1988,7 +1991,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -2002,7 +2005,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -2036,8 +2039,8 @@ namespace GoTravelTour.QuickBooks
                 {
                     prov = agregarCategoriaProveedor(tipoProd, proveedor, serviceContext);
                     Vendor ven = agregarVendorProveedor(proveedor, serviceContext);
-                    if (ven == null) return Ok("Error insertando el Vendor");
-                    if (prov == null) return Ok("Error insertando el proveedor");
+                    if (ven == null) return Ok(new { token = "Error insertando el Vendor" });
+                    if (prov == null) return Ok(new { token = "Error insertando el proveedor" });
                 }
                 else
                 {
@@ -2050,7 +2053,7 @@ namespace GoTravelTour.QuickBooks
                 if (hoteles == null || hoteles.Count() == 0)
                 {
                     hotel = agregarCategoriaHotel(prov, producto, serviceContext);
-                    if (hotel == null) return Ok("Error insertando el Hotel");
+                    if (hotel == null) return Ok(new { token = "Error insertando el hotel" });
                     producto.IdQB = int.Parse(hotel.Id);
                     _context.Entry(producto).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -2100,9 +2103,66 @@ namespace GoTravelTour.QuickBooks
                         ObjItem.SubItem = true;
                         ObjItem.SubItemSpecified = true;
                         ObjItem.Active = true;
+
+
+
+                        // Create a QuickBooks QueryService using ServiceContext for getting list of all accounts from Quickbooks
+                        QueryService<Account> querySvcAc = new QueryService<Account>(serviceContext);
+                        var AccountList = querySvcAc.ExecuteIdsQuery("SELECT * FROM Account").ToList();
+
+                        //Get Account of type "OtherCurrentAsset" and named "Inventory Asset" for Asset Account Reference
+                        /*  var AssetAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Ventas del Sitio").FirstOrDefault();
+
+
+
+                          if (AssetAccountRef != null)
+                          {
+                              ObjItem.AssetAccountRef = new ReferenceType();
+                              ObjItem.AssetAccountRef.Value = AssetAccountRef.Id;
+                          }
+                          else
+                          {
+
+
+                              return Ok("Error obteniendo la cuenta Asset");
+                          }*/
+                        //Get Account of type "Income" and named "Sales of Product Income" for Income Account Reference
+                        var IncomeAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.Income && x.Name == "Accommodation").FirstOrDefault();
+                        if (IncomeAccountRef != null)
+                        {
+                            ObjItem.IncomeAccountRef = new ReferenceType();
+                            ObjItem.IncomeAccountRef.Value = IncomeAccountRef.Id;
+                        }
+                        else
+                        {
+
+                            return Ok(new { token = "Error obteniendo la cuenta Income" });
+                        }
+                        //Get Account of type "CostofGoodsSold" and named "Cost of Goods Sold" for Expense Account Reference
+                        var ExpenseAccountRef = AccountList.Where(x => x.AccountType == AccountTypeEnum.CostofGoodsSold && x.Name == "Accommodation Booking").FirstOrDefault();
+                        if (ExpenseAccountRef != null)
+                        {
+                            ObjItem.ExpenseAccountRef = new ReferenceType();
+                            ObjItem.ExpenseAccountRef.Value = ExpenseAccountRef.Id;
+                        }
+                        else
+                        {
+
+                            return Ok(new { token = "Error obteniendo la cuenta Expense" });
+                        }
+
+
                         DataService dataService1 = new DataService(serviceContext);
-                        Item UpdateEntity = dataService1.Add<Item>(objItemFound);
-                       
+                        Item UpdateEntity = dataService1.Add<Item>(ObjItem);
+                        if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
+                        {
+                            hab.IdQB = int.Parse(UpdateEntity.Id);
+                            _context.Entry(hab).State = EntityState.Modified;
+                            _context.SaveChanges();
+                            //you can write Database code here
+
+                        }
+
                     }
 
                 }
@@ -2111,9 +2171,9 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok("Error no determinado. El error es: " + ex.Message);
+                return Ok(new { token = "Error no determinado. El error es: " + ex.Message});
             }
-            return Ok("Se insertó correctamente el producto");
+            return Ok(new { token = "Se insertó correctamente el producto" });
         }
 
         [HttpPost]
@@ -2138,7 +2198,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -2152,7 +2212,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
             OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
@@ -2180,16 +2240,16 @@ namespace GoTravelTour.QuickBooks
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
                         //you can write Database code here
-                        Ok("Se desactivo el producto");
+                        Ok(new { token = "Se desactivo el producto" });
                     }
                     else
                     {
-                        Ok("No se desactivo el producto");
+                        Ok(new { token = "No se desactivo el producto" });
                     }
                 }
                 else
                 {
-                    Ok("No se desactivo el producto pues ya estaba desactivado");
+                    Ok(new { token = "No se desactivo el producto pues ya estaba desactivado" });
                 }
             }
 
@@ -2228,7 +2288,7 @@ namespace GoTravelTour.QuickBooks
                     }
                     else
                     {
-                         Ok("No se desactivo el producto pues ya estaba desactivado");
+                         Ok(new { token = "No se desactivo el producto pues ya estaba desactivado" });
                     }
                 }
 
@@ -2237,7 +2297,7 @@ namespace GoTravelTour.QuickBooks
             }
            
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "Todo ok" });
 
 
 
@@ -2360,7 +2420,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -2374,7 +2434,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -2429,7 +2489,7 @@ namespace GoTravelTour.QuickBooks
            
             if(objCustomerFound == null)
             {
-                return Ok("Error creando el cliente");
+                return Ok(new { token = "Error creando el cliente" });
             }
 
             Estimate ObjEstimate = new Estimate();
@@ -2456,7 +2516,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Actividad.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Actividad.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2483,7 +2543,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Traslado.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Traslado.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2511,7 +2571,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Vehiculo.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Vehiculo.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2540,7 +2600,7 @@ namespace GoTravelTour.QuickBooks
 
                     if(itemProduct== null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Alojamiento.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Alojamiento.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2561,11 +2621,11 @@ namespace GoTravelTour.QuickBooks
                 _context.Entry(orden).State = EntityState.Modified;
                 _context.SaveChanges();
                 //you can write Database code here
-                return Ok("Se creo el estimado");
+                return Ok(new { token = "Se creo el estimado" });
             }
 
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "No se encontro el producto" });
 
 
 
@@ -2687,7 +2747,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -2701,7 +2761,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -2764,7 +2824,7 @@ namespace GoTravelTour.QuickBooks
 
                 if (objCustomerFound == null)
                 {
-                    return Ok("Error creando el cliente");
+                    return Ok(new { token = "Error creando el cliente" });
                 }
 
                 Estimate ObjEstimate = new Estimate();
@@ -2793,7 +2853,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: "+ item.Actividad.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Actividad.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2820,7 +2880,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Traslado.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Traslado.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2848,7 +2908,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Vehiculo.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Vehiculo.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2876,7 +2936,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Alojamiento.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Alojamiento.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -2895,7 +2955,7 @@ namespace GoTravelTour.QuickBooks
                 {
                    
                     //you can write Database code here
-                    return Ok("Se creo el estimado");
+                    return Ok(new { token = "Se creo el estimado" });
                 }
 
             }
@@ -2903,7 +2963,7 @@ namespace GoTravelTour.QuickBooks
             
 
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "No se encontro el producto" });
 
 
 
@@ -3025,7 +3085,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -3039,7 +3099,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -3095,7 +3155,7 @@ namespace GoTravelTour.QuickBooks
 
             if (objCustomerFound == null)
             {
-                return Ok("Error creando el cliente");
+                return Ok(new { token = "Error creando el cliente" });
             }
 
             Invoice ObjInvoice = new Invoice();
@@ -3121,7 +3181,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: "+ item.Actividad.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Actividad.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3148,7 +3208,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Traslado.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Traslado.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3176,7 +3236,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Vehiculo.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Vehiculo.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3204,7 +3264,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Alojamiento.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Alojamiento.Nombre });
                     }
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3225,11 +3285,11 @@ namespace GoTravelTour.QuickBooks
                 _context.Entry(orden).State = EntityState.Modified;
                 _context.SaveChanges();
                 //you can write Database code here
-                return Ok("Se creo el InvoiceAdd");
+                return Ok(new { token = "Se creo el Invoice" });
             }
 
 
-            return Ok("No se encontro el InvoiceAdd ");
+            return Ok(new { token = "No se encontro el Invoice" });
 
 
 
@@ -3351,7 +3411,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -3365,7 +3425,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -3428,7 +3488,7 @@ namespace GoTravelTour.QuickBooks
 
                 if (objCustomerFound == null)
                 {
-                    return Ok("Error creando el cliente");
+                    return Ok(new { token = "Error creando el cliente" });
                 }
 
                 Invoice ObjInvoice = new Invoice();
@@ -3456,7 +3516,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Actividad.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Actividad.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3483,7 +3543,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Traslado.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Traslado.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3511,7 +3571,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Vehiculo.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Vehiculo.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3539,7 +3599,7 @@ namespace GoTravelTour.QuickBooks
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
-                            return Ok("El producto no exite en QB: " + item.Alojamiento.Nombre);
+                            return Ok(new { token = "El producto no exite en QB: " +item.Alojamiento.Nombre });
                         }
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
@@ -3558,7 +3618,7 @@ namespace GoTravelTour.QuickBooks
                 {
 
                     //you can write Database code here
-                    return Ok("Se actualizo el invoice");
+                    return Ok(new { token = "Se actualizo el invoice" });
                 }
 
             }
@@ -3566,7 +3626,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-            return Ok("No se encontro el producto ");
+            return Ok(new { token = "No se encontro el producto" });
 
 
 
@@ -3687,7 +3747,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -3701,7 +3761,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -3754,7 +3814,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Actividad.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Actividad.Nombre });
                     }
 
                     LineList.Add(objLine);
@@ -3774,7 +3834,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
                 }
                
@@ -3817,7 +3877,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Traslado.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Traslado.Nombre });
                     }
                     
                     LineList.Add(objLine);
@@ -3836,7 +3896,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
                 }
                
@@ -3881,7 +3941,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Vehiculo.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Vehiculo.Nombre });
                     }
                    
                     objLine.AnyIntuitObject = ItemLineDetail;
@@ -3901,7 +3961,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
 
                 }
@@ -3946,7 +4006,7 @@ namespace GoTravelTour.QuickBooks
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
-                        return Ok("El producto no exite en QB: " + item.Alojamiento.Nombre);
+                        return Ok(new { token = "El producto no exite en QB: " +item.Alojamiento.Nombre });
                     }
                     
                     objLine.AnyIntuitObject = ItemLineDetail;
@@ -3966,7 +4026,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
 
                 }
@@ -3977,7 +4037,7 @@ namespace GoTravelTour.QuickBooks
             
 
 
-            return Ok("Proceso Correcto");
+            return Ok(new { token = "Proceso correcto" });
 
 
 
@@ -4100,7 +4160,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok("Error Cargando el Token");
+                    return Ok(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -4114,7 +4174,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok("Error connectandose a QB");
+                return Ok(new { token = "Error connectandose a QB" });
             }
 
 
@@ -4190,7 +4250,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se enontró el producto");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
                 }
 
@@ -4255,7 +4315,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
                 }
 
@@ -4320,7 +4380,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
 
                 }
@@ -4387,7 +4447,7 @@ namespace GoTravelTour.QuickBooks
                     else
                     {
 
-                        return Ok("No se encontro el producto ");
+                        return Ok(new { token = "No se encontro el producto" });
                     }
 
                 }
@@ -4398,7 +4458,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-            return Ok("Proceso correcto ");
+            return Ok(new { token = "Proceso Correcto" });
 
 
 
