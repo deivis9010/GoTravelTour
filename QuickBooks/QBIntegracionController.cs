@@ -44,8 +44,9 @@ namespace GoTravelTour.QuickBooks
         public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
-        public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-       // public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
 
@@ -2067,7 +2068,10 @@ namespace GoTravelTour.QuickBooks
                 foreach (Habitacion hab in habitaciones)
                 {
 
-
+                    if(hab.IdQB == null)
+                    {
+                        hab.IdQB = 0;
+                    }
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", hab.IdQB);
                     Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
