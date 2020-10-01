@@ -20,6 +20,7 @@ namespace GoTravelTour.Models
         public string Ciudad { get; set; }
         public string Estado { get; set; }
         public string TipoTrasaccion { get; set; }
+        public int IdQB { get; set; }
         public string ImageContent { get; set; } //Para el logo url
         public string ImageMimeType { get; set; } //Para el logo
         public string ImageName { get; set; } //Para el logo

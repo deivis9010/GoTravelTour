@@ -45,8 +45,8 @@ namespace GoTravelTour.QuickBooks
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
 
@@ -309,6 +309,10 @@ namespace GoTravelTour.QuickBooks
                 Customer customer = dataService.Add(ObjItem);
                 if (customer != null && !string.IsNullOrEmpty(customer.Id))
                 {
+                    cliente.IdQB = int.Parse(customer.Id);
+                    _context.Entry(cliente).State = EntityState.Modified;
+                    _context.SaveChanges();
+
                     return Ok(new { token = "Se inserto el cliente" });
 
                 }
@@ -377,7 +381,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where GivenName = '{0}' ", cliente.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where id = '{0}' ", cliente.IdQB);
             Customer objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Customer>();
 
 
@@ -393,6 +397,10 @@ namespace GoTravelTour.QuickBooks
                     Customer UpdateEntity = dataService.Update<Customer>(objItemFound);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                     {
+
+                        cliente.IdQB = int.Parse(UpdateEntity.Id);
+                        _context.Entry(cliente).State = EntityState.Modified;
+                        _context.SaveChanges();
                         //you can write Database code here
                         return Ok(new { token = "Se desactivo el cliente" });
                     }
@@ -462,7 +470,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where GivenName = '{0}' ", cliente.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where id = '{0}' ", cliente.IdQB);
             Customer objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Customer>();
 
 
@@ -483,6 +491,10 @@ namespace GoTravelTour.QuickBooks
                 Customer UpdateEntity = dataService.Update<Customer>(ObjItem);
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                 {
+
+                    cliente.IdQB = int.Parse(UpdateEntity.Id);
+                    _context.Entry(cliente).State = EntityState.Modified;
+                    _context.SaveChanges();
                     //you can write Database code here
                     return Ok(new { token = "Se actualizo el cliente " });
                 }
@@ -583,7 +595,7 @@ namespace GoTravelTour.QuickBooks
 
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Sku = '{0}' ", producto.SKU);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -996,7 +1008,7 @@ namespace GoTravelTour.QuickBooks
 
                 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Sku = '{0}' ", producto.SKU);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -1413,7 +1425,7 @@ namespace GoTravelTour.QuickBooks
                 }
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", producto.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Sku = '{0}' ", producto.SKU);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -1846,7 +1858,7 @@ namespace GoTravelTour.QuickBooks
 
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Name = '{0}' ", hab.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Sku = '{0}' ", hab.SKU);
                     Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
 
@@ -2450,7 +2462,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where GivenName = '{0}' ", orden.Cliente.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where id = '{0}' ", orden.Cliente.IdQB);
             Customer objCustomerFound;
             try
             {
@@ -2516,7 +2528,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Actividad.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -2543,7 +2555,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Traslado.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -2571,7 +2583,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Vehiculo.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -2599,7 +2611,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Habitacion.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
 
                     if(itemProduct== null)
@@ -2784,7 +2796,7 @@ namespace GoTravelTour.QuickBooks
             {
 
                 QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where GivenName = '{0}' ", orden.Cliente.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where Id = '{0}' ", orden.Cliente.IdQB);
 
                 Customer objCustomerFound;
                 try
@@ -2852,7 +2864,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Actividad.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
 
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
@@ -2880,7 +2892,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Traslado.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -2908,7 +2920,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Vehiculo.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -2936,7 +2948,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Habitacion.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -3115,7 +3127,7 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where GivenName = '{0}' ", orden.Cliente.Nombre);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where Id = '{0}' ", orden.Cliente.IdQB);
 
             Customer objCustomerFound;
             try
@@ -3181,7 +3193,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Actividad.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -3208,7 +3220,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Traslado.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -3236,7 +3248,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Vehiculo.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -3264,7 +3276,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Habitacion.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -3448,7 +3460,7 @@ namespace GoTravelTour.QuickBooks
             {
 
                 QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where GivenName = '{0}' ", orden.Cliente.Nombre);
+                string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where Id = '{0}' ", orden.Cliente.IdQB);
 
                 Customer objCustomerFound;
                 try
@@ -3516,7 +3528,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Actividad.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -3543,7 +3555,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Traslado.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -3571,7 +3583,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Vehiculo.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -3599,7 +3611,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Habitacion.Nombre);
+                        string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                         Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                         if (itemProduct == null)
                         {
@@ -3814,7 +3826,7 @@ namespace GoTravelTour.QuickBooks
                                                             //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name*/
                     objLine.AnyIntuitObject = ItemLineDetail;
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Actividad.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -3877,7 +3889,7 @@ namespace GoTravelTour.QuickBooks
                     objLine.AnyIntuitObject = ItemLineDetail;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Traslado.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -3941,7 +3953,7 @@ namespace GoTravelTour.QuickBooks
                                                             //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Vehiculo.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -4006,7 +4018,7 @@ namespace GoTravelTour.QuickBooks
                                                             // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                             //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
-                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Name = '{0}' ", item.Habitacion.Nombre);
+                    string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
                     if (itemProduct == null)
                     {
@@ -4719,41 +4731,78 @@ namespace GoTravelTour.QuickBooks
 
                 foreach (var item in productores)
                 {
-                    DataRow fila = dataTable.NewRow();
-                    fila["Nombre_Producto"] = item.Nombre;
-                    fila["Descripcion"] = item.Descripcion;
-                    fila["SKU"] = item.SKU;
-                    fila["Type"] = "Service";
-                    fila["Precio"] = "0.00";
+                   
 
                     if (item.TipoProductoId == 1)
                     {
+                        DataRow fila = dataTable.NewRow();
+                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Descripcion"] = item.Descripcion;
+                        fila["SKU"] = item.SKU;
+                        fila["Type"] = "Service";
+                        fila["Precio"] = "0.00";
                         fila["Income"] = "Vehicle Rental";
                         fila["Expense"] = "Vehicle Rental Booking";
+                        dataTable.Rows.Add(fila);
                     }
 
                     if (item.TipoProductoId == 2)
                     {
+                        DataRow fila = dataTable.NewRow();
+                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Descripcion"] = item.Descripcion;
+                        fila["SKU"] = item.SKU;
+                        fila["Type"] = "Service";
+                        fila["Precio"] = "0.00";
                         fila["Income"] = "Activity";
                         fila["Expense"] = "Activity Booking";
+                        dataTable.Rows.Add(fila);
                     }
 
                     if (item.TipoProductoId == 3)
                     {
+                        DataRow fila = dataTable.NewRow();
+                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Descripcion"] = item.Descripcion;
+                        fila["SKU"] = item.SKU;
+                        fila["Type"] = "Service";
+                        fila["Precio"] = "0.00";
                         fila["Income"] = "Ground Transportation";
                         fila["Expense"] = "Ground Transportation Booking";
+                        dataTable.Rows.Add(fila);
                     }
 
                     if (item.TipoProductoId == 4)
                     {
+                        DataRow fila = dataTable.NewRow();
+                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Descripcion"] = item.Descripcion;
+                        fila["SKU"] = item.SKU;
+                        fila["Type"] = "Service";
+                        fila["Precio"] = "0.00";
                         fila["Income"] = "Service";
                         fila["Expense"] = "0.00";
+                        dataTable.Rows.Add(fila);
                     }
 
                     if (item.TipoProductoId == 5)
                     {
-                        fila["Income"] = "Accommodation";
-                        fila["Expense"] = "Accommodation Booking";
+                        var habitaciones = _context.Habitaciones.Where(x => x.ProductoId == item.ProductoId);
+
+                        foreach (var hab in habitaciones)
+                        {
+                            DataRow fila = dataTable.NewRow();
+                            fila["Nombre_Producto"] = hab.Nombre;
+                            fila["Descripcion"] = hab.Descripcion;
+                            fila["SKU"] = hab.SKU;
+                            fila["Type"] = "Service";
+                            fila["Precio"] = "0.00";
+                            fila["Income"] = "Accommodation";
+                            fila["Expense"] = "Accommodation Booking";
+                            dataTable.Rows.Add(fila);
+                        }
+
+                       
                     }
 
 
@@ -4761,7 +4810,7 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                    dataTable.Rows.Add(fila);
+                  
                 }
 
                 worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
@@ -4784,7 +4833,68 @@ namespace GoTravelTour.QuickBooks
 
 
 
-       
+        [HttpGet]
+        [Route("existeQb")]
+        public async System.Threading.Tasks.Task<ActionResult> ExisteEnQB(string sku)
+        {
+            var realmId = "";
+            var access_token = "";
+            try
+            {
+                CargarRefreshtoken();
+                TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+
+                if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+                {
+                    dictionary["accessToken"] = tokenResp.AccessToken;
+                    dictionary["refreshToken"] = tokenResp.RefreshToken;
+                    ActualizarRefreshtoken(tokenResp.RefreshToken, dictionary["realmId"]);
+
+                }
+                else
+                {
+                    return Ok(new { token = "Error Cargando el Token" });
+                }
+
+
+
+                access_token = dictionary["accessToken"];
+                realmId = dictionary["realmId"];
+            }
+            catch (Exception ex)
+            {
+
+
+                return Ok(new { token = "Error connectandose a QB" });
+            }
+
+
+
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
+            // Create a ServiceContext with Auth tokens and realmId
+            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
+
+            // Create a QuickBooks QueryService using ServiceContext
+            QueryService<Item> querySvc = new QueryService<Item>(serviceContext);
+            
+            string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Sku = '{0}' ", sku);
+            Item itemProduct = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
+            if (itemProduct == null)
+            {
+                return Ok(new { idQb = 0 });
+            }
+            else
+            {
+                return Ok(new { idQb = itemProduct.Id });
+            }          
+
+
+           
+
+
+        }
 
 
     }

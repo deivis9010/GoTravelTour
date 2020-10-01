@@ -13,5 +13,6 @@ namespace GoTravelTour.Models.Seguridad
         public string Rol { get; set; }
         public DateTime ValidoDesde { get; set; }
         public DateTime ValidoHasta { get; set; }
+        public int ClienteId { get; set; }
     }
 }

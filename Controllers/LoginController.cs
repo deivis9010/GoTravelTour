@@ -43,7 +43,8 @@ namespace GoTravelTour.Controllers
             if (_userInfo != null)
             {
                 return Ok(new { token = GenerarTokenJWT(_userInfo), email = _userInfo.Email, rol= _userInfo.Rol,
-                nombre = _userInfo.Nombre,   Id= _userInfo.Id, fechaI= _userInfo.ValidoDesde, fechaF= _userInfo.ValidoHasta
+                nombre = _userInfo.Nombre,   Id= _userInfo.Id, fechaI= _userInfo.ValidoDesde, fechaF= _userInfo.ValidoHasta,
+                clienteId= _userInfo.ClienteId
                 });
             }
             else
@@ -90,7 +91,8 @@ namespace GoTravelTour.Controllers
                     Email = user.Correo,
                     Rol = user.rol.NombreRol,
                     ValidoDesde = DateTime.Now,
-                    ValidoHasta = DateTime.Now.AddDays(1)
+                    ValidoHasta = DateTime.Now.AddDays(1),
+                    ClienteId= user.ClienteId
                     
                 };
             }
