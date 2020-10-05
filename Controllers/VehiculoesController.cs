@@ -162,7 +162,7 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
-            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre && vehiculo.ProductoId != id))
+            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre && c.ProductoId != id))
             {
                 return CreatedAtAction("GetVehiculos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

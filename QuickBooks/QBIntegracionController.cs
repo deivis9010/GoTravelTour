@@ -45,8 +45,8 @@ namespace GoTravelTour.QuickBooks
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
 
@@ -224,17 +224,38 @@ namespace GoTravelTour.QuickBooks
                 Item ItemAdd = dataService.Add(ObjItem);
                 if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
                 {
-                    return Ok("Se actualizo la categoria");
+                    return Ok("Se creo la categoria");
                 }               
                 else
                 {
-                    return Ok("No se actualizo la categoria");
+                    return Ok("No se creo la categoria");
                 }
 
 
             }
+            else
+            {
+                objItemFound.Name = new_nombre;
+                objItemFound.TypeSpecified = true;
+                // ObjItem.Sku = producto.SKU;
+                objItemFound.Type = ItemTypeEnum.Category;
+                objItemFound.SubItem = true;
+                objItemFound.SubItemSpecified = true;
 
-            return Ok("No se encontro la categoria");
+
+                DataService dataService = new DataService(serviceContext);
+                Item ItemAdd = dataService.Update(objItemFound);
+                if (ItemAdd != null && !string.IsNullOrEmpty(ItemAdd.Id))
+                {
+                    return Ok("Se actualizo la categoria");
+                }
+                else
+                {
+                    return Ok("No se actualizo la categoria");
+                }
+            }
+
+            //return Ok("No se encontro la categoria");
         }
 
 
@@ -477,18 +498,18 @@ namespace GoTravelTour.QuickBooks
             if (objItemFound != null)
             {
                 Customer ObjItem = new Customer();
-                ObjItem.Id = objItemFound.Id;
-                ObjItem.DisplayName = cliente.Nombre;
-                ObjItem.FamilyName = cliente.Nombre;
-                ObjItem.GivenName = cliente.Nombre;
-                ObjItem.ContactName = cliente.Nombre;
-                ObjItem.Title = cliente.Nombre;
-                ObjItem.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
-                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-                ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
-                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
+                objItemFound.Id = objItemFound.Id;
+                objItemFound.DisplayName = cliente.Nombre;
+                objItemFound.FamilyName = cliente.Nombre;
+                objItemFound.GivenName = cliente.Nombre;
+                objItemFound.ContactName = cliente.Nombre;
+                objItemFound.Title = cliente.Nombre;
+                objItemFound.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
+                objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                objItemFound.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
+                objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
                 DataService dataService = new DataService(serviceContext);
-                Customer UpdateEntity = dataService.Update<Customer>(ObjItem);
+                Customer UpdateEntity = dataService.Update<Customer>(objItemFound);
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                 {
 
@@ -800,15 +821,16 @@ namespace GoTravelTour.QuickBooks
                 if (objItemFound != null)
                 {
                     Item ObjItem = new Item();
-                    ObjItem.Id = objItemFound.Id;
-                    ObjItem.Name = producto.Nombre;
-                    ObjItem.ParentRef = new ReferenceType { Value = prov.Id, type = ItemTypeEnum.Category.GetStringValue(), name = prov.Name };
-                    ObjItem.TypeSpecified = true;
-                    ObjItem.Sku = producto.SKU;
-                    ObjItem.Type = ItemTypeEnum.Service;
-                    ObjItem.SubItem = true;
-                    ObjItem.SubItemSpecified = true;
-                    ObjItem.Active = true;
+                    
+                    objItemFound.Id = objItemFound.Id;
+                    objItemFound.Name = producto.Nombre;
+                    objItemFound.ParentRef = new ReferenceType { Value = prov.Id, type = ItemTypeEnum.Category.GetStringValue(), name = prov.Name };
+                    objItemFound.TypeSpecified = true;
+                    objItemFound.Sku = producto.SKU;
+                    objItemFound.Type = ItemTypeEnum.Service;
+                    objItemFound.SubItem = true;
+                    objItemFound.SubItemSpecified = true;
+                    objItemFound.Active = true;
                    
                         DataService dataService1 = new DataService(serviceContext);
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
@@ -1211,15 +1233,15 @@ namespace GoTravelTour.QuickBooks
                 if (objItemFound != null)
                 {
                     Item ObjItem = new Item();
-                    ObjItem.Id = objItemFound.Id;
-                    ObjItem.Name = producto.Nombre;
-                    ObjItem.ParentRef = new ReferenceType { Value = prov.Id, type = ItemTypeEnum.Category.GetStringValue(), name = prov.Name };
-                    ObjItem.TypeSpecified = true;
-                    ObjItem.Sku = producto.SKU;
-                    ObjItem.Type = ItemTypeEnum.Service;
-                    ObjItem.SubItem = true;
-                    ObjItem.SubItemSpecified = true;
-                    ObjItem.Active = true;
+                    objItemFound.Id = objItemFound.Id;
+                    objItemFound.Name = producto.Nombre;
+                    objItemFound.ParentRef = new ReferenceType { Value = prov.Id, type = ItemTypeEnum.Category.GetStringValue(), name = prov.Name };
+                    objItemFound.TypeSpecified = true;
+                    objItemFound.Sku = producto.SKU;
+                    objItemFound.Type = ItemTypeEnum.Service;
+                    objItemFound.SubItem = true;
+                    objItemFound.SubItemSpecified = true;
+                    objItemFound.Active = true;
 
                     DataService dataService1 = new DataService(serviceContext);
                     Item UpdateEntity = dataService1.Update<Item>(objItemFound);
@@ -1626,15 +1648,15 @@ namespace GoTravelTour.QuickBooks
                 if (objItemFound != null)
                 {
                     Item ObjItem = new Item();
-                    ObjItem.Id = objItemFound.Id;
-                    ObjItem.Name = producto.Nombre;
-                    ObjItem.ParentRef = new ReferenceType { Value = prov.Id, type = ItemTypeEnum.Category.GetStringValue(), name = prov.Name };
-                    ObjItem.TypeSpecified = true;
-                    ObjItem.Sku = producto.SKU;
-                    ObjItem.Type = ItemTypeEnum.Service;
-                    ObjItem.SubItem = true;
-                    ObjItem.SubItemSpecified = true;
-                    ObjItem.Active = true;
+                    objItemFound.Id = objItemFound.Id;
+                    objItemFound.Name = producto.Nombre;
+                    objItemFound.ParentRef = new ReferenceType { Value = prov.Id, type = ItemTypeEnum.Category.GetStringValue(), name = prov.Name };
+                    objItemFound.TypeSpecified = true;
+                    objItemFound.Sku = producto.SKU;
+                    objItemFound.Type = ItemTypeEnum.Service;
+                    objItemFound.SubItem = true;
+                    objItemFound.SubItemSpecified = true;
+                    objItemFound.Active = true;
 
 
                     DataService dataService1 = new DataService(serviceContext);
@@ -2092,15 +2114,15 @@ namespace GoTravelTour.QuickBooks
                     if (objItemFound != null)
                     {
                         Item ObjItem = new Item();
-                        ObjItem.Id = objItemFound.Id;
-                        ObjItem.Name = hab.Nombre;
-                        ObjItem.ParentRef = new ReferenceType { Value = hotel.Id, type = ItemTypeEnum.Category.GetStringValue(), name = hotel.Name };
-                        ObjItem.TypeSpecified = true;
-                        ObjItem.Sku = hab.SKU;
-                        ObjItem.Type = ItemTypeEnum.Service;
-                        ObjItem.SubItem = true;
-                        ObjItem.SubItemSpecified = true;
-                        ObjItem.Active = true;
+                        objItemFound.Id = objItemFound.Id;
+                        objItemFound.Name = hab.Nombre;
+                        objItemFound.ParentRef = new ReferenceType { Value = hotel.Id, type = ItemTypeEnum.Category.GetStringValue(), name = hotel.Name };
+                        objItemFound.TypeSpecified = true;
+                        objItemFound.Sku = hab.SKU;
+                        objItemFound.Type = ItemTypeEnum.Service;
+                        objItemFound.SubItem = true;
+                        objItemFound.SubItemSpecified = true;
+                        objItemFound.Active = true;
                         DataService dataService1 = new DataService(serviceContext);
                         Item UpdateEntity = dataService1.Update<Item>(objItemFound);
                        
@@ -2844,9 +2866,9 @@ namespace GoTravelTour.QuickBooks
                 }
 
                 Estimate ObjEstimate = new Estimate();
-                ObjEstimate.Id = objEstimateFound.Id;
-                ObjEstimate.CustomerRef = new ReferenceType();
-                ObjEstimate.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
+                objEstimateFound.Id = objEstimateFound.Id;
+                objEstimateFound.CustomerRef = new ReferenceType();
+                objEstimateFound.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
 
                 List<Line> LineList = new List<Line>();
                 if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
@@ -2964,9 +2986,9 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                ObjEstimate.Line = LineList.ToArray();
+                objEstimateFound.Line = LineList.ToArray();
                 DataService dataService = new DataService(serviceContext);
-                Estimate UpdateEntity = dataService.Update<Estimate>(ObjEstimate);
+                Estimate UpdateEntity = dataService.Update<Estimate>(objEstimateFound);
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                 {
                    
@@ -3508,9 +3530,9 @@ namespace GoTravelTour.QuickBooks
                 }
 
                 Invoice ObjInvoice = new Invoice();
-                ObjInvoice.Id = objInvoiceFound.Id;
-                ObjInvoice.CustomerRef = new ReferenceType();
-                ObjInvoice.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
+                objInvoiceFound.Id = objInvoiceFound.Id;
+                objInvoiceFound.CustomerRef = new ReferenceType();
+                objInvoiceFound.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
 
                 List<Line> LineList = new List<Line>();
                 if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
@@ -3627,9 +3649,9 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                ObjInvoice.Line = LineList.ToArray();
+                objInvoiceFound.Line = LineList.ToArray();
                 DataService dataService = new DataService(serviceContext);
-                Invoice UpdateEntity = dataService.Update<Invoice>(ObjInvoice);
+                Invoice UpdateEntity = dataService.Update<Invoice>(objInvoiceFound);
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                 {
 
@@ -4232,10 +4254,10 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
-                        ObjBill.Id = objBillFound.Id;
-                        ObjBill.SyncToken = objBillFound.SyncToken;
-                        ObjBill.VendorRef = new ReferenceType();
-                        ObjBill.VendorRef = objBillFound.VendorRef;
+                        objBillFound.Id = objBillFound.Id;
+                        objBillFound.SyncToken = objBillFound.SyncToken;
+                        objBillFound.VendorRef = new ReferenceType();
+                        objBillFound.VendorRef = objBillFound.VendorRef;
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
@@ -4250,9 +4272,9 @@ namespace GoTravelTour.QuickBooks
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                         objLine.AnyIntuitObject = ItemLineDetail;
                         LineList.Add(objLine);
-                        ObjBill.Line = LineList.ToArray();
+                        objBillFound.Line = LineList.ToArray();
                         DataService dataService = new DataService(serviceContext);
-                        Bill UpdateEntity = dataService.Update<Bill>(ObjBill);
+                        Bill UpdateEntity = dataService.Update<Bill>(objBillFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
                             //you can write Database code here
@@ -4296,10 +4318,10 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
-                        ObjBill.Id = objBillFound.Id;
-                        ObjBill.SyncToken = objBillFound.SyncToken;
-                        ObjBill.VendorRef = new ReferenceType();
-                        ObjBill.VendorRef = objBillFound.VendorRef;
+                        objBillFound.Id = objBillFound.Id;
+                        objBillFound.SyncToken = objBillFound.SyncToken;
+                        objBillFound.VendorRef = new ReferenceType();
+                        objBillFound.VendorRef = objBillFound.VendorRef;
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
@@ -4315,9 +4337,9 @@ namespace GoTravelTour.QuickBooks
                         
                         objLine.AnyIntuitObject = ItemLineDetail;
                         LineList.Add(objLine);
-                        ObjBill.Line = LineList.ToArray();
+                        objBillFound.Line = LineList.ToArray();
                         DataService dataService = new DataService(serviceContext);
-                        Bill UpdateEntity = dataService.Update<Bill>(ObjBill);
+                        Bill UpdateEntity = dataService.Update<Bill>(objBillFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
                             //you can write Database code here
@@ -4362,10 +4384,10 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
-                        ObjBill.Id = objBillFound.Id;
-                        ObjBill.SyncToken = objBillFound.SyncToken;
-                        ObjBill.VendorRef = new ReferenceType();
-                        ObjBill.VendorRef = objBillFound.VendorRef;
+                        objBillFound.Id = objBillFound.Id;
+                        objBillFound.SyncToken = objBillFound.SyncToken;
+                        objBillFound.VendorRef = new ReferenceType();
+                        objBillFound.VendorRef = objBillFound.VendorRef;
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
@@ -4380,9 +4402,9 @@ namespace GoTravelTour.QuickBooks
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                         objLine.AnyIntuitObject = ItemLineDetail;
                         LineList.Add(objLine);
-                        ObjBill.Line = LineList.ToArray();
+                        objBillFound.Line = LineList.ToArray();
                         DataService dataService = new DataService(serviceContext);
-                        Bill UpdateEntity = dataService.Update<Bill>(ObjBill);
+                        Bill UpdateEntity = dataService.Update<Bill>(objBillFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
                             //you can write Database code here
@@ -4429,10 +4451,10 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
-                        ObjBill.Id = objBillFound.Id;
-                        ObjBill.SyncToken = objBillFound.SyncToken;
-                        ObjBill.VendorRef = new ReferenceType();
-                        ObjBill.VendorRef = objBillFound.VendorRef;
+                        objBillFound.Id = objBillFound.Id;
+                        objBillFound.SyncToken = objBillFound.SyncToken;
+                        objBillFound.VendorRef = new ReferenceType();
+                        objBillFound.VendorRef = objBillFound.VendorRef;
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
@@ -4447,9 +4469,9 @@ namespace GoTravelTour.QuickBooks
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                         objLine.AnyIntuitObject = ItemLineDetail;
                         LineList.Add(objLine);
-                        ObjBill.Line = LineList.ToArray();
+                        objBillFound.Line = LineList.ToArray();
                         DataService dataService = new DataService(serviceContext);
-                        Bill UpdateEntity = dataService.Update<Bill>(ObjBill);
+                        Bill UpdateEntity = dataService.Update<Bill>(objBillFound);
                         if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
                         {
                             //you can write Database code here
@@ -4804,10 +4826,6 @@ namespace GoTravelTour.QuickBooks
 
                        
                     }
-
-
-
-
 
 
                   

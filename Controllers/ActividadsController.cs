@@ -165,7 +165,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre && actividad.ProductoId != id))
+            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre && c.ProductoId != id))
             {
                 return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

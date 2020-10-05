@@ -183,7 +183,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(cliente);
         }
 
         // POST: api/Clientes
@@ -204,7 +204,7 @@ namespace GoTravelTour.Controllers
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCliente", new { id = cliente.ClienteId }, cliente);
+            return Ok(cliente);
         }
 
         // DELETE: api/Clientes/5
