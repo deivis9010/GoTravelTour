@@ -43,7 +43,7 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.ListaTrasladoOrden)
                     .Include(x => x.ListaVehiculosOrden)   */         
                     
-                    .OrderBy(a => a.NombreOrden)
+                    .OrderByDescending(a => a.FechaActualizacion)
                     .ToPagedList(buscador.pageIndex, buscador.pageSize)
                     .ToList();
 
@@ -149,7 +149,7 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.ListaVehiculosOrden)
 
 
-                    .OrderBy(a => a.NombreOrden)
+                    .OrderByDescending(a => a.FechaActualizacion)
                    
                     .ToList();
                 lista.ToList().ForEach(x => x.Cliente.ImageContent = null);
@@ -733,6 +733,7 @@ namespace GoTravelTour.Controllers
             orden.Cliente = _context.Clientes.Single(x => x.ClienteId == orden.ClienteId);
             orden.Creador = _context.Usuarios.Single(x => x.UsuarioId == orden.Creador.UsuarioId);
             orden.FechaCreacion = DateTime.Now;
+            orden.FechaActualizacion = DateTime.Now;
 
             if (orden.ListaVehiculosOrden != null)
             {

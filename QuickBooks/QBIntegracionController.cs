@@ -49,6 +49,7 @@ namespace GoTravelTour.QuickBooks
         public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
+        //public static string environment = "sandbox";
 
         public static OAuth2Client auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
 
@@ -56,6 +57,7 @@ namespace GoTravelTour.QuickBooks
         public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         public static string QboBaseUrl = "https://sandbox-quickbooks.api.intuit.com/";
+        //public static string QboBaseUrl = "https://quickbooks.api.intuit.com/";
 
         /// <summary>
         /// Carga desde la base de el utltimo token
@@ -1897,16 +1899,22 @@ namespace GoTravelTour.QuickBooks
                                 _context.Entry(hab).State = EntityState.Modified;
                                 _context.SaveChanges();
                                 //you can write Database code here
-                                return Ok(new { token = "Ya estaba en QB y se activo" });
+                                 Ok(new { token = "Ya estaba en QB y se activo" });
+                                continue;
                             }
                             else
                             {
-                                return Ok(new { token = "Ya estaba en QB pero no se activo" });
+                                 Ok(new { token = "Ya estaba en QB pero no se activo" });
+                                continue;
                             }
                         }
                         else
                         {
-                            return Ok(new { token = "Ya hay un producto en QB con ese nombre" });
+                            hab.IdQB = int.Parse(objItemFound.Id);
+                            _context.Entry(hab).State = EntityState.Modified;
+                            _context.SaveChanges();
+                             Ok(new { token = "Ya hay un producto en QB con ese sku" });
+                            continue;
                         }
 
 
