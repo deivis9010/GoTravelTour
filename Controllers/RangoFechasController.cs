@@ -126,11 +126,11 @@ namespace GoTravelTour.Controllers
             {
                 return CreatedAtAction("IsRangoValido", new { id = -3, error = "Rango Solapado" }, new { id = -3, error = "Rango Solapado" });
             }
-
-            _context.Entry(rangoFechas).State = EntityState.Modified;
-
             try
             {
+                _context.Entry(rangoFechas).State = EntityState.Modified;
+
+           
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -143,6 +143,10 @@ namespace GoTravelTour.Controllers
                 {
                     throw;
                 }
+            }
+            catch(Exception ex)
+            {
+                var a = ex;
             }
 
             return NoContent();
@@ -221,7 +225,7 @@ namespace GoTravelTour.Controllers
 
             foreach (var item in cont.Temporadas)
             {
-                List<RangoFechas> rangos = _context.RangoFechas.Include(x=>x.Producto).Where(x=>x.TemporadaId == item.TemporadaId).ToList();
+                List<RangoFechas> rangos = _context.RangoFechas.Include(x=>x.Producto).Where(x=>x.TemporadaId == item.TemporadaId).AsNoTracking().ToList();
                 foreach (var rf in rangos)
                 {
                     if(newRango.Producto != null) // Si esto es distinto de null significa q estoy trabajando con una temporada de hoteles
