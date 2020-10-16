@@ -165,7 +165,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre && c.ProductoId != id))
+            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre && c.ProductoId != id && c.ProveedorId == actividad.ProveedorId))
             {
                 return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -251,7 +251,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre))
+            if (_context.Actividadess.Any(c => c.Nombre == actividad.Nombre && c.ProveedorId == actividad.ProveedorId))
             {
                 return CreatedAtAction("GetActividades", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

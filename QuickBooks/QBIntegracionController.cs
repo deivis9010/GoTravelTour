@@ -2636,6 +2636,40 @@ namespace GoTravelTour.QuickBooks
                 }
             }
 
+            if(objCustomerFound ==  null && orden.Cliente.IdQB == 0)
+            {
+                // Create a QuickBooks QueryService using ServiceContext
+                QueryService<Customer> querySvcCustomer = new QueryService<Customer>(serviceContext);
+
+
+
+                Customer ObjItem = new Customer();
+                ObjItem.DisplayName = orden.Cliente.Nombre;
+                ObjItem.FamilyName = orden.Cliente.Nombre;
+                ObjItem.GivenName = orden.Cliente.Nombre;
+                ObjItem.ContactName = orden.Cliente.Nombre;
+                ObjItem.Title = orden.Cliente.Nombre;
+                ObjItem.PrimaryEmailAddr = new EmailAddress { Address = orden.Cliente.Correo };
+                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+
+
+
+                DataService dataService2 = new DataService(serviceContext);
+                Customer customer = dataService2.Add(ObjItem);
+                if (customer != null && !string.IsNullOrEmpty(customer.Id))
+                {
+                    objCustomerFound = customer;
+
+                }
+                else
+                {
+                    objCustomerFound = null;
+
+                }
+            }
+
             if (objCustomerFound == null)
             {
                 return Ok(new { token = "Error creando el cliente" });
@@ -2644,7 +2678,7 @@ namespace GoTravelTour.QuickBooks
             Estimate ObjEstimate = new Estimate();
             ObjEstimate.CustomerRef = new ReferenceType();
             ObjEstimate.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
-
+            ObjEstimate.DocNumber = orden.NumeroOrden;
             List<Line> LineList = new List<Line>();
             if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                 foreach (var item in orden.ListaActividadOrden)
@@ -2980,7 +3014,7 @@ namespace GoTravelTour.QuickBooks
                 objEstimateFound.Id = objEstimateFound.Id;
                 objEstimateFound.CustomerRef = new ReferenceType();
                 objEstimateFound.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
-
+                objEstimateFound.DocNumber = orden.NumeroOrden;
                 List<Line> LineList = new List<Line>();
                 if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                     foreach (var item in orden.ListaActividadOrden)
@@ -3310,6 +3344,7 @@ namespace GoTravelTour.QuickBooks
             Invoice ObjInvoice = new Invoice();
             ObjInvoice.CustomerRef = new ReferenceType();
             ObjInvoice.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
+            ObjInvoice.DocNumber = orden.NumeroOrden;
             List<Line> LineList = new List<Line>();
             if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                 foreach (var item in orden.ListaActividadOrden)
@@ -3644,7 +3679,7 @@ namespace GoTravelTour.QuickBooks
                 objInvoiceFound.Id = objInvoiceFound.Id;
                 objInvoiceFound.CustomerRef = new ReferenceType();
                 objInvoiceFound.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
-
+                objInvoiceFound.DocNumber = orden.NumeroOrden;
                 List<Line> LineList = new List<Line>();
                 if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                     foreach (var item in orden.ListaActividadOrden)
@@ -3930,6 +3965,7 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaActividadOrden)
                 {
                     Bill ObjBill = new Bill();
+                    ObjBill.DocNumber = orden.NumeroOrden;
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.CompanyName == item.Actividad.Proveedor.Nombre).ToList();
@@ -3993,6 +4029,7 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaTrasladoOrden)
                 {
                     Bill ObjBill = new Bill();
+                    ObjBill.DocNumber = orden.NumeroOrden;
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.CompanyName == item.Traslado.Proveedor.Nombre).ToList();
@@ -4056,6 +4093,7 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaVehiculosOrden)
                 {
                     Bill ObjBill = new Bill();
+                    ObjBill.DocNumber = orden.NumeroOrden;
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.CompanyName == item.Vehiculo.Proveedor.Nombre).ToList();
@@ -4123,6 +4161,7 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaAlojamientoOrden)
                 {
                     Bill ObjBill = new Bill();
+                    ObjBill.DocNumber = orden.NumeroOrden;
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.CompanyName == item.Alojamiento.Proveedor.Nombre).ToList();
@@ -4365,6 +4404,7 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
+                        ObjBill.DocNumber = orden.NumeroOrden;
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
@@ -4429,6 +4469,7 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
+                        ObjBill.DocNumber = orden.NumeroOrden;
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
@@ -4496,6 +4537,7 @@ namespace GoTravelTour.QuickBooks
                     {
                         Bill ObjBill = new Bill();
                         objBillFound.Id = objBillFound.Id;
+                        ObjBill.DocNumber = orden.NumeroOrden;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
                         objBillFound.VendorRef = objBillFound.VendorRef;
@@ -4562,6 +4604,7 @@ namespace GoTravelTour.QuickBooks
                     if (objBillFound != null)
                     {
                         Bill ObjBill = new Bill();
+                        ObjBill.DocNumber = orden.NumeroOrden;
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
@@ -4839,7 +4882,7 @@ namespace GoTravelTour.QuickBooks
         public IActionResult ExportarExcelProducto()
         {
             string excelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            var productores = _context.Productos.AsNoTracking().ToList();
+            var productos = _context.Productos.Include(x=>x.Proveedor).AsNoTracking().ToList();
 
 
             using (var libro = new ExcelPackage())
@@ -4862,14 +4905,14 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                foreach (var item in productores)
+                foreach (var item in productos)
                 {
-
+                    string prov = item.Proveedor.Nombre;
 
                     if (item.TipoProductoId == 1)
                     {
                         DataRow fila = dataTable.NewRow();
-                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Nombre_Producto"] = "Vehicle Rental:"+prov+":"+item.Nombre;
                         fila["Descripcion"] = item.Descripcion;
                         fila["SKU"] = item.SKU;
                         fila["Type"] = "Service";
@@ -4882,7 +4925,7 @@ namespace GoTravelTour.QuickBooks
                     if (item.TipoProductoId == 2)
                     {
                         DataRow fila = dataTable.NewRow();
-                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Nombre_Producto"] = "Activity:" + prov + ":" + item.Nombre; 
                         fila["Descripcion"] = item.Descripcion;
                         fila["SKU"] = item.SKU;
                         fila["Type"] = "Service";
@@ -4895,7 +4938,7 @@ namespace GoTravelTour.QuickBooks
                     if (item.TipoProductoId == 3)
                     {
                         DataRow fila = dataTable.NewRow();
-                        fila["Nombre_Producto"] = item.Nombre;
+                        fila["Nombre_Producto"] = "Ground Transportation:" + prov + ":" + item.Nombre;
                         fila["Descripcion"] = item.Descripcion;
                         fila["SKU"] = item.SKU;
                         fila["Type"] = "Service";
@@ -4925,7 +4968,7 @@ namespace GoTravelTour.QuickBooks
                         foreach (var hab in habitaciones)
                         {
                             DataRow fila = dataTable.NewRow();
-                            fila["Nombre_Producto"] = hab.Nombre;
+                            fila["Nombre_Producto"] = "Accommodation:" + prov + ":" + item.Nombre+":"+ hab.Nombre;
                             fila["Descripcion"] = hab.Descripcion;
                             fila["SKU"] = hab.SKU;
                             fila["Type"] = "Service";
@@ -4943,13 +4986,13 @@ namespace GoTravelTour.QuickBooks
                 }
 
                 worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-                for (var col = 1; col < productores.Count + 1; col++)
+                for (var col = 1; col < productos.Count + 1; col++)
                 {
                     worksheet.Column(col).AutoFit();
                 }
 
                 // Agregar formato de tabla
-                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: productores.Count + 1, toColumn: 7), "Productos");
+                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: productos.Count + 1, toColumn: 7), "Productos");
                 tabla.ShowHeader = true;
                 tabla.TableStyle = TableStyles.Light6;
                 tabla.ShowTotal = true;

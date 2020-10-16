@@ -162,7 +162,7 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
-            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre && c.ProductoId != id))
+            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre && c.ProductoId != id && c.ProveedorId == vehiculo.ProveedorId))
             {
                 return CreatedAtAction("GetVehiculos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -274,7 +274,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre ))
+            if (_context.Vehiculos.Any(c => c.Nombre == vehiculo.Nombre && c.ProveedorId == vehiculo.ProveedorId))
             {
                 return CreatedAtAction("GetVehiculos", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }

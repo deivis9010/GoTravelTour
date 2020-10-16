@@ -186,7 +186,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest();
             }
-            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim() && x.ProductoId != id))
+            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim() && x.ProductoId != id && x.ProveedorId == alojamiento.ProveedorId))
             {
                 return CreatedAtAction("GetAlojamiento", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
@@ -283,7 +283,7 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim()))
+            if (_context.Alojamientos.Any(x => x.Nombre.Trim() == alojamiento.Nombre.Trim() && x.ProveedorId == alojamiento.ProveedorId))
             {
                 return CreatedAtAction("GetAlojamiento", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
