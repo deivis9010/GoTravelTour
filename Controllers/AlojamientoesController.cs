@@ -746,12 +746,100 @@ namespace GoTravelTour.Controllers
         }
 
 
+        // GET: api/Alojamientoes/BuscarOrdenCount
+        [HttpPost]
+        [Route("BuscarOrdenCount")]
+        public int GetOrdenAlojamientoesCount([FromBody] BuscadorAlojamiento buscador, int pageIndex = 1, int pageSize = 1)
+        {
+
+            //Se buscan todos los alojamientos segun los parametros
+            List<OrdenAlojamiento> resultados = new List<OrdenAlojamiento>();
+            List<Alojamiento> alojamientos = _context.Alojamientos.Include(x => x.PuntoInteres).Where(x => x.IsActivo && x.PuntoInteres.RegionId == buscador.Region.RegionId).ToList();
+
+            //Se filtra segun los parametros pasados
+            if (!string.IsNullOrEmpty(buscador.NombreHotel))
+            {
+                alojamientos = alojamientos.Where(x => x.Nombre.Contains(buscador.NombreHotel, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+
+
+            if (buscador.CantidadEstrellas > 0 && alojamientos != null && alojamientos.Any())
+            {
+                alojamientos = alojamientos.Where(x => x.NumeroEstrellas == buscador.CantidadEstrellas).ToList();
+            }
+
+            if (buscador.TipoAlojamiento != null && alojamientos != null && alojamientos.Any())
+            {
+                alojamientos = alojamientos.Where(x => x.TipoAlojamientoId == buscador.TipoAlojamiento.TipoAlojamientoId).ToList();
+            }
+
+
+            foreach (var a in alojamientos)
+            {
+
+                OrdenAlojamiento ord = new OrdenAlojamiento();
+                bool add = false;
+                //Se buscan los precios correspondientes 
+                List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada).Include(x => x.Habitacion)
+
+                .Where(x => x.ProductoId == a.ProductoId && x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) ||
+                   ((xx.FechaInicio <= buscador.Salida && buscador.Salida <= xx.FechaFin)))).ToList();
+                a.PrecioInicial = 0;
+                var i = 0;
+                foreach (var p in precios)
+                {
+
+                    //   if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Entrada && buscador.Entrada <= x.FechaFin) ||
+                    //   ((x.FechaInicio <= buscador.Salida && buscador.Salida <= x.FechaFin)))) // si la fecha buscada esta en el rango de precios
+                    //  {
+                    if (i == 0 && p.Precio > 0)
+                    {
+                        add = true;
+                        i = 1;
+                        a.PrecioInicial = p.Precio;
+
+                        ord.Habitacion = p.Habitacion;
+                        continue;
+                    }
+
+                    if (a.PrecioInicial > p.Precio && p.Precio > 0)
+                    {
+                        add = true;
+                        a.PrecioInicial = p.Precio;
+                        ord.Habitacion = p.Habitacion;
+                    }
+
+                    //     }
+
+                }
+
+                if (add)
+                {
+                    ord.Alojamiento = a;
+
+                    resultados.Add(ord);
+                }
+            }
+            if (buscador.OrdenarAsc)
+            {
+                return resultados.Count(); 
+            }
+            else
+            {
+                return resultados.Count();
+            }
+
+
+
+
+        }
 
 
         // POST: api/Alojamientoes/BuscarOrden
         [HttpPost]
         [Route("BuscarOrden")]
-        public List<OrdenAlojamiento> GetBuscarAlojamientosByFiltros([FromBody] BuscadorAlojamiento buscador)
+        public List<OrdenAlojamiento> GetBuscarAlojamientosByFiltros([FromBody] BuscadorAlojamiento buscador, int pageIndex = 1, int pageSize = 1000)
         {
 
 

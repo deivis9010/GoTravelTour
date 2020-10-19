@@ -50,6 +50,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.PuntoInteres)
                     .Include(a => a.TipoTransporte)
                     //.Include(a => a.ListaDistribuidoresProducto)
+                    .OrderBy(a => a.Nombre)
                     .Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
@@ -61,6 +62,7 @@ namespace GoTravelTour.Controllers
                     .Include(a => a.TipoTransporte)
                     /*.Include(a => a.ListaComodidades)
                     .Include(a => a.ListaDistribuidoresProducto)*/
+                    .OrderBy(a => a.Nombre)
                     .ToPagedList(pageIndex, pageSize).ToList();
             }
 
@@ -616,7 +618,94 @@ namespace GoTravelTour.Controllers
         [Route("BuscarOrdenCount")]
         public int GetOrdenTrasladosCount([FromBody] BuscadorTraslado buscador)
         {
-            return 50;
+            List<OrdenTraslado> lista = new List<OrdenTraslado>(); //Lista  a devolver (candidatos)
+
+
+            //Se buscan todos los traslados con la transmision pasada por parametros
+            List<Traslado> traslados = _context.Traslados.Include(d => d.ListaDistribuidoresProducto).Where(x => x.IsActivo && x.CapacidadTraslado >= buscador.CantidadPasajeros).ToList();
+
+
+            foreach (var t in traslados)
+            {
+                //Se buscan las rutas que contienen el punto de origen y destino
+                List<Rutas> posiblesRutas = _context.Rutas.Where(x => (x.PuntoInteresOrigen.PuntoInteresId == buscador.Origen.PuntoInteresId &&
+                x.PuntoInteresDestino.PuntoInteresId == buscador.Destino.PuntoInteresId) ||
+                (x.PuntoInteresOrigen.PuntoInteresId == buscador.Destino.PuntoInteresId &&
+                x.PuntoInteresDestino.PuntoInteresId == buscador.Origen.PuntoInteresId)).ToList();
+
+                foreach (var r in posiblesRutas)
+                {
+
+                    foreach (var dist in t.ListaDistribuidoresProducto)
+                    {
+
+                        //Se buscan los precios correspondientes entre ruta y traslado
+                        List<PrecioTraslado> precios = _context.PrecioTraslados.Include(x => x.Temporada.ListaFechasTemporada)
+                       .Include(x => x.Temporada.Contrato.Distribuidor)
+                       .Where(x => x.ProductoId == t.ProductoId && x.RutasId == r.RutasId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId).ToList();
+                        foreach (var p in precios)
+                        {
+                            OrdenTraslado ov = new OrdenTraslado();
+                            if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.Fecha && buscador.Fecha <= x.FechaFin))) // si la fecha buscada esta en el rango de precios
+                            {
+                                Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+                                ov.PrecioTraslado = p;
+                                ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                                ov.Traslado = t;
+                                ov.FechaRecogida = buscador.Fecha;
+                                ov.PuntoOrigen = buscador.Origen;
+                                ov.PuntoDestino = buscador.Destino;
+                                ov.PrecioOrden += p.Precio;
+
+
+                                //Se aplica la ganancia correspondiente
+                                List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.TRANSPORTATION).ToList();
+
+                                foreach (Sobreprecio s in sobreprecios)
+                                {
+
+                                    if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
+                                    {
+                                        ov.Sobreprecio = s;
+                                        decimal valorAplicado = 0;
+                                        if (s.ValorDinero != null)
+                                        {
+                                            valorAplicado = (decimal)s.ValorDinero;
+                                            ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
+                                        }
+                                        else
+                                        {
+                                            valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                            ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
+                                        }
+
+                                        ov.ValorSobreprecioAplicado = valorAplicado;
+                                        break;
+                                    }
+
+                                }
+                                ov.IsIdaVuelta = buscador.IsIdaVuelta;
+
+                                if (ov.IsIdaVuelta) ov.PrecioOrden = 2 * ov.PrecioOrden;
+                                if (ov.PrecioOrden > 0)
+                                    lista.Add(ov);
+                            }
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+
+            }
+
+
+            return lista.Count();
+
         }
 
 

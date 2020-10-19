@@ -45,8 +45,8 @@ namespace GoTravelTour.QuickBooks
         public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
         //public static string environment = "sandbox";
@@ -493,8 +493,13 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
             QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
-            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where id = '{0}' ", cliente.IdQB);
+            string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where ID= '{0}' ", cliente.IdQB);
+            if (cliente.IdQB == 0)
+            {
+                 EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Customer where DisplayName= '{0} ", cliente.Nombre.Trim());
+            }
             Customer objItemFound = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Customer>();
+
 
 
             if (objItemFound != null)
@@ -4722,7 +4727,12 @@ namespace GoTravelTour.QuickBooks
 
             if (proveedores != null && proveedores.Any())
             {
-                return proveedores.First();
+                Vendor ven = proveedores.First();
+
+                prov.IdQB = int.Parse(ven.Id);
+                _context.Entry(prov).State = EntityState.Modified;
+                _context.SaveChanges();
+                return ven;
 
             }
 
@@ -4747,6 +4757,9 @@ namespace GoTravelTour.QuickBooks
             Vendor VendorAdd = dataService.Add(ObjVendor);
             if (VendorAdd != null && !string.IsNullOrEmpty(VendorAdd.Id))
             {
+                prov.IdQB = int.Parse(VendorAdd.Id);
+                _context.Entry(prov).State = EntityState.Modified;
+                _context.SaveChanges();
                 return VendorAdd;
             }
             return null;
@@ -4783,6 +4796,7 @@ namespace GoTravelTour.QuickBooks
                 dataTable.Columns.Add("Ciudad", typeof(string));
                 dataTable.Columns.Add("ZIP", typeof(string));
                 dataTable.Columns.Add("Pais", typeof(string));
+                dataTable.Columns.Add("Estado", typeof(string));
 
 
 
@@ -4796,6 +4810,7 @@ namespace GoTravelTour.QuickBooks
                     fila["Ciudad"] = item.Ciudad;
                     fila["ZIP"] = item.ZipCode;
                     fila["Pais"] = item.Pais;
+                    fila["Estado"] = item.Estado;
 
 
 
@@ -4810,7 +4825,7 @@ namespace GoTravelTour.QuickBooks
                 }
 
                 // Agregar formato de tabla
-                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: clientes.Count + 1, toColumn: 7), "Customer");
+                var tabla = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: clientes.Count + 1, toColumn: 8), "Customer");
                 tabla.ShowHeader = true;
                 tabla.TableStyle = TableStyles.Light6;
                 tabla.ShowTotal = true;
