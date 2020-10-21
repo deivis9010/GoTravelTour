@@ -320,7 +320,7 @@ namespace GoTravelTour.QuickBooks
                 ObjItem.FamilyName = cliente.Nombre;
                 ObjItem.GivenName = cliente.Nombre;
                 ObjItem.ContactName = cliente.Nombre;
-                ObjItem.Title = cliente.Nombre;
+                //ObjItem.Title = cliente.Nombre;
                 ObjItem.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
                 ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                 ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
@@ -847,12 +847,21 @@ namespace GoTravelTour.QuickBooks
                     }
                 }
 
-
+                if (producto.IdQB == null)
+                {
+                    producto.IdQB = 0;
+                }
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                 string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
+
+                if (objItemFound == null)
+                {
+                    EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where sku = '{0}' ", producto.SKU);
+                    objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
+                }
 
                 if (objItemFound != null)
                 {
@@ -1285,12 +1294,20 @@ namespace GoTravelTour.QuickBooks
                     }
                 }
 
-
+                if (producto.IdQB == null)
+                {
+                    producto.IdQB = 0;
+                }
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                 string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
+                if (objItemFound == null)
+                {
+                    EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where sku = '{0}' ", producto.SKU);
+                    objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
+                }
 
                 if (objItemFound != null)
                 {
@@ -1721,12 +1738,20 @@ namespace GoTravelTour.QuickBooks
                     }
                 }
 
-
+                if(producto.IdQB == null)
+                {
+                    producto.IdQB = 0;
+                }
 
                 QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                 string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", producto.IdQB);
                 Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
+                if (objItemFound == null)
+                {
+                    EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where sku = '{0}' ", producto.SKU);
+                    objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
+                }
 
                 if (objItemFound != null)
                 {
@@ -2226,6 +2251,11 @@ namespace GoTravelTour.QuickBooks
                     string EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where Id = '{0}' ", hab.IdQB);
                     Item objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
 
+                    if (objItemFound == null)
+                    {
+                        EXISTING_ITEM_QUERYBYNAME = string.Format("select * from Item where sku = '{0}' ", hab.SKU);
+                        objItemFound = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAME).FirstOrDefault<Item>();
+                    }
 
                     if (objItemFound != null)
                     {
