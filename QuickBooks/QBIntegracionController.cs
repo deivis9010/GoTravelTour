@@ -41,23 +41,28 @@ namespace GoTravelTour.QuickBooks
         }
 
 
-        public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
-        public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
+        //public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
+        //public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
+        //PRODUCCTION
+        public static string clientid = "ABIaUtlQOuizSswJSbv5bZWKPXTuiF00BNvh1TCYWXLbgdnM6P";
+        public static string clientsecret = "Qha5DJeNEhxhd6uFV8LdabImmdYEYAOAoxniZxMO";
+
+
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
         public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
         //public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
-        public static string environment = "sandbox";
         //public static string environment = "sandbox";
+        public static string environment = "";
 
         public static OAuth2Client auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
 
         /*Este diccionario es para almacenar los token y solamente solicitarlos una vez*/
         public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
-        public static string QboBaseUrl = "https://sandbox-quickbooks.api.intuit.com/";
-        //public static string QboBaseUrl = "https://quickbooks.api.intuit.com/";
+        //public static string QboBaseUrl = "https://sandbox-quickbooks.api.intuit.com/";
+        public static string QboBaseUrl = "https://quickbooks.api.intuit.com/";
 
         /// <summary>
         /// Carga desde la base de el utltimo token
@@ -4750,10 +4755,19 @@ namespace GoTravelTour.QuickBooks
         {
 
             QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
+            string EXISTING_QUERYBYID = "";
+            if ( prov.IdQB != null && prov.IdQB > 0)
+            {
+                EXISTING_QUERYBYID = string.Format("SELECT * from Vendor where ID = '{0}'", prov.IdQB);
+            }
+            else
+            {
+                EXISTING_QUERYBYID = string.Format("SELECT * from Vendor where CompanyName = '{0}'", prov.Nombre);                
+            }
+            
+           
 
-
-
-            List<Vendor> proveedores = querySvcI.ExecuteIdsQuery("SELECT * from Vendor ").Where(x => x.CompanyName == prov.Nombre).ToList();
+            List<Vendor> proveedores = querySvcI.ExecuteIdsQuery(EXISTING_QUERYBYID).ToList<Vendor>();
 
             if (proveedores != null && proveedores.Any())
             {
