@@ -51,14 +51,14 @@ namespace GoTravelTour.Utiles
         {
            
             string sku = "";
-            string numeroOrden = "0000000000";
+            string numeroOrden = "0000000";
             int ultimaOrden = 0;
             if (!_context.Orden.Any())
             {
                 ultimaOrden = 1;
             }else
             ultimaOrden = _context.Orden.Last().OrdenId + 1;
-            numeroOrden = (numeroOrden + ultimaOrden.ToString()).PadRight(10);
+            numeroOrden = (numeroOrden + ultimaOrden.ToString()).PadRight(7);
             sku = "GTT-" + numeroOrden;
 
 

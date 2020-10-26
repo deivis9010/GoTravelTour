@@ -40,12 +40,18 @@ namespace GoTravelTour.QuickBooks
             _context = context;
         }
 
+        //code prod= AB116034176497MsLInVgUONTu5CfOkOQaSpO6Hz7ZdPYtzGVZ
+        //realmid = 123145798828544
+        //sand box realm id= 4620816365037572030
 
-        //public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
-        //public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
+        //refresh token prod = AB11612143903KxSniW7eHHQBiEfIK5SaMiJ4m3CYsWXMWoFN4
+        //refresh token = AB11612007615vOw3rvJTs9xcTfxejaG7fzLRuQGcfva1Bycf7
+
+        public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
+        public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //PRODUCCTION
-        public static string clientid = "ABIaUtlQOuizSswJSbv5bZWKPXTuiF00BNvh1TCYWXLbgdnM6P";
-        public static string clientsecret = "Qha5DJeNEhxhd6uFV8LdabImmdYEYAOAoxniZxMO";
+        //public static string clientid = "ABIaUtlQOuizSswJSbv5bZWKPXTuiF00BNvh1TCYWXLbgdnM6P";
+        //public static string clientsecret = "Qha5DJeNEhxhd6uFV8LdabImmdYEYAOAoxniZxMO";
 
 
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
@@ -61,8 +67,8 @@ namespace GoTravelTour.QuickBooks
         /*Este diccionario es para almacenar los token y solamente solicitarlos una vez*/
         public static Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
-        //public static string QboBaseUrl = "https://sandbox-quickbooks.api.intuit.com/";
-        public static string QboBaseUrl = "https://quickbooks.api.intuit.com/";
+        public static string QboBaseUrl = "https://sandbox-quickbooks.api.intuit.com/";
+        //public static string QboBaseUrl = "https://quickbooks.api.intuit.com/";
 
         /// <summary>
         /// Carga desde la base de el utltimo token
@@ -289,7 +295,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok(new { token = "Error Cargando el Token" });
+                    return BadRequest(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -303,7 +309,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok(new { token = "Error connectandose a QB" });
+                return BadRequest(new { token = "Error connectandose a QB" });
             }
 
 
@@ -355,7 +361,7 @@ namespace GoTravelTour.QuickBooks
             }
             catch (Exception ex)
             {
-                return Ok(new { token = "Exception : " + ex.Message });
+                return BadRequest(new { token = "Exception : " + ex.Message });
             }
 
             return Ok(new { token = "Se inserto el cliente" });
@@ -472,7 +478,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok(new { token = "Error Cargando el Token" });
+                    return BadRequest(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -486,7 +492,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok(new { token = "Error connectandose a QB" });
+                return BadRequest(new { token = "Error connectandose a QB" });
             }
 
 
@@ -533,7 +539,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok(new { token = "No se actualizo el cliente " });
+                    return BadRequest(new { token = "No se actualizo el cliente " });
                 }
 
 
@@ -568,7 +574,7 @@ namespace GoTravelTour.QuickBooks
                 }
                 else
                 {
-                    return Ok(new { token = "Error Cargando el Token" });
+                    return BadRequest(new { token = "Error Cargando el Token" });
                 }
 
 
@@ -582,7 +588,7 @@ namespace GoTravelTour.QuickBooks
             {
 
 
-                return Ok(new { token = "Error connectandose a QB" });
+                return BadRequest(new { token = "Error connectandose a QB" });
             }
 
 
@@ -629,6 +635,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Ground Transportation")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Ground Transportation"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
 
@@ -841,6 +850,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Ground Transportation")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Ground Transportation"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
 
@@ -1080,6 +1092,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Activity")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Activity"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
 
@@ -1288,6 +1303,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Activity")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Activity"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
 
@@ -1530,6 +1548,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Vehicle Rental")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Vehicle Rental"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
                     {
@@ -1733,6 +1754,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Vehicle Rental")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Vehicle Rental"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
                     {
@@ -1974,6 +1998,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Accommodation")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Accommodation"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
 
@@ -2217,6 +2244,9 @@ namespace GoTravelTour.QuickBooks
                     if (proveedores.Where(x => x.FullyQualifiedName.Contains("Accommodation")).ToList().Count > 0)
                     {
                         prov = proveedores.First(x => x.FullyQualifiedName.Contains("Accommodation"));
+                        proveedor.IdQB = int.Parse(prov.Id);
+                        _context.Entry(proveedor).State = EntityState.Modified;
+                        _context.SaveChanges();
                     }
                     else
 
