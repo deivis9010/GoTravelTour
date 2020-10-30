@@ -56,8 +56,8 @@ namespace GoTravelTour.QuickBooks
 
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         //public static string environment = "sandbox";
         public static string environment = "";
