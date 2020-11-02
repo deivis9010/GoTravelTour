@@ -154,7 +154,11 @@ namespace GoTravelTour.Controllers
                     .ToList();
                 lista.ToList().ForEach(x => x.Cliente.ImageContent = null);
 
-                if(!string.IsNullOrEmpty(buscador.Nombre))
+                if (buscador.ClienteId > 0)
+                {
+                    lista = lista.Where(x => x.ClienteId == buscador.ClienteId);
+                }
+                if (!string.IsNullOrEmpty(buscador.Nombre))
                 {
                     lista = lista.Where(x => x.NombreOrden !=null && x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
                 }
@@ -307,6 +311,10 @@ namespace GoTravelTour.Controllers
                  .OrderBy(a => a.NombreOrden)
                  .ToList();
 
+                if (buscador.ClienteId > 0)
+                {
+                    lista = lista.Where(x => x.ClienteId == buscador.ClienteId);
+                }
                 if (!string.IsNullOrEmpty(buscador.Nombre))
                 {
                     lista = lista.Where(x => x.NombreOrden != null && x.NombreOrden.Contains(buscador.Nombre, StringComparison.CurrentCultureIgnoreCase));
