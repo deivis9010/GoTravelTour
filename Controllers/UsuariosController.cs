@@ -366,6 +366,73 @@ namespace GoTravelTour.Controllers
 
         }
 
+
+        // GET: api/Usuarios/Mail
+        [Route("Mail")]
+        [HttpGet]
+        public bool GetSolicitudCreacionUsuario(string email)
+        {
+            try
+            {
+                var message = new MimeMessage();
+
+                message.To.Add(new MailboxAddress("sales@gotravelandtours.com"));
+                message.From.Add(new MailboxAddress(email));
+                message.Subject = "Nueva solicitud para obtener acceso al sistema. ";
+                //We will say we are sending HTML. But there are options for plaintext etc. 
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = "El usuario del correo: " + email + "<br>"
+                 + "Está solicitando acceso al sistema. Debe contactarlo para confirmar la solicitud o no."
+
+                + "<br><br><br><br><br><br><br>"
+                + "<img src=''/> <br>"
+                + "<div style='font-weight:bold'>Equipo Go Travel and Tours</div> <br>"
+                + "<div style=''>17118 sw 144th ct., Miamin FL 33177 </div> <br>"
+                 + "<div style=''>B2B Cuban Wholesale: gotravelandtours.com </div> <br>"
+                 + "<div style=''>Skype: elilor0202 </div> <br>"
+                 + "<div style=''>Whatsapp: 786-315-8244 </div> <br>"
+                };
+
+
+                //Be careful that the SmtpClient class is the one from Mailkit not the framework!
+                using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    emailClient.Timeout = 120000;
+                    //The last parameter here is to use SSL (Which you should!)
+                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+
+                    //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+
+                    //Remove any OAuth functionality as we won't be using it. 
+                    //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+
+                    /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
+                    foreach (var part in message.BodyParts.OfType<TextPart>())
+                        part.ContentTransferEncoding = ContentEncoding.QuotedPrintable;
+                    message.MessageId = MimeUtils.GenerateMessageId("efferenthealthllc.onmicrosoft.com");
+                    foreach (var part in message.BodyParts.OfType<TextPart>())
+                        part.ContentId = null;
+                    /** FIN **/
+
+                    emailClient.Send(message);
+
+                    emailClient.Disconnect(true);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+
+            }
+        }
+
+
         // GET: api/Usuarios/Activar
         [Route("Activar")]
         [HttpGet]

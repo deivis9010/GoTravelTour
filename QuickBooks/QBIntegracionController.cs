@@ -56,8 +56,8 @@ namespace GoTravelTour.QuickBooks
 
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://admin.gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
         //public static string environment = "";
@@ -2564,7 +2564,8 @@ namespace GoTravelTour.QuickBooks
             {
                 orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                       /* .Include(d => d.Sobreprecio)*/
-                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.Habitacion)
+                      .Include(d => d.PlanAlimenticio)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
@@ -2761,12 +2762,21 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
+                                          "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                          "Lugar: " + item.LugarActividad + ". " +
+                                         "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
-
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                   
+                   
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
@@ -2791,11 +2801,19 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". " +
+                                          "Capacity: " + item.Traslado.CapacidadTraslado;
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -2822,11 +2840,15 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                          
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -2853,7 +2875,13 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
+                                          "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". "+
+                                          "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
+                                          "Adults: " + ca  + ". " +
+                                          "Childs:  " + cm;
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
@@ -2862,11 +2890,12 @@ namespace GoTravelTour.QuickBooks
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
-
                     if (itemProduct == null)
                     {
                         return Ok(new { token = "El producto no exite en QB: " + item.Alojamiento.Nombre });
                     }
+                    salesItemLineDetail.AnyIntuitObject =precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
@@ -2937,7 +2966,8 @@ namespace GoTravelTour.QuickBooks
             {
                 orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                       /* .Include(d => d.Sobreprecio)*/
-                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.Habitacion)
+                      .Include(d => d.PlanAlimenticio)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
@@ -3109,11 +3139,20 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
+                                              "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                              "Lugar: " + item.LugarActividad + ". " +
+                                             "Adults: " + ca + ". " +
+                                              "Childs:  " + cm + ". ";
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
                         salesItemLineDetail.ItemRef = new ReferenceType();
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
@@ -3140,11 +3179,19 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
+                                              "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                              "Adults: " + ca + ". " +
+                                              "Childs:  " + cm + ". " +
+                                              "Capacity: " + item.Traslado.CapacidadTraslado;
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
                         salesItemLineDetail.ItemRef = new ReferenceType();
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -3171,11 +3218,15 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                                         "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
                         salesItemLineDetail.ItemRef = new ReferenceType();
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -3202,7 +3253,14 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
+                                              "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                              "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
+                                              "Adults: " + ca + ". " +
+                                              "Childs:  " + cm;
+                       
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
@@ -3215,6 +3273,8 @@ namespace GoTravelTour.QuickBooks
                         {
                             return Ok(new { token = "El producto no exite en QB: " + item.Alojamiento.Nombre });
                         }
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
                         LineList.Add(objLine);
@@ -3287,7 +3347,8 @@ namespace GoTravelTour.QuickBooks
             {
                 orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                       /* .Include(d => d.Sobreprecio)*/
-                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.Habitacion)
+                      .Include(d => d.PlanAlimenticio)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
@@ -3451,11 +3512,20 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
+                                          "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                          "Lugar: " + item.LugarActividad + ". " +
+                                         "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
@@ -3481,11 +3551,19 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". " +
+                                          "Capacity: " + item.Traslado.CapacidadTraslado;
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -3512,11 +3590,15 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                                         "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -3543,12 +3625,18 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
+                                          "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                          "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm;
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
-
+                    
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Habitacion.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
@@ -3556,6 +3644,8 @@ namespace GoTravelTour.QuickBooks
                     {
                         return Ok(new { token = "El producto no exite en QB: " + item.Alojamiento.Nombre });
                     }
+                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
@@ -3626,7 +3716,8 @@ namespace GoTravelTour.QuickBooks
             {
                 orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                       /* .Include(d => d.Sobreprecio)*/
-                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.Habitacion)
+                      .Include(d => d.PlanAlimenticio)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
@@ -3798,11 +3889,20 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
+                                              "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                              "Lugar: " + item.LugarActividad + ". " +
+                                             "Adults: " + ca + ". " +
+                                              "Childs:  " + cm + ". ";
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
                         salesItemLineDetail.ItemRef = new ReferenceType();
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
@@ -3828,11 +3928,19 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
+                                              "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                              "Adults: " + ca + ". " +
+                                              "Childs:  " + cm + ". " +
+                                              "Capacity: " + item.Traslado.CapacidadTraslado;
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
                         salesItemLineDetail.ItemRef = new ReferenceType();
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -3859,11 +3967,15 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
                         salesItemLineDetail.ItemRef = new ReferenceType();
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -3890,7 +4002,13 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
+                                              "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                              "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
+                                              "Adults: " + ca + ". " +
+                                              "Childs:  " + cm;
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
                         salesItemLineDetail.Qty = 1;
@@ -3903,6 +4021,8 @@ namespace GoTravelTour.QuickBooks
                         {
                             return Ok(new { token = "El producto no exite en QB: " + item.Alojamiento.Nombre });
                         }
+                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
                         LineList.Add(objLine);
@@ -3974,7 +4094,8 @@ namespace GoTravelTour.QuickBooks
             {
                 orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                       /* .Include(d => d.Sobreprecio)*/
-                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.Habitacion)
+                      .Include(d => d.PlanAlimenticio)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
@@ -4105,9 +4226,17 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
+                                          "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                          "Lugar: " + item.LugarActividad + ". " +
+                                         "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";
+                   
+
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
-                    /* ItemLineDetail.AccountRef = new ReferenceType();
+                     ItemLineDetail.AccountRef = new ReferenceType();
                      ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
                                                              // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                              //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name*/
@@ -4168,9 +4297,16 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". " +
+                                          "Capacity: " + item.Traslado.CapacidadTraslado;
+                   
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
-                    /* ItemLineDetail.AccountRef = new ReferenceType();
+                     ItemLineDetail.AccountRef = new ReferenceType();
                      ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
                                                              // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                              //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name*/
@@ -4233,7 +4369,8 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
 
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                     ItemLineDetail.AccountRef = new ReferenceType();
@@ -4301,7 +4438,13 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                    objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                    var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                    var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                    objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
+                                          "Date: " + item.FechaInicio.ToString("dd/MM/yyyy") + " - " + item.FechaFin.ToString("dd/MM/yyyy") + ". " +
+                                          "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm;
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                     ItemLineDetail.AccountRef = new ReferenceType();
                     ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
@@ -4391,7 +4534,8 @@ namespace GoTravelTour.QuickBooks
             {
                 orden.ListaAlojamientoOrden.ForEach(x => x = _context.OrdenAlojamiento.Include(ex => ex.ListaPrecioAlojamientos)
                       /* .Include(d => d.Sobreprecio)*/
-                      .Include(d => d.Habitacion)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
+                      .Include(d => d.Habitacion)
+                      .Include(d => d.PlanAlimenticio)/*.ThenInclude(xv => xv.ListaCombinacionesDisponibles)
                       .Include(d => d.TipoHabitacion)
                      .Include(d => d.ModificadorAplicado.ListaReglas)
                      .Include(d => d.Voucher)*/
@@ -4533,7 +4677,15 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
+                                              "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                              "Lugar: " + item.LugarActividad + ". " +
+                                             "Adults: " + ca + ". " +
+                                              "Childs:  " + cm + ". ";
+                       
+
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
                         ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
@@ -4598,7 +4750,14 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
+                                              "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                              "Adults: " + ca + ". " +
+                                              "Childs:  " + cm + ". " +
+                                              "Capacity: " + item.Traslado.CapacidadTraslado;
+                       
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
                         ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
@@ -4665,7 +4824,11 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+
+                       
+                        
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
                         ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
@@ -4733,7 +4896,13 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
-                        objLine.Description = "";//Aqui pudiera ir una descripcion de lo q va en la linea
+                        var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
+                        var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
+                        objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
+                                              "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                              "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
+                                              "Adults: " + ca + ". " +
+                                              "Childs:  " + cm;
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
                         ItemLineDetail.AccountRef.Value = "78"; //Quickbooks online Account Id
