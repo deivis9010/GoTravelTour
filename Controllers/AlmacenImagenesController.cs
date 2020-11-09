@@ -230,7 +230,7 @@ namespace GoTravelTour.Controllers
                 SaveImages(img, path);
                 //string ext = img.TipoImagen.Split("/")[1];
                 string file = Path.Combine(path, img.NombreImagen /*+ "." + ext*/);
-                img.ImageContent = "http://gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
+                img.ImageContent = "http://admin.gotravelandtours.com/sources/"+id+"/"+ img.NombreImagen /*+ "." + ext*/;
                 //img.ImageContent = "http://localhost/sources/" + id + "/" + img.NombreImagen /*+ "." + ext*/;
             }
         }

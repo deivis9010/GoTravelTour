@@ -47,11 +47,11 @@ namespace GoTravelTour.QuickBooks
         //refresh token prod = AB11612143903KxSniW7eHHQBiEfIK5SaMiJ4m3CYsWXMWoFN4
         //refresh token = AB11612007615vOw3rvJTs9xcTfxejaG7fzLRuQGcfva1Bycf7
 
-        public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
-        public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
+        //public static string clientid = "ABtbGg86yOB32TNPcsZSaDXVSm2wBlgV89AGXiNGMJ2ja8yVCR";
+        //public static string clientsecret = "iOFqEfvrOsmP7lCMmyCwlAHdHaHUWg4n1PNc6sXr";
         //PRODUCCTION
-        //public static string clientid = "ABIaUtlQOuizSswJSbv5bZWKPXTuiF00BNvh1TCYWXLbgdnM6P";
-        //public static string clientsecret = "Qha5DJeNEhxhd6uFV8LdabImmdYEYAOAoxniZxMO";
+        public static string clientid = "ABIaUtlQOuizSswJSbv5bZWKPXTuiF00BNvh1TCYWXLbgdnM6P";
+        public static string clientsecret = "Qha5DJeNEhxhd6uFV8LdabImmdYEYAOAoxniZxMO";
 
 
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
@@ -59,8 +59,8 @@ namespace GoTravelTour.QuickBooks
         //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
         public static string redirectUrl = "http://admin.gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
-        public static string environment = "sandbox";
-        //public static string environment = "";
+        //public static string environment = "sandbox";
+        public static string environment = "";
 
         public static OAuth2Client auth2Client = new OAuth2Client(clientid, clientsecret, redirectUrl, environment);
 
