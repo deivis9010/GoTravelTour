@@ -780,7 +780,7 @@ namespace GoTravelTour.Controllers
                     if (!agregarOrden)
                         continue;
                     ov.PrecioOrden += (DiasRestantes * ultimoPrecio.DiasExtra); //+ (cantDiasGenenarl * ultimoPrecio.Seguro);
-                    ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro);
+                    //ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro);
 
 
 
@@ -947,7 +947,7 @@ namespace GoTravelTour.Controllers
                     if (!agregarOrden)
                         continue;
                     ov.PrecioOrden += (DiasRestantes * ultimoPrecio.DiasExtra); //+ (cantDiasGenenarl * ultimoPrecio.Seguro);
-                    ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro); 
+                   // ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro); 
 
 
 
@@ -1057,7 +1057,7 @@ namespace GoTravelTour.Controllers
                         {
                             rt = item;
                             ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
-                            ov.PrecioOrden += cantDias * p.Seguro;
+                           // ov.PrecioOrden += cantDias * p.Seguro;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                             encontroRangoValido = true;
                             break;
@@ -1081,7 +1081,7 @@ namespace GoTravelTour.Controllers
                         }
 
                         ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                        ov.PrecioOrden += cantDias * p.Seguro;
+                        //ov.PrecioOrden += cantDias * p.Seguro;
                     }
                 }
                 i++;
@@ -1109,7 +1109,7 @@ namespace GoTravelTour.Controllers
                         {
                             rt = item;
                             ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
-                            ov.PrecioOrden += cantDias * p.Seguro;
+                            //ov.PrecioOrden += cantDias * p.Seguro;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                             encontroRangoValido = true;
 
@@ -1134,7 +1134,7 @@ namespace GoTravelTour.Controllers
                         }
 
                         ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                        ov.PrecioOrden += cantDias * p.Seguro;
+                        //ov.PrecioOrden += cantDias * p.Seguro;
                     }
                 }
                 i++;
@@ -1177,7 +1177,7 @@ namespace GoTravelTour.Controllers
                         {
                             rt = item;
                             ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
-                            ov.PrecioOrden += cantDias * p.Seguro;
+                            //ov.PrecioOrden += cantDias * p.Seguro;
                             DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                             encontroRangoValido = true;
                             break;
@@ -1201,7 +1201,7 @@ namespace GoTravelTour.Controllers
                         }                     
                         
                         ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                        ov.PrecioOrden += cantDias * p.Seguro;
+                        //ov.PrecioOrden += cantDias * p.Seguro;
                     }
                 }
                 else
@@ -1219,7 +1219,7 @@ namespace GoTravelTour.Controllers
                                 rt = item;
                                 ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
                                 DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
-                                ov.PrecioOrden += cantDias * p.Seguro;
+                                //ov.PrecioOrden += cantDias * p.Seguro;
                                 encontroRangoValido = true;
                                 break;
                             }
@@ -1242,7 +1242,7 @@ namespace GoTravelTour.Controllers
                             }
 
                             ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                            ov.PrecioOrden += cantDias * p.Seguro;
+                            //ov.PrecioOrden += cantDias * p.Seguro;
                         }
 
                     }
@@ -1257,7 +1257,7 @@ namespace GoTravelTour.Controllers
                             {
                                 rt = item;
                                 ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
-                                ov.PrecioOrden += cantDias * p.Seguro;
+                                //ov.PrecioOrden += cantDias * p.Seguro;
                                 DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                                 encontroRangoValido = true;
                                 break;
@@ -1281,7 +1281,7 @@ namespace GoTravelTour.Controllers
                             }
 
                             ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                            ov.PrecioOrden += cantDias * p.Seguro;
+                            //ov.PrecioOrden += cantDias * p.Seguro;
                         }
                     }
                     else
@@ -1296,7 +1296,7 @@ namespace GoTravelTour.Controllers
                             {
                                 rt = item;
                                 ov.PrecioOrden += _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == item.RestriccionesId).Precio * cantDias;
-                                ov.PrecioOrden += cantDias * p.Seguro;
+                                //ov.PrecioOrden += cantDias * p.Seguro;
                                 DiasRestantes -= cantDias; // se descuentan los dias que han sido incluidos en el precio
                                 encontroRangoValido = true;
                                 break;
@@ -1320,7 +1320,7 @@ namespace GoTravelTour.Controllers
                             }
 
                             ov.PrecioOrden += cantDias * _context.RestriccionesPrecios.First(x => x.ProductoId == v.ProductoId && x.RestriccionesId == rt.RestriccionesId).Precio;
-                            ov.PrecioOrden += cantDias * p.Seguro;
+                            //ov.PrecioOrden += cantDias * p.Seguro;
                         }
                     }
 
@@ -1484,7 +1484,7 @@ namespace GoTravelTour.Controllers
                     if (!agregarOrden)
                         continue;
                     ov.PrecioOrden += (DiasRestantes * ultimoPrecio.DiasExtra); //+ (cantDiasGenenarl * ultimoPrecio.Seguro);
-                    ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro);
+                    //ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro);
 
 
 
