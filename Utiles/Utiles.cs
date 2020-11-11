@@ -51,7 +51,7 @@ namespace GoTravelTour.Utiles
         {
            
             string sku = "";
-            string numeroOrden = "0000000";
+            string numeroOrden = "000000";
             int ultimaOrden = 0;
             if (!_context.Orden.Any())
             {
