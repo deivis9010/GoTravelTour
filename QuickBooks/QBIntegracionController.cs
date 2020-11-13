@@ -2773,10 +2773,12 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio ;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
-                   
-                   
+                    salesItemLineDetail.ServiceDate = item.FechaActividad;
+                    salesItemLineDetail.ServiceDateSpecified = true;
+
+
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
@@ -2814,6 +2816,8 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
                     salesItemLineDetail.AnyIntuitObject = precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                    salesItemLineDetail.ServiceDateSpecified = true;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -2840,15 +2844,17 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                    objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                           "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
                                           
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
-                    salesItemLineDetail.Qty = 1;
+                    salesItemLineDetail.Qty = (item.FechaEntrega - item.FechaRecogida).Days;
                     salesItemLineDetail.ItemRef = new ReferenceType();
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio / salesItemLineDetail.Qty;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                    salesItemLineDetail.ServiceDateSpecified = true;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -2896,6 +2902,8 @@ namespace GoTravelTour.QuickBooks
                     }
                     salesItemLineDetail.AnyIntuitObject =precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaInicio;
+                    salesItemLineDetail.ServiceDateSpecified = true;
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
@@ -3152,6 +3160,8 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaActividad;
+                        salesItemLineDetail.ServiceDateSpecified = true;
 
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -3192,6 +3202,8 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                        salesItemLineDetail.ServiceDateSpecified = true;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -3218,15 +3230,17 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                        objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
 
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
-                        salesItemLineDetail.Qty = 1;
+                        salesItemLineDetail.Qty = (item.FechaEntrega - item.FechaRecogida).Days;
                         salesItemLineDetail.ItemRef = new ReferenceType();
-                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.AnyIntuitObject = precio / salesItemLineDetail.Qty;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                        salesItemLineDetail.ServiceDateSpecified = true;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -3275,6 +3289,8 @@ namespace GoTravelTour.QuickBooks
                         }
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaInicio;
+                        salesItemLineDetail.ServiceDateSpecified = true;
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
                         LineList.Add(objLine);
@@ -3525,6 +3541,8 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
                     salesItemLineDetail.AnyIntuitObject = precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaActividad;
+                    salesItemLineDetail.ServiceDateSpecified = true;
 
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -3564,6 +3582,8 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
                     salesItemLineDetail.AnyIntuitObject = precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                    salesItemLineDetail.ServiceDateSpecified = true;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -3590,15 +3610,17 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
-                    objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                    objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
 
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
-                    salesItemLineDetail.Qty = 1;
+                    salesItemLineDetail.Qty = salesItemLineDetail.Qty = (item.FechaEntrega - item.FechaRecogida).Days;
                     salesItemLineDetail.ItemRef = new ReferenceType();
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio / salesItemLineDetail.Qty;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                    salesItemLineDetail.ServiceDateSpecified = true;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -3646,6 +3668,8 @@ namespace GoTravelTour.QuickBooks
                     }
                     salesItemLineDetail.AnyIntuitObject = precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                    salesItemLineDetail.ServiceDate = item.FechaInicio;
+                    salesItemLineDetail.ServiceDateSpecified = true;
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine);
@@ -3902,6 +3926,8 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaActividad;
+                        salesItemLineDetail.ServiceDateSpecified = true;
 
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -3941,6 +3967,8 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                        salesItemLineDetail.ServiceDateSpecified = true;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Traslado.IdQB);
@@ -3967,15 +3995,17 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
-                        objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                        objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                           "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
 
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
-                        salesItemLineDetail.Qty = 1;
+                        salesItemLineDetail.Qty = (item.FechaEntrega - item.FechaRecogida).Days;
                         salesItemLineDetail.ItemRef = new ReferenceType();
-                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.AnyIntuitObject = precio / salesItemLineDetail.Qty;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaRecogida;
+                        salesItemLineDetail.ServiceDateSpecified = true;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Vehiculo.IdQB);
@@ -4023,6 +4053,8 @@ namespace GoTravelTour.QuickBooks
                         }
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
+                        salesItemLineDetail.ServiceDate = item.FechaInicio;
+                        salesItemLineDetail.ServiceDateSpecified = true;
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                         objLine.AnyIntuitObject = salesItemLineDetail;
                         LineList.Add(objLine);
@@ -4241,6 +4273,7 @@ namespace GoTravelTour.QuickBooks
                                                              // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                              //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name*/
                     objLine.AnyIntuitObject = ItemLineDetail;
+
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                     string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.Actividad.IdQB);
                     Item itemProduct = querySvc1.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Item>();
@@ -4369,7 +4402,7 @@ namespace GoTravelTour.QuickBooks
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
                     objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                    objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                    objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                           "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
 
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
@@ -4824,7 +4857,7 @@ namespace GoTravelTour.QuickBooks
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
                         objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
-                        objLine.Description = "Vehicle: " + item.Vehiculo.Nombre +
+                        objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                           "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
 
                        
@@ -5374,6 +5407,69 @@ namespace GoTravelTour.QuickBooks
 
         }
 
+
+        [HttpGet]
+        [Route("existeClienteQb")]
+        public async System.Threading.Tasks.Task<ActionResult> ExisteClienteEnQB(string sku)
+        {
+            var realmId = "";
+            var access_token = "";
+            try
+            {
+                CargarRefreshtoken();
+                TokenResponse tokenResp = await auth2Client.RefreshTokenAsync(dictionary["refreshToken"]);
+
+                if (tokenResp.AccessToken != null && tokenResp.RefreshToken != null)
+                {
+                    dictionary["accessToken"] = tokenResp.AccessToken;
+                    dictionary["refreshToken"] = tokenResp.RefreshToken;
+                    ActualizarRefreshtoken(tokenResp.RefreshToken, dictionary["realmId"]);
+
+                }
+                else
+                {
+                    return Ok(new { token = "Error Cargando el Token" });
+                }
+
+
+
+                access_token = dictionary["accessToken"];
+                realmId = dictionary["realmId"];
+            }
+            catch (Exception ex)
+            {
+
+
+                return Ok(new { token = "Error connectandose a QB" });
+            }
+
+
+
+            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(access_token);
+            // Create a ServiceContext with Auth tokens and realmId
+            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
+
+            // Create a QuickBooks QueryService using ServiceContext
+            QueryService<Customer> querySvc = new QueryService<Customer>(serviceContext);
+
+            string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Customer where DisplayName = '{0}' ", sku);
+            Customer cust = querySvc.ExecuteIdsQuery(EXISTING_ITEM_QUERYBYNAMEITEMPROD).FirstOrDefault<Customer>();
+            if (cust == null)
+            {
+                return Ok(new { idQb = 0 });
+            }
+            else
+            {
+                return Ok(new { idQb = cust.Id });
+            }
+
+
+
+
+
+        }
 
     }
 }
