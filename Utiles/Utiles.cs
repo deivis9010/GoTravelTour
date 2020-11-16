@@ -46,19 +46,20 @@ namespace GoTravelTour.Utiles
             return sku;
         }
 
-        
+
         public string GetCodigoOrden()
         {
-           
+
             string sku = "";
             string numeroOrden = "000000";
             int ultimaOrden = 0;
             if (!_context.Orden.Any())
             {
                 ultimaOrden = 1;
-            }else
-            ultimaOrden = _context.Orden.Last().OrdenId + 1;
-            numeroOrden = (numeroOrden + ultimaOrden.ToString()).PadRight(7);
+            }
+            else
+                ultimaOrden = _context.Orden.Last().OrdenId + 1;
+            numeroOrden = (ultimaOrden.ToString()).PadLeft(6, '0');
             sku = "GTT-" + numeroOrden;
 
 

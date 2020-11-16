@@ -56,8 +56,8 @@ namespace GoTravelTour.QuickBooks
 
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://admin.gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://admin.gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
         //public static string environment = "";
@@ -2765,7 +2765,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
-                                          "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
                                           "Lugar: " + item.LugarActividad + ". " +
                                          "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". ";
@@ -2806,7 +2806,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
                                           "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". " +
                                           "Capacity: " + item.Traslado.CapacidadTraslado;
@@ -2845,7 +2845,7 @@ namespace GoTravelTour.QuickBooks
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
                     objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
                                           
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
@@ -2884,7 +2884,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
-                                          "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". "+
+                                          "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". "+
                                           "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
                                           "Adults: " + ca  + ". " +
                                           "Childs:  " + cm;
@@ -3150,7 +3150,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
-                                              "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                              "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
                                               "Lugar: " + item.LugarActividad + ". " +
                                              "Adults: " + ca + ". " +
                                               "Childs:  " + cm + ". ";
@@ -3192,7 +3192,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
-                                              "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                              "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
                                               "Adults: " + ca + ". " +
                                               "Childs:  " + cm + ". " +
                                               "Capacity: " + item.Traslado.CapacidadTraslado;
@@ -3231,7 +3231,7 @@ namespace GoTravelTour.QuickBooks
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
                         objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
-                                         "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                         "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
@@ -3270,7 +3270,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
-                                              "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                              "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
                                               "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
                                               "Adults: " + ca + ". " +
                                               "Childs:  " + cm;
@@ -3531,7 +3531,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
-                                          "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
                                           "Lugar: " + item.LugarActividad + ". " +
                                          "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". ";
@@ -3572,7 +3572,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
                                           "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". " +
                                           "Capacity: " + item.Traslado.CapacidadTraslado;
@@ -3611,7 +3611,7 @@ namespace GoTravelTour.QuickBooks
                     objLine.AmountSpecified = true;
                     objLine.Amount = precio;
                     objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
-                                         "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                         "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
@@ -3650,7 +3650,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
-                                          "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                          "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
                                           "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
                                           "Adults: " + ca + ". " +
                                           "Childs:  " + cm;
@@ -3916,7 +3916,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
-                                              "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                              "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
                                               "Lugar: " + item.LugarActividad + ". " +
                                              "Adults: " + ca + ". " +
                                               "Childs:  " + cm + ". ";
@@ -3957,7 +3957,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
-                                              "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                              "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
                                               "Adults: " + ca + ". " +
                                               "Childs:  " + cm + ". " +
                                               "Capacity: " + item.Traslado.CapacidadTraslado;
@@ -3996,7 +3996,7 @@ namespace GoTravelTour.QuickBooks
                         objLine.AmountSpecified = true;
                         objLine.Amount = precio;
                         objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
@@ -4035,7 +4035,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
-                                              "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                              "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
                                               "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
                                               "Adults: " + ca + ". " +
                                               "Childs:  " + cm;
@@ -4261,7 +4261,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
-                                          "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
                                           "Lugar: " + item.LugarActividad + ". " +
                                          "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". ";
@@ -4333,7 +4333,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
                                           "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". " +
                                           "Capacity: " + item.Traslado.CapacidadTraslado;
@@ -4403,7 +4403,7 @@ namespace GoTravelTour.QuickBooks
                     objLine.AmountSpecified = true;
                     objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
                     objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                     ItemLineDetail.AccountRef = new ReferenceType();
@@ -4474,7 +4474,7 @@ namespace GoTravelTour.QuickBooks
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
-                                          "Date: " + item.FechaInicio.ToString("dd/MM/yyyy") + " - " + item.FechaFin.ToString("dd/MM/yyyy") + ". " +
+                                          "Date: " + item.FechaInicio.ToString("MM/dd/yyyy") + " - " + item.FechaFin.ToString("MM/dd/yyyy") + ". " +
                                           "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
                                           "Adults: " + ca + ". " +
                                           "Childs:  " + cm;
@@ -4713,7 +4713,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
-                                              "Date: " + item.FechaActividad.ToString("dd/MM/yyyy") + ". " +
+                                              "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
                                               "Lugar: " + item.LugarActividad + ". " +
                                              "Adults: " + ca + ". " +
                                               "Childs:  " + cm + ". ";
@@ -4786,7 +4786,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
-                                              "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + ". " +
+                                              "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
                                               "Adults: " + ca + ". " +
                                               "Childs:  " + cm + ". " +
                                               "Capacity: " + item.Traslado.CapacidadTraslado;
@@ -4858,7 +4858,7 @@ namespace GoTravelTour.QuickBooks
                         objLine.AmountSpecified = true;
                         objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); ;
                         objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
-                                          "Date: " + item.FechaRecogida.ToString("dd/MM/yyyy") + " - " + item.FechaEntrega.ToString("dd/MM/yyyy");
+                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
                        
                         
@@ -4932,7 +4932,7 @@ namespace GoTravelTour.QuickBooks
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
-                                              "Date: " + item.FechaInicio.ToString("dd/MM/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
+                                              "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
                                               "Booking Categories: " + item.PlanAlimenticio.Nombre + ". " +
                                               "Adults: " + ca + ". " +
                                               "Childs:  " + cm;

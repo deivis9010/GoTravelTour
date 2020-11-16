@@ -478,7 +478,7 @@ namespace GoTravelTour.Controllers
             {
                 var message = new MimeMessage();
                 //Gott2019conga@#$ mail.gotravel
-                message.To.Add(new MailboxAddress("deivis@ingeniuscuba.com" /*usuario.Correo*/));
+                message.To.Add(new MailboxAddress("deivis9010@gmail.com" /*usuario.Correo*/));
                 message.From.Add(new MailboxAddress("sales@gotravelandtours.com"));
                 message.Subject = "Bienvenido a Go Travel and Tours!!!";
                 //We will say we are sending HTML. But there are options for plaintext etc. 

@@ -1027,7 +1027,7 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex,pageSize).ToList();
+            return lista.OrderBy(x => x.PrecioOrden).ToPagedList(pageIndex,pageSize).ToList();
 
         }
 
