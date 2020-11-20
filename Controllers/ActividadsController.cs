@@ -1146,7 +1146,15 @@ namespace GoTravelTour.Controllers
 
                         }
                        if( oac.PrecioOrden > 0)
-                        lista.Add(oac);
+                        {
+                            lista.Add(oac);
+                            oac = new OrdenActividad();
+                            oac.Actividad = ac;
+                            oac.CantAdulto = buscador.CantidadAdultos;
+                            oac.CantNino = buscador.CantidadMenores;
+                            oac.FechaActividad = buscador.Fecha; 
+                        }
+                        
                     }
 
                 }
@@ -1156,10 +1164,34 @@ namespace GoTravelTour.Controllers
 
             }
 
+            List<OrdenActividad> listatemp = new List<OrdenActividad>();
+            var arr = new OrdenActividad[lista.Count];
+            lista.CopyTo(arr);
+            listatemp = arr.ToList();
+            for (int i = 0; i < listatemp.Count(); i++)
+            {
+                var item = listatemp[i];
+                if (listatemp.Where(x => x.Actividad.ProductoId == item.Actividad.ProductoId).Count() > 1)
+                {
+                    var mismoProdDifDist = listatemp.Where(x => x.Actividad.ProductoId == item.Actividad.ProductoId).OrderBy(x => x.PrecioOrden);
+                    int index = 0;
+                    foreach (var elem in mismoProdDifDist)
+                    {
+                        if (index == 0)
+                        {
+                            index++;
+                            continue;
+                        }
+                        lista.Remove(elem);
+                        listatemp.Remove(elem);
+                        index++;
+                    }
+
+                }
+            }
 
 
-
-            return lista.OrderByDescending(x => x.PrecioOrden).ToList();
+            return lista.OrderBy(x => x.PrecioOrden).ToList();
 
 
         }

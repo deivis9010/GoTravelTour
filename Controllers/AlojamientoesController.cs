@@ -913,10 +913,61 @@ namespace GoTravelTour.Controllers
             }
             if (buscador.OrdenarAsc)
             {
+                List<OrdenAlojamiento> listatemp = new List<OrdenAlojamiento>();
+                var arr = new OrdenAlojamiento[resultados.Count];
+                resultados.CopyTo(arr);
+                listatemp = arr.ToList();
+                for (int i = 0; i < listatemp.Count(); i++)
+                {
+                    var item = listatemp[i];
+                    if (listatemp.Where(x => x.AlojamientoId == item.AlojamientoId).Count() > 1)
+                    {
+                        var mismoProdDifDist = listatemp.Where(x => x.AlojamientoId == item.AlojamientoId).OrderBy(x => x.PrecioOrden);
+                        int index = 0;
+                        foreach (var elem in mismoProdDifDist)
+                        {
+                            if (index == 0)
+                            {
+                                continue;
+                            }
+                            resultados.Remove(elem);
+                            listatemp.Remove(elem);
+                            index++;
+                        }
+
+                    }
+                }
+
                 return resultados.Where(x=>x.Alojamiento.PrecioInicial > 0).OrderBy(x => x.Alojamiento.PrecioInicial).ToList();
             }
             else
             {
+
+                List<OrdenAlojamiento> listatemp = new List<OrdenAlojamiento>();
+                var arr = new OrdenAlojamiento[resultados.Count];
+                resultados.CopyTo(arr);
+                listatemp = arr.ToList();
+                for (int i = 0; i < listatemp.Count(); i++)
+                {
+                    var item = listatemp[i];
+                    if (listatemp.Where(x => x.Alojamiento.ProductoId == item.Alojamiento.ProductoId).Count() > 1)
+                    {
+                        var mismoProdDifDist = listatemp.Where(x => x.Alojamiento.ProductoId == item.Alojamiento.ProductoId).OrderByDescending(x => x.PrecioOrden);
+                        int index = 0;
+                        foreach (var elem in mismoProdDifDist)
+                        {
+                            if (index == 0)
+                            {
+                                index++;
+                                continue;
+                            }
+                            resultados.Remove(elem);
+                            listatemp.Remove(elem);
+                            index++;
+                        }
+
+                    }
+                }
                 return resultados.Where(x => x.Alojamiento.PrecioInicial > 0).OrderByDescending(x => x.Alojamiento.PrecioInicial).ToList();
             }
 

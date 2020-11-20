@@ -1005,18 +1005,21 @@ namespace GoTravelTour.Controllers
             }
 
             List<OrdenVehiculo> listatemp = new List<OrdenVehiculo>();
-            listatemp = lista;
+            var arr = new OrdenVehiculo[lista.Count];
+            lista.CopyTo(arr);
+            listatemp = arr.ToList();
             for (int i = 0; i < listatemp.Count(); i++)
             {
                 var item = listatemp[i];
-                if(listatemp.Where(x => x.VehiculoId == item.VehiculoId).Count() > 1)
+                if(listatemp.Where(x => x.Vehiculo.ProductoId == item.Vehiculo.ProductoId).Count() > 1)
                 {
-                    var mismoProdDifDist = listatemp.Where(x => x.VehiculoId == item.VehiculoId).OrderByDescending(x => x.PrecioOrden);
+                    var mismoProdDifDist = listatemp.Where(x => x.Vehiculo.ProductoId == item.Vehiculo.ProductoId).OrderByDescending(x => x.PrecioOrden);
                     int index = 0;
                     foreach(var elem in mismoProdDifDist)
                     {
                         if(index == 0)
                         {
+                            index++;
                             continue;
                         }
                         lista.Remove(elem);

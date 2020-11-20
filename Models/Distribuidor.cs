@@ -12,6 +12,7 @@ namespace GoTravelTour.Models
         public string Correo { get; set; }
         public string Telefono { get; set; }
         public bool IsActivo { get; set; }
+        public int IdQB { get; set; }
         public List<ProductoDistribuidor> ListaProductosDistribuidos { get; set; }
         
 

@@ -802,7 +802,33 @@ namespace GoTravelTour.Controllers
             }
 
 
-            return lista.OrderByDescending(x => x.PrecioOrden).ToPagedList(pageIndex, pageSize).ToList();
+            List<OrdenTraslado> listatemp = new List<OrdenTraslado>();
+            var arr = new OrdenTraslado[lista.Count];
+            lista.CopyTo(arr);
+            listatemp = arr.ToList();
+            for (int i = 0; i < listatemp.Count(); i++)
+            {
+                var item = listatemp[i];
+                if (listatemp.Where(x => x.Traslado.ProductoId == item.Traslado.ProductoId).Count() > 1)
+                {
+                    var mismoProdDifDist = listatemp.Where(x => x.Traslado.ProductoId == item.Traslado.ProductoId).OrderBy(x => x.PrecioOrden);
+                    int index = 0;
+                    foreach (var elem in mismoProdDifDist)
+                    {
+                        if (index == 0)
+                        {
+                            index++;
+                            continue;
+                        }
+                        lista.Remove(elem);
+                        listatemp.Remove(elem);
+                        index++;
+                    }
+
+                }
+            }
+
+            return lista.OrderBy(x => x.PrecioOrden).ToPagedList(pageIndex, pageSize).ToList();
 
 
         }
