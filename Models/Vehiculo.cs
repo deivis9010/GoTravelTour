@@ -9,7 +9,8 @@ namespace GoTravelTour.Models
     public class Vehiculo: Producto
     {
         public int VehiculoId { get; set; }
-        public string TipoTransmision { get; set; }        
+        public string TipoTransmision { get; set; }
+        public string TieneSeguro { get; set; }
         public int CantidadPlazas { get; set; }
         public int MarcaId { get; set; }
         public int ModeloId { get; set; }

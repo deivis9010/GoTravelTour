@@ -121,5 +121,44 @@ namespace GoTravelTour.Controllers
         {
             return _context.PreciosOrdenModificados.Any(e => e.PreciosOrdenModificadosId == id);
         }
+
+
+        // GET: api/PreciosOrdenModificados/Vehiculo
+        [HttpGet]
+        [Route("Vehiculo")]
+        public List<PreciosOrdenModificados> GetPreciosModificadosVehiculosByIdOrdenVehidulo(int id)
+        {
+            return _context.PreciosOrdenModificados.Where(x => x.OrdenVehiculoId == id).ToList();
+
+        }
+
+        // GET: api/PreciosOrdenModificados/Alojamiento
+        [HttpGet]
+        [Route("Alojamiento")]
+        public List<PreciosOrdenModificados> GetPreciosModificadosAlojamientoByIdOrdenAlojamiento(int id)
+        {
+            return _context.PreciosOrdenModificados.Where(x => x.OrdenAlojamientoId == id).ToList();
+
+        }
+
+        // GET: api/PreciosOrdenModificados/Actividad
+        [HttpGet]
+        [Route("Actividad")]
+        public List<PreciosOrdenModificados> GetPreciosModificadosActividadByIdOrdenActividad(int id)
+        {
+            return _context.PreciosOrdenModificados.Where(x => x.OrdenActividadId == id).ToList();
+
+        }
+
+        // GET: api/PreciosOrdenModificados/Traslados
+        [HttpGet]
+        [Route("Traslados")]
+        public List<PreciosOrdenModificados> GetPreciosModificadosTrasladosByIdOrdenTraslados(int id)
+        {
+            return _context.PreciosOrdenModificados.Where(x => x.OrdenTrasladoId == id).ToList();
+
+        }
+
+
     }
 }

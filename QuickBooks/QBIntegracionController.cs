@@ -56,8 +56,8 @@ namespace GoTravelTour.QuickBooks
 
         //public static string redirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         //public static string redirectUrl = "http://localhost:59649/api/QBIntegracion/Responses";
-        //public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
-        public static string redirectUrl = "http://admin.gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
+        public static string redirectUrl = "http://localhost:5000/api/QBIntegracion/Responses";
+        //public static string redirectUrl = "http://admin.gotravelandtours.com/publicEliecer/api/QBIntegracion/Responses";
 
         public static string environment = "sandbox";
         //public static string environment = "";
@@ -4359,8 +4359,8 @@ namespace GoTravelTour.QuickBooks
                      ItemLineDetail.AccountRef = new ReferenceType();
                     QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
 
-                    //Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Activity");
-                    ItemLineDetail.AccountRef.name = "Activity"; //Quickbooks online Account Id
+                    Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Activity");
+                    ItemLineDetail.AccountRef.Value = account.Id; //Quickbooks online Account Id
                                                              // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                              //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name*/
                     objLine.AnyIntuitObject = ItemLineDetail;
@@ -4459,7 +4459,10 @@ namespace GoTravelTour.QuickBooks
                    
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                      ItemLineDetail.AccountRef = new ReferenceType();
-                     ItemLineDetail.AccountRef.name = "Ground Transportation"; //Quickbooks online Account Id
+                    QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
+                    Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Ground Transportation");
+                    ItemLineDetail.AccountRef.Value = account.Id;
+                     //Quickbooks online Account Id
                                                              // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                              //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name*/
                     objLine.AnyIntuitObject = ItemLineDetail;
@@ -4524,7 +4527,6 @@ namespace GoTravelTour.QuickBooks
                 }
 
             }
-
             if (orden.ListaVehiculosOrden != null && orden.ListaVehiculosOrden.Any())
             {
                 foreach (var item in orden.ListaVehiculosOrden)
@@ -4557,7 +4559,10 @@ namespace GoTravelTour.QuickBooks
 
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                     ItemLineDetail.AccountRef = new ReferenceType();
-                    ItemLineDetail.AccountRef.name = "Vehicle Rental"; //Quickbooks online Account Id
+                    QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
+                    Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Vehicle Rental");
+                    ItemLineDetail.AccountRef.Value = account.Id;
+                     //Quickbooks online Account Id
                                                             // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                             //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
 
@@ -4618,8 +4623,7 @@ namespace GoTravelTour.QuickBooks
                 }
 
             }
-
-
+            
             if (orden.ListaAlojamientoOrden != null && orden.ListaAlojamientoOrden.Any())
             {
                 foreach (var item in orden.ListaAlojamientoOrden)
@@ -4658,8 +4662,8 @@ namespace GoTravelTour.QuickBooks
                     ItemLineDetail.AccountRef = new ReferenceType();
                     QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
 
-                    Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Activity");
-                    ItemLineDetail.AccountRef.name = account.Id; //Quickbooks online Account Id
+                    Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Accommodation");
+                    ItemLineDetail.AccountRef.Value = account.Id; //Quickbooks online Account Id
                                                             // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                             //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -4939,7 +4943,10 @@ namespace GoTravelTour.QuickBooks
 
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
-                        ItemLineDetail.AccountRef.name = "Activity"; //Quickbooks online Account Id
+                        QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
+                        Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Activity");
+                        ItemLineDetail.AccountRef.Value = account.Id;
+                        //Quickbooks online Account Id
                                                                 // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                         objLine.AnyIntuitObject = ItemLineDetail;
@@ -5042,7 +5049,10 @@ namespace GoTravelTour.QuickBooks
                        
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
-                        ItemLineDetail.AccountRef.name = "Ground Transportation"; //Quickbooks online Account Id
+                        QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
+                        Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Ground Transportation");
+                        ItemLineDetail.AccountRef.Value = account.Id;
+                         //Quickbooks online Account Id
                                                                 // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
 
@@ -5145,7 +5155,10 @@ namespace GoTravelTour.QuickBooks
                         
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
-                        ItemLineDetail.AccountRef.name = "Vehicle Rental"; //Quickbooks online Account Id
+                        QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
+                        Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Vehicle Rental");
+                        ItemLineDetail.AccountRef.Value = account.Id;
+                        //Quickbooks online Account Id
                                                                 // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                         objLine.AnyIntuitObject = ItemLineDetail;
@@ -5247,7 +5260,10 @@ namespace GoTravelTour.QuickBooks
                                               "Childs:  " + cm;
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
-                        ItemLineDetail.AccountRef.name = "Accommodation"; //Quickbooks online Account Id
+                        QueryService<Account> querySvcAcc = new QueryService<Account>(serviceContext);
+                        Account account = querySvcAcc.ExecuteIdsQuery("SELECT * from Account ").FirstOrDefault(x => x.Name == "Accommodation");
+                        ItemLineDetail.AccountRef.Value = account.Id;
+                        //Quickbooks online Account Id
                                                                 // We can give Account Name insted of Account Id, if we give Account Id and Account Name both then Account name will be ignore.
                                                                 //ItemLineDetail.AccountRef.name = "Purchases"; //Quickbooks online Account Name
                         objLine.AnyIntuitObject = ItemLineDetail;
