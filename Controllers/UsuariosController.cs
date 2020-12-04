@@ -269,14 +269,14 @@ namespace GoTravelTour.Controllers
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     emailClient.Timeout = 120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+ emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                   emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())
@@ -334,14 +334,14 @@ namespace GoTravelTour.Controllers
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     emailClient.Timeout = 120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+ emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                   emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())
@@ -401,14 +401,14 @@ namespace GoTravelTour.Controllers
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     emailClient.Timeout = 120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+ emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                   emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())
@@ -507,14 +507,14 @@ namespace GoTravelTour.Controllers
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     emailClient.Timeout =120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+                    emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
                   
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                    emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())

@@ -1329,14 +1329,14 @@ namespace GoTravelTour.Controllers
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     emailClient.Timeout = 120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+ emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                   emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())
@@ -1420,14 +1420,14 @@ namespace GoTravelTour.Controllers
                     //The last parameter here is to use SSL (Which you should!)
                     emailClient.Timeout = 120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+ emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                   emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())
@@ -1510,14 +1510,14 @@ namespace GoTravelTour.Controllers
                     emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                     emailClient.Timeout = 120000;
                     //The last parameter here is to use SSL (Which you should!)
-                    emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.Auto);
+ emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.Auto);
 
                     //emailClient.Connect("mail.gotravelandtours.com", 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
 
                     //Remove any OAuth functionality as we won't be using it. 
                     //  emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    emailClient.Authenticate("postmaster@gotravelandtours.com", "Gott2019conga@#$");
+                   emailClient.Authenticate("gotravelandtoursemail@gmail.com", "Gotravel123*");
 
                     /**AGREGADO PARA  EVITAR ENVIO DE CORREOS COMO SPAM**/
                     foreach (var part in message.BodyParts.OfType<TextPart>())
@@ -1685,6 +1685,42 @@ namespace GoTravelTour.Controllers
                 await _context.SaveChangesAsync();
 
                
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrdenExists(v.OrdenId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrden", new { id = v.OrdenId }, v);
+        }
+
+        // Post: api/Ordens/UpdatePrecioOrdenGeneral
+        [HttpPost]
+        [Route("UpdatePrecioOrdenGeneral")]
+        public async Task<IActionResult> PostOrdenUpdatePrecioOrdenGeneral([FromBody] Orden ve)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Orden v = _context.Orden.Single(x => x.OrdenId == ve.OrdenId);
+
+            v.PrecioGeneralOrden = ve.PrecioGeneralOrden;
+
+
+            _context.Entry(v).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
