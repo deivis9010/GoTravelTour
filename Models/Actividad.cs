@@ -13,7 +13,6 @@ namespace GoTravelTour.Models
         public int CantidadPersonas { get; set; }
         public int? Duracion { get; set; }
         public int? MaxDuracion { get; set; }
-        public int? IdQB { get; set; }
         public bool HasTransporte { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }       

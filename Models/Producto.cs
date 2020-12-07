@@ -18,6 +18,7 @@ namespace GoTravelTour.Models
         public string Schedule { get; set; }
         public string Location { get; set; }       
         public bool IsActivo { get; set; }
+        public int? IdQB { get; set; }
         public bool PermiteHacerCopia { get; set; }        
         public int ProveedorId { get; set; }
         //public int RegionId { get; set; }

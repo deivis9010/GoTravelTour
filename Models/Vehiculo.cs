@@ -13,8 +13,7 @@ namespace GoTravelTour.Models
         public string TieneSeguro { get; set; }
         public int CantidadPlazas { get; set; }
         public int MarcaId { get; set; }
-        public int ModeloId { get; set; }
-        public int? IdQB { get; set; }
+        public int ModeloId { get; set; }        
         public Marca Marca { get; set; }
         public Modelo Modelo { get; set; }    
         [NotMapped]
