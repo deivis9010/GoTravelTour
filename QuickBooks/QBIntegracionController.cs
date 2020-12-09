@@ -341,14 +341,14 @@ namespace GoTravelTour.QuickBooks
                     
                     objItemFound.Id = objItemFound.Id;
                     objItemFound.DisplayName = cliente.Nombre;
-                    objItemFound.FamilyName = cliente.Nombre;
+                    //objItemFound.FamilyName = cliente.Nombre;
                     objItemFound.GivenName = cliente.Nombre;
-                    objItemFound.ContactName = cliente.Nombre;
-                    objItemFound.Title = cliente.Nombre;
+                    //objItemFound.ContactName = cliente.Nombre;
+                    //objItemFound.Title = cliente.Nombre;
                     objItemFound.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
-                    objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-                    objItemFound.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
-                    objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
+                    //objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                    //objItemFound.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                    objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                     DataService dataService1 = new DataService(serviceContext);
                     Customer UpdateEntity = dataService1.Update<Customer>(objItemFound);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
@@ -370,14 +370,14 @@ namespace GoTravelTour.QuickBooks
 
                 Customer ObjItem = new Customer();
                 ObjItem.DisplayName = cliente.Nombre;
-                ObjItem.FamilyName = cliente.Nombre;
+                //ObjItem.FamilyName = cliente.Nombre;
                 ObjItem.GivenName = cliente.Nombre;
-                ObjItem.ContactName = cliente.Nombre;
+                //ObjItem.ContactName = cliente.Nombre;
                 //ObjItem.Title = cliente.Nombre;
                 ObjItem.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
-                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-                ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
-                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
+                //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                //ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
 
 
 
@@ -560,14 +560,14 @@ namespace GoTravelTour.QuickBooks
                 Customer ObjItem = new Customer();
                 objItemFound.Id = objItemFound.Id;
                 objItemFound.DisplayName = cliente.Nombre;
-                objItemFound.FamilyName = cliente.Nombre;
+                //objItemFound.FamilyName = cliente.Nombre;
                 objItemFound.GivenName = cliente.Nombre;
-                objItemFound.ContactName = cliente.Nombre;
-                objItemFound.Title = cliente.Nombre;
+                //objItemFound.ContactName = cliente.Nombre;
+                //objItemFound.Title = cliente.Nombre;
                 objItemFound.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
-                objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-                objItemFound.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
-                objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = cliente.Telefono };
+                //objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                //objItemFound.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                 DataService dataService = new DataService(serviceContext);
                 Customer UpdateEntity = dataService.Update<Customer>(objItemFound);
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
@@ -2799,14 +2799,14 @@ namespace GoTravelTour.QuickBooks
 
                 Customer ObjItem = new Customer();
                 ObjItem.DisplayName = orden.Cliente.Nombre;
-                ObjItem.FamilyName = orden.Cliente.Nombre;
+                //ObjItem.FamilyName = orden.Cliente.Nombre;
                 ObjItem.GivenName = orden.Cliente.Nombre;
-                ObjItem.ContactName = orden.Cliente.Nombre;
-                ObjItem.Title = orden.Cliente.Nombre;
+                //ObjItem.ContactName = orden.Cliente.Nombre;
+                //ObjItem.Title = orden.Cliente.Nombre;
                 ObjItem.PrimaryEmailAddr = new EmailAddress { Address = orden.Cliente.Correo };
-                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-                ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
-                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+                //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
 
 
 
@@ -2833,14 +2833,14 @@ namespace GoTravelTour.QuickBooks
 
                 Customer ObjItem = new Customer();
                 ObjItem.DisplayName = orden.Cliente.Nombre;
-                ObjItem.FamilyName = orden.Cliente.Nombre;
+                //ObjItem.FamilyName = orden.Cliente.Nombre;
                 ObjItem.GivenName = orden.Cliente.Nombre;
-                ObjItem.ContactName = orden.Cliente.Nombre;
-                ObjItem.Title = orden.Cliente.Nombre;
+               // ObjItem.ContactName = orden.Cliente.Nombre;
+                //ObjItem.Title = orden.Cliente.Nombre;
                 ObjItem.PrimaryEmailAddr = new EmailAddress { Address = orden.Cliente.Correo };
-                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-                ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
-                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+               // ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
 
 
 
@@ -2867,6 +2867,7 @@ namespace GoTravelTour.QuickBooks
             ObjEstimate.CustomerRef = new ReferenceType();
             ObjEstimate.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
             ObjEstimate.DocNumber = orden.NumeroOrden;
+            ObjEstimate.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
             List<CustomField> customFieldList = new List<CustomField>();
             CustomField cField = new CustomField();
             cField.DefinitionId = "2";
@@ -2876,6 +2877,7 @@ namespace GoTravelTour.QuickBooks
 
             customFieldList.Add(cField);
             ObjEstimate.CustomField = customFieldList.ToArray();
+            
             List<Line> LineList = new List<Line>();
             if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                 foreach (var item in orden.ListaActividadOrden)
@@ -3226,14 +3228,14 @@ namespace GoTravelTour.QuickBooks
 
                     Customer ObjItem = new Customer();
                     ObjItem.DisplayName = orden.Cliente.Nombre;
-                    ObjItem.FamilyName = orden.Cliente.Nombre;
+                   // ObjItem.FamilyName = orden.Cliente.Nombre;
                     ObjItem.GivenName = orden.Cliente.Nombre;
-                    ObjItem.ContactName = orden.Cliente.Nombre;
-                    ObjItem.Title = orden.Cliente.Nombre;
+                   // ObjItem.ContactName = orden.Cliente.Nombre;
+                    //ObjItem.Title = orden.Cliente.Nombre;
                     ObjItem.PrimaryEmailAddr = new EmailAddress { Address = orden.Cliente.Correo };
-                    ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-                    ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
-                    ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+                   // ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                   // ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                    ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
 
 
 
@@ -3261,6 +3263,7 @@ namespace GoTravelTour.QuickBooks
                 objEstimateFound.CustomerRef = new ReferenceType();
                 objEstimateFound.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
                 objEstimateFound.DocNumber = orden.NumeroOrden;
+                objEstimateFound.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                 List<CustomField> customFieldList = new List<CustomField>();
                 CustomField cField = new CustomField();
                 cField.DefinitionId = "2";
@@ -3617,14 +3620,14 @@ namespace GoTravelTour.QuickBooks
 
                 Customer ObjItem = new Customer();
                 ObjItem.DisplayName = orden.Cliente.Nombre;
-                ObjItem.FamilyName = orden.Cliente.Nombre;
+               // ObjItem.FamilyName = orden.Cliente.Nombre;
                 ObjItem.GivenName = orden.Cliente.Nombre;
-                ObjItem.ContactName = orden.Cliente.Nombre;
-                ObjItem.Title = orden.Cliente.Nombre;
+                //ObjItem.ContactName = orden.Cliente.Nombre;
+                //ObjItem.Title = orden.Cliente.Nombre;
                 ObjItem.PrimaryEmailAddr = new EmailAddress { Address = orden.Cliente.Correo };
-                ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-                ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
-                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+                //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
 
 
 
@@ -3651,6 +3654,7 @@ namespace GoTravelTour.QuickBooks
             ObjInvoice.CustomerRef = new ReferenceType();
             ObjInvoice.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
             ObjInvoice.DocNumber = orden.NumeroOrden;
+            ObjInvoice.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
             ObjInvoice.DueDate = orden.FechaInicio!=null ? ((DateTime)orden.FechaInicio).AddDays(-10) : DateTime.Now;
             ObjInvoice.DueDateSpecified = true;
             List<CustomField> customFieldList = new List<CustomField>();
@@ -3661,6 +3665,7 @@ namespace GoTravelTour.QuickBooks
             cField.AnyIntuitObject = orden.NombreClienteFinal;
 
             customFieldList.Add(cField);
+            ObjInvoice.CustomField = customFieldList.ToArray();
             List<Line> LineList = new List<Line>();
             if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                 foreach (var item in orden.ListaActividadOrden)
@@ -4011,14 +4016,14 @@ namespace GoTravelTour.QuickBooks
 
                     Customer ObjItem = new Customer();
                     ObjItem.DisplayName = orden.Cliente.Nombre;
-                    ObjItem.FamilyName = orden.Cliente.Nombre;
+                    //ObjItem.FamilyName = orden.Cliente.Nombre;
                     ObjItem.GivenName = orden.Cliente.Nombre;
-                    ObjItem.ContactName = orden.Cliente.Nombre;
-                    ObjItem.Title = orden.Cliente.Nombre;
+                   // ObjItem.ContactName = orden.Cliente.Nombre;
+                    //ObjItem.Title = orden.Cliente.Nombre;
                     ObjItem.PrimaryEmailAddr = new EmailAddress { Address = orden.Cliente.Correo };
-                    ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-                    ObjItem.Mobile = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
-                    ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "Mobile", FreeFormNumber = orden.Cliente.Telefono };
+                    //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                    //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
+                    ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
 
 
 
@@ -4041,13 +4046,14 @@ namespace GoTravelTour.QuickBooks
                     return Ok(new { token = "Error creando el cliente" });
                 }
 
-                Invoice ObjInvoice = new Invoice();
+                //Invoice ObjInvoice = new Invoice();
                 objInvoiceFound.Id = objInvoiceFound.Id;
                 objInvoiceFound.CustomerRef = new ReferenceType();
                 objInvoiceFound.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
                 objInvoiceFound.DocNumber = orden.NumeroOrden;
-                ObjInvoice.DueDate = orden.FechaInicio != null ? ((DateTime)orden.FechaInicio).AddDays(-10) : DateTime.Now;
-                ObjInvoice.DueDateSpecified = true;
+                objInvoiceFound.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
+                objInvoiceFound.DueDate = orden.FechaInicio != null ? ((DateTime)orden.FechaInicio).AddDays(-10) : DateTime.Now;
+                objInvoiceFound.DueDateSpecified = true;
                 List<CustomField> customFieldList = new List<CustomField>();
                 CustomField cField = new CustomField();
                 cField.DefinitionId = "2";
@@ -4056,6 +4062,7 @@ namespace GoTravelTour.QuickBooks
                 cField.AnyIntuitObject = orden.NombreClienteFinal;
 
                 customFieldList.Add(cField);
+                objInvoiceFound.CustomField = customFieldList.ToArray();
                 List<Line> LineList = new List<Line>();
                 if (orden.ListaActividadOrden != null && orden.ListaActividadOrden.Any())
                     foreach (var item in orden.ListaActividadOrden)
@@ -4397,7 +4404,7 @@ namespace GoTravelTour.QuickBooks
                 {
                     Bill ObjBill = new Bill();
                     ObjBill.DocNumber = orden.NumeroOrden;
-                    
+                    ObjBill.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     string EXISTING_QUERYBYID = string.Format("SELECT * from Vendor where CompanyName = '{0}'", item.Distribuidor.Nombre);
@@ -4415,11 +4422,16 @@ namespace GoTravelTour.QuickBooks
                     ObjBill.VendorRef = new ReferenceType();
                     ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
 
+
+                    decimal precio = item.PrecioOrden;
+                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
-                    objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                    objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
@@ -4449,14 +4461,12 @@ namespace GoTravelTour.QuickBooks
                     }
 
 
-                    decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                   
                     Line objLine1 = new Line();
                     objLine1.DetailTypeSpecified = true;
                     objLine1.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
                     objLine1.AmountSpecified = true;
-                    objLine1.Amount = precio;
+                    objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
                     objLine1.Description = "Activity: " + item.Actividad.Nombre + ". " +
                                           "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
@@ -4467,7 +4477,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
                     salesItemLineDetail.ServiceDate = item.FechaActividad;
                     salesItemLineDetail.ServiceDateSpecified = true;
@@ -4504,6 +4514,7 @@ namespace GoTravelTour.QuickBooks
                 {
                     Bill ObjBill = new Bill();
                     ObjBill.DocNumber = orden.NumeroOrden;
+                    ObjBill.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     string EXISTING_QUERYBYID = string.Format("SELECT * from Vendor where CompanyName = '{0}'", item.Distribuidor.Nombre);
@@ -4520,11 +4531,16 @@ namespace GoTravelTour.QuickBooks
                     }
                     ObjBill.VendorRef = new ReferenceType();
                     ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
+
+                    decimal precio = item.PrecioOrden;
+                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
-                    objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                    objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
@@ -4554,15 +4570,12 @@ namespace GoTravelTour.QuickBooks
                     LineList.Add(objLine);
 
 
-                    decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
-
+                    
                     Line objLine1 = new Line();
                     objLine1.DetailTypeSpecified = true;
                     objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                     objLine1.AmountSpecified = true;
-                    objLine1.Amount = precio;
+                    objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
                     objLine1.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
                                            "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
@@ -4575,7 +4588,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
 
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
@@ -4609,6 +4622,7 @@ namespace GoTravelTour.QuickBooks
                 {
                     Bill ObjBill = new Bill();
                     ObjBill.DocNumber = orden.NumeroOrden;
+                    ObjBill.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     string EXISTING_QUERYBYID = string.Format("SELECT * from Vendor where CompanyName = '{0}'", item.Distribuidor.Nombre);
@@ -4626,11 +4640,15 @@ namespace GoTravelTour.QuickBooks
                     ObjBill.VendorRef = new ReferenceType();
                     ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
 
+                    decimal precio = item.PrecioOrden;
+                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
-                    objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                    objLine.Amount = 0;//precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                           "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
@@ -4656,14 +4674,12 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                    decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                   
                     Line objLine1 = new Line();
                     objLine1.DetailTypeSpecified = true;
                     objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                     objLine1.AmountSpecified = true;
-                    objLine1.Amount = precio;
+                    objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); 
 
                     objLine1.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
@@ -4673,7 +4689,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
 
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
@@ -4707,6 +4723,7 @@ namespace GoTravelTour.QuickBooks
                 {
                     Bill ObjBill = new Bill();
                     ObjBill.DocNumber = orden.NumeroOrden;
+                    ObjBill.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
                     string EXISTING_QUERYBYID = string.Format("SELECT * from Vendor where CompanyName = '{0}'", item.Distribuidor.Nombre);
@@ -4724,11 +4741,17 @@ namespace GoTravelTour.QuickBooks
                     ObjBill.VendorRef = new ReferenceType();
                     ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
 
+
+                    decimal precio = item.PrecioOrden;
+                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                    
+
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                     objLine.AmountSpecified = true;
-                    objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                    objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                     var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                     objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
@@ -4759,14 +4782,12 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                    decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                   
                     Line objLine1 = new Line();
                     objLine1.DetailTypeSpecified = true;
                     objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                     objLine1.AmountSpecified = true;
-                    objLine1.Amount = precio;
+                    objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
                     objLine1.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
                                           "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +
@@ -4779,7 +4800,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
 
-                    salesItemLineDetail.AnyIntuitObject = precio;
+                    salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
@@ -5001,16 +5022,24 @@ namespace GoTravelTour.QuickBooks
                     {
                         //Bill ObjBill = new Bill();
                         objBillFound.DocNumber = orden.NumeroOrden;
+                        objBillFound.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
                         objBillFound.VendorRef.Value = VendorRef.Id;
+
+                        decimal precio = item.PrecioOrden;
+                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+
+                        
+
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
-                        objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                        objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Activity: " + item.Actividad.Nombre + ". " +
@@ -5032,14 +5061,12 @@ namespace GoTravelTour.QuickBooks
                         LineList.Add(objLine);
 
 
-                        decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                       
                         Line objLine1 = new Line();
                         objLine1.DetailTypeSpecified = true;
                         objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                         objLine1.AmountSpecified = true;
-                        objLine1.Amount = precio;
+                        objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
                         objLine1.Description = "Activity: " + item.Actividad.Nombre + ". " +
                                                "Date: " + item.FechaActividad.ToString("MM/dd/yyyy") + ". " +
@@ -5060,7 +5087,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
 
-                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         objLine1.AnyIntuitObject = salesItemLineDetail;
@@ -5120,16 +5147,22 @@ namespace GoTravelTour.QuickBooks
                     {
                         //Bill ObjBill = new Bill();
                         objBillFound.DocNumber = orden.NumeroOrden;
+                        objBillFound.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
                         objBillFound.VendorRef.Value = VendorRef.Id;
+
+                        decimal precio = item.PrecioOrden;
+                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
-                        objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                        objLine.Amount = 0;//precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
@@ -5153,14 +5186,12 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                        decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                       
                         Line objLine1 = new Line();
                         objLine1.DetailTypeSpecified = true;
                         objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                         objLine1.AmountSpecified = true;
-                        objLine1.Amount = precio;
+                        objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); 
 
                         objLine1.Description = "Ground Transportation: " + item.PuntoOrigen.Nombre + " - " + item.PuntoDestino.Nombre +
                                               "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + ". " +
@@ -5182,7 +5213,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
 
-                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         objLine1.AnyIntuitObject = salesItemLineDetail;
@@ -5240,18 +5271,24 @@ namespace GoTravelTour.QuickBooks
                     //If Bill found on Quickbooks online
                     if (objBillFound != null)
                     {
-                        Bill ObjBill = new Bill();
+                        //Bill ObjBill = new Bill();
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.DocNumber = orden.NumeroOrden;
+                        objBillFound.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
                         objBillFound.VendorRef.Value = VendorRef.Id;
+
+                        decimal precio = item.PrecioOrden;
+                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
-                        objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); 
+                        objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100); 
                         objLine.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                           "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
 
@@ -5270,14 +5307,12 @@ namespace GoTravelTour.QuickBooks
 
 
 
-                        decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                       
                         Line objLine1 = new Line();
                         objLine1.DetailTypeSpecified = true;
                         objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                         objLine1.AmountSpecified = true;
-                        objLine1.Amount = precio;
+                        objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
                         objLine1.Description = /*"Vehicle: " + item.Vehiculo.Nombre +*/
                                          "Date: " + item.FechaRecogida.ToString("MM/dd/yyyy") + " - " + item.FechaEntrega.ToString("MM/dd/yyyy");
@@ -5296,7 +5331,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
 
-                        salesItemLineDetail.AnyIntuitObject = precio;
+                        salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         objLine1.AnyIntuitObject = salesItemLineDetail;
@@ -5356,16 +5391,22 @@ namespace GoTravelTour.QuickBooks
                     {
                         //Bill ObjBill = new Bill();
                         objBillFound.DocNumber = orden.NumeroOrden;
+                        objBillFound.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                         objBillFound.Id = objBillFound.Id;
                         objBillFound.SyncToken = objBillFound.SyncToken;
                         objBillFound.VendorRef = new ReferenceType();
                         objBillFound.VendorRef.Value = VendorRef.Id;
+
+                        decimal precio = item.PrecioOrden;
+                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                         objLine.AmountSpecified = true;
-                        objLine.Amount = item.PrecioOrden - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                        objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         var ca = item.CantAdulto == null ? "0" : item.CantAdulto.ToString();
                         var cm = (item.CantInfante ?? 0 + item.CantNino ?? 0).ToString();
                         objLine.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
@@ -5384,14 +5425,12 @@ namespace GoTravelTour.QuickBooks
                         objLine.AnyIntuitObject = ItemLineDetail;
                         LineList.Add(objLine);
 
-                        decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                       
                         Line objLine1 = new Line();
                         objLine1.DetailTypeSpecified = true;
                         objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                         objLine1.AmountSpecified = true;
-                        objLine1.Amount = precio;
+                        objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
                         objLine1.Description = "Accommodation: " + item.Alojamiento.Nombre + ". " +
                                             "Date: " + item.FechaInicio.ToString("MM/dd/yyyy").Substring(0, 10) + " - " + item.FechaFin.ToString().Substring(0, 10) + ". " +

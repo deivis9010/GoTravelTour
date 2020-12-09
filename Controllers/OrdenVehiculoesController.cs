@@ -235,5 +235,40 @@ namespace GoTravelTour.Models
 
             return CreatedAtAction("GetOrdenVehiculo", new { id = a.OrdenVehiculoId }, a);
         }
+
+
+        // Post: api/OrdenVehiculoes/UpdatePrecio
+        [HttpPost]
+        [Route("UpdatePrecio")]
+        public async Task<IActionResult> PostActualizarPrecioModificado([FromBody] OrdenVehiculo oa)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            OrdenVehiculo a = _context.OrdenVehiculo.Single(x => x.OrdenVehiculoId == oa.OrdenVehiculoId);
+          
+            a.PrecioOrden = oa.PrecioOrden;
+
+
+            _context.Entry(a).State = EntityState.Modified;
+            
+
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetOrdenVehiculo", new { id = a.OrdenVehiculoId }, a);
+        }
     }
 }

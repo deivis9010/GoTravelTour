@@ -869,135 +869,138 @@ namespace GoTravelTour.Controllers
 
                 foreach (var dist in v.ListaDistribuidoresProducto)
                 {
-
-                    OrdenVehiculo ov = new OrdenVehiculo();
-                    int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
-                    int cantDias = 0; // auxilar para rangos
-                    int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
-                    ov.FechaRecogida = buscador.FechaRecogida;
-                    ov.FechaEntrega = buscador.FechaEntrega;
-                    Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
-                   
-                    ov.Vehiculo = v;
-                    bool agregarOrden = true;
-
-                    List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
-                    .Include(x => x.Temporada.Contrato.Distribuidor)
-                    .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId).ToList();
-                    PrecioRentaAutos ultimoPrecio = new PrecioRentaAutos();
-                    if(!precios.Any())
-                        continue;
-                    ov.ListaPreciosRentaAutos = new List<OrdenVehiculoPrecioRentaAuto>();
-                    foreach (var p in precios)
+                    List<Contrato> contratosDist = _context.Contratos.Where(x => x.DistribuidorId == dist.DistribuidorId && x.TipoProductoId == v.TipoProductoId).ToList();
+                    foreach (var cont in contratosDist)
                     {
-                      
-                        
-                        if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
-                         (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
+
+                        OrdenVehiculo ov = new OrdenVehiculo();
+                        int cantDiasGenenarl = (buscador.FechaEntrega - buscador.FechaRecogida).Days; //Cant. de dias a reservar
+                        int cantDias = 0; // auxilar para rangos
+                        int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
+                        ov.FechaRecogida = buscador.FechaRecogida;
+                        ov.FechaEntrega = buscador.FechaEntrega;
+                        Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
+
+                        ov.Vehiculo = v;
+                        bool agregarOrden = true;
+
+                        List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
+                        .Include(x => x.Temporada.Contrato.Distribuidor)
+                        .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.ContratoId == cont.ContratoId).ToList();
+                        PrecioRentaAutos ultimoPrecio = new PrecioRentaAutos();
+                        if (!precios.Any())
+                            continue;
+                        ov.ListaPreciosRentaAutos = new List<OrdenVehiculoPrecioRentaAuto>();
+                        foreach (var p in precios)
                         {
-                            ultimoPrecio = p;
 
-                            //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
-                            List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderBy(x => x.Minimo).ToList();
-                            OrdenVehiculoPrecioRentaAuto ovpra = new OrdenVehiculoPrecioRentaAuto();
-                            
-                            ovpra.PrecioRentaAutos = p;
-                            ov.ListaPreciosRentaAutos.Add(ovpra);
-                            ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
-                            try
+
+                            if (p.Temporada.ListaFechasTemporada.Any(x => (x.FechaInicio <= buscador.FechaRecogida && buscador.FechaRecogida <= x.FechaFin) ||
+                             (x.FechaFin >= buscador.FechaEntrega && buscador.FechaEntrega >= x.FechaInicio))) // si la fecha buscada esta en el rango de precios
                             {
+                                ultimoPrecio = p;
 
-                                switch (p.Temporada.Contrato.FormaCobro)// 2 - por dia 1 - PrimeraTemp 3 - UltimaTemp
+                                //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
+                                List<Restricciones> restricciones = _context.Restricciones.Where(x => x.Temporada.TemporadaId == p.Temporada.TemporadaId).OrderBy(x => x.Minimo).ToList();
+                                OrdenVehiculoPrecioRentaAuto ovpra = new OrdenVehiculoPrecioRentaAuto();
+
+                                ovpra.PrecioRentaAutos = p;
+                                ov.ListaPreciosRentaAutos.Add(ovpra);
+                                ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
+                                try
                                 {
-                                    case 2:
-                                        {
-                                            Met_CalcularPrecioAutoPorDia(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
-                                            break;
-                                        }
-                                    case 1:
-                                        {
-                                            Met_CalcularPrecioAutoPorPrimeraTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
 
-                                            break;
-                                        }
-                                    case 3:
-                                        {
-                                            Met_CalcularPrecioAutoPorSegundaTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
-                                            break;
-                                        }
-                                    default:
-                                        {
-                                            break;
-                                        }
+                                    switch (p.Temporada.Contrato.FormaCobro)// 2 - por dia 1 - PrimeraTemp 3 - UltimaTemp
+                                    {
+                                        case 2:
+                                            {
+                                                Met_CalcularPrecioAutoPorDia(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+                                                break;
+                                            }
+                                        case 1:
+                                            {
+                                                Met_CalcularPrecioAutoPorPrimeraTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+
+                                                break;
+                                            }
+                                        case 3:
+                                            {
+                                                Met_CalcularPrecioAutoPorSegundaTemporada(buscador, v, p, ov, cantDiasGenenarl, ref cantDias, ref DiasRestantes, restricciones);
+                                                break;
+                                            }
+                                        default:
+                                            {
+                                                break;
+                                            }
+                                    }
+
+                                }
+                                catch
+                                {
+                                    agregarOrden = false;
+                                    break;
                                 }
 
+
+
                             }
-                            catch
+                            if (DiasRestantes == 0)
+                                break;
+                        }
+                        if (!agregarOrden)
+                            continue;
+                        ov.PrecioOrden += (DiasRestantes * ultimoPrecio.DiasExtra); //+ (cantDiasGenenarl * ultimoPrecio.Seguro);
+                                                                                    // ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro); 
+
+
+
+                        List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).ToList();
+
+                        foreach (Sobreprecio s in sobreprecios)
+                        {
+                            if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
                             {
-                                agregarOrden = false;
+                                ov.Sobreprecio = s;
+                                decimal valorAplicado = 0;
+                                if (s.PagoPorDia)
+                                {
+                                    if (s.ValorDinero != null)
+                                    {
+                                        valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
+                                        ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
+                                    }
+                                    else
+                                    {
+                                        valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
+                                    }
+
+                                }
+                                else
+                                {
+
+                                    if (s.ValorDinero != null)
+                                    {
+                                        valorAplicado = (decimal)s.ValorDinero;
+                                        ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
+                                    }
+                                    else
+                                    {
+                                        valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
+                                        ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
+                                    }
+
+                                }
+                                ov.ValorSobreprecioAplicado = valorAplicado;
                                 break;
                             }
 
-                           
-
-                        }
-                        if (DiasRestantes == 0)
-                            break;
-                    }
-                    if (!agregarOrden)
-                        continue;
-                    ov.PrecioOrden += (DiasRestantes * ultimoPrecio.DiasExtra); //+ (cantDiasGenenarl * ultimoPrecio.Seguro);
-                   // ov.PrecioOrden += (DiasRestantes * ultimoPrecio.Seguro); 
-
-
-
-                    List<Sobreprecio> sobreprecios = _context.Sobreprecio.Where(x => x.TipoProducto.Nombre == ValoresAuxiliares.VEHICLE).ToList();
-
-                    foreach (Sobreprecio s in sobreprecios)
-                    {
-                        if (s.PrecioDesde <= ov.PrecioOrden && ov.PrecioOrden <= s.PrecioHasta)
-                        {
-                            ov.Sobreprecio = s;
-                            decimal valorAplicado = 0;
-                            if (s.PagoPorDia)
-                            {
-                                if (s.ValorDinero != null)
-                                {
-                                    valorAplicado = cantDiasGenenarl * (decimal)s.ValorDinero;
-                                    ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
-                                }
-                                else
-                                {
-                                    valorAplicado = cantDiasGenenarl * ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                    ov.PrecioOrden += valorAplicado + (valorAplicado * c.Descuento / 100);
-                                }
-
-                            }
-                            else
-                            {
-
-                                if (s.ValorDinero != null)
-                                {
-                                    valorAplicado = (decimal)s.ValorDinero;
-                                    ov.PrecioOrden += valorAplicado + ((decimal)s.ValorDinero * c.Descuento / 100);
-                                }
-                                else
-                                {
-                                    valorAplicado = ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100);
-                                    ov.PrecioOrden += valorAplicado + (ov.PrecioOrden * ((decimal)s.ValorPorCiento / 100) * c.Descuento / 100);
-                                }
-
-                            }
-                            ov.ValorSobreprecioAplicado = valorAplicado;
-                            break;
                         }
 
+                        if (agregarOrden && ov.PrecioOrden > 0)
+                            lista.Add(ov);
+
                     }
-
-                    if (agregarOrden && ov.PrecioOrden > 0)
-                        lista.Add(ov);
-
-
                 }
 
 
