@@ -349,6 +349,12 @@ namespace GoTravelTour.QuickBooks
                     //objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                     //objItemFound.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                     objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                    PhysicalAddress ObjAddress1 = new PhysicalAddress();
+                    ObjAddress1.PostalCode = cliente.ZipCode;
+                    ObjAddress1.Country = cliente.Pais;
+                    ObjAddress1.Line1 = cliente.Direccion + " // " + cliente.Calle;
+                    ObjAddress1.City = cliente.Ciudad;
+                    objItemFound.BillAddr = ObjAddress1;
                     DataService dataService1 = new DataService(serviceContext);
                     Customer UpdateEntity = dataService1.Update<Customer>(objItemFound);
                     if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
@@ -376,9 +382,14 @@ namespace GoTravelTour.QuickBooks
                 //ObjItem.Title = cliente.Nombre;
                 ObjItem.PrimaryEmailAddr = new EmailAddress { Address = cliente.Correo };
                 //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-                ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-                //ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
-
+                //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                PhysicalAddress ObjAddress = new PhysicalAddress();
+                ObjAddress.PostalCode = cliente.ZipCode;
+                ObjAddress.Country = cliente.Pais;
+                ObjAddress.Line1 = cliente.Direccion + " // " + cliente.Calle;
+                ObjAddress.City = cliente.Ciudad;
+                ObjItem.BillAddr = ObjAddress;
 
 
                 DataService dataService = new DataService(serviceContext);
@@ -568,6 +579,12 @@ namespace GoTravelTour.QuickBooks
                 //objItemFound.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                 //objItemFound.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
                 objItemFound.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = cliente.Telefono };
+                PhysicalAddress ObjAddress = new PhysicalAddress();
+                ObjAddress.PostalCode = cliente.ZipCode;
+                ObjAddress.Country = cliente.Pais;
+                ObjAddress.Line1 = cliente.Direccion + " // " + cliente.Calle;
+                ObjAddress.City = cliente.Ciudad;
+                objItemFound.BillAddr = ObjAddress;
                 DataService dataService = new DataService(serviceContext);
                 Customer UpdateEntity = dataService.Update<Customer>(objItemFound);
                 if (UpdateEntity != null && !string.IsNullOrEmpty(UpdateEntity.Id))
@@ -2807,7 +2824,12 @@ namespace GoTravelTour.QuickBooks
                 //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                 //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                 ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-
+                PhysicalAddress ObjAddress = new PhysicalAddress();
+                ObjAddress.PostalCode = orden.Cliente.ZipCode;
+                ObjAddress.Country = orden.Cliente.Pais;
+                ObjAddress.Line1 = orden.Cliente.Direccion + " // " + orden.Cliente.Calle;
+                ObjAddress.City = orden.Cliente.Ciudad;
+                ObjItem.BillAddr = ObjAddress;
 
 
                 DataService dataService2 = new DataService(serviceContext);
@@ -2841,7 +2863,12 @@ namespace GoTravelTour.QuickBooks
                // ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                 //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                 ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-
+                PhysicalAddress ObjAddress = new PhysicalAddress();
+                ObjAddress.PostalCode = orden.Cliente.ZipCode;
+                ObjAddress.Country = orden.Cliente.Pais;
+                ObjAddress.Line1 = orden.Cliente.Direccion + " // " + orden.Cliente.Calle;
+                ObjAddress.City = orden.Cliente.Ciudad;
+                ObjItem.BillAddr = ObjAddress;
 
 
                 DataService dataService2 = new DataService(serviceContext);
@@ -3236,7 +3263,12 @@ namespace GoTravelTour.QuickBooks
                    // ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                    // ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                     ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-
+                    PhysicalAddress ObjAddress = new PhysicalAddress();
+                    ObjAddress.PostalCode = orden.Cliente.ZipCode;
+                    ObjAddress.Country = orden.Cliente.Pais;
+                    ObjAddress.Line1 = orden.Cliente.Direccion + " // " + orden.Cliente.Calle;
+                    ObjAddress.City = orden.Cliente.Ciudad;
+                    ObjItem.BillAddr = ObjAddress;
 
 
                     DataService dataService2 = new DataService(serviceContext);
@@ -3628,7 +3660,12 @@ namespace GoTravelTour.QuickBooks
                 //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                 //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                 ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-
+                PhysicalAddress ObjAddress = new PhysicalAddress();
+                ObjAddress.PostalCode = orden.Cliente.ZipCode;
+                ObjAddress.Country = orden.Cliente.Pais;
+                ObjAddress.Line1 = orden.Cliente.Direccion + " // " + orden.Cliente.Calle;
+                ObjAddress.City = orden.Cliente.Ciudad;
+                ObjItem.BillAddr = ObjAddress;
 
 
                 DataService dataService2 = new DataService(serviceContext);
@@ -4024,7 +4061,12 @@ namespace GoTravelTour.QuickBooks
                     //ObjItem.AlternatePhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                     //ObjItem.Mobile = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
                     ObjItem.PrimaryPhone = new TelephoneNumber { DeviceType = "LandLine", FreeFormNumber = orden.Cliente.Telefono };
-
+                    PhysicalAddress ObjAddress = new PhysicalAddress();
+                    ObjAddress.PostalCode = orden.Cliente.ZipCode;
+                    ObjAddress.Country = orden.Cliente.Pais;
+                    ObjAddress.Line1 = orden.Cliente.Direccion + " // " + orden.Cliente.Calle;
+                    ObjAddress.City = orden.Cliente.Ciudad;
+                    ObjItem.BillAddr = ObjAddress;
 
 
                     DataService dataService2 = new DataService(serviceContext);
@@ -4403,7 +4445,7 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaActividadOrden)
                 {
                     Bill ObjBill = new Bill();
-                    ObjBill.DocNumber = orden.NumeroOrden;
+                    ObjBill.DocNumber = "4";// orden.NumeroOrden;
                     ObjBill.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
@@ -4460,11 +4502,11 @@ namespace GoTravelTour.QuickBooks
                         return Ok(new { token = "El producto no exite en QB: " + item.Actividad.Nombre });
                     }
 
+                    LineList.Add(objLine);
 
-                   
                     Line objLine1 = new Line();
                     objLine1.DetailTypeSpecified = true;
-                    objLine1.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
+                    objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                     objLine1.AmountSpecified = true;
                     objLine1.Amount = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
@@ -4473,38 +4515,52 @@ namespace GoTravelTour.QuickBooks
                                           "Place: " + item.LugarActividad + ". " +
                                          "Adults: " + ca + ". " +
                                           "Childs:  " + cm + ". ";
-                    SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+                    ItemBasedExpenseLineDetail salesItemLineDetail = new ItemBasedExpenseLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
+
+
                     salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
-                    salesItemLineDetail.ServiceDate = item.FechaActividad;
-                    salesItemLineDetail.ServiceDateSpecified = true;
-                   
+
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
                     objLine1.AnyIntuitObject = salesItemLineDetail;
                     LineList.Add(objLine1);
 
-                    LineList.Add(objLine);
+                   
+
+                    
 
 
                     ObjBill.Line = LineList.ToArray();
                     DataService dataService = new DataService(serviceContext);
-                    Bill BillAdd = dataService.Add(ObjBill);
-                    if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
-                    {
-                        item.IdBillQB = int.Parse(BillAdd.Id);
-                        _context.Entry(item).State = EntityState.Modified;
-                        _context.SaveChanges();
-                        //you can write Database code here
-                        Ok("Se creo el bill");
-                    }
-                    else
-                    {
 
-                        return Ok(new { token = "No se encontro el producto" });
+                    try
+                    {
+                        Bill BillAdd = dataService.Add(ObjBill);
+                        if (BillAdd != null && !string.IsNullOrEmpty(BillAdd.Id))
+                        {
+                            item.IdBillQB = int.Parse(BillAdd.Id);
+                            _context.Entry(item).State = EntityState.Modified;
+                            _context.SaveChanges();
+                            //you can write Database code here
+                            Ok("Se creo el bill");
+                        }
+                        else
+                        {
+
+                            return Ok(new { token = "No se encontro el producto" });
+                        }
+
                     }
+                    catch(Exception ex)
+                    {
+                        var a = ex;
+                    }
+
+
+
                 }
 
             }

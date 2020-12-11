@@ -15,6 +15,7 @@ namespace GoTravelTour.Models
         public int OrdenActividadId { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Precio { get; set; }
+        public string TipoPersona { get; set; }
 
     }
 }
