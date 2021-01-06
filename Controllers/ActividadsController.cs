@@ -1028,7 +1028,7 @@ namespace GoTravelTour.Controllers
                     //Se buscan los precios correspondientes de las actividades
                     List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
                             .Include(x => x.Temporada.Contrato.Distribuidor)
-                            .Where(x => x.ProductoId == ac.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId).ToList();
+                            .Where(x => x.ProductoId == ac.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.IsActivo).ToList();
                     foreach (var p in precios)
                     {
                         //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias
@@ -1283,7 +1283,7 @@ namespace GoTravelTour.Controllers
                     //Se buscan los precios correspondientes de las actividades
                     List<PrecioActividad> precios = _context.PrecioActividad.Include(x => x.Temporada.ListaFechasTemporada)
                             .Include(x => x.Temporada.Contrato.Distribuidor)
-                            .Where(x => x.ProductoId == ac.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId).ToList();
+                            .Where(x => x.ProductoId == ac.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.IsActivo).ToList();
                     foreach (var p in precios)
                     {
                         //Se obtienen las restricciones ordenadas por el valor maximo de dias para calcular precio segun cantidad de dias

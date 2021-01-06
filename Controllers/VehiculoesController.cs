@@ -716,7 +716,7 @@ namespace GoTravelTour.Controllers
 
                     List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
                     .Include(x => x.Temporada.Contrato.Distribuidor)
-                    .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId).ToList();
+                    .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.IsActivo).ToList();
                     PrecioRentaAutos ultimoPrecio = new PrecioRentaAutos();
                     if (!precios.Any())
                         continue;
@@ -869,7 +869,7 @@ namespace GoTravelTour.Controllers
 
                 foreach (var dist in v.ListaDistribuidoresProducto)
                 {
-                    List<Contrato> contratosDist = _context.Contratos.Where(x => x.DistribuidorId == dist.DistribuidorId && x.TipoProductoId == v.TipoProductoId).ToList();
+                    List<Contrato> contratosDist = _context.Contratos.Where(x =>  x.IsActivo && x.DistribuidorId == dist.DistribuidorId && x.TipoProductoId == v.TipoProductoId).ToList();
                     foreach (var cont in contratosDist)
                     {
 
@@ -886,7 +886,7 @@ namespace GoTravelTour.Controllers
 
                         List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
                         .Include(x => x.Temporada.Contrato.Distribuidor)
-                        .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.ContratoId == cont.ContratoId).ToList();
+                        .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.ContratoId == cont.ContratoId &&   x.Temporada.Contrato.IsActivo).ToList();
                         PrecioRentaAutos ultimoPrecio = new PrecioRentaAutos();
                         if (!precios.Any())
                             continue;
@@ -1426,7 +1426,7 @@ namespace GoTravelTour.Controllers
 
                     List<PrecioRentaAutos> precios = _context.PrecioRentaAutos.Include(x => x.Temporada.ListaFechasTemporada)
                     .Include(x => x.Temporada.Contrato.Distribuidor)
-                    .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId).ToList();
+                    .Where(x => x.ProductoId == v.ProductoId && x.Temporada.Contrato.Distribuidor.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.IsActivo).ToList();
                     PrecioRentaAutos ultimoPrecio = new PrecioRentaAutos();
                     if (!precios.Any())
                         continue;

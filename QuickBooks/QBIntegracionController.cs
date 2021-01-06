@@ -2889,7 +2889,7 @@ namespace GoTravelTour.QuickBooks
             {
                 return Ok(new { token = "Error creando el cliente" });
             }
-
+           
             Estimate ObjEstimate = new Estimate();
             ObjEstimate.CustomerRef = new ReferenceType();
             ObjEstimate.CustomerRef.Value = objCustomerFound.Id; //Quickbooks online Customer Id
@@ -2900,7 +2900,9 @@ namespace GoTravelTour.QuickBooks
             cField.DefinitionId = "2";
             cField.Name = "Customer";
             cField.Type = CustomFieldTypeEnum.StringType;
-            cField.AnyIntuitObject = orden.NombreClienteFinal;;
+            if(orden.NombreClienteFinal.Length>30)
+                orden.NombreClienteFinal = orden.NombreClienteFinal.Substring(0,31);
+            cField.AnyIntuitObject = orden.NombreClienteFinal;
 
             customFieldList.Add(cField);
             ObjEstimate.CustomField = customFieldList.ToArray();
@@ -2910,8 +2912,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaActividadOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                   // if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                        //precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -2951,8 +2953,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaTrasladoOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                    ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                    //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -2992,8 +2994,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaVehiculosOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                    //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                       // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3029,8 +3031,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaAlojamientoOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                  //  if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                     //  precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3301,6 +3303,8 @@ namespace GoTravelTour.QuickBooks
                 cField.DefinitionId = "2";
                 cField.Name = "Customer";
                 cField.Type = CustomFieldTypeEnum.StringType;
+                if (orden.NombreClienteFinal.Length > 30)
+                    orden.NombreClienteFinal = orden.NombreClienteFinal.Substring(0, 31);
                 cField.AnyIntuitObject = orden.NombreClienteFinal;
 
                 customFieldList.Add(cField);
@@ -3310,8 +3314,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaActividadOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                       // if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                            //precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3352,8 +3356,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaTrasladoOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                        //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                           // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3393,8 +3397,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaVehiculosOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                        //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                           // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3430,8 +3434,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaAlojamientoOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                      //  if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                         //  precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3699,6 +3703,8 @@ namespace GoTravelTour.QuickBooks
             cField.DefinitionId = "2";
             cField.Name = "Customer";
             cField.Type = CustomFieldTypeEnum.StringType;
+            if (orden.NombreClienteFinal.Length > 30)
+                orden.NombreClienteFinal = orden.NombreClienteFinal.Substring(0, 31);
             cField.AnyIntuitObject = orden.NombreClienteFinal;
 
             customFieldList.Add(cField);
@@ -3708,8 +3714,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaActividadOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                    //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                    //    //precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3749,8 +3755,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaTrasladoOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                    ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                    //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3790,8 +3796,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaVehiculosOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                    ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                    //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -3827,8 +3833,8 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaAlojamientoOrden)
                 {
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                    //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                    // //  precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
                     objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -4101,6 +4107,8 @@ namespace GoTravelTour.QuickBooks
                 cField.DefinitionId = "2";
                 cField.Name = "Customer";
                 cField.Type = CustomFieldTypeEnum.StringType;
+                if (orden.NombreClienteFinal.Length > 30)
+                    orden.NombreClienteFinal = orden.NombreClienteFinal.Substring(0, 31);
                 cField.AnyIntuitObject = orden.NombreClienteFinal;
 
                 customFieldList.Add(cField);
@@ -4110,8 +4118,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaActividadOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                        //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                        //    //precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -4151,8 +4159,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaTrasladoOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                        ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                        //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -4192,8 +4200,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaVehiculosOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                        ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                        //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -4229,8 +4237,8 @@ namespace GoTravelTour.QuickBooks
                     foreach (var item in orden.ListaAlojamientoOrden)
                     {
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                        //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                        // //  precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
                         Line objLine = new Line();
                         objLine.DetailTypeSpecified = true;
                         objLine.DetailType = LineDetailTypeEnum.SalesItemLineDetail;
@@ -4445,7 +4453,7 @@ namespace GoTravelTour.QuickBooks
                 foreach (var item in orden.ListaActividadOrden)
                 {
                     Bill ObjBill = new Bill();
-                    ObjBill.DocNumber = "4";// orden.NumeroOrden;
+                    ObjBill.DocNumber = orden.NumeroOrden;
                     ObjBill.BillEmail = new EmailAddress { Address = orden.Cliente.Correo };
                     QueryService<Vendor> querySvcI = new QueryService<Vendor>(serviceContext);
 
@@ -4466,8 +4474,8 @@ namespace GoTravelTour.QuickBooks
 
 
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                    //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                    //    //precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
 
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
@@ -4589,8 +4597,8 @@ namespace GoTravelTour.QuickBooks
                     ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
 
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                    ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                    //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
 
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
@@ -4697,8 +4705,8 @@ namespace GoTravelTour.QuickBooks
                     ObjBill.VendorRef.Value = VendorRef.Id;//Quickbooks online Vendor Id
 
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                    ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                    //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
 
                     Line objLine = new Line();
                     objLine.DetailTypeSpecified = true;
@@ -4799,8 +4807,8 @@ namespace GoTravelTour.QuickBooks
 
 
                     decimal precio = item.PrecioOrden;
-                    if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                        precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                    //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                    // //  precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
                     
 
                     Line objLine = new Line();
@@ -5085,8 +5093,8 @@ namespace GoTravelTour.QuickBooks
                         objBillFound.VendorRef.Value = VendorRef.Id;
 
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
+                        //if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Count() > 0)
+                        //    //precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenActividadId == item.OrdenActividadId).Sum(x => x.Precio);
 
                         
 
@@ -5210,8 +5218,8 @@ namespace GoTravelTour.QuickBooks
                         objBillFound.VendorRef.Value = VendorRef.Id;
 
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
+                        ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Count() > 0)
+                        //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenTrasladoId == item.OrdenTrasladoId).Sum(x => x.Precio);
 
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
@@ -5336,8 +5344,8 @@ namespace GoTravelTour.QuickBooks
                         objBillFound.VendorRef.Value = VendorRef.Id;
 
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
+                        ////if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Count() > 0)
+                        //   // precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenVehiculoId == item.OrdenVehiculoId).Sum(x => x.Precio);
 
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();
@@ -5454,8 +5462,8 @@ namespace GoTravelTour.QuickBooks
                         objBillFound.VendorRef.Value = VendorRef.Id;
 
                         decimal precio = item.PrecioOrden;
-                        if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
-                            precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
+                      //  if (_context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Count() > 0)
+                         //  precio = _context.PreciosOrdenModificados.Where(x => x.OrdenId == item.OrdenId && x.OrdenAlojamientoId == item.OrdenAlojamientoId).Sum(x => x.Precio);
 
                         List<Line> LineList = new List<Line>();
                         Line objLine = new Line();

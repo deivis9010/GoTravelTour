@@ -996,7 +996,7 @@ namespace GoTravelTour.Controllers
 
             foreach (var dist in alojamiento.ListaDistribuidoresProducto)
             {
-                List<Contrato> contratosDist = _context.Contratos.Where(x => x.DistribuidorId == dist.DistribuidorId && x.TipoProductoId == alojamiento.TipoProductoId).ToList();
+                List<Contrato> contratosDist = _context.Contratos.Where(x =>x.IsActivo && x.DistribuidorId == dist.DistribuidorId && x.TipoProductoId == alojamiento.TipoProductoId).ToList();
                 foreach (var cont in contratosDist)
                 {
 
@@ -1005,7 +1005,7 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.Temporada.Contrato.Distribuidor)
                     .Include(x => x.Habitacion)
                     .Include(x => x.TipoHabitacion)
-                    .Where(x => x.ProductoId == alojamiento.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.ContratoId == cont.ContratoId &&
+                    .Where(x => x.Temporada.Contrato.IsActivo && x.ProductoId == alojamiento.ProductoId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.ContratoId == cont.ContratoId &&
                     x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) ||
                         ((xx.FechaInicio <= buscador.Salida && buscador.Salida <= xx.FechaFin)))).ToList();
 
@@ -1507,7 +1507,7 @@ namespace GoTravelTour.Controllers
 
                         foreach (var r in reglas)
                         {
-                            precioBase = _context.PrecioAlojamiento.Where(x => x.ProductoId == ov.Alojamiento.ProductoId && x.Contrato.ContratoId == contratoid 
+                            precioBase = _context.PrecioAlojamiento.Where(x => x.ProductoId == ov.Alojamiento.ProductoId && x.Contrato.ContratoId == contratoid && x.Contrato.IsActivo
                             && x.TipoHabitacion.TipoHabitacionId == r.TipoHabitacionId && x.Habitacion.HabitacionId == buscador.Habitacion.HabitacionId
                             && x.Temporada.TemporadaId == rf.TemporadaId).First().Precio;
 
@@ -1723,7 +1723,7 @@ namespace GoTravelTour.Controllers
 
                         foreach (var r in reglas)
                         {
-                            precioBase = _context.PrecioAlojamiento.Where(x => x.ProductoId == ov.Alojamiento.ProductoId && x.Contrato.ContratoId == contratoid
+                            precioBase = _context.PrecioAlojamiento.Where(x => x.ProductoId == ov.Alojamiento.ProductoId && x.Contrato.ContratoId == contratoid && x.Contrato.IsActivo
                             && x.TipoHabitacion.TipoHabitacionId == r.TipoHabitacionId && x.Habitacion.HabitacionId == buscador.Habitacion.HabitacionId
                             && x.Temporada.TemporadaId == rf.TemporadaId).First().Precio;
 

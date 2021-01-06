@@ -740,7 +740,7 @@ namespace GoTravelTour.Controllers
                         //Se buscan los precios correspondientes entre ruta y traslado
                         List<PrecioTraslado> precios = _context.PrecioTraslados.Include(x => x.Temporada.ListaFechasTemporada)
                        .Include(x => x.Temporada.Contrato.Distribuidor)
-                       .Where(x => x.ProductoId == t.ProductoId && x.RutasId == r.RutasId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId).ToList();
+                       .Where(x => x.ProductoId == t.ProductoId && x.RutasId == r.RutasId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.IsActivo).ToList();
                         foreach (var p in precios)
                         {
                             OrdenTraslado ov = new OrdenTraslado();
@@ -909,7 +909,7 @@ namespace GoTravelTour.Controllers
                         //Se buscan los precios correspondientes entre ruta y traslado
                         List<PrecioTraslado> precios = _context.PrecioTraslados.Include(x => x.Temporada.ListaFechasTemporada)
                        .Include(x => x.Temporada.Contrato.Distribuidor)
-                       .Where(x => x.ProductoId == t.ProductoId && x.RutasId == r.RutasId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId).ToList();
+                       .Where(x => x.ProductoId == t.ProductoId && x.RutasId == r.RutasId && x.Temporada.Contrato.DistribuidorId == dist.DistribuidorId && x.Temporada.Contrato.IsActivo).ToList();
                         foreach (var p in precios)
                         {
                             OrdenTraslado ov = new OrdenTraslado();
