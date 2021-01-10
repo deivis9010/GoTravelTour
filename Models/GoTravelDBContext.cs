@@ -85,6 +85,7 @@ namespace GoTravelTour.Models
         public DbSet<GoTravelTour.Models.DatosPasajeroSecundario> DatosPasajeroSecundario { get; set; }
         public DbSet<GoTravelTour.Models.TokenQB> TokenQB { get; set; }
         public DbSet<GoTravelTour.Models.PreciosOrdenModificados> PreciosOrdenModificados { get; set; }
+        public DbSet<GoTravelTour.Models.VoucherOrden> VoucherOrden { get; set; }
        
     
 
