@@ -1029,14 +1029,14 @@ namespace GoTravelTour.Controllers
                     foreach (var hab in habitacionesEnHotel)
                     {
                         OrdenAlojamiento ov = new OrdenAlojamiento();
-                        ov.ListaPrecioAlojamientos = new List<OrdenAlojamientoPrecioAlojamiento>();
+                        //ov.ListaPrecioAlojamientos = new List<OrdenAlojamientoPrecioAlojamiento>();
 
                         Cliente c = _context.Clientes.First(x => x.ClienteId == buscador.Cliente.ClienteId); //Cliente que hace la peticion para calcularle su descuento o sobrecargar
-                        ov.Alojamiento = alojamiento;
-                        ov.Checkin = buscador.Entrada;
-                        ov.Checkout = buscador.Salida;
-                        ov.FechaInicio = buscador.Entrada;
-                        ov.FechaFin = buscador.Salida;
+                        //ov.Alojamiento = alojamiento;
+                        //ov.Checkin = buscador.Entrada;
+                        //ov.Checkout = buscador.Salida;
+                        //ov.FechaInicio = buscador.Entrada;
+                        //ov.FechaFin = buscador.Salida;
                         int cantDiasGenenarl = (buscador.Salida - buscador.Entrada).Days; //Cant. de dias a reservar
                         int DiasRestantes = cantDiasGenenarl; // para saber que cantidad de dias son extra a las restricciones
                         int cantDias = 0; // auxilar para rangos
@@ -1052,6 +1052,14 @@ namespace GoTravelTour.Controllers
                             continue;
                         foreach (var p in precios)
                         {
+                            ov.ListaPrecioAlojamientos = new List<OrdenAlojamientoPrecioAlojamiento>();
+
+                           
+                            ov.Alojamiento = alojamiento;
+                            ov.Checkin = buscador.Entrada;
+                            ov.Checkout = buscador.Salida;
+                            ov.FechaInicio = buscador.Entrada;
+                            ov.FechaFin = buscador.Salida;
 
                             OrdenAlojamientoPrecioAlojamiento ovpra = new OrdenAlojamientoPrecioAlojamiento();
 
