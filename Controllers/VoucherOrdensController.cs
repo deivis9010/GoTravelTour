@@ -182,8 +182,8 @@ namespace GoTravelTour.Controllers
                 SavePDF(voucher, path);
                 //string ext = img.TipoImagen.Split("/")[1];
                 string fileUrl = Path.Combine(path, voucher.Nombre /*+ "." + ext*/);
-            //voucher.UrlVoucher = "https://admin.gotravelandtours.com/sources/Vouchers/" + voucher.OrdenId + "/" + voucher.Nombre /*+ "." + ext*/;
-            voucher.UrlVoucher = "http://localhost/sources/Vouchers/" + voucher.OrdenId + "/" + voucher.Nombre /*+ "." + ext*/;
+            voucher.UrlVoucher = "https://admin.gotravelandtours.com/sources/Vouchers/" + voucher.OrdenId + "/" + voucher.Nombre /*+ "." + ext*/;
+           // voucher.UrlVoucher = "http://localhost/sources/Vouchers/" + voucher.OrdenId + "/" + voucher.Nombre /*+ "." + ext*/;
             
 
         }
