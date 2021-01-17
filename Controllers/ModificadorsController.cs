@@ -320,7 +320,7 @@ namespace GoTravelTour.Controllers
         // GET: api/Modificadors/Filtros
         [HttpGet]
         [Route("Filtros")]
-        public IEnumerable<Modificador> GetModificadorByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0)
+        public IEnumerable<Modificador> GetModificadorByFiltros(int idContrato = -1, int idDistribuidor = -1, int idProveedor = 0, int idProducto = 0, int pageIndex = 1, int pageSize = 10)
         {
             IEnumerable<Modificador> lista = new List<Modificador>();
 
@@ -336,6 +336,7 @@ namespace GoTravelTour.Controllers
                
                 .Where(x => x.Proveedor.ProveedorId == idProveedor)
                 .OrderBy(a => a.IdentificadorModificador)
+                .ToPagedList(pageIndex, pageSize)
                 .ToList();
                 }
                 else
@@ -344,6 +345,7 @@ namespace GoTravelTour.Controllers
                
 
                 .OrderBy(a => a.IdentificadorModificador)
+                .ToPagedList(pageIndex, pageSize)
                 .ToList();
                 }
 
@@ -366,6 +368,7 @@ namespace GoTravelTour.Controllers
                .Where(a => a.Contrato.ContratoId == idContrato && a.Contrato.Distribuidor.DistribuidorId == idDistribuidor
                && a.Proveedor.ProveedorId == idProveedor)
                .OrderBy(a => a.IdentificadorModificador)
+               .ToPagedList(pageIndex, pageSize)
                .ToList();
                 }
                 else
@@ -376,6 +379,7 @@ namespace GoTravelTour.Controllers
                    
                    .Where(a => a.Contrato.ContratoId == idContrato && a.Contrato.Distribuidor.DistribuidorId == idDistribuidor)
                    .OrderBy(a => a.IdentificadorModificador)
+                   .ToPagedList(pageIndex, pageSize)
                    .ToList();
 
                
@@ -393,6 +397,7 @@ namespace GoTravelTour.Controllers
                  
                  .Where(a => a.Contrato.ContratoId == idContrato && a.Proveedor.ProveedorId == idProveedor)
                 .OrderBy(a => a.IdentificadorModificador)
+                .ToPagedList(pageIndex, pageSize)
                 .ToList();
                 }
                 else
@@ -402,6 +407,7 @@ namespace GoTravelTour.Controllers
 
                      .Where(a => a.Contrato.ContratoId == idContrato)
                     .OrderBy(a => a.IdentificadorModificador)
+                    .ToPagedList(pageIndex, pageSize)
                     .ToList();
 
 
@@ -422,6 +428,7 @@ namespace GoTravelTour.Controllers
                
                 .Where(a => a.Contrato.DistribuidorId == idDistribuidor && idProveedor == a.Proveedor.ProveedorId)
                 .OrderBy(a => a.IdentificadorModificador)
+                .ToPagedList(pageIndex, pageSize)
                 .ToList();
                 }
                 else
@@ -431,6 +438,7 @@ namespace GoTravelTour.Controllers
                  
                     .Where(a => a.Contrato.DistribuidorId == idDistribuidor)
                     .OrderBy(a => a.IdentificadorModificador)
+                    .ToPagedList(pageIndex, pageSize)
                     .ToList();
               
 
