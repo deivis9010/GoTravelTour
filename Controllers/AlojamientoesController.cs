@@ -1050,9 +1050,10 @@ namespace GoTravelTour.Controllers
 
                         if (!precios.Any())
                             continue;
+                        ov.ListaPrecioAlojamientos = new List<OrdenAlojamientoPrecioAlojamiento>();
                         foreach (var p in precios)
                         {
-                            ov.ListaPrecioAlojamientos = new List<OrdenAlojamientoPrecioAlojamiento>();
+                           
 
                            
                             ov.Alojamiento = alojamiento;
@@ -1215,7 +1216,16 @@ namespace GoTravelTour.Controllers
                     }
                 }
             }
-
+            int count = 0;
+            while(count < lista.Count) {
+                var ordenes = lista[count];
+                if (!EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Entrada) || !EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Salida))
+                {
+                    lista.Remove(ordenes);
+                    count--;
+                }
+                count++;
+            }
 
 
 
@@ -1836,6 +1846,24 @@ namespace GoTravelTour.Controllers
 
         }
 
+
+
+
+
+        private bool EsContratoValidoSegunFecha(List<OrdenAlojamientoPrecioAlojamiento> ListaPrecioAlojamientos, DateTime fecha)
+        {
+            foreach(var item in ListaPrecioAlojamientos)
+            {
+                List<RangoFechas> rangos = item.PrecioAlojamiento.Temporada.ListaFechasTemporada;
+
+                foreach(var fec in rangos)
+                {
+                    if (fec.FechaInicio <= fecha && fecha <= fec.FechaFin)
+                        return true;
+                }
+            }
+            return false;
+        }
 
     }
 }

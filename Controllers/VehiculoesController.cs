@@ -1033,6 +1033,26 @@ namespace GoTravelTour.Controllers
                 }
             }
 
+
+
+
+            int count = 0;
+            while (count < lista.Count)
+            {
+                var ordenes = lista[count];
+                if (!EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaRecogida) || !EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaEntrega))
+                {
+                    lista.Remove(ordenes);
+                    count--;
+                }
+                count++;
+            }
+
+
+
+
+
+
             return lista.OrderBy(x => x.PrecioOrden).ToPagedList(pageIndex,pageSize).ToList();
 
         }
@@ -1610,6 +1630,21 @@ namespace GoTravelTour.Controllers
         }
 
 
+
+        private bool EsContratoValidoSegunFecha(List<OrdenVehiculoPrecioRentaAuto> ListaPreciosRentaAutos, DateTime fecha)
+        {
+            foreach (var item in ListaPreciosRentaAutos)
+            {
+                List<RangoFechas> rangos = item.PrecioRentaAutos.Temporada.ListaFechasTemporada;
+
+                foreach (var fec in rangos)
+                {
+                    if (fec.FechaInicio <= fecha && fecha <= fec.FechaFin)
+                        return true;
+                }
+            }
+            return false;
+        }
 
     }
 }
