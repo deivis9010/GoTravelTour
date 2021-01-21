@@ -1039,6 +1039,16 @@ namespace GoTravelTour.Controllers
             int count = 0;
             while (count < lista.Count)
             {
+                lista[count].Distribuidor.ListaProductosDistribuidos = null;
+                lista[count].Orden = null;
+                lista[count].Sobreprecio = null;
+                lista[count].Vehiculo.ListaCategorias = null;
+                lista[count].Vehiculo.ListaDistribuidoresProducto = null;
+                lista[count].Vehiculo.Marca = null;
+                lista[count].Voucher = null;
+                lista[count].Vehiculo.Modelo = null;
+                lista[count].LugarRecogida = null;
+                lista[count].LugarEntrega = null;
                 var ordenes = lista[count];
                 if (!EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaRecogida) || !EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaEntrega))
                 {
@@ -1048,7 +1058,20 @@ namespace GoTravelTour.Controllers
                 count++;
             }
 
-
+            /*foreach(var item in lista)
+            {
+                item.Distribuidor.ListaProductosDistribuidos = null;
+                item.Orden = null;
+                item.Sobreprecio = null;
+                item.Vehiculo.ListaCategorias = null;
+                item.Vehiculo.ListaDistribuidoresProducto = null;
+                item.Vehiculo.Marca = null;
+                item.Voucher = null;
+                item.Vehiculo.Modelo = null;
+                item.LugarRecogida = null;
+                item.LugarEntrega = null;
+                
+            }*/
 
 
 
