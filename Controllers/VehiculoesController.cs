@@ -1006,8 +1006,50 @@ namespace GoTravelTour.Controllers
 
 
             }
+            int count = 0;
+            while (count < lista.Count)
+            {
+                lista[count].Distribuidor.ListaProductosDistribuidos = null;
+                lista[count].Orden = null;
+                lista[count].Sobreprecio = null;
+                lista[count].Vehiculo.ListaCategorias = null;
+                lista[count].Vehiculo.ListaDistribuidoresProducto = null;
+                lista[count].Vehiculo.Marca = null;
+                lista[count].Voucher = null;
+                lista[count].Vehiculo.Modelo = null;
+                lista[count].LugarRecogida = null;
+                lista[count].LugarEntrega = null;
+                var ordenes = lista[count];
+                bool stop = false;
+                if (!EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaRecogida) || !EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaEntrega))
+                {
+                    lista.Remove(ordenes);
+                    count--;
+                    stop = true;
+                }
+                count++;
+                if (stop)
+                    continue;
 
-            List<OrdenVehiculo> listatemp = new List<OrdenVehiculo>();
+                if (lista.Where(x => x.Vehiculo.ProductoId == ordenes.Vehiculo.ProductoId).Count() > 1)
+                {
+                    var mismoProdDifDist = lista.Where(x => x.Vehiculo.ProductoId == ordenes.Vehiculo.ProductoId).OrderByDescending(x => x.PrecioOrden);
+                    int index = 0;
+                    foreach (var elem in mismoProdDifDist)
+                    {
+                        if (index == 0)
+                        {
+                            index++;
+                            continue;
+                        }
+                        lista.Remove(elem);
+
+                        index++;
+                    }
+                }
+            }
+
+            /*List<OrdenVehiculo> listatemp = new List<OrdenVehiculo>();
             var arr = new OrdenVehiculo[lista.Count];
             lista.CopyTo(arr);
             listatemp = arr.ToList();
@@ -1031,32 +1073,17 @@ namespace GoTravelTour.Controllers
                     }
 
                 }
-            }
 
 
 
 
-            int count = 0;
-            while (count < lista.Count)
-            {
-                lista[count].Distribuidor.ListaProductosDistribuidos = null;
-                lista[count].Orden = null;
-                lista[count].Sobreprecio = null;
-                lista[count].Vehiculo.ListaCategorias = null;
-                lista[count].Vehiculo.ListaDistribuidoresProducto = null;
-                lista[count].Vehiculo.Marca = null;
-                lista[count].Voucher = null;
-                lista[count].Vehiculo.Modelo = null;
-                lista[count].LugarRecogida = null;
-                lista[count].LugarEntrega = null;
-                var ordenes = lista[count];
-                if (!EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaRecogida) || !EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaEntrega))
-                {
-                    lista.Remove(ordenes);
-                    count--;
-                }
-                count++;
-            }
+            }*/
+
+          
+
+
+
+
 
             /*foreach(var item in lista)
             {
