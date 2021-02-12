@@ -1065,6 +1065,8 @@ namespace GoTravelTour.Controllers
                             OrdenAlojamientoPrecioAlojamiento ovpra = new OrdenAlojamientoPrecioAlojamiento();
 
                             ovpra.PrecioAlojamiento = p;
+                            if(ov.ListaPrecioAlojamientos==null)
+                                ov.ListaPrecioAlojamientos = new List<OrdenAlojamientoPrecioAlojamiento>();
                             ov.ListaPrecioAlojamientos.Add(ovpra);
 
                             ov.Distribuidor = p.Temporada.Contrato.Distribuidor;
