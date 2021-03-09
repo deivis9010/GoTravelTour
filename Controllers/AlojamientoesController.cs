@@ -1222,7 +1222,7 @@ namespace GoTravelTour.Controllers
             int count = 0;
             while(count < lista.Count) {
                 var ordenes = lista[count];
-                if (!EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Entrada) || !EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Salida))
+                if (ordenes.OrdenAlojamientoId != -1 && (!EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Entrada) || !EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Salida)))
                 {
                     lista.Remove(ordenes);
                     count--;
