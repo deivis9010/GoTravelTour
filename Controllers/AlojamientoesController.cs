@@ -1868,5 +1868,24 @@ namespace GoTravelTour.Controllers
             return false;
         }
 
+
+
+
+        // GET: api/Alojamientoes/Todos
+        [Route("Todos")]
+        [HttpGet]
+        public IEnumerable<Alojamiento> GetAlojamientoesTodos()
+        {
+
+            IEnumerable<Alojamiento> lista;
+
+            lista = _context.Alojamientos
+                .ToList();
+
+
+
+            return lista;
+        }
+
     }
 }
