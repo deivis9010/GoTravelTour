@@ -1154,6 +1154,10 @@ namespace GoTravelTour.Controllers
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (buscador.CantidadAdultos /*+ buscador.CantidadMenores + buscador.CantidadInfantes*/) * DiasRestantes;
                             }
+                            else
+                            {
+                                ov.OrdenAlojamientoId = -2;
+                            }
 
                         }
 
@@ -1264,9 +1268,13 @@ namespace GoTravelTour.Controllers
                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
                         }
+                        else
+                        {
+                            ov.OrdenAlojamientoId = -2;
+                        }
 
 
-                            GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
+                        GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
                        
                     }
                     else
@@ -1309,6 +1317,10 @@ namespace GoTravelTour.Controllers
                         {
                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
+                        }
+                        else
+                        {
+                            ov.OrdenAlojamientoId = -2;
                         }
                         GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
                     }
@@ -1355,6 +1367,10 @@ namespace GoTravelTour.Controllers
                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
                         }
+                        else
+                        {
+                            ov.OrdenAlojamientoId = -2;
+                        }
                         GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
                        
                     }
@@ -1381,6 +1397,10 @@ namespace GoTravelTour.Controllers
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
                             }
+                            else
+                            {
+                                ov.OrdenAlojamientoId = -2;
+                            }
                             GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
                            
                         }
@@ -1405,6 +1425,10 @@ namespace GoTravelTour.Controllers
                             {
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
+                            }
+                            else
+                            {
+                                ov.OrdenAlojamientoId = -2;
                             }
 
                             GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
@@ -1431,6 +1455,10 @@ namespace GoTravelTour.Controllers
                             {
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
+                            }
+                            else
+                            {
+                                ov.OrdenAlojamientoId = -2;
                             }
                             GetPrecioAlojamientoSegunModificadoresByHabitacion(buscador, ov, ref cantDias, ref cantAdultosAux, ref cantNinoAux, ref cantInfanteAux, modificadores, ref md, precioBase, rf, ContratoBase);
 
