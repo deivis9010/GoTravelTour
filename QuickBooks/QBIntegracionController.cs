@@ -3232,7 +3232,12 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
-            string EXISTING_INVOICE_QUERYBYID = string.Format("select * from Estimate where id = '{0}'", orden.IdEstimadoQB);
+            string EXISTING_INVOICE_QUERYBYID = "";
+            if (orden.IdEstimadoQB != 0)
+                EXISTING_INVOICE_QUERYBYID = string.Format("select * from Estimate where id = '{0}'", orden.IdEstimadoQB);
+            else
+                EXISTING_INVOICE_QUERYBYID = string.Format("select * from Estimate where DocNumber = '{0}'", orden.NumeroOrden);
+            //string EXISTING_INVOICE_QUERYBYID = string.Format("select * from Estimate where id = '{0}'", orden.IdEstimadoQB);
             var queryService = new QueryService<Estimate>(serviceContext);
             Estimate objEstimateFound = queryService.ExecuteIdsQuery(EXISTING_INVOICE_QUERYBYID).FirstOrDefault<Estimate>();
             //If Invoice found on Quickbooks online
@@ -4034,7 +4039,13 @@ namespace GoTravelTour.QuickBooks
             serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
             serviceContext.IppConfiguration.BaseUrl.Qbo = QboBaseUrl;
 
-            string EXISTING_INVOICE_QUERYBYID = string.Format("select * from Invoice where id = '{0}'", orden.IdInvoiceQB);
+            string EXISTING_INVOICE_QUERYBYID = "";
+            if (orden.IdInvoiceQB != 0)
+                EXISTING_INVOICE_QUERYBYID = string.Format("select * from Invoice where id = '{0}'", orden.IdInvoiceQB);
+            else
+                EXISTING_INVOICE_QUERYBYID = string.Format("select * from Invoice where DocNumber = '{0}'", orden.NumeroOrden);
+           
+            //string EXISTING_INVOICE_QUERYBYID = string.Format("select * from Invoice where id = '{0}'", orden.IdInvoiceQB);
             var queryService = new QueryService<Invoice>(serviceContext);
             Invoice objInvoiceFound = queryService.ExecuteIdsQuery(EXISTING_INVOICE_QUERYBYID).FirstOrDefault<Invoice>();
             //If Invoice found on Quickbooks online
@@ -5077,8 +5088,11 @@ namespace GoTravelTour.QuickBooks
                         VendorRef = agregarVendorProveedor(item.Distribuidor, serviceContext);
                     }
 
-
-                    string EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    string EXISTING_BILL_QUERYBYID = "";
+                    if (item.IdBillQB != 0)
+                        EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    else
+                        EXISTING_BILL_QUERYBYID = string.Format("select * from bill where DocNumber = '{0}'", orden.NumeroOrden);
                     var queryService = new QueryService<Bill>(serviceContext);
                     Bill objBillFound = queryService.ExecuteIdsQuery(EXISTING_BILL_QUERYBYID).FirstOrDefault<Bill>();
                     //If Bill found on Quickbooks online
@@ -5203,7 +5217,11 @@ namespace GoTravelTour.QuickBooks
                     {
                         VendorRef = agregarVendorProveedor(item.Distribuidor, serviceContext);
                     }
-                    string EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    string EXISTING_BILL_QUERYBYID = "";
+                    if (item.IdBillQB != 0)
+                        EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    else
+                        EXISTING_BILL_QUERYBYID = string.Format("select * from bill where DocNumber = '{0}'", orden.NumeroOrden);
                     var queryService = new QueryService<Bill>(serviceContext);
                     Bill objBillFound = queryService.ExecuteIdsQuery(EXISTING_BILL_QUERYBYID).FirstOrDefault<Bill>();
                     //If Bill found on Quickbooks online
@@ -5329,7 +5347,11 @@ namespace GoTravelTour.QuickBooks
                     {
                         VendorRef = agregarVendorProveedor(item.Distribuidor, serviceContext);
                     }
-                    string EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    string EXISTING_BILL_QUERYBYID = "";
+                    if(item.IdBillQB != 0)
+                      EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    else
+                      EXISTING_BILL_QUERYBYID = string.Format("select * from bill where DocNumber = '{0}'", orden.NumeroOrden);
                     var queryService = new QueryService<Bill>(serviceContext);
                     Bill objBillFound = queryService.ExecuteIdsQuery(EXISTING_BILL_QUERYBYID).FirstOrDefault<Bill>();
                     //If Bill found on Quickbooks online
@@ -5447,7 +5469,11 @@ namespace GoTravelTour.QuickBooks
                     {
                         VendorRef = agregarVendorProveedor(item.Distribuidor, serviceContext);
                     }
-                    string EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    string EXISTING_BILL_QUERYBYID = "";
+                    if (item.IdBillQB != 0)
+                        EXISTING_BILL_QUERYBYID = string.Format("select * from bill where id = '{0}'", item.IdBillQB);
+                    else
+                        EXISTING_BILL_QUERYBYID = string.Format("select * from bill where DocNumber = '{0}'", orden.NumeroOrden);
                     var queryService = new QueryService<Bill>(serviceContext);
                     Bill objBillFound = queryService.ExecuteIdsQuery(EXISTING_BILL_QUERYBYID).FirstOrDefault<Bill>();
                     //If Bill found on Quickbooks online

@@ -1226,11 +1226,52 @@ namespace GoTravelTour.Controllers
             int count = 0;
             while(count < lista.Count) {
                 var ordenes = lista[count];
-                if (ordenes.OrdenAlojamientoId != -1 && (!EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Entrada) || !EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Salida)))
+
+
+                foreach (var item in ordenes.ListaPrecioAlojamientos)
                 {
-                    lista.Remove(ordenes);
-                    count--;
+                    int formacobro = item.PrecioAlojamiento.Temporada.Contrato.FormaCobro; // 2 - por dia 1 - PrimeraTemp 3 - UltimaTemp
+                    if (formacobro == 2)
+                    {
+                        if (ordenes.OrdenAlojamientoId != -1 && (!EsContratoValidoSegunFecha(item, buscador.Entrada) || !EsContratoValidoSegunFecha(item, buscador.Salida)))
+                        {
+                            lista.Remove(ordenes);
+                            count--;
+                           
+                            break;
+                        }
+                    }
+                    else
+                    if (formacobro == 1)
+                    {
+                        if (ordenes.OrdenAlojamientoId != -1 && !EsContratoValidoSegunFecha(item, buscador.Entrada))
+                        {
+                            lista.Remove(ordenes);
+                            count--;
+                            
+                            break;
+                        }
+                    }
+                    else
+                    if (formacobro == 3)
+                    {
+                        if (ordenes.OrdenAlojamientoId != -1 &&  !EsContratoValidoSegunFecha(item, buscador.Salida))
+                        {
+                            lista.Remove(ordenes);
+                            count--;
+                            
+                            break;
+                        }
+                    }
+
                 }
+
+
+                //if (ordenes.OrdenAlojamientoId != -1 && (!EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Entrada) || !EsContratoValidoSegunFecha(ordenes.ListaPrecioAlojamientos, buscador.Salida)))
+                //{
+                //    lista.Remove(ordenes);
+                //    count--;
+                //}
                 count++;
             }
 
@@ -1917,22 +1958,20 @@ namespace GoTravelTour.Controllers
 
 
 
-        private bool EsContratoValidoSegunFecha(List<OrdenAlojamientoPrecioAlojamiento> ListaPrecioAlojamientos, DateTime fecha)
-        {
-            foreach(var item in ListaPrecioAlojamientos)
-            {
-                List<RangoFechas> rangos = item.PrecioAlojamiento.Temporada.ListaFechasTemporada;
+       
 
-                foreach(var fec in rangos)
-                {
-                    if (fec.FechaInicio <= fecha && fecha <= fec.FechaFin)
-                        return true;
-                }
+        private bool EsContratoValidoSegunFecha(OrdenAlojamientoPrecioAlojamiento item, DateTime fecha)
+        {
+            List<RangoFechas> rangos = item.PrecioAlojamiento.Temporada.ListaFechasTemporada;
+
+            foreach (var fec in rangos)
+            {
+                if (fec.FechaInicio <= fecha && fecha <= fec.FechaFin)
+                    return true;
             }
+
             return false;
         }
-
-
 
 
         // GET: api/Alojamientoes/Todos

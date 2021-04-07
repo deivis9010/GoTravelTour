@@ -1021,12 +1021,45 @@ namespace GoTravelTour.Controllers
                 lista[count].LugarEntrega = null;
                 var ordenes = lista[count];
                 bool stop = false;
-                if (!EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaRecogida) || !EsContratoValidoSegunFecha(ordenes.ListaPreciosRentaAutos, buscador.FechaEntrega))
+
+                foreach (var item in ordenes.ListaPreciosRentaAutos)
                 {
-                    lista.Remove(ordenes);
-                    count--;
-                    stop = true;
+                    int formacobro = item.PrecioRentaAutos.Temporada.Contrato.FormaCobro; // 2 - por dia 1 - PrimeraTemp 3 - UltimaTemp
+                    if(formacobro == 2)
+                    {
+                        if (!EsContratoValidoSegunFecha(item, buscador.FechaRecogida) || !EsContratoValidoSegunFecha(item, buscador.FechaEntrega))
+                        {
+                            lista.Remove(ordenes);
+                            count--;
+                            stop = true;
+                            break;
+                        }
+                    }
+                    else
+                    if (formacobro == 1)
+                    {
+                        if (!EsContratoValidoSegunFecha(item, buscador.FechaRecogida) )
+                        {
+                            lista.Remove(ordenes);
+                            count--;
+                            stop = true;
+                            break;
+                        }
+                    }
+                    else
+                    if (formacobro == 3)
+                    {
+                        if (!EsContratoValidoSegunFecha(item, buscador.FechaEntrega))
+                        {
+                            lista.Remove(ordenes);
+                            count--;
+                            stop = true;
+                            break;
+                        }
+                    }
+
                 }
+                   
                 count++;
                 if (stop)
                     continue;
@@ -1681,18 +1714,16 @@ namespace GoTravelTour.Controllers
 
 
 
-        private bool EsContratoValidoSegunFecha(List<OrdenVehiculoPrecioRentaAuto> ListaPreciosRentaAutos, DateTime fecha)
+        private bool EsContratoValidoSegunFecha(OrdenVehiculoPrecioRentaAuto item, DateTime fecha)
         {
-            foreach (var item in ListaPreciosRentaAutos)
-            {
-                List<RangoFechas> rangos = item.PrecioRentaAutos.Temporada.ListaFechasTemporada;
+            List<RangoFechas> rangos = item.PrecioRentaAutos.Temporada.ListaFechasTemporada;
 
-                foreach (var fec in rangos)
-                {
-                    if (fec.FechaInicio <= fecha && fecha <= fec.FechaFin)
-                        return true;
-                }
+            foreach (var fec in rangos)
+            {
+                if (fec.FechaInicio <= fecha && fecha <= fec.FechaFin)
+                    return true;
             }
+            
             return false;
         }
 
