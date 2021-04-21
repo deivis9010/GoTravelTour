@@ -539,5 +539,17 @@ namespace GoTravelTour.Controllers
 
         }
 
+
+        // GET: api/Usuarios/Clientes
+        [HttpGet]
+        [Route("Clientes")]
+        public IEnumerable<Usuario> GetUsuariosByCliente(int idCliente = -1)
+        {
+            IEnumerable<Usuario> lista = new List<Usuario>();
+            lista = _context.Usuarios.Include(c => c.cliente).Include(r => r.rol).Where(x => x.cliente.ClienteId == idCliente);
+            return lista;
+
+        }
+
     }
 }

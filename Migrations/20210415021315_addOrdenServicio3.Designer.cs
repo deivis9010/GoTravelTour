@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210415021315_addOrdenServicio3")]
+    partial class addOrdenServicio3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -700,22 +702,16 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("NumeroOrden");
 
-                    b.Property<string>("NumeroPasaporte");
-
                     b.Property<bool>("OFACrequired");
 
                     b.Property<decimal>("PrecioGeneralOrden")
                         .HasColumnType("decimal(18,4)");
-
-                    b.Property<int?>("UsuarioCreadorUsuarioId");
 
                     b.HasKey("OrdenId");
 
                     b.HasIndex("ClienteId");
 
                     b.HasIndex("CreadorUsuarioId");
-
-                    b.HasIndex("UsuarioCreadorUsuarioId");
 
                     b.ToTable("Orden");
                 });
@@ -2270,10 +2266,6 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.Usuario", "Creador")
                         .WithMany()
                         .HasForeignKey("CreadorUsuarioId");
-
-                    b.HasOne("GoTravelTour.Models.Usuario", "UsuarioCreador")
-                        .WithMany()
-                        .HasForeignKey("UsuarioCreadorUsuarioId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenActividad", b =>

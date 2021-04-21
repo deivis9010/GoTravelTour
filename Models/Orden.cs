@@ -45,5 +45,7 @@ namespace GoTravelTour.Models
         public bool InvoiceCreated { get; set; }
         public bool EstimatedCreated { get; set; }
         public bool BillCreated { get; set; }
+        public string NumeroPasaporte { get; set; }
+       
     }
 }

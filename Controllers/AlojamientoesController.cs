@@ -1146,10 +1146,10 @@ namespace GoTravelTour.Controllers
                                 ov.PrecioOrden += DiasRestantes * precioBase * (buscador.CantidadAdultos /*+ buscador.CantidadMenores + buscador.CantidadInfantes*/);
 
 
-                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == alojamiento.ProductoId &&
+                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == alojamiento.ProductoId &&
                                   x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x=>x.PlanesAlimenticios.Codigo.Equals("TI"))))
                             {
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (buscador.CantidadAdultos /*+ buscador.CantidadMenores + buscador.CantidadInfantes*/) * DiasRestantes;
@@ -1163,7 +1163,7 @@ namespace GoTravelTour.Controllers
 
 
 
-                        //List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == alojamiento.ProductoId &&
+                        //List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == alojamiento.ProductoId &&
                         //    x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId== ContratoBase).ToList();
 
                         //if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any())
@@ -1301,10 +1301,10 @@ namespace GoTravelTour.Controllers
                     if (sePagaPorHabitacion)
                     {
                         ov.PrecioOrden += cantDias * precioBase;
-                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                         {
                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
@@ -1351,10 +1351,10 @@ namespace GoTravelTour.Controllers
                     if (sePagaPorHabitacion)
                     {
                         ov.PrecioOrden += cantDias * precioBase;
-                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                         {
                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
@@ -1400,10 +1400,10 @@ namespace GoTravelTour.Controllers
                     if(sePagaPorHabitacion)
                     {
                         ov.PrecioOrden += cantDias * precioBase;
-                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                         {
                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
@@ -1430,10 +1430,10 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += cantDias * precioBase;
-                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                             {
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
@@ -1459,10 +1459,10 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += cantDias * precioBase;
-                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                             {
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
@@ -1489,10 +1489,10 @@ namespace GoTravelTour.Controllers
                         if (sePagaPorHabitacion)
                         {
                             ov.PrecioOrden += cantDias * precioBase;
-                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                            List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                            if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                             {
                                 var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                 ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * cantAdultosAux;
@@ -1610,10 +1610,10 @@ namespace GoTravelTour.Controllers
                                     {
 
                                         ov.PrecioOrden += cantDias * precioBase * r.PrecioPorCiento / 100;
-                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                          x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                         {
                                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias * r.PrecioPorCiento / 100;
@@ -1626,10 +1626,10 @@ namespace GoTravelTour.Controllers
                                     else
                                     {
                                         ov.PrecioOrden += cantDias * r.PrecioFijo;
-                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                         {
                                             var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias;
@@ -1644,10 +1644,10 @@ namespace GoTravelTour.Controllers
                                 else
                                 {
                                     ov.PrecioOrden += cantDias * precioBase;
-                                    List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                    List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                        x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                    if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                    if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                     {
                                         var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                         ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias;
@@ -1668,10 +1668,10 @@ namespace GoTravelTour.Controllers
                                     if (r.PrecioPorCiento != 0)
                                     {
                                         ov.PrecioOrden += cantDias * precioBase * r.PrecioPorCiento / 100;
-                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * 1 * cantDias * r.PrecioPorCiento / 100;
                                         else
                                         {
@@ -1681,10 +1681,10 @@ namespace GoTravelTour.Controllers
                                     else
                                     {
                                         ov.PrecioOrden += cantDias * r.PrecioFijo;
-                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * 1 * cantDias * 1/2; //SI precio fijo se aplica el 50%
                                         else
                                         {
@@ -1696,10 +1696,10 @@ namespace GoTravelTour.Controllers
                                 else
                                 {
                                     ov.PrecioOrden += cantDias * precioBase;
-                                    List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                    List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                        x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                    if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                    if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                     {
                                         var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                                         ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * (1) * cantDias;
@@ -1745,10 +1745,10 @@ namespace GoTravelTour.Controllers
             {
                 ov.PrecioOrden += cantTotaldiasResta * precioBase * (/*cantNinoAux + cantInfanteAux +*/ cantAdultosAux);
 
-                List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                         x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                 {
                     var precioPLAn = preciosPlanesAlimen.Sum(x => x.Precio);
                     ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * cantAdultosAux * cantTotaldiasResta;
@@ -1881,10 +1881,10 @@ namespace GoTravelTour.Controllers
                                         ov.PrecioOrden += cantDias * precioBase * r.PrecioPorCiento / 100;
                                        
 
-                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                        x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * 1 * cantDias * r.PrecioPorCiento / 100;
                                         else
                                         {
@@ -1896,10 +1896,10 @@ namespace GoTravelTour.Controllers
                                     {
                                         ov.PrecioOrden += cantDias * r.PrecioFijo;
                                         
-                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
+                                        List<PrecioPlanesAlimenticios> preciosPlanesAlimen = _context.PrecioPlanesAlimenticios.Include(x=>x.PlanesAlimenticios).OrderByDescending(x => x.Precio).Where(x => x.ProductoId == ov.Alojamiento.ProductoId &&
                                        x.PlanesAlimenticiosId == buscador.PlanAlimenticio.PlanesAlimenticiosId && x.ContratoDelPrecio.ContratoId == ContratoBase).ToList();
 
-                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && preciosPlanesAlimen.Sum(x => x.Precio) > 0)
+                                        if (preciosPlanesAlimen != null && preciosPlanesAlimen.Any() && (preciosPlanesAlimen.Sum(x => x.Precio) > 0 || preciosPlanesAlimen.Any(x => x.PlanesAlimenticios.Codigo.Equals("TI"))))
                                             ov.PrecioOrden += preciosPlanesAlimen.Sum(x => x.Precio) * 1 * cantDias * 1 / 2; //SI precio fijo se aplica el 50%
                                         else
                                         {
