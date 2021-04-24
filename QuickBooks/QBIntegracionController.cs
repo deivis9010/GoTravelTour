@@ -3567,11 +3567,12 @@ namespace GoTravelTour.QuickBooks
                     objLine.Amount = precio;
                     var ca = item.CantidadAdultos.ToString();
                     var cm = (item.CantidadInfantes + item.CantidadNinos).ToString();
-                    objLine.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                    objLine.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
                                           "Adults: " + ca + ". " +
-                                          "Childs:  " + cm + ". ";
-                                          
+                                          "Childs:  " + cm + ". ";*/
+
+
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
@@ -4020,10 +4021,10 @@ namespace GoTravelTour.QuickBooks
                         objLine.Amount = precio;
                         var ca = item.CantidadAdultos.ToString();
                         var cm = (item.CantidadInfantes + item.CantidadNinos).ToString();
-                        objLine.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                        objLine.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
-                                              "Adults: " + ca + ". " +
-                                              "Childs:  " + cm + ". ";
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";*/
 
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
@@ -4461,10 +4462,10 @@ namespace GoTravelTour.QuickBooks
                     objLine.Amount = precio;
                     var ca = item.CantidadAdultos.ToString();
                     var cm = (item.CantidadInfantes + item.CantidadNinos).ToString();
-                    objLine.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                    objLine.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
                                           "Adults: " + ca + ". " +
-                                          "Childs:  " + cm + ". ";
+                                          "Childs:  " + cm + ". ";*/
 
                     SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                     salesItemLineDetail.QtySpecified = true;
@@ -4914,10 +4915,10 @@ namespace GoTravelTour.QuickBooks
                         objLine.Amount = precio;
                         var ca = item.CantidadAdultos.ToString();
                         var cm = (item.CantidadInfantes + item.CantidadNinos).ToString();
-                        objLine.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                        objLine.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
-                                              "Adults: " + ca + ". " +
-                                              "Childs:  " + cm + ". ";
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";*/
 
                         SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
                         salesItemLineDetail.QtySpecified = true;
@@ -5603,10 +5604,10 @@ namespace GoTravelTour.QuickBooks
                     objLine.Amount = 0;// precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     var ca = item.CantidadAdultos.ToString();
                     var cm = (item.CantidadInfantes + item.CantidadNinos ).ToString();
-                    objLine.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                    objLine.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
-                                           "Adults: " + ca + ". " +
-                                           "Childs:  " + cm + ". ";
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";*/
 
                     AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                     ItemLineDetail.AccountRef = new ReferenceType();
@@ -5634,19 +5635,19 @@ namespace GoTravelTour.QuickBooks
                     objLine1.DetailTypeSpecified = true;
                     objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                     objLine1.AmountSpecified = true;
-                    objLine1.Amount = precio; //- item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                    objLine1.Amount = precio - item.ValorSobreprecioAplicado;//- (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
-                    objLine1.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                    objLine1.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
-                                           "Adults: " + ca + ". " +
-                                           "Childs:  " + cm + ". ";
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";*/
                     ItemBasedExpenseLineDetail salesItemLineDetail = new ItemBasedExpenseLineDetail();
                     salesItemLineDetail.QtySpecified = true;
                     salesItemLineDetail.Qty = 1;
                     salesItemLineDetail.ItemRef = new ReferenceType();
 
 
-                    salesItemLineDetail.AnyIntuitObject = precio;//- item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                    salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado;// - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                     salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
@@ -6396,10 +6397,10 @@ namespace GoTravelTour.QuickBooks
                         objLine.Amount = 0;//precio - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         var ca = item.CantidadAdultos.ToString();
                         var cm = (item.CantidadInfantes + item.CantidadNinos).ToString();
-                        objLine.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+                        objLine.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
-                                               "Adults: " + ca + ". " +
-                                               "Childs:  " + cm + ". ";
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";*/
 
                         AccountBasedExpenseLineDetail ItemLineDetail = new AccountBasedExpenseLineDetail();
                         ItemLineDetail.AccountRef = new ReferenceType();
@@ -6421,13 +6422,13 @@ namespace GoTravelTour.QuickBooks
                         objLine1.DetailTypeSpecified = true;
                         objLine1.DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail;
                         objLine1.AmountSpecified = true;
-                        objLine1.Amount = precio;// - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                        objLine1.Amount = precio - item.ValorSobreprecioAplicado;// - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
 
-                       
-                        objLine1.Description = item.ServicioAdicional.Nombre + ": " + item.Descripcion +
 
-                                               "Adults: " + ca + ". " +
-                                               "Childs:  " + cm + ". ";
+                        objLine1.Description = item.Descripcion;/*item.ServicioAdicional.Nombre + ": " + item.Descripcion +
+
+                                          "Adults: " + ca + ". " +
+                                          "Childs:  " + cm + ". ";*/
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
                         string EXISTING_ITEM_QUERYBYNAMEITEMPROD = string.Format("select * from Item where Id = '{0}' ", item.ServicioAdicional.IdQB);
@@ -6443,7 +6444,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.ItemRef.Value = itemProduct.Id; //Quickbooks online Item Id
 
-                        salesItemLineDetail.AnyIntuitObject = precio;// - item.ValorSobreprecioAplicado - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
+                        salesItemLineDetail.AnyIntuitObject = precio - item.ValorSobreprecioAplicado;// - (item.ValorSobreprecioAplicado * orden.Cliente.Descuento / 100);
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
 
                         objLine1.AnyIntuitObject = salesItemLineDetail;
