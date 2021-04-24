@@ -24,8 +24,10 @@ namespace GoTravelTour.Models
         //public int RegionId { get; set; }
         //public int PuntoInteresId { get; set; }
         public int TipoProductoId { get; set; }
-        public string Notas { get; set; }        
-       // public Region Region { get; set; }
+        public string Notas { get; set; }
+
+        public string Icono { get; set; }
+        // public Region Region { get; set; }
         public PuntoInteres PuntoInteres { get; set; }
         public TipoProducto TipoProducto { get; set; }
         public Proveedor Proveedor { get; set; }

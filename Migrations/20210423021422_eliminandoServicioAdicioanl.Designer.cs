@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210423021422_eliminandoServicioAdicioanl")]
+    partial class eliminandoServicioAdicioanl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -929,10 +931,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("Descripcion");
 
-                    b.Property<int>("DistribuidorId");
-
-                    b.Property<int>("IdBillQB");
-
                     b.Property<int>("OrdenId");
 
                     b.Property<decimal>("PrecioAdultos");
@@ -941,19 +939,13 @@ namespace GoTravelTour.Migrations
 
                     b.Property<decimal>("PrecioNinos");
 
-                    b.Property<decimal>("PrecioOrden");
-
                     b.Property<int>("ServicioAdicionalId");
 
                     b.Property<string>("TipoViaje");
 
                     b.HasKey("OrdenServicioAdicionalId");
 
-                    b.HasIndex("DistribuidorId");
-
                     b.HasIndex("OrdenId");
-
-                    b.HasIndex("ServicioAdicionalId");
 
                     b.ToTable("OrdenServicioAdicional");
                 });
@@ -1829,19 +1821,6 @@ namespace GoTravelTour.Migrations
                     b.ToTable("TipoServicio");
                 });
 
-            modelBuilder.Entity("GoTravelTour.Models.TipoServicioAdicional", b =>
-                {
-                    b.Property<int>("TipoServicioAdicionalId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nombre");
-
-                    b.HasKey("TipoServicioAdicionalId");
-
-                    b.ToTable("TipoServicioAdicional");
-                });
-
             modelBuilder.Entity("GoTravelTour.Models.TipoTransporte", b =>
                 {
                     b.Property<int>("TipoTransporteId")
@@ -2038,27 +2017,6 @@ namespace GoTravelTour.Migrations
                     b.ToTable("Alojamiento");
 
                     b.HasDiscriminator().HasValue("Alojamiento");
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.ServicioAdicional", b =>
-                {
-                    b.HasBaseType("GoTravelTour.Models.Producto");
-
-                    b.Property<DateTime?>("FechaFin");
-
-                    b.Property<DateTime>("FechaInicio");
-
-                    b.Property<int>("ServicioAdicionalId");
-
-                    b.Property<int>("TipoServicioAdicionalId");
-
-                    b.Property<string>("TipoViajeBoleto");
-
-                    b.HasIndex("TipoServicioAdicionalId");
-
-                    b.ToTable("ServicioAdicional");
-
-                    b.HasDiscriminator().HasValue("ServicioAdicional");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.Traslado", b =>
@@ -2401,19 +2359,9 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenServicioAdicional", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Distribuidor", "Distribuidor")
-                        .WithMany()
-                        .HasForeignKey("DistribuidorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("GoTravelTour.Models.Orden", "Orden")
-                        .WithMany("ListaOrdenServicioAdicional")
-                        .HasForeignKey("OrdenId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GoTravelTour.Models.ServicioAdicional", "ServicioAdicional")
                         .WithMany()
-                        .HasForeignKey("ServicioAdicionalId")
+                        .HasForeignKey("OrdenId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -2774,14 +2722,6 @@ namespace GoTravelTour.Migrations
                     b.HasOne("GoTravelTour.Models.TipoAlojamiento", "TipoAlojamiento")
                         .WithMany()
                         .HasForeignKey("TipoAlojamientoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GoTravelTour.Models.ServicioAdicional", b =>
-                {
-                    b.HasOne("GoTravelTour.Models.TipoServicioAdicional", "TipoServicioAdicional")
-                        .WithMany()
-                        .HasForeignKey("TipoServicioAdicionalId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

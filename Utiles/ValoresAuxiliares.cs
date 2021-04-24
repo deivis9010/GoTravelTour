@@ -30,9 +30,10 @@ namespace GoTravelTour.Utiles
         public static string MODFICADOR_TIPOPERSONA_ADULTO = "Adult";
         public static string MODFICADOR_TIPOPERSONA_NINO = "Child";
         public static string MODFICADOR_TIPOPERSONA_INFANTE = "Infant";
-        public static string TIPO_VIAJE_IDA = "Infant";
-        public static string TIPO_VIAJE_VUELTA = "Infant";
-        public static string TIPO_VIAJE_IDAVUELTA = "Infant";
+        public static string TIPO_VIAJE_IDA = "I";
+        public static string TIPO_VIAJE_VUELTA = "V";
+        public static string TIPO_VIAJE_IDAVUELTA = "IV";
+        public static string SERVICE = "Service";
 
 
 

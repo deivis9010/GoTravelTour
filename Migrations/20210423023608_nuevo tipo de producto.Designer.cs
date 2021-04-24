@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210423023608_nuevo tipo de producto")]
+    partial class nuevotipodeproducto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -929,10 +931,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<string>("Descripcion");
 
-                    b.Property<int>("DistribuidorId");
-
-                    b.Property<int>("IdBillQB");
-
                     b.Property<int>("OrdenId");
 
                     b.Property<decimal>("PrecioAdultos");
@@ -941,15 +939,11 @@ namespace GoTravelTour.Migrations
 
                     b.Property<decimal>("PrecioNinos");
 
-                    b.Property<decimal>("PrecioOrden");
-
                     b.Property<int>("ServicioAdicionalId");
 
                     b.Property<string>("TipoViaje");
 
                     b.HasKey("OrdenServicioAdicionalId");
-
-                    b.HasIndex("DistribuidorId");
 
                     b.HasIndex("OrdenId");
 
@@ -2046,7 +2040,7 @@ namespace GoTravelTour.Migrations
 
                     b.Property<DateTime?>("FechaFin");
 
-                    b.Property<DateTime>("FechaInicio");
+                    b.Property<DateTime?>("FechaInicio");
 
                     b.Property<int>("ServicioAdicionalId");
 
@@ -2401,13 +2395,8 @@ namespace GoTravelTour.Migrations
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenServicioAdicional", b =>
                 {
-                    b.HasOne("GoTravelTour.Models.Distribuidor", "Distribuidor")
-                        .WithMany()
-                        .HasForeignKey("DistribuidorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("GoTravelTour.Models.Orden", "Orden")
-                        .WithMany("ListaOrdenServicioAdicional")
+                        .WithMany()
                         .HasForeignKey("OrdenId")
                         .OnDelete(DeleteBehavior.Cascade);
 

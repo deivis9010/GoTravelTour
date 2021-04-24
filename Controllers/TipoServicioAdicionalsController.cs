@@ -12,32 +12,32 @@ namespace GoTravelTour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServicioAdicionalsController : ControllerBase
+    public class TipoServicioAdicionalsController : ControllerBase
     {
         private readonly GoTravelDBContext _context;
 
-        public ServicioAdicionalsController(GoTravelDBContext context)
+        public TipoServicioAdicionalsController(GoTravelDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/ServicioAdicionals
+        // GET: api/TipoServicioAdicionals
         [HttpGet]
-        public IEnumerable<ServicioAdicional> GetServicioAdicional(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
+        public IEnumerable<TipoServicioAdicional> GetTipoServicioAdicional(string col = "", string filter = "", string sortDirection = "asc", int pageIndex = 1, int pageSize = 1)
         {
-            IEnumerable<ServicioAdicional> lista;
+            IEnumerable<TipoServicioAdicional> lista;
             if (col == "-1")
             {
-                return _context.ServicioAdicional
+                return _context.TipoServicioAdicional
                     .OrderBy(a => a.Nombre).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.ServicioAdicional.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.TipoServicioAdicional.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.ServicioAdicional.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.TipoServicioAdicional.ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -71,49 +71,49 @@ namespace GoTravelTour.Controllers
 
             return lista;
         }
-        // GET: api/ServicioAdicionals/Count
+        // GET: api/TipoServicioAdicionals/Count
         [Route("Count")]
         [HttpGet]
-        public int GetServicioAdicionalsCount()
+        public int GetTipoServicioAdicionalsCount()
         {
-            return _context.ServicioAdicional.Count();
+            return _context.TipoServicioAdicional.Count();
         }
 
 
-        // GET: api/ServicioAdicionals/5
+        // GET: api/TipoServicioAdicionals/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetServicioAdicional([FromRoute] int id)
+        public async Task<IActionResult> GetTipoServicioAdicional([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var servicioAdicional = await _context.ServicioAdicional.FindAsync(id);
+            var tipoServicioAdicional = await _context.TipoServicioAdicional.FindAsync(id);
 
-            if (servicioAdicional == null)
+            if (tipoServicioAdicional == null)
             {
                 return NotFound();
             }
 
-            return Ok(servicioAdicional);
+            return Ok(tipoServicioAdicional);
         }
 
-        // PUT: api/ServicioAdicionals/5
+        // PUT: api/TipoServicioAdicionals/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutServicioAdicional([FromRoute] int id, [FromBody] ServicioAdicional servicioAdicional)
+        public async Task<IActionResult> PutTipoServicioAdicional([FromRoute] int id, [FromBody] TipoServicioAdicional tipoServicioAdicional)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != servicioAdicional.ProductoId)
+            if (id != tipoServicioAdicional.TipoServicioAdicionalId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(servicioAdicional).State = EntityState.Modified;
+            _context.Entry(tipoServicioAdicional).State = EntityState.Modified;
 
             try
             {
@@ -121,7 +121,7 @@ namespace GoTravelTour.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ServicioAdicionalExists(id))
+                if (!TipoServicioAdicionalExists(id))
                 {
                     return NotFound();
                 }
@@ -131,48 +131,48 @@ namespace GoTravelTour.Controllers
                 }
             }
 
-            return Ok(servicioAdicional); ;
+            return Ok(tipoServicioAdicional);
         }
 
-        // POST: api/ServicioAdicionals
+        // POST: api/TipoServicioAdicionals
         [HttpPost]
-        public async Task<IActionResult> PostServicioAdicional([FromBody] ServicioAdicional servicioAdicional)
+        public async Task<IActionResult> PostTipoServicioAdicional([FromBody] TipoServicioAdicional tipoServicioAdicional)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.ServicioAdicional.Add(servicioAdicional);
+            _context.TipoServicioAdicional.Add(tipoServicioAdicional);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetServicioAdicional", new { id = servicioAdicional.ProductoId }, servicioAdicional);
+            return CreatedAtAction("GetTipoServicioAdicional", new { id = tipoServicioAdicional.TipoServicioAdicionalId }, tipoServicioAdicional);
         }
 
-        // DELETE: api/ServicioAdicionals/5
+        // DELETE: api/TipoServicioAdicionals/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteServicioAdicional([FromRoute] int id)
+        public async Task<IActionResult> DeleteTipoServicioAdicional([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var servicioAdicional = await _context.ServicioAdicional.FindAsync(id);
-            if (servicioAdicional == null)
+            var tipoServicioAdicional = await _context.TipoServicioAdicional.FindAsync(id);
+            if (tipoServicioAdicional == null)
             {
                 return NotFound();
             }
 
-            _context.ServicioAdicional.Remove(servicioAdicional);
+            _context.TipoServicioAdicional.Remove(tipoServicioAdicional);
             await _context.SaveChangesAsync();
 
-            return Ok(servicioAdicional);
+            return Ok(tipoServicioAdicional);
         }
 
-        private bool ServicioAdicionalExists(int id)
+        private bool TipoServicioAdicionalExists(int id)
         {
-            return _context.ServicioAdicional.Any(e => e.ProductoId == id);
+            return _context.TipoServicioAdicional.Any(e => e.TipoServicioAdicionalId == id);
         }
     }
 }
