@@ -3579,7 +3579,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
                     salesItemLineDetail.AnyIntuitObject = precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
-                    salesItemLineDetail.ServiceDate = item.ServicioAdicional.FechaInicio;
+                    salesItemLineDetail.ServiceDate = item.FechaInicio;
                     salesItemLineDetail.ServiceDateSpecified = true;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -4032,7 +4032,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
-                        salesItemLineDetail.ServiceDate = item.ServicioAdicional.FechaInicio;
+                        salesItemLineDetail.ServiceDate = item.FechaInicio;
                         salesItemLineDetail.ServiceDateSpecified = true;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -4473,7 +4473,7 @@ namespace GoTravelTour.QuickBooks
                     salesItemLineDetail.ItemRef = new ReferenceType();
                     salesItemLineDetail.AnyIntuitObject = precio;
                     salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
-                    salesItemLineDetail.ServiceDate = item.ServicioAdicional.FechaInicio;
+                    salesItemLineDetail.ServiceDate = item.FechaInicio;
                     salesItemLineDetail.ServiceDateSpecified = true;
 
                     QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);
@@ -4926,7 +4926,7 @@ namespace GoTravelTour.QuickBooks
                         salesItemLineDetail.ItemRef = new ReferenceType();
                         salesItemLineDetail.AnyIntuitObject = precio;
                         salesItemLineDetail.ItemElementName = ItemChoiceType.UnitPrice;
-                        salesItemLineDetail.ServiceDate = item.ServicioAdicional.FechaInicio;
+                        salesItemLineDetail.ServiceDate = item.FechaInicio;
                         salesItemLineDetail.ServiceDateSpecified = true;
 
                         QueryService<Item> querySvc1 = new QueryService<Item>(serviceContext);

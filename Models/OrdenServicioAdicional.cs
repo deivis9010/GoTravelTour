@@ -17,7 +17,10 @@ namespace GoTravelTour.Models
         public decimal PrecioNinos { get; set; }
         public decimal PrecioInfantes { get; set; }       
         public string Descripcion { get; set; }
-        public string TipoViaje { get; set; }
+        
+        public DateTime FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
+        public string TipoViajeBoleto { get; set; }
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }
         public int DistribuidorId { get; set; }
