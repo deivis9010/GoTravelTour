@@ -113,6 +113,13 @@ namespace GoTravelTour.Controllers
                 return BadRequest();
             }
 
+           
+
+            if (_context.ServicioAdicional.Any(c => c.Nombre == servicioAdicional.Nombre && c.ProductoId != id && c.ProveedorId == servicioAdicional.ProveedorId))
+            {
+                return CreatedAtAction("GetServicioAdicional", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
+
             _context.Entry(servicioAdicional).State = EntityState.Modified;
 
             try
@@ -142,6 +149,18 @@ namespace GoTravelTour.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (_context.ServicioAdicional.Any(c => c.Nombre == servicioAdicional.Nombre && c.ProveedorId == servicioAdicional.ProveedorId))
+            {
+                return CreatedAtAction("GetServicioAdicional", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
+            }
+            Utiles.Utiles u = new Utiles.Utiles(_context);
+            servicioAdicional.SKU = u.GetSKUCodigo();
+
 
             _context.ServicioAdicional.Add(servicioAdicional);
             await _context.SaveChangesAsync();
