@@ -174,7 +174,8 @@ namespace GoTravelTour.Controllers
                     lista = lista.Where(x => x.ListaActividadOrden.Any(lo=>lo.Actividad.ProveedorId == buscador.ProveedorId)
                     || x.ListaAlojamientoOrden.Any(lo => lo.Alojamiento.ProveedorId == buscador.ProveedorId) 
                     || x.ListaTrasladoOrden.Any(lo => lo.Traslado.ProveedorId == buscador.ProveedorId)
-                    || x.ListaVehiculosOrden.Any(lo => lo.Vehiculo.ProveedorId == buscador.ProveedorId));
+                    || x.ListaVehiculosOrden.Any(lo => lo.Vehiculo.ProveedorId == buscador.ProveedorId)
+                    || x.ListaOrdenServicioAdicional.Any(lo => lo.ServicioAdicional.ProveedorId == buscador.ProveedorId));
                 }
 
                 if (buscador.Estados != null && buscador.Estados.Any())
@@ -331,7 +332,8 @@ namespace GoTravelTour.Controllers
                     lista = lista.Where(x => x.ListaActividadOrden.Any(lo => lo.Actividad.ProveedorId == buscador.ProveedorId)
                     || x.ListaAlojamientoOrden.Any(lo => lo.Alojamiento.ProveedorId == buscador.ProveedorId)
                     || x.ListaTrasladoOrden.Any(lo => lo.Traslado.ProveedorId == buscador.ProveedorId)
-                    || x.ListaVehiculosOrden.Any(lo => lo.Vehiculo.ProveedorId == buscador.ProveedorId));
+                    || x.ListaVehiculosOrden.Any(lo => lo.Vehiculo.ProveedorId == buscador.ProveedorId)
+                    || x.ListaOrdenServicioAdicional.Any(lo => lo.ServicioAdicional.ProveedorId == buscador.ProveedorId));
                 }
 
                 if (buscador.Estados != null && buscador.Estados.Any())
@@ -465,9 +467,15 @@ namespace GoTravelTour.Controllers
                                              .ThenInclude(l => l.Distribuidor).First(r => r.OrdenTrasladoId == x.OrdenTrasladoId));
                 }
 
-            
+            if (ord.ListaOrdenServicioAdicional != null && ord.ListaOrdenServicioAdicional.Any())
+            {
+                ord.ListaOrdenServicioAdicional.ForEach(x => x = _context.OrdenServicioAdicional
+                
+                .Include(d => d.ServicioAdicional).ThenInclude(l => l.ListaDistribuidoresProducto)
+                                         .ThenInclude(l => l.Distribuidor).First(r => r.OrdenServicioAdicionalId == x.OrdenServicioAdicionalId));
+            }
 
-            
+
 
             return Ok(ord);
         }
@@ -707,6 +715,39 @@ namespace GoTravelTour.Controllers
                     _context.OrdenAlojamiento.Add(oal);
                 }
             }
+
+
+
+            List<OrdenServicioAdicional> servAdborrar = _context.OrdenServicioAdicional.Where(x => x.OrdenId == orden.OrdenId).ToList();
+            foreach (var to in servAdborrar)
+            {
+                //orden.PrecioGeneralOrden -= to.PrecioOrden;
+                _context.OrdenServicioAdicional.Remove(to);
+            }
+            if (orden.ListaOrdenServicioAdicional != null)
+            {
+                foreach (var to in orden.ListaOrdenServicioAdicional)
+                {
+                   
+                    to.ServicioAdicional = _context.ServicioAdicional
+                        
+                        .Include(x => x.Proveedor)
+                        
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == to.ServicioAdicional.ProductoId);
+                    to.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == to.DistribuidorId);
+                 
+
+                 
+
+                    orden.PrecioGeneralOrden += to.PrecioOrden;
+                    _context.OrdenServicioAdicional.Add(to);
+
+                }
+            }
+
+
             try
             {
                 _context.Entry(orden).State = EntityState.Modified;
@@ -892,6 +933,31 @@ namespace GoTravelTour.Controllers
 
                     if (oal.Voucher != null)
                         oal.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == oal.Voucher.ConfiguracionVoucherId);
+                }
+            }
+
+
+           
+            if (orden.ListaOrdenServicioAdicional != null)
+            {
+                foreach (var to in orden.ListaOrdenServicioAdicional)
+                {
+
+                    to.ServicioAdicional = _context.ServicioAdicional
+
+                        .Include(x => x.Proveedor)
+
+                        .Include(x => x.TipoProducto)
+                        .Single(x => x.ProductoId == to.ServicioAdicional.ProductoId);
+                    to.Distribuidor = _context.Distribuidores
+                                             .Single(x => x.DistribuidorId == to.DistribuidorId);
+
+
+
+
+                    orden.PrecioGeneralOrden += to.PrecioOrden;
+                    _context.OrdenServicioAdicional.Add(to);
+
                 }
             }
 

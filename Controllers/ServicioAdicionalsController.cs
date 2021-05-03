@@ -28,16 +28,19 @@ namespace GoTravelTour.Controllers
             IEnumerable<ServicioAdicional> lista;
             if (col == "-1")
             {
-                return _context.ServicioAdicional
+                return _context.ServicioAdicional.Include(x => x.Proveedor)
+                .Include(x => x.TipoServicioAdicional).Include(x => x.ListaDistribuidoresProducto)
                     .OrderBy(a => a.Nombre).ToList();
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                lista = _context.ServicioAdicional.Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
+                lista = _context.ServicioAdicional.Include(x => x.Proveedor).Include(x => x.TipoServicioAdicional)
+                .Include(x => x.ListaDistribuidoresProducto).Where(p => (p.Nombre.ToLower().Contains(filter.ToLower()))).ToPagedList(pageIndex, pageSize).ToList(); ;
             }
             else
             {
-                lista = _context.ServicioAdicional.ToPagedList(pageIndex, pageSize).ToList();
+                lista = _context.ServicioAdicional.Include(x => x.Proveedor).Include(x => x.TipoServicioAdicional)
+                .Include(x => x.ListaDistribuidoresProducto).ToPagedList(pageIndex, pageSize).ToList();
             }
 
             switch (sortDirection)
@@ -89,7 +92,8 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
-            var servicioAdicional = await _context.ServicioAdicional.FindAsync(id);
+            var servicioAdicional =  _context.ServicioAdicional.Include(x=>x.Proveedor).Include(x => x.TipoServicioAdicional)
+                .Include(x=>x.ListaDistribuidoresProducto).Where(x=>x.ServicioAdicionalId == id).FirstOrDefault();
 
             if (servicioAdicional == null)
             {
