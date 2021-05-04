@@ -377,7 +377,8 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.ListaAlojamientoOrden)
                     .Include(x => x.ListaTrasladoOrden)
                     .Include(x => x.ListaVehiculosOrden)
-                    
+                    .Include(x => x.ListaOrdenServicioAdicional)
+
                 .FirstOrDefault(x=>x.OrdenId==id);
             if (ord == null)
             {
@@ -955,7 +956,7 @@ namespace GoTravelTour.Controllers
 
 
 
-                    orden.PrecioGeneralOrden += to.PrecioOrden;
+                    //orden.PrecioGeneralOrden += to.PrecioOrden;
                     _context.OrdenServicioAdicional.Add(to);
 
                 }
