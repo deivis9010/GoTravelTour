@@ -17,7 +17,11 @@ namespace GoTravelTour.Models
         public decimal PrecioNinos { get; set; }
         public decimal PrecioInfantes { get; set; }       
         public string Descripcion { get; set; }
-        
+        public decimal TotalPersonas { get; set; }
+        public decimal TotalPrecioNinos { get; set; }
+        public decimal TotalPrecioAdultos { get; set; }
+        public decimal TotalPrecioInfantes { get; set; }
+        public decimal CantidadDias { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime? FechaFin { get; set; }
         public string TipoViajeBoleto { get; set; }
