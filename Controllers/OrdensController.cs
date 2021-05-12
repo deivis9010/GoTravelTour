@@ -149,6 +149,7 @@ namespace GoTravelTour.Controllers
                     .Include(x => x.ListaAlojamientoOrden)
                     .Include(x => x.ListaTrasladoOrden)
                     .Include(x => x.ListaVehiculosOrden)
+                    .Include(x => x.ListaOrdenServicioAdicional)
                     .Include(x => x.Creador)
 
                     .OrderByDescending(a => a.FechaActualizacion)

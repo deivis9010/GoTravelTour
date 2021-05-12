@@ -124,6 +124,18 @@ namespace GoTravelTour.Controllers
                 return CreatedAtAction("GetServicioAdicional", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
 
+            List<ProductoDistribuidor> distribuidors = _context.ProductoDistribuidores.Where(x => x.ProductoId == servicioAdicional.ProductoId).ToList();
+            foreach (var item in distribuidors)
+            {
+                _context.ProductoDistribuidores.Remove(item);
+            }
+            if (servicioAdicional.ListaDistribuidoresProducto != null)
+                foreach (var item in servicioAdicional.ListaDistribuidoresProducto)
+                {
+                    item.ProductoId = servicioAdicional.ProductoId;
+                    _context.ProductoDistribuidores.Add(item);
+                }
+
             _context.Entry(servicioAdicional).State = EntityState.Modified;
 
             try

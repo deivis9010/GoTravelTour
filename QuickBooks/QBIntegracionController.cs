@@ -3151,6 +3151,7 @@ namespace GoTravelTour.QuickBooks
                 .Include(x => x.ListaAlojamientoOrden)
                 .Include(x => x.ListaTrasladoOrden)
                 .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.ListaOrdenServicioAdicional)
                 .Include(x => x.Cliente)
                 .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
 
@@ -3628,6 +3629,7 @@ namespace GoTravelTour.QuickBooks
                 .Include(x => x.ListaAlojamientoOrden)
                 .Include(x => x.ListaTrasladoOrden)
                 .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.ListaOrdenServicioAdicional)
                 .Include(x => x.Cliente)
                 .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
 
@@ -4085,6 +4087,7 @@ namespace GoTravelTour.QuickBooks
                 .Include(x => x.ListaAlojamientoOrden)
                 .Include(x => x.ListaTrasladoOrden)
                 .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.ListaOrdenServicioAdicional)
                 .Include(x => x.Cliente)
                 .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
 
@@ -4523,6 +4526,7 @@ namespace GoTravelTour.QuickBooks
                 .Include(x => x.ListaAlojamientoOrden)
                 .Include(x => x.ListaTrasladoOrden)
                 .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.ListaOrdenServicioAdicional)
                 .Include(x => x.Cliente)
                 .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
 
@@ -4978,6 +4982,7 @@ namespace GoTravelTour.QuickBooks
                 .Include(x => x.ListaAlojamientoOrden)
                 .Include(x => x.ListaTrasladoOrden)
                 .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.ListaOrdenServicioAdicional)
                 .Include(x => x.Cliente)
                 .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
 
@@ -5696,6 +5701,7 @@ namespace GoTravelTour.QuickBooks
                 .Include(x => x.ListaAlojamientoOrden)
                 .Include(x => x.ListaTrasladoOrden)
                 .Include(x => x.ListaVehiculosOrden)
+                .Include(x => x.ListaOrdenServicioAdicional)
                 .Include(x => x.Cliente)
                 .FirstOrDefault(x => x.OrdenId == orden.OrdenId);
 
