@@ -32,5 +32,10 @@ namespace GoTravelTour.Models
         public decimal PrecioOrden { get; set; }
         public int IdBillQB { get; set; } //id del estimado creado en cQB  para poder editarlo si esta en null es  pq a la orden no se le ha creado el estimado
         public decimal ValorSobreprecioAplicado { get; set; } //para este caso aqui se guarda el valor sobreprecio +/- el descuento del cliente.
+        public string NumeroConfirmacion { get; set; }
+        public ConfiguracionVoucher Voucher { get; set; }
+        public decimal ValorSobreprecioAplicadoNeto { get; set; }
+        public bool PorDia { get; set; }
+        public decimal SubTotal { get; set; }
     }
 }

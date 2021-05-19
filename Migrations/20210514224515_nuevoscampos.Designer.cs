@@ -4,14 +4,16 @@ using GoTravelTour.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GoTravelTour.Migrations
 {
     [DbContext(typeof(GoTravelDBContext))]
-    partial class GoTravelDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210514224515_nuevoscampos")]
+    partial class nuevoscampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -939,8 +941,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<int>("IdBillQB");
 
-                    b.Property<string>("NumeroConfirmacion");
-
                     b.Property<int>("OrdenId");
 
                     b.Property<bool>("PorDia");
@@ -971,8 +971,6 @@ namespace GoTravelTour.Migrations
 
                     b.Property<decimal>("ValorSobreprecioAplicadoNeto");
 
-                    b.Property<int?>("VoucherConfiguracionVoucherId");
-
                     b.HasKey("OrdenServicioAdicionalId");
 
                     b.HasIndex("DistribuidorId");
@@ -980,8 +978,6 @@ namespace GoTravelTour.Migrations
                     b.HasIndex("OrdenId");
 
                     b.HasIndex("ServicioAdicionalId");
-
-                    b.HasIndex("VoucherConfiguracionVoucherId");
 
                     b.ToTable("OrdenServicioAdicional");
                 });
@@ -2437,10 +2433,6 @@ namespace GoTravelTour.Migrations
                         .WithMany()
                         .HasForeignKey("ServicioAdicionalId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GoTravelTour.Models.ConfiguracionVoucher", "Voucher")
-                        .WithMany()
-                        .HasForeignKey("VoucherConfiguracionVoucherId");
                 });
 
             modelBuilder.Entity("GoTravelTour.Models.OrdenTraslado", b =>
