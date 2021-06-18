@@ -874,7 +874,7 @@ namespace GoTravelTour.Controllers
                 //Se buscan los precios correspondientes 
                 List<PrecioAlojamiento> precios = _context.PrecioAlojamiento.Include(x => x.Temporada.ListaFechasTemporada).Include(x=>x.Habitacion)
 
-                .Where(x => x.ProductoId == a.ProductoId && x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) &&
+                .Where(x => x.ProductoId == a.ProductoId && x.Temporada.ListaFechasTemporada.Any(xx => (xx.FechaInicio <= buscador.Entrada && buscador.Entrada <= xx.FechaFin) ||
                    ((xx.FechaInicio <= buscador.Salida && buscador.Salida <= xx.FechaFin)))).ToList();
                 a.PrecioInicial = 0;
                 var i = 0;
