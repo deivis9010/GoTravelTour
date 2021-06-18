@@ -13,7 +13,8 @@ namespace GoTravelTour.Models
         public int OrdenVehiculoId { get; set; }
         public int OrdenTrasladoId { get; set; }
         public int OrdenAlojamientoId { set; get; }
-        public int OrdenActividadId { get; set; }       
+        public int OrdenActividadId { get; set; }
+        public int OrdenServicioAdicionalId { get; set; }
         public string UrlVoucher { get; set; }
         public string Nombre { get; set; }
 

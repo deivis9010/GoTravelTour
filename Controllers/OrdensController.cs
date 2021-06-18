@@ -472,8 +472,8 @@ namespace GoTravelTour.Controllers
             if (ord.ListaOrdenServicioAdicional != null && ord.ListaOrdenServicioAdicional.Any())
             {
                 ord.ListaOrdenServicioAdicional.ForEach(x => x = _context.OrdenServicioAdicional
-                
-                .Include(d => d.ServicioAdicional).ThenInclude(l => l.ListaDistribuidoresProducto)
+                 .Include(d => d.Voucher)
+                 .Include(d => d.ServicioAdicional).ThenInclude(l => l.ListaDistribuidoresProducto)
                                          .ThenInclude(l => l.Distribuidor).First(r => r.OrdenServicioAdicionalId == x.OrdenServicioAdicionalId));
             }
 
@@ -739,10 +739,11 @@ namespace GoTravelTour.Controllers
                         .Single(x => x.ProductoId == to.ServicioAdicional.ProductoId);
                     to.Distribuidor = _context.Distribuidores
                                              .Single(x => x.DistribuidorId == to.DistribuidorId);
-                 
 
-                 
 
+
+                    if (to.Voucher != null)
+                        to.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == to.Voucher.ConfiguracionVoucherId);
                     orden.PrecioGeneralOrden += to.PrecioOrden;
                     _context.OrdenServicioAdicional.Add(to);
 
@@ -956,7 +957,8 @@ namespace GoTravelTour.Controllers
 
 
 
-
+                    if (to.Voucher != null)
+                        to.Voucher = _context.ConfiguracionVoucher.First(x => x.ConfiguracionVoucherId == to.Voucher.ConfiguracionVoucherId);
                     //orden.PrecioGeneralOrden += to.PrecioOrden;
                     _context.OrdenServicioAdicional.Add(to);
 
