@@ -136,9 +136,15 @@ namespace GoTravelTour.Controllers
                 return BadRequest(ModelState);
             }
 
+
             if (id != habitacion.HabitacionId)
             {
                 return BadRequest();
+            }
+
+            if (_context.Habitaciones.Any(x => x.Nombre.Trim() == habitacion.Nombre.Trim() && x.ProductoId == habitacion.ProductoId && id != x.HabitacionId))
+            {
+                return CreatedAtAction("GetHabitacion", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
             if (habitacion.NombreHabitacion != null && habitacion.NombreHabitacion.NombreHabitacionId > 0)
                 habitacion.NombreHabitacion = _context.NombreHabitacion.First(x => x.NombreHabitacionId == habitacion.NombreHabitacion.NombreHabitacionId);
@@ -213,6 +219,11 @@ namespace GoTravelTour.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (_context.Habitaciones.Any(x => x.Nombre.Trim() == habitacion.Nombre.Trim() && x.ProductoId == habitacion.ProductoId))
+            {
+                return CreatedAtAction("GetHabitacion", new { id = -2, error = "Ya existe" }, new { id = -2, error = "Ya existe" });
             }
             Utiles.Utiles u = new Utiles.Utiles(_context);
             habitacion.SKU = u.GetSKUCodigo();
